@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#41c0dc">
+
+        <ImageView
+            android:id="@+id/MyCenter"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:padding="16dp"
+            android:src="@mipmap/menu" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/share_title"
+            android:textColor="@color/common"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/seek"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="right|center_vertical"
+            android:padding="16dp"
+            android:src="@mipmap/find" />
+
+    </FrameLayout>
+
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/top" />
+
+
+    <Button
+        android:id="@+id/instructions"
+        android:layout_width="330dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/classify"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorTitle"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/instructions"
+        android:textColor="#ffffff"
+        android:textSize="16sp" />
+
+    <ImageButton
+        android:id="@+id/btn_my_help"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignBottom="@+id/btn_my_location"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/selector_help" />
+
+    <TextView
+        android:id="@+id/scan"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_alignBottom="@+id/btn_my_location"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/shape_scan"
+        android:drawableLeft="@mipmap/scan"
+        android:drawablePadding="20dp"
+        android:enabled="true"
+        android:gravity="center_vertical"
+        android:paddingBottom="15dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="15dp"
+        android:text="@string/unlocking"
+        android:textColor="#ffffff"
+        android:textSize="16sp" />
+
+    <ImageButton
+        android:id="@+id/btn_my_location"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="36dp"
+        android:layout_marginLeft="8dp"
+        android:background="@drawable/selector_map" />
+
+    <RadioGroup
+        android:id="@+id/classify"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/top"
+        android:background="@color/colorHeading"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/allBike"
+            style="@style/titleStyle"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="30dp"
+            android:text="@string/all" />
+
+        <RadioButton
+            android:id="@+id/one"
+            style="@style/titleStyle"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="@string/one" />
+
+        <RadioButton
+            android:id="@+id/two"
+            style="@style/titleStyle"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="30dp"
+            android:text="@string/two" />
+    </RadioGroup>
+
+</RelativeLayout>

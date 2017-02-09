@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">ShareBike</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="recharge">押金充值</string>
+    <string name="tip2">车费不在押金内扣除，需另外缴费</string>
+    <string name="tip1">押金可原路返回</string>
+    <string name="weixin">微信</string>
+    <string name="zhifubao">支付宝</string>
+    <string name="tip">押金（可退）</string>
+    <string name="title_recharge">押金充值</string>
+    <string name="instructions">共享单车使用说明</string>
+    <string name="share_title">共享单车</string>
+    <string name="unlocking">扫码开锁</string>
+    <string name="all">全部单车</string>
+    <string name="one">一类车</string>
+    <string name="two">二类车</string>
+</resources>
