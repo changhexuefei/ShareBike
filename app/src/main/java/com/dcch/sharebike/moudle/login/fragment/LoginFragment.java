@@ -14,6 +14,8 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.moudle.user.activity.CreditIntegralActivity;
 import com.dcch.sharebike.moudle.user.activity.PersonInfoActivity;
+import com.dcch.sharebike.moudle.user.activity.SettingActivity;
+import com.dcch.sharebike.moudle.user.activity.WalletInfoActivity;
 import com.dcch.sharebike.utils.ToastUtils;
 
 import butterknife.BindView;
@@ -81,6 +83,8 @@ public class LoginFragment extends Fragment {
                 break;
             case R.id.wallet:
                 ToastUtils.showLong(getContext(),"钱包");
+                Intent walletInfo = new Intent(App.getContext(),WalletInfoActivity.class);
+                startActivity(walletInfo);
                 break;
             case R.id.favorable:
                 ToastUtils.showLong(getContext(),"优惠");
@@ -99,6 +103,8 @@ public class LoginFragment extends Fragment {
                 break;
             case R.id.setting:
                 ToastUtils.showLong(getContext(),"设置");
+                Intent setting = new Intent(App.getContext(),SettingActivity.class);
+                startActivity(setting);
                 break;
         }
     }

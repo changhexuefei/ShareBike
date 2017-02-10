@@ -72,7 +72,10 @@
         <activity android:name=".moudle.login.activity.RechargeActivity" />
         <activity android:name=".moudle.login.activity.IdentityAuthentication" />
         <activity android:name=".moudle.user.activity.PersonInfoActivity" />
-        <activity android:name=".moudle.user.activity.CreditIntegralActivity"></activity>
+        <activity android:name=".moudle.user.activity.CreditIntegralActivity" />
+        <activity android:name=".moudle.user.activity.WalletInfoActivity" />
+        <activity android:name=".moudle.user.activity.TransactionDetailActivity" />
+        <activity android:name=".moudle.user.activity.SettingActivity"></activity>
     </application>
 
 </manifest>
