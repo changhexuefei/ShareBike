@@ -234,6 +234,7 @@ public class MainActivity extends BaseActivity {
             case R.id.MyCenter:
                 ToastUtils.showLong(this, "我是个人中心");
                 Intent i = new Intent(this, PersonalCenterActivity.class);
+                i.putExtra("name","login");
                 startActivity(i);
                 break;
             case R.id.seek:
@@ -257,6 +258,7 @@ public class MainActivity extends BaseActivity {
             case R.id.instructions:
                 ToastUtils.showLong(this, "我是说明");
                 Intent i2 = new Intent(this, PersonalCenterActivity.class);
+                i2.putExtra("name","unLogin");
                 startActivity(i2);
                 break;
             case R.id.btn_my_help:

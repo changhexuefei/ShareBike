@@ -70,7 +70,9 @@
         <activity android:name=".moudle.search.activity.SeekActivity" />
         <activity android:name=".moudle.login.activity.AgreementActivity" />
         <activity android:name=".moudle.login.activity.RechargeActivity" />
-        <activity android:name=".moudle.login.activity.IdentityAuthentication"></activity>
+        <activity android:name=".moudle.login.activity.IdentityAuthentication" />
+        <activity android:name=".moudle.user.activity.PersonInfoActivity" />
+        <activity android:name=".moudle.user.activity.CreditIntegralActivity"></activity>
     </application>
 
 </manifest>
