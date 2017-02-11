@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_usual_address"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.dcch.sharebike.moudle.user.activity.UsualAddressActivity">
+
+    <FrameLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorHeading">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp"
+            android:src="@mipmap/back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="常用地址"
+            android:textColor="@color/common"
+            android:textSize="16sp"/>
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/addressOne"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/top">
+
+        <ImageView
+            android:id="@+id/starTargetOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:src="@mipmap/ease_icon_star_normal"/>
+
+        <TextView
+            android:id="@+id/placeNameOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/starTargetOne"
+            android:paddingTop="6dp"
+            android:text="常用地址1"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/addressNameOne"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/placeNameOne"
+            android:layout_below="@+id/placeNameOne"
+            android:layout_centerVertical="true"
+            android:paddingTop="4dp"
+            android:text="设置常用地址"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:drawableRight="@mipmap/forward"
+            android:padding="10dp"/>
+
+    </RelativeLayout>
+    <View
+        android:layout_below="@+id/addressOne"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/lineColor" />
+
+    <RelativeLayout
+        android:id="@+id/addressTwo"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/addressOne">
+
+        <ImageView
+            android:id="@+id/starTargetTwo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:src="@mipmap/ease_icon_star_normal"/>
+
+        <TextView
+            android:id="@+id/placeNameTwo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/starTargetTwo"
+            android:paddingTop="6dp"
+            android:text="常用地址2"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/addressNameTwo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/placeNameTwo"
+            android:layout_below="@+id/placeNameTwo"
+            android:paddingTop="4dp"
+            android:text="设置常用地址"
+            android:textSize="12sp"/>
+
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:drawableRight="@mipmap/forward"
+            android:padding="10dp"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

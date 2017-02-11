@@ -10,7 +10,7 @@
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#41c0dc">
+        android:background="@color/colorHeading">
 
         <ImageView
             android:id="@+id/back"
@@ -30,14 +30,13 @@
     </FrameLayout>
 
     <LinearLayout
-        android:id="@+id/usualAddress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/top"
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/favorable"
+            android:id="@+id/usualAddress"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center_vertical">
@@ -56,11 +55,15 @@
                 android:drawableRight="@mipmap/forward"
                 android:padding="10dp" />
         </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/lineColor" />
 
 
-        <!--行程-->
         <RelativeLayout
-            android:id="@+id/journey"
+            android:id="@+id/checkVersions"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center_vertical">
@@ -142,7 +145,7 @@
             android:background="@color/lineColor" />
         <!--用户指南-->
         <RelativeLayout
-            android:id="@+id/explain"
+            android:id="@+id/cashPledgeExplain"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center_vertical">
@@ -169,7 +172,7 @@
             android:background="@color/lineColor" />
         <!--设置-->
         <RelativeLayout
-            android:id="@+id/topUpAgreement"
+            android:id="@+id/rechargeAgreement"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center_vertical">
@@ -189,14 +192,14 @@
                 android:padding="10dp" />
         </RelativeLayout>
         <Button
-            android:id="@+id/btn_exit"
+            android:id="@+id/signOut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorTitle"
             android:text="退出登录"
             android:textColor="#ffffff"
             android:textSize="16sp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp" />
 
