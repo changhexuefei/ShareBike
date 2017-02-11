@@ -234,6 +234,7 @@ public class MainActivity extends BaseActivity {
             case R.id.MyCenter:
                 ToastUtils.showLong(this, "我是个人中心");
                 Intent i = new Intent(this, PersonalCenterActivity.class);
+                i.putExtra("name", "login");
                 startActivity(i);
                 break;
             case R.id.seek:
@@ -257,6 +258,7 @@ public class MainActivity extends BaseActivity {
             case R.id.instructions:
                 ToastUtils.showLong(this, "我是说明");
                 Intent i2 = new Intent(this, PersonalCenterActivity.class);
+                i2.putExtra("name", "unLogin");
                 startActivity(i2);
                 break;
             case R.id.btn_my_help:
@@ -322,12 +324,8 @@ public class MainActivity extends BaseActivity {
             // 设置定位数据
             mMap.setMyLocationData(locData);
             mCurrentLantitude = location.getLatitude();
-//            ToastUtils.showLong(getApplicationContext(),mCurrentLantitude+"");
-//            Log.d("1111111", mCurrentLantitude + "");
-
             mCurrentLongitude = location.getLongitude();
-//            Log.d("1111111", mCurrentLongitude + "");
-//            ToastUtils.showLong(getApplicationContext(),mCurrentLongitude+"");
+
 //             设置自定义图标
             BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory
                     .fromResource(R.mipmap.search_center_ic);

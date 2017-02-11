@@ -6,4 +6,5 @@
     <color name="colorHeading">#41c0dc</color>
     <color name="colorTitle">#F05B47</color>
     <color name="common">#ffffff</color>
+    <color name="lineColor">#f4f0f0</color>
 </resources>

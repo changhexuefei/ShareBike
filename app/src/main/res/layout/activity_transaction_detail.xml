@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_transaction_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.dcch.sharebike.moudle.user.activity.TransactionDetailActivity">
+
+    <FrameLayout
+        android:id="@+id/detail"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#41c0dc">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp"
+            android:src="@mipmap/back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="明细"
+            android:textColor="@color/common"
+            android:textSize="18sp" />
+
+        <TextView
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_gravity="center|right"
+            android:gravity="center"
+            android:text="退款说明"
+            android:textColor="@color/common"
+            android:textSize="14sp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_below="@+id/detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    </FrameLayout>
+
+
+</RelativeLayout>
