@@ -23,11 +23,14 @@ import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.listener.MyOrientationListener;
+import com.dcch.sharebike.moudle.home.bean.MarkerInfoUtil;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.moudle.search.activity.SeekActivity;
 import com.dcch.sharebike.utils.ToastUtils;
@@ -75,6 +78,10 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.classify)
     RadioGroup classify;
 
+    private List infos;
+    //显示marker
+    private boolean showMarker = false;
+
     /**
      * 定位的客户端
      */
@@ -105,6 +112,7 @@ public class MainActivity extends BaseActivity {
      * 方向传感器X方向的值
      */
     private int mXDirection;
+    private MapStatus.Builder mBuilder;
 
     @Override
     protected int getLayoutId() {
@@ -124,12 +132,14 @@ public class MainActivity extends BaseActivity {
         }
         //隐藏地图上比例尺
         mMapView.showScaleControl(false);
-        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(18.0f);
-        mMap.setMapStatus(msu);
+//        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(18.0f);
+//        mMap.setMapStatus(msu);
         // 初始化定位
         initMyLocation();
         // 初始化传感器
         initOritationListener();
+
+//        setMarkerInfo();
     }
 
     private void initOritationListener() {
@@ -150,8 +160,8 @@ public class MainActivity extends BaseActivity {
                 // 设置定位数据
                 mMap.setMyLocationData(locData);
 //                 设置自定义图标
-                BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory
-                        .fromResource(R.mipmap.search_center_ic);
+//                BitmapDescriptor mCurrentMarker =
+//                        fromResource(R.mipmap.search_center_ic);
                 MyLocationConfiguration config = new MyLocationConfiguration(
                         mCurrentMode, true, null);
                 mMap.setMyLocationConfigeration(config);
@@ -272,8 +282,40 @@ public class MainActivity extends BaseActivity {
                 Intent i4 = new Intent(this, CaptureActivity.class);
                 startActivityForResult(i4, 0);
                 break;
+
+            case R.id.allBike:
+//                addOverlay(infos);
+
+                break;
         }
     }
+
+//    private void addOverlay(List infos) {
+//
+//        //清空地图
+//        mMap.clear();
+//        //创建marker的显示图标
+//        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.booking_bike_marker);
+//        LatLng latLng = null;
+//        Marker marker;
+//        OverlayOptions options;
+//        for (MarkerInfoUtil info : infos) {
+//            //获取经纬度
+//            latLng = new LatLng(info.getLatitude(), info.getLongitude());
+//            //设置marker
+//            options = new MarkerOptions()
+//                    .position(latLng)//设置位置
+//                    .icon(bitmap)//设置图标样式
+//                    .zIndex(9) // 设置marker所在层级
+//                    .draggable(true); // 设置手势拖拽;
+//            //添加marker
+//            marker = (Marker) mMap.addOverlay(options);
+//        }
+//        //将地图显示在最后一个marker的位置
+//        MapStatusUpdate msu = MapStatusUpdateFactory.newLatLng(latLng);
+//        mMap.setMapStatus(msu);
+//
+//    }
 
     private void popupDialog() {
         final List<BottomSheetBean> strings = new ArrayList<>();
@@ -325,10 +367,10 @@ public class MainActivity extends BaseActivity {
             mMap.setMyLocationData(locData);
             mCurrentLantitude = location.getLatitude();
             mCurrentLongitude = location.getLongitude();
-
-//             设置自定义图标
-            BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory
-                    .fromResource(R.mipmap.search_center_ic);
+            setBaiduMapMark();
+////             设置自定义图标
+//            BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory
+//                    .fromResource(R.mipmap.search_center_ic);
             MyLocationConfiguration config = new MyLocationConfiguration(
                     mCurrentMode, true, null);
             mMap.setMyLocationConfigeration(config);
@@ -337,12 +379,40 @@ public class MainActivity extends BaseActivity {
                 isFristLocation = false;
                 LatLng ll = new LatLng(location.getLatitude(),
                         location.getLongitude());
-                MapStatus.Builder builder = new MapStatus.Builder();
-                builder.target(ll).zoom(15.0f);
+                mBuilder = new MapStatus.Builder();
+                mBuilder.target(ll).zoom(15.0f);
                 MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
                 mMap.animateMapStatus(u);
             }
         }
+    }
+//
+//    //移动后，手机地图的中心的地理坐标
+//    public void setBaiduMapCenterPoint() {
+////        mBuilder.target()
+//
+//        MapStatusUpdate update = MapStatusUpdateFactory.newMapStatus(mBuilder.build());
+//        mMap.setMapStatus(update);
+//
+//    }
+
+    private void setBaiduMapMark() {
+        LatLng point = new LatLng(mCurrentLantitude, mCurrentLongitude);
+        //设置覆盖物图标
+        BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory
+                .fromResource(R.mipmap.search_center_ic);
+        OverlayOptions options = new MarkerOptions()
+                .position(point)
+                .icon(mCurrentMarker);
+        mMap.addOverlay(options);
+
+    }
+
+    private void setMarkerInfo() {
+        infos = new ArrayList();
+        infos.add(new MarkerInfoUtil(116.551593, 39.821720));
+        infos.add(new MarkerInfoUtil(116.551593, 39.821725));
+        infos.add(new MarkerInfoUtil(116.551593, 39.821730));
     }
 
 }
