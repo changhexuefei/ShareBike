@@ -46,7 +46,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity  {
     @BindView(R.id.mapView)
     MapView mMapView;
     BaiduMap mMap;
@@ -132,14 +132,20 @@ public class MainActivity extends BaseActivity {
         }
         //隐藏地图上比例尺
         mMapView.showScaleControl(false);
-//        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(18.0f);
-//        mMap.setMapStatus(msu);
         // 初始化定位
         initMyLocation();
         // 初始化传感器
         initOritationListener();
-
 //        setMarkerInfo();
+    }
+
+    public void showMain() {
+        Intent intent = getIntent();
+        String result = intent.getStringExtra("result");
+        if (result.equals("correct") && result != null) {
+            mInstructions.setVisibility(View.GONE);
+        }
+
     }
 
     private void initOritationListener() {
@@ -367,7 +373,7 @@ public class MainActivity extends BaseActivity {
             mMap.setMyLocationData(locData);
             mCurrentLantitude = location.getLatitude();
             mCurrentLongitude = location.getLongitude();
-            setBaiduMapMark();
+//            setBaiduMapMark();
 ////             设置自定义图标
 //            BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory
 //                    .fromResource(R.mipmap.search_center_ic);
@@ -381,6 +387,8 @@ public class MainActivity extends BaseActivity {
                         location.getLongitude());
                 mBuilder = new MapStatus.Builder();
                 mBuilder.target(ll).zoom(15.0f);
+                MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(18.0f);
+                mMap.setMapStatus(msu);
                 MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
                 mMap.animateMapStatus(u);
             }
@@ -405,7 +413,6 @@ public class MainActivity extends BaseActivity {
                 .position(point)
                 .icon(mCurrentMarker);
         mMap.addOverlay(options);
-
     }
 
     private void setMarkerInfo() {
@@ -414,5 +421,4 @@ public class MainActivity extends BaseActivity {
         infos.add(new MarkerInfoUtil(116.551593, 39.821725));
         infos.add(new MarkerInfoUtil(116.551593, 39.821730));
     }
-
 }

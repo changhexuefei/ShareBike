@@ -47,6 +47,7 @@
             android:textColor="#000000" />
 
         <EditText
+            android:maxLength="11"
             android:id="@+id/userPhone"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
@@ -79,6 +80,7 @@
             android:textColor="#000000" />
 
         <EditText
+            android:inputType="number"
             android:id="@+id/securityCode"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -116,6 +118,7 @@
         android:textColor="#ffffff" />
 
     <TextView
+        android:enabled="false"
         android:id="@+id/confirm"
         android:layout_width="330dp"
         android:layout_height="40dp"

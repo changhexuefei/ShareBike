@@ -1,5 +1,6 @@
 package com.dcch.sharebike.moudle.user.activity;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -55,10 +56,20 @@ public class PersonInfoActivity extends BaseActivity {
                 break;
             case R.id.userNickname:
                 ToastUtils.showLong(this,"昵称");
+                Intent nickname = new Intent(this,ChangeUserNickNameActivity.class);
+                String nickName = this.nickName.getText().toString().trim();
+                if(nickName.equals("") && nickName!=null)
+                nickname.putExtra("nickname", nickName);
+                startActivityForResult(nickname,0);
                 break;
             case R.id.phone:
                 ToastUtils.showLong(this,"手机号");
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
