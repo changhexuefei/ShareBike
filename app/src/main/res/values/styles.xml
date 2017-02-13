@@ -73,7 +73,6 @@
         <item name="android:scaleY">0.5</item>
         <item name="android:scaleX">0.5</item>
         <item name="android:button">@drawable/checkbox</item>
-        <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:layout_marginRight">10dp</item>
     </style>

@@ -43,20 +43,20 @@
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@mipmap/before"
+            android:src="@mipmap/finish"
             android:gravity="center"
             android:text="手机验证" />
         <View
             android:padding="4dp"
             android:layout_width="60dp"
             android:layout_height="2dp"
-            android:background="#baafaf" />
+            android:background="#41c0dc" />
 
         <ImageView
             android:textSize="12sp"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@mipmap/before" />
+            android:src="@mipmap/process" />
         <View
             android:padding="4dp"
             android:layout_width="60dp"
@@ -74,11 +74,10 @@
             android:layout_height="2dp"
             android:background="#baafaf" />
 
-        <RadioButton
-            android:button="@null"
+        <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:drawableTop="@mipmap/before"
+            android:src="@mipmap/before"
             android:id="@+id/imageView2" />
 
 
