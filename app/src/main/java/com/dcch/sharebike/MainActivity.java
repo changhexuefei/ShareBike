@@ -148,8 +148,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     private Marker mMarker;
     private double latitude;
     private double longitude;
-    //    private String resultAddress;
-
 
     @Override
     protected int getLayoutId() {
@@ -427,6 +425,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     private void countDistance(double mCurrentLantitude, double mCurrentLongitude, double latitude, double longitude) {
         RoutePlanSearch search = RoutePlanSearch.newInstance();        //百度的搜索路线的类
 //        DrivingRoutePlanOption drivingRoutePlanOption = new DrivingRoutePlanOption();
+        //步行路线参数类
         WalkingRoutePlanOption walkingRoutePlanOption = new WalkingRoutePlanOption();
 
         //起始坐标和终点坐标
