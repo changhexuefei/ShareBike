@@ -28,6 +28,59 @@
             android:textColor="@color/common"
             android:textSize="16sp" />
     </FrameLayout>
+    <LinearLayout
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:gravity="center"
+        android:id="@+id/flowChart"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/top"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/finish"
+            android:gravity="center"
+            android:text="手机验证" />
+        <View
+            android:padding="4dp"
+            android:layout_width="60dp"
+            android:layout_height="2dp"
+            android:background="#41c0dc" />
+
+        <ImageView
+            android:textSize="12sp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/finish" />
+        <View
+            android:padding="4dp"
+            android:layout_width="60dp"
+            android:layout_height="2dp"
+            android:background="#41c0dc" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/process"
+            />
+        <View
+            android:padding="4dp"
+            android:layout_width="60dp"
+            android:layout_height="2dp"
+            android:background="#baafaf" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/before"
+            android:id="@+id/imageView2" />
+
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/userInfo"

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ZoomControls;
 
 import com.baidu.location.BDLocation;
@@ -23,11 +24,18 @@ import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.listener.MyOrientationListener;
 import com.dcch.sharebike.moudle.home.bean.MarkerInfoUtil;
@@ -46,7 +54,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity  {
+public class MainActivity extends BaseActivity implements OnGetGeoCoderResultListener {
     @BindView(R.id.mapView)
     MapView mMapView;
     BaiduMap mMap;
@@ -78,7 +86,7 @@ public class MainActivity extends BaseActivity  {
     @BindView(R.id.classify)
     RadioGroup classify;
 
-    private List infos;
+    private List<MarkerInfoUtil> infos;
     //显示marker
     private boolean showMarker = false;
 
@@ -113,6 +121,8 @@ public class MainActivity extends BaseActivity  {
      */
     private int mXDirection;
     private MapStatus.Builder mBuilder;
+    private GeoCoder mSearch = null;
+    private Marker mMarker;
 
     @Override
     protected int getLayoutId() {
@@ -123,6 +133,9 @@ public class MainActivity extends BaseActivity  {
     protected void initData() {
         classify.check(R.id.allBike);
         ButterKnife.bind(this);
+        // 初始化GeoCoder模块，注册事件监听
+        mSearch = GeoCoder.newInstance();
+        mSearch.setOnGetGeoCodeResultListener(this);
         mMap = mMapView.getMap();
         mMapView.showZoomControls(false);
         //隐藏logo和缩放图标
@@ -137,16 +150,22 @@ public class MainActivity extends BaseActivity  {
         // 初始化传感器
         initOritationListener();
 //        setMarkerInfo();
+        clickBaiduMapMark();
     }
 
-    public void showMain() {
-        Intent intent = getIntent();
-        String result = intent.getStringExtra("result");
-        if (result.equals("correct") && result != null) {
-            mInstructions.setVisibility(View.GONE);
-        }
-
+    public void reverseGeoCoder(LatLng latlng) {
+        //反向地理编码的功能
+        mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(latlng));
     }
+
+//    public void showMain() {
+//        Intent intent = getIntent();
+//        String result = intent.getStringExtra("result");
+//        if (result.equals("correct") && result != null) {
+//            mInstructions.setVisibility(View.GONE);
+//        }
+//
+//    }
 
     private void initOritationListener() {
         myOrientationListener = new MyOrientationListener(
@@ -297,16 +316,16 @@ public class MainActivity extends BaseActivity  {
     }
 
 //    private void addOverlay(List infos) {
-//
+//        setMarkerInfo();
 //        //清空地图
 //        mMap.clear();
 //        //创建marker的显示图标
 //        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.booking_bike_marker);
 //        LatLng latLng = null;
-//        Marker marker;
 //        OverlayOptions options;
-//        for (MarkerInfoUtil info : infos) {
-//            //获取经纬度
+//
+//        for (int i = 0; i <infos.size() ; i++) {
+//            MarkerInfoUtil info = (MarkerInfoUtil) infos.get(i);
 //            latLng = new LatLng(info.getLatitude(), info.getLongitude());
 //            //设置marker
 //            options = new MarkerOptions()
@@ -315,13 +334,22 @@ public class MainActivity extends BaseActivity  {
 //                    .zIndex(9) // 设置marker所在层级
 //                    .draggable(true); // 设置手势拖拽;
 //            //添加marker
-//            marker = (Marker) mMap.addOverlay(options);
+//            mMarker = (Marker) mMap.addOverlay(options);
 //        }
-//        //将地图显示在最后一个marker的位置
-//        MapStatusUpdate msu = MapStatusUpdateFactory.newLatLng(latLng);
-//        mMap.setMapStatus(msu);
-//
+
 //    }
+    private void clickBaiduMapMark() {
+
+        mMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                LatLng latlng = marker.getPosition();
+                Toast.makeText(MainActivity.this, latlng.latitude + "," + latlng.longitude, Toast.LENGTH_LONG).show();
+                reverseGeoCoder(latlng);
+                return false;
+            }
+        });
+    }
 
     private void popupDialog() {
         final List<BottomSheetBean> strings = new ArrayList<>();
@@ -349,6 +377,24 @@ public class MainActivity extends BaseActivity  {
                 ToastUtils.showLong(this, result);
             }
         }
+    }
+
+    @Override
+    public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
+
+    }
+
+    @Override
+    public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
+        if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+            Toast.makeText(MainActivity.this, "抱歉，未能找到结果", Toast.LENGTH_LONG)
+                    .show();
+            return;
+        }
+        Toast.makeText(MainActivity.this, result.getAddress(),
+                Toast.LENGTH_LONG).show();
+
+
     }
 
     /**
@@ -394,15 +440,7 @@ public class MainActivity extends BaseActivity  {
             }
         }
     }
-//
-//    //移动后，手机地图的中心的地理坐标
-//    public void setBaiduMapCenterPoint() {
-////        mBuilder.target()
-//
-//        MapStatusUpdate update = MapStatusUpdateFactory.newMapStatus(mBuilder.build());
-//        mMap.setMapStatus(update);
-//
-//    }
+
 
     private void setBaiduMapMark() {
         LatLng point = new LatLng(mCurrentLantitude, mCurrentLongitude);
@@ -412,7 +450,7 @@ public class MainActivity extends BaseActivity  {
         OverlayOptions options = new MarkerOptions()
                 .position(point)
                 .icon(mCurrentMarker);
-        mMap.addOverlay(options);
+        Marker marker = (Marker) mMap.addOverlay(options);
     }
 
     private void setMarkerInfo() {
