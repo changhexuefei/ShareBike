@@ -82,12 +82,12 @@
             android:textSize="13sp" />
 
         <TextView
+            android:id="@+id/myAddress"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="6dp"
             android:layout_weight="11"
             android:gravity="center_vertical"
-            android:text="北京市海淀区上地街道上地研华科技大厦"
             android:textSize="12sp" />
 
     </LinearLayout>

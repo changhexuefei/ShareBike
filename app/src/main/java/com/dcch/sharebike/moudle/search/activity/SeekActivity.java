@@ -1,11 +1,14 @@
 package com.dcch.sharebike.moudle.search.activity;
 
+import android.content.Intent;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
@@ -23,6 +26,8 @@ public class SeekActivity extends BaseActivity implements TextWatcher {
     EditText search;
     @BindView(R.id.deleteWord)
     ImageButton deleteWord;
+    @BindView(R.id.myAddress)
+    TextView myAddress;
 
     @Override
     protected int getLayoutId() {
@@ -31,7 +36,12 @@ public class SeekActivity extends BaseActivity implements TextWatcher {
 
     @Override
     protected void initData() {
-
+        Intent intent = getIntent();
+        String address = intent.getStringExtra("address");
+//        Log.d("当前位置",address);
+        if (!TextUtils.isEmpty(address)) {
+            myAddress.setText(address);
+        }
     }
 
     @Override
@@ -63,6 +73,7 @@ public class SeekActivity extends BaseActivity implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable editable) {
-        ToastUtils.showLong(this,editable.toString().trim());
+        ToastUtils.showLong(this, editable.toString().trim());
     }
+
 }
