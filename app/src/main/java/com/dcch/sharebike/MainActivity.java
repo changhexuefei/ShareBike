@@ -24,6 +24,7 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
@@ -40,6 +41,11 @@ import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
+import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
+import com.baidu.mapapi.search.poi.PoiDetailResult;
+import com.baidu.mapapi.search.poi.PoiIndoorResult;
+import com.baidu.mapapi.search.poi.PoiResult;
+import com.baidu.mapapi.search.poi.PoiSearch;
 import com.baidu.mapapi.search.route.BikingRouteResult;
 import com.baidu.mapapi.search.route.DrivingRouteResult;
 import com.baidu.mapapi.search.route.IndoorRouteResult;
@@ -72,7 +78,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity implements OnGetGeoCoderResultListener {
+public class MainActivity extends BaseActivity implements OnGetGeoCoderResultListener, OnGetPoiSearchResultListener {
     @BindView(R.id.mapView)
     MapView mMapView;
     BaiduMap mMap;
@@ -149,6 +155,8 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     private double latitude;
     private double longitude;
     private String locationDescribe;
+    //POI搜索相关
+    public PoiSearch mPoiSearch = null;
 
 
     @Override
@@ -163,6 +171,10 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         // 初始化GeoCoder模块，注册事件监听
         mSearch = GeoCoder.newInstance();
         mSearch.setOnGetGeoCodeResultListener(this);
+        //POI搜索相关
+        mPoiSearch = PoiSearch.newInstance();
+        mPoiSearch.setOnGetPoiSearchResultListener(this);
+
         mMap = mMapView.getMap();
         mMapView.showZoomControls(false);
         //隐藏logo和缩放图标
@@ -303,7 +315,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 ToastUtils.showLong(this, "我是搜索");
                 Intent i1 = new Intent(this, SeekActivity.class);
 //                Log.d("11111",resultAddress);
-                i1.putExtra("address",locationDescribe);
+                i1.putExtra("address", locationDescribe);
                 startActivity(i1);
                 break;
             case R.id.btn_my_location:
@@ -368,14 +380,10 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     }
 
     private void clickBaiduMapMark() {
-
-
         mMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
-
             @Override
             public boolean onMarkerClick(Marker marker) {
                 LatLng latlng = marker.getPosition();
-//                mMap.clear();
 //                setMarkerInfo();
                 addOverlay(infos);
                 reverseGeoCoder(latlng);
@@ -522,6 +530,46 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             }
         });
 
+
+    }
+
+    @Override
+    public void onGetPoiResult(PoiResult poiResult) {
+
+    }
+
+    @Override
+    public void onGetPoiDetailResult(PoiDetailResult poiDetailResult) {
+
+        if (poiDetailResult.error != SearchResult.ERRORNO.NO_ERROR) {
+            // 检索失败
+        } else {
+            //1:
+            BitmapDescriptor descriptor;
+            Button btn = new Button(this);
+            btn.setBackgroundColor(0xAA00FF00);
+            btn.setText(poiDetailResult.getName() + "\r\n" + poiDetailResult.getAddress());
+
+            //2:
+            descriptor = BitmapDescriptorFactory.fromView(btn);
+
+            //3:
+            InfoWindow mInfoWindow = new InfoWindow(descriptor, poiDetailResult.getLocation(), -100, new InfoWindow.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick() {
+                    // 隐藏弹窗！
+                    mMap.hideInfoWindow();
+                }
+            });
+
+            //4:
+            mMap.showInfoWindow(mInfoWindow);
+        }
+
+    }
+
+    @Override
+    public void onGetPoiIndoorResult(PoiIndoorResult poiIndoorResult) {
 
     }
 
