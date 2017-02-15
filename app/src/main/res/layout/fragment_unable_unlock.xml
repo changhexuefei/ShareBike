@@ -2,27 +2,147 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="#ffffff"
     tools:context="com.dcch.sharebike.moudle.user.fragment.UnableUnlockFragment">
 
-    <TextView
-        android:textColor="#000000"
-        android:textSize="14sp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="30dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="开不了锁" />
-    <RelativeLayout
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="40dp">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
 
-    </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="30dp"
+                android:text="开不了锁"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <RelativeLayout
+                android:background="#eae8e8"
+                android:id="@+id/scan_code"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp">
+
+                <ImageView
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:id="@+id/report_issue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/report_issue_scan_qrcode" />
+
+                <TextView
+                    android:layout_marginRight="10dp"
+                    android:id="@+id/bike_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/report_issue"
+                    android:text="扫描二维码或者手动输入编码" />
+
+                <TextView
+                    android:layout_alignLeft="@+id/bike_code"
+                    android:textSize="10sp"
+                    android:textColor="#e71212"
+                    android:id="@+id/tips"
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:layout_below="@+id/bike_code"
+                    android:layout_toRightOf="@+id/report_issue"
+                    android:text="重新扫码或输入"
+                    android:visibility="invisible" />
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:text="1.观察车锁是否亮起"
+                android:textColor="#000000" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:text="如果车锁蓝灯亮起，代表这辆车已经被预约，请换其他单车使用"
+                android:textColor="#000000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:text="2.提示单车处于故障中，请换其他单车"
+                android:textColor="#000000" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:text="如果车锁蓝灯亮起，代表这辆车已经被预约，请换其他单车使用"
+                android:textColor="#000000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:text="3.提示单车处于故障中，请换其他单车"
+                android:textColor="#000000" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:text="如果车锁蓝灯亮起，代表这辆车已经被预约，请换其他单车使用"
+                android:textColor="#000000" />
+
+            <com.louisgeek.multiedittextviewlib.MultiEditInputView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:padding="5dp"
+                app:contentHeight="100dp"
+                app:hintText="补充问题描述"
+                app:maxCount="140"
+                android:id="@+id/questionDesc" />
+
+
+            <TextView
+                android:enabled="false"
+                android:id="@+id/confirm"
+                android:layout_width="330dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="40dp"
+                android:background="#c6bfbf"
+                android:gravity="center"
+                android:text="提交"
+                android:textColor="#ffffff"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

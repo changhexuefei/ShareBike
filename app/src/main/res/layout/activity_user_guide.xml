@@ -38,14 +38,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/userGuideInfo"
         android:layout_marginLeft="15dp"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
         android:text="热点问题" />
 
     <LinearLayout
         android:id="@+id/lock"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:background="#ffffff">
 
         <TextView
@@ -60,7 +60,7 @@
     <LinearLayout
         android:id="@+id/breakdown"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_marginTop="0.8dp"
         android:background="#ffffff">
 
@@ -91,7 +91,7 @@
     <LinearLayout
         android:id="@+id/topUpInstructions"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_marginTop="0.8dp"
         android:background="#ffffff">
 
@@ -106,7 +106,7 @@
     <LinearLayout
         android:id="@+id/report"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_marginTop="0.8dp"
         android:background="#ffffff">
 
@@ -121,7 +121,7 @@
     <LinearLayout
         android:id="@+id/unFindCar"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_marginTop="0.8dp"
         android:background="#ffffff">
 
@@ -137,7 +137,7 @@
     <LinearLayout
         android:id="@+id/allQuestion"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_marginTop="10dp"
         android:background="#ffffff">
 

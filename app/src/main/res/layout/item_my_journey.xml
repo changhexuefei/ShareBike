@@ -37,13 +37,16 @@
 
 
     <LinearLayout
+        android:gravity="center_vertical"
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/icon_location">
 
         <TextView
-            android:drawableLeft="@drawable/renminbi"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:drawableLeft="@mipmap/my_trip_item_duration_img"
             android:id="@+id/place_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,8 +61,11 @@
             android:text="7分钟" />
 
         <TextView
+
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
             android:layout_marginLeft="40dp"
-            android:drawableLeft="@drawable/renminbi"
+            android:drawableLeft="@mipmap/my_trip_item_cost_img"
             android:id="@+id/address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
