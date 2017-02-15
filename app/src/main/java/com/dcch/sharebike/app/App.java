@@ -1,5 +1,6 @@
 package com.dcch.sharebike.app;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
@@ -7,14 +8,30 @@ import com.baidu.mapapi.SDKInitializer;
 import com.dcch.sharebike.http.HttpUtils;
 import com.zhy.http.okhttp.log.LoggerInterceptor;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 
 public class App extends Application {
+    private List<Activity> activityList = new LinkedList();
+    private static App instance;
     private static Context mContext;
-//    private static LocationInfo mLocationInfo;
+    //    private static LocationInfo mLocationInfo;
     public static int code = 0;
+
+    public App() {
+    }
+
+    //单例模式中获取唯一的Application实例
+    public static App getInstance() {
+        if (null == instance) {
+            instance = new App();
+        }
+        return instance;
+
+    }
 
     @Override
     public void onCreate() {
@@ -29,6 +46,7 @@ public class App extends Application {
                 .build();
         HttpUtils.init(okHttpClient);
     }
+
     /**
      * 获取全局Context变量
      *
@@ -55,5 +73,22 @@ public class App extends Application {
 //    public static void setLocation(LocationInfo locationInfo) {
 //        mLocationInfo = locationInfo;
 //    }
+
+    //添加Activity到容器中
+    public void addActivity(Activity activity) {
+        activityList.add(activity);
+    }
+    //遍历所有Activity并finish
+
+//    public void exit() {
+//
+//        for (Activity activity : activityList) {
+//            activity.finish();
+//        }
+//
+//        System.exit(0);
+//
+//    }
+
 
 }

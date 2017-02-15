@@ -71,8 +71,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                         //验证码验证成功
                         if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
                             Toast.makeText(LoginActivity.this, "验证成功", Toast.LENGTH_LONG).show();
-                            Intent i1 = new Intent(LoginActivity.this,RechargeActivity.class);
+                            Intent i1 = new Intent(LoginActivity.this, RechargeActivity.class);
                             startActivity(i1);
+                            finish();
                         }
                         //已发送验证码
                         else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
@@ -114,8 +115,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     }
 
     public void init() {
-        phone = userPhone.getText().toString().trim();
-        seCode = securityCode.getText().toString().trim();
+//        phone = userPhone.getText().toString().trim();
+//        seCode = securityCode.getText().toString().trim();
     }
 
     private void initSDK() {
@@ -179,7 +180,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             case R.id.confirm:
                 //将收到的验证码和手机号提交再次核对
                 SMSSDK.submitVerificationCode("86", phone, securityCode.getText().toString());
-                finish();
                 break;
             case R.id.rules:
                 Intent intent = new Intent(this, AgreementActivity.class);

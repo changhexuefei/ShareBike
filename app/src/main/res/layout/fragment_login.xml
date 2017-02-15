@@ -178,13 +178,14 @@
                     android:text="我的钱包" />
 
                 <TextView
+                    android:id="@+id/remainSum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:drawablePadding="10dp"
                     android:drawableRight="@mipmap/forward"
                     android:padding="10dp"
-                    android:text="0元" />
+                    android:text="48元" />
             </RelativeLayout>
 
             <View

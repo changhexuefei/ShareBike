@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 
+import com.dcch.sharebike.app.App;
+
 import butterknife.ButterKnife;
 
 /**
@@ -19,6 +21,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(getLayoutId());
         ButterKnife.bind(this);
+        App.getInstance().addActivity(this);
         initData();
         initListener();
     }
@@ -29,4 +32,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract int getLayoutId();
 
     protected abstract void initData();
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        App.getInstance().exit();
+    }
 }

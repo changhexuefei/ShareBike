@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="20dp"
+    android:layout_marginTop="10dp"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/journeyTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2017-02-22  17:00"
+        android:textColor="#000000"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="自行车编号："
+            android:textSize="12sp"
+            android:id="@+id/textView3" />
+
+        <TextView
+            android:id="@+id/bikeNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0000000000" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon_location">
+
+        <TextView
+            android:drawableLeft="@drawable/renminbi"
+            android:id="@+id/place_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="骑行时间："
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/duration"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="7分钟" />
+
+        <TextView
+            android:layout_marginLeft="40dp"
+            android:drawableLeft="@drawable/renminbi"
+            android:id="@+id/address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="骑行花费:"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/money_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1.00元"
+            />
+    </LinearLayout>
+</LinearLayout>

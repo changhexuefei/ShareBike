@@ -148,6 +148,8 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     private Marker mMarker;
     private double latitude;
     private double longitude;
+    private String locationDescribe;
+
 
     @Override
     protected int getLayoutId() {
@@ -177,8 +179,12 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 //        setMarkerInfo();
         clickBaiduMapMark();
         getPersimmions();
+    }
 
-
+    @Override
+    protected void initListener() {
+        //地图状态改变相关监听
+//        mMap.setOnMapStatusChangeListener(this);
     }
 
     private void getPersimmions() {
@@ -297,7 +303,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 ToastUtils.showLong(this, "我是搜索");
                 Intent i1 = new Intent(this, SeekActivity.class);
 //                Log.d("11111",resultAddress);
-//                i1.putExtra("address",resultAddress);
+                i1.putExtra("address",locationDescribe);
                 startActivity(i1);
                 break;
             case R.id.btn_my_location:
@@ -341,7 +347,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
     private void addOverlay(List infos) {
         //清空地图
-//        mMap.clear();
+        mMap.clear();
         //创建marker的显示图标
         BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.ease_icon_marka);
         LatLng latLng = null;
@@ -363,10 +369,15 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
     private void clickBaiduMapMark() {
 
+
         mMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
+
             @Override
             public boolean onMarkerClick(Marker marker) {
                 LatLng latlng = marker.getPosition();
+//                mMap.clear();
+//                setMarkerInfo();
+                addOverlay(infos);
                 reverseGeoCoder(latlng);
                 return false;
             }
@@ -450,18 +461,20 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 Log.d("距离", duration + "米");
                 Toast.makeText(App.getContext(), "你距离目标" + duration + "米", Toast.LENGTH_SHORT).show();
 
-/**
- * public java.util.List<WalkingRouteLine> getRouteLines()
- * 获取所有步行规划路线
- * 返回:所有步行规划路线
- * */
+                /**
+                 * public java.util.List<WalkingRouteLine> getRouteLines()
+                 * 获取所有步行规划路线
+                 * 返回:所有步行规划路线
+                 * */
 
                 WalkingRouteOverlay overlay = new MyWalkingRouteOverlay(mMap);
+
                 /**
                  * 设置地图 Marker 覆盖物点击事件监听者
                  * 需要实现的方法：     onMarkerClick(Marker marker)
                  * */
                 mMap.setOnMarkerClickListener(overlay);
+
                 routeOverlay = overlay;
 
                 /**
@@ -481,8 +494,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                  * 注： 该方法只对Marker类型的overlay有效
                  * */
                 overlay.zoomToSpan();
-
-
             }
 
             @Override
@@ -514,6 +525,41 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
     }
 
+//    @Override
+//    public void onMapStatusChangeStart(MapStatus mapStatus) {
+//
+//    }
+//
+//    @Override
+//    public void onMapStatusChange(MapStatus mapStatus) {
+//
+//    }
+//
+//    @Override
+//    public void onMapStatusChangeFinish(MapStatus mapStatus) {
+//        //地图操作的中心点
+//        LatLng cenpt = mapStatus.target;
+//        Log.d("移动到",cenpt+"");
+//        setMarkerInfo(cenpt.longitude,cenpt.latitude);
+////        ToastUtils.showLong(this,cenpt+"");
+//
+//        mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(cenpt));
+//    }
+
+//    private void setMarkerInfo(double longitude, double latitude) {
+//        infos = new ArrayList();
+//        infos.add(new MarkerInfoUtil(latitude - 0.001, longitude - 0.001));
+//        infos.add(new MarkerInfoUtil(latitude - 0.002, longitude - 0.002));
+//        infos.add(new MarkerInfoUtil(latitude - 0.003, longitude - 0.003));
+//        infos.add(new MarkerInfoUtil(latitude + 0.002, longitude + 0.002));
+//        infos.add(new MarkerInfoUtil(latitude + 0.003, longitude + 0.003));
+//        infos.add(new MarkerInfoUtil(latitude - 0.008, longitude - 0.008));
+//        infos.add(new MarkerInfoUtil(latitude + 0.01, longitude + 0.01));
+//        infos.add(new MarkerInfoUtil(latitude + 0.005, longitude + 0.005));
+//        addOverlay(infos);
+//
+//    }
+
 
     /**
      * 实现定位回调监听
@@ -537,6 +583,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             mCurrentLantitude = location.getLatitude();
             mCurrentLongitude = location.getLongitude();
 
+
 //            BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory
 //                    .fromResource(R.mipmap.search_center_ic);
             //不设置bitmapDescriptor时代表默认使用百度地图图标
@@ -545,8 +592,9 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             mMap.setMyLocationConfigeration(config);
             // 第一次定位时，将地图位置移动到当前位置
             if (isFristLocation) {
+                locationDescribe = location.getLocationDescribe();
                 isFristLocation = false;
-                setBaiduMapMark();
+//                setBaiduMapMark();
                 setUserMapCenter();
                 setMarkerInfo();
                 addOverlay(infos);
@@ -590,7 +638,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 .target(cenpt)
                 .zoom(18)
                 .build();
-//        reverseGeoCoder(cenpt);
 
         //定义MapStatusUpdate对象，以便描述地图状态将要发生的变化
         MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory
@@ -606,6 +653,11 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
         mMapView.onDestroy();
         mMapView = null;
+        //释放资源
+        if (mSearch != null) {
+            mSearch.destroy();
+        }
+
     }
 
     @Override
@@ -662,7 +714,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         @Override
         public BitmapDescriptor getStartMarker() {
             if (useDefaultIcon) {
-                return BitmapDescriptorFactory.fromResource(R.drawable.start_point);
+                return BitmapDescriptorFactory.fromResource(0);
             }
             return null;
         }
@@ -672,13 +724,14 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
          * 覆写此方法以改变默认终点图标
          * 返回:终点图标
          */
-        @Override
-        public BitmapDescriptor getTerminalMarker() {
-            if (useDefaultIcon) {
-                return BitmapDescriptorFactory.fromResource(R.drawable.stop_point);
-            }
-            return null;
-        }
+//        @Override
+//        public BitmapDescriptor getTerminalMarker() {
+//            if (useDefaultIcon) {
+//                return BitmapDescriptorFactory.fromResource(0);
+//            }
+//            return null;
+//        }
+
     }
 
 }

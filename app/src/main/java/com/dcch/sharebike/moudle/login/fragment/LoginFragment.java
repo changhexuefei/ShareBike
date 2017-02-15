@@ -13,8 +13,10 @@ import android.widget.TextView;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.moudle.user.activity.CreditIntegralActivity;
+import com.dcch.sharebike.moudle.user.activity.MyJourneyActivity;
 import com.dcch.sharebike.moudle.user.activity.PersonInfoActivity;
 import com.dcch.sharebike.moudle.user.activity.SettingActivity;
+import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
 import com.dcch.sharebike.moudle.user.activity.WalletInfoActivity;
 import com.dcch.sharebike.utils.ToastUtils;
 
@@ -53,6 +55,9 @@ public class LoginFragment extends Fragment {
     RelativeLayout guide;
     @BindView(R.id.setting)
     RelativeLayout setting;
+    @BindView(R.id.remainSum)
+    TextView remainSum;
+
 
     public LoginFragment() {
 
@@ -72,38 +77,44 @@ public class LoginFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.creditScore:
-                ToastUtils.showLong(getContext(),"信用积分");
-                Intent credit = new Intent(App.getContext(),CreditIntegralActivity.class);
+                ToastUtils.showLong(getContext(), "信用积分");
+                Intent credit = new Intent(App.getContext(), CreditIntegralActivity.class);
                 startActivity(credit);
                 break;
             case R.id.userIcon:
-                ToastUtils.showLong(getContext(),"用户头像");
-                Intent personInfo = new Intent(App.getContext(),PersonInfoActivity.class);
+                ToastUtils.showLong(getContext(), "用户头像");
+                Intent personInfo = new Intent(App.getContext(), PersonInfoActivity.class);
                 startActivity(personInfo);
                 break;
             case R.id.wallet:
-                ToastUtils.showLong(getContext(),"钱包");
-                Intent walletInfo = new Intent(App.getContext(),WalletInfoActivity.class);
+                ToastUtils.showLong(getContext(), "钱包");
+                String remainsum = remainSum.getText().toString().trim();
+                Intent walletInfo = new Intent(App.getContext(), WalletInfoActivity.class);
+                walletInfo.putExtra("remainSum", remainsum);
                 startActivity(walletInfo);
                 break;
             case R.id.favorable:
-                ToastUtils.showLong(getContext(),"优惠");
+                ToastUtils.showLong(getContext(), "优惠");
                 break;
             case R.id.journey:
-                ToastUtils.showLong(getContext(),"行程");
+                ToastUtils.showLong(getContext(), "行程");
+                Intent myJourney = new Intent(App.getContext(),MyJourneyActivity.class);
+                startActivity(myJourney);
                 break;
             case R.id.message:
-                ToastUtils.showLong(getContext(),"消息");
+                ToastUtils.showLong(getContext(), "消息");
                 break;
             case R.id.friend:
-                ToastUtils.showLong(getContext(),"邀请好友");
+                ToastUtils.showLong(getContext(), "邀请好友");
                 break;
             case R.id.guide:
-                ToastUtils.showLong(getContext(),"用户指南");
+                ToastUtils.showLong(getContext(), "用户指南");
+                Intent userGuide = new Intent(App.getContext(),UserGuideActivity.class);
+                startActivity(userGuide);
                 break;
             case R.id.setting:
-                ToastUtils.showLong(getContext(),"设置");
-                Intent setting = new Intent(App.getContext(),SettingActivity.class);
+                ToastUtils.showLong(getContext(), "设置");
+                Intent setting = new Intent(App.getContext(), SettingActivity.class);
                 startActivity(setting);
                 break;
         }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_locking"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.dcch.sharebike.moudle.user.activity.CustomerServiceActivity">
+
+    <FrameLayout
+        android:id="@+id/customer_service"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorHeading">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp"
+            android:src="@mipmap/back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="客户服务"
+            android:textColor="@color/common"
+            android:textSize="16sp" />
+
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:layout_below="@+id/customer_service"
+        android:id="@+id/customerService"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    </FrameLayout>
+
+
+
+</RelativeLayout>
