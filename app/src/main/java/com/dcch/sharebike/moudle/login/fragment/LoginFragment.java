@@ -14,6 +14,7 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.moudle.user.activity.CreditIntegralActivity;
 import com.dcch.sharebike.moudle.user.activity.MyJourneyActivity;
+import com.dcch.sharebike.moudle.user.activity.MyMessageActivity;
 import com.dcch.sharebike.moudle.user.activity.PersonInfoActivity;
 import com.dcch.sharebike.moudle.user.activity.SettingActivity;
 import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
@@ -103,6 +104,8 @@ public class LoginFragment extends Fragment {
                 break;
             case R.id.message:
                 ToastUtils.showLong(getContext(), "消息");
+                Intent myMessage = new Intent(App.getContext(),MyMessageActivity.class);
+                startActivity(myMessage);
                 break;
             case R.id.friend:
                 ToastUtils.showLong(getContext(), "邀请好友");

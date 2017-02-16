@@ -29,54 +29,113 @@
             android:textSize="16sp" />
     </FrameLayout>
     <LinearLayout
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:gravity="center"
         android:id="@+id/flowChart"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_below="@+id/top"
-        android:orientation="horizontal">
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@mipmap/finish"
-            android:gravity="center"
-            android:text="手机验证" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:src="@mipmap/finish" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="手机验证" />
+
+        </RelativeLayout>
+
         <View
-            android:padding="4dp"
-            android:layout_width="60dp"
+            android:layout_width="40dp"
             android:layout_height="2dp"
-            android:background="#41c0dc" />
+            android:background="#41c0dc"
+            android:padding="4dp" />
 
-        <ImageView
-            android:textSize="12sp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@mipmap/finish" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/finish"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="押金交纳" />
+
+        </RelativeLayout>
+
         <View
-            android:padding="4dp"
-            android:layout_width="60dp"
+            android:layout_width="40dp"
             android:layout_height="2dp"
-            android:background="#41c0dc" />
+            android:background="#41c0dc"
+            android:padding="4dp"
+            android:id="@+id/view2" />
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@mipmap/process"
-            />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/process" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="实名认证" />
+
+        </RelativeLayout>
+
         <View
-            android:padding="4dp"
-            android:layout_width="60dp"
+            android:layout_width="40dp"
             android:layout_height="2dp"
-            android:background="#baafaf" />
+            android:background="#baafaf"
+            android:padding="4dp" />
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@mipmap/before"
-            android:id="@+id/imageView2" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_centerInParent="true"
+                android:id="@+id/imageView2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@mipmap/before" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="注册完成" />
+
+
+        </RelativeLayout>
 
 
     </LinearLayout>
@@ -86,10 +145,10 @@
         android:id="@+id/userInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/top"
+        android:layout_below="@+id/flowChart"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="40dp"
         android:orientation="vertical">
 
         <TextView

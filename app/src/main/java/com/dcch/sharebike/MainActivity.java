@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -63,6 +64,7 @@ import com.dcch.sharebike.listener.MyOrientationListener;
 import com.dcch.sharebike.moudle.home.bean.MarkerInfoUtil;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.moudle.search.activity.SeekActivity;
+import com.dcch.sharebike.moudle.user.activity.CustomerServiceActivity;
 import com.dcch.sharebike.overlayutil.OverlayManager;
 import com.dcch.sharebike.overlayutil.WalkingRouteOverlay;
 import com.dcch.sharebike.utils.ToastUtils;
@@ -115,6 +117,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     private boolean showMarker = false;
     private String permissionInfo;
     boolean useDefaultIcon = false;
+    private long mExitTime; //退出时间
     /**
      * 该类提供一个能够显示和管理多个Overlay的基类
      */
@@ -222,6 +225,10 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             // 读取电话状态权限
             if (addPermission(permissions, Manifest.permission.READ_PHONE_STATE)) {
                 permissionInfo += "Manifest.permission.READ_PHONE_STATE Deny \n";
+            }
+            // 打开照相机的权限
+            if(addPermission(permissions,Manifest.permission.CAMERA)){
+                permissionInfo += "Manifest.permission.CAMERA Deny \n";
             }
 
             if (permissions.size() > 0) {
@@ -403,6 +410,11 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             @Override
             public void onItemClick(CharSequence text, int position) {
                 ToastUtils.showLong(MainActivity.this, text + "-----" + position);
+                if (position == 0) {
+                    Intent unlock = new Intent(MainActivity.this, CustomerServiceActivity.class);
+                    startActivity(unlock);
+
+                }
             }
         }).show();
     }
@@ -464,10 +476,13 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                     //result.getSuggestAddrInfo()
                     return;
                 }
-                WalkingRouteLine walkingRouteLine = result.getRouteLines().get(0);
-                int duration = walkingRouteLine.getDuration();
-                Log.d("距离", duration + "米");
-                Toast.makeText(App.getContext(), "你距离目标" + duration + "米", Toast.LENGTH_SHORT).show();
+
+                if (result != null && result.error == SearchResult.ERRORNO.NO_ERROR) {
+                    WalkingRouteLine walkingRouteLine = result.getRouteLines().get(0);
+                    int duration = walkingRouteLine.getDuration();
+                    Log.d("距离", duration + "米");
+                    Toast.makeText(App.getContext(), "你距离目标" + duration + "米", Toast.LENGTH_SHORT).show();
+                }
 
                 /**
                  * public java.util.List<WalkingRouteLine> getRouteLines()
@@ -640,13 +655,14 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             mMap.setMyLocationConfigeration(config);
             // 第一次定位时，将地图位置移动到当前位置
             if (isFristLocation) {
-                locationDescribe = location.getLocationDescribe();
+
                 isFristLocation = false;
 //                setBaiduMapMark();
                 setUserMapCenter();
                 setMarkerInfo();
                 addOverlay(infos);
             }
+            locationDescribe = location.getLocationDescribe();
         }
     }
 
@@ -705,6 +721,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         if (mSearch != null) {
             mSearch.destroy();
         }
+        System.exit(0);
 
     }
 
@@ -781,5 +798,23 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 //        }
 
     }
+
+    //点击手机上的返回键退出App的方法
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        //按下的如果是BACK键，同时没有重复
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                mExitTime = System.currentTimeMillis();
+            } else {
+                App.getInstance().exit();
+                finish();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 
 }

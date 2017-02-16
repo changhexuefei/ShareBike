@@ -6,7 +6,7 @@ package com.dcch.sharebike.http;
 
 public class Api {
 
-	public static final String BASE_URL = "";
+	public static final String BASE_URL = "http://192.168.1.150/";
 
 
 }

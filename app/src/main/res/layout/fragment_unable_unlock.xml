@@ -65,6 +65,7 @@
 
 
             <TextView
+                android:textSize="16sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -82,6 +83,7 @@
                 android:textColor="#000000" />
 
             <TextView
+                android:textSize="16sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -99,6 +101,7 @@
                 android:textColor="#000000" />
 
             <TextView
+                android:textSize="16sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -129,12 +132,13 @@
 
 
             <TextView
+                android:layout_marginBottom="20dp"
                 android:enabled="false"
                 android:id="@+id/confirm"
                 android:layout_width="330dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:background="#c6bfbf"
                 android:gravity="center"
                 android:text="提交"

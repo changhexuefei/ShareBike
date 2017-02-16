@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.utils.InPutUtils;
+import com.dcch.sharebike.utils.SPUtils;
 
 import org.json.JSONObject;
 
@@ -180,6 +181,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             case R.id.confirm:
                 //将收到的验证码和手机号提交再次核对
                 SMSSDK.submitVerificationCode("86", phone, securityCode.getText().toString());
+                SPUtils.put(this,"userPhone",phone);
                 break;
             case R.id.rules:
                 Intent intent = new Intent(this, AgreementActivity.class);
