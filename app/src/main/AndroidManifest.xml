@@ -97,7 +97,9 @@
         <activity android:name=".moudle.user.activity.ChangeUserNickNameActivity" />
         <activity android:name=".moudle.user.activity.MyJourneyActivity" />
         <activity android:name=".moudle.user.activity.UserGuideActivity" />
-        <activity android:name=".moudle.user.activity.CustomerServiceActivity" />
+        <activity android:name=".moudle.user.activity.CustomerServiceActivity"
+                  android:launchMode="singleTask"
+            />
         <activity android:name=".moudle.user.activity.MyMessageActivity"></activity>
     </application>
 
