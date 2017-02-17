@@ -101,6 +101,10 @@
         <activity android:name=".moudle.user.activity.MyMessageActivity" />
         <activity android:name=".moudle.login.activity.AuthenticationOkActivity" />
         <activity android:name=".moudle.user.activity.PickPhotoActivity"></activity>
+        <activity android:name=".moudle.user.activity.CustomerServiceActivity"
+                  android:launchMode="singleTask"
+            />
+        <activity android:name=".moudle.user.activity.MyMessageActivity"></activity>
     </application>
 
 </manifest>

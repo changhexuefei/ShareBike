@@ -1,10 +1,12 @@
 package com.dcch.sharebike.moudle.user.activity;
 
+import android.content.Intent;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.moudle.user.fragment.CycleFailureFragment;
 import com.dcch.sharebike.moudle.user.fragment.UnableUnlockFragment;
 
 import butterknife.BindView;
@@ -24,7 +26,18 @@ public class CustomerServiceActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-         getSupportFragmentManager().beginTransaction().add(R.id.customerService,new UnableUnlockFragment()).commit();
+        Intent intent = getIntent();
+        String name = intent.getStringExtra("name");
+        if(name.equals("0")){
+            getSupportFragmentManager().beginTransaction().add(R.id.customerService,new UnableUnlockFragment()).commit();
+        }
+        if (name.equals("1")){
+            getSupportFragmentManager().beginTransaction().replace(R.id.customerService,new CycleFailureFragment()).commit();
+        }
+        if(name.equals("2")){
+
+
+        }
 
     }
 

@@ -412,7 +412,14 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 ToastUtils.showLong(MainActivity.this, text + "-----" + position);
                 if (position == 0) {
                     Intent unlock = new Intent(MainActivity.this, CustomerServiceActivity.class);
+                    unlock.putExtra("name","0");
                     startActivity(unlock);
+                }
+
+                if (position == 1){
+                    Intent cycleFailure = new Intent(MainActivity.this, CustomerServiceActivity.class);
+                    cycleFailure.putExtra("name","1");
+                    startActivity(cycleFailure);
 
                 }
             }

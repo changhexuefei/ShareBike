@@ -48,9 +48,14 @@ public class UserGuideActivity extends BaseActivity {
                 break;
             case R.id.lock:
                 Intent customerService = new Intent(this,CustomerServiceActivity.class);
+                customerService.putExtra("name","0");
                 startActivity(customerService);
                 break;
             case R.id.breakdown:
+                Intent i2 = new Intent(this,CustomerServiceActivity.class);
+                i2.putExtra("name","1");
+                startActivity(i2);
+
                 break;
             case R.id.depositInstructions:
                 break;
