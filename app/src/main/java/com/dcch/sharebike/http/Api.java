@@ -6,7 +6,8 @@ package com.dcch.sharebike.http;
 
 public class Api {
 
-	public static final String BASE_URL = "http://192.168.1.150/";
-
+	public static final String BASE_URL = "http://192.168.1.138:8080/MavenSSM/user/register.do?";
+//	public static final String USER = "user";
+//	public static final String REGISTER="register";
 
 }
