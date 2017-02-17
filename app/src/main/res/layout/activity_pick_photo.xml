@@ -4,7 +4,6 @@
     android:id="@+id/activity_pick_photo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context="com.dcch.sharebike.moudle.user.activity.PickPhotoActivity">
 
     <FrameLayout

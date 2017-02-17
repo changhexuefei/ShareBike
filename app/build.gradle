@@ -74,4 +74,6 @@ dependencies {
     compile 'com.github.louisgeek:LouisMultiLineEditText:v1.0.0'
     compile 'me.iwf.photopicker:PhotoPicker:0.1.8'
     compile 'com.github.jdsjlzx:LRecyclerView:1.2.9'
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile files('libs/gson-2.2.1.jar')
 }

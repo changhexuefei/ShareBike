@@ -1,7 +1,5 @@
 package com.dcch.sharebike.moudle.login.activity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
@@ -17,13 +15,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dcch.sharebike.R;
+import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
+import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.utils.InPutUtils;
+import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
+import com.dcch.sharebike.utils.ToastUtils;
+import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.BindView;
@@ -107,6 +111,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             }
         }
     };
+    private String verificationCode;
 
 
     @Override
@@ -153,41 +158,49 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         switch (view.getId()) {
 
             case R.id.getSecurityCode:
-                testAPI(phone);
-                new AlertDialog.Builder(LoginActivity.this)
-                        .setTitle("发送短信")
-                        .setMessage("我们将把验证码发送到以下号码:\n" + "+86:" + phone)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                SMSSDK.getVerificationCode("86", phone);
-                                getSecurityCode.setClickable(false);
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        for (int i = 60; i > 0; i--) {
-                                            handler.sendEmptyMessage(CODE_ING);
-                                            if (i <= 0) {
-                                                break;
-                                            }
-                                            try {
-                                                Thread.sleep(1000);
-                                            } catch (InterruptedException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                        handler.sendEmptyMessage(CODE_REPEAT);
-                                    }
-                                }).start();
-                            }
-                        })
-                        .create()
-                        .show();
+                getSecurityCode(phone);
+//                new AlertDialog.Builder(LoginActivity.this)
+//                        .setTitle("发送短信")
+//                        .setMessage("我们将把验证码发送到以下号码:\n" + "+86:" + phone)
+//                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                SMSSDK.getVerificationCode("86", phone);
+//                                getSecurityCode.setClickable(false);
+//                                new Thread(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        for (int i = 60; i > 0; i--) {
+//                                            handler.sendEmptyMessage(CODE_ING);
+//                                            if (i <= 0) {
+//                                                break;
+//                                            }
+//                                            try {
+//                                                Thread.sleep(1000);
+//                                            } catch (InterruptedException e) {
+//                                                e.printStackTrace();
+//                                            }
+//                                        }
+//                                        handler.sendEmptyMessage(CODE_REPEAT);
+//                                    }
+//                                }).start();
+//                            }
+//                        })
+//                        .create()
+//                        .show();
                 break;
             case R.id.confirm:
                 //将收到的验证码和手机号提交再次核对
-                SMSSDK.submitVerificationCode("86", phone, securityCode.getText().toString());
-                SPUtils.put(this,"userPhone",phone);
+//                SMSSDK.submitVerificationCode("86", phone, securityCode.getText().toString());
+//                compareVerificationCode("86", phone, securityCode.getText().toString());
+                if (phone!=null && verificationCode != null && verificationCode.equals(seCode)) {
+                    registerAndLogin(phone);
+                    finish();
+                }else {
+                    ToastUtils.showShort(this,"验证码错误");
+                }
+
+
                 break;
             case R.id.rules:
                 Intent intent = new Intent(this, AgreementActivity.class);
@@ -234,22 +247,60 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         if (!TextUtils.isEmpty(seCode) && !TextUtils.isEmpty(phone)) {
             confirm.setEnabled(true);
             confirm.setBackgroundColor(Color.parseColor("#41c0dc"));
+
         } else {
             confirm.setEnabled(false);
             confirm.setBackgroundColor(Color.parseColor("#c6bfbf"));
         }
 
     }
-    public void testAPI(String phone){
-        OkHttpUtils.post().url(Api.BASE_URL).addParams("phone",phone).build().execute(new StringCallback() {
+
+    private void registerAndLogin(String phone) {
+        OkHttpUtils.post().url(Api.BASE_URL + Api.SAVEUSER).addParams("phone",phone).build().execute(new StringCallback() {
+
             @Override
             public void onError(Call call, Exception e, int id) {
+                LogUtils.e("onError:" + e.getMessage());
+                ToastUtils.showShort(LoginActivity.this, "登录失败，网络异常！");
+            }
+            @Override
+            public void onResponse(String response, int id) {
 
+                Log.d("测试",response);
+                Gson gson = new Gson();
+                UserInfo userInfo = gson.fromJson(response, UserInfo.class);
+                if(userInfo.getMessagecode().equals("1")){
+                    startActivity(new Intent(LoginActivity.this, RechargeActivity.class));
+                    finish();
+                    //储存用户信息(登录储存一次)
+                    SPUtils.put(LoginActivity.this, "userDetail", response);
+                    SPUtils.put(App.getContext(), "islogin", true);
+                }else if(userInfo.getMessagecode().equals("0")){
+                    ToastUtils.showShort(LoginActivity.this, "登录失败！");
+                }else {
+                    ToastUtils.showShort(LoginActivity.this, "未知错误！请重试。");
+                }
+            }
+        });
+    }
+
+    public void getSecurityCode(String phone) {
+        OkHttpUtils.post().url(Api.BASE_URL + Api.REGISTER).addParams("phone", phone).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                ToastUtils.showLong(App.getContext(), "网络错误，请重试");
             }
 
             @Override
             public void onResponse(String response, int id) {
-                Log.d("测试",response);
+                Log.d("测试", response);
+                try {
+                    JSONObject object = new JSONObject(response);
+                    verificationCode = object.getString("code");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

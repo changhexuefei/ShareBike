@@ -3,15 +3,18 @@ package com.dcch.sharebike;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -42,10 +45,6 @@ import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
-import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
-import com.baidu.mapapi.search.poi.PoiDetailResult;
-import com.baidu.mapapi.search.poi.PoiIndoorResult;
-import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
 import com.baidu.mapapi.search.route.BikingRouteResult;
 import com.baidu.mapapi.search.route.DrivingRouteResult;
@@ -61,12 +60,14 @@ import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.listener.MyOrientationListener;
+import com.dcch.sharebike.moudle.home.bean.BikeInfo;
 import com.dcch.sharebike.moudle.home.bean.MarkerInfoUtil;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.moudle.search.activity.SeekActivity;
 import com.dcch.sharebike.moudle.user.activity.CustomerServiceActivity;
 import com.dcch.sharebike.overlayutil.OverlayManager;
 import com.dcch.sharebike.overlayutil.WalkingRouteOverlay;
+import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.hss01248.dialog.StyledDialog;
 import com.hss01248.dialog.bottomsheet.BottomSheetBean;
@@ -80,10 +81,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity implements OnGetGeoCoderResultListener, OnGetPoiSearchResultListener {
+public class MainActivity extends BaseActivity implements OnGetGeoCoderResultListener {
     @BindView(R.id.mapView)
     MapView mMapView;
     BaiduMap mMap;
+
     /**
      * 定位的监听器
      */
@@ -112,6 +114,8 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     @BindView(R.id.classify)
     RadioGroup classify;
     private final int SDK_PERMISSION_REQUEST = 127;
+    @BindView(R.id.my_linearLayout)
+    LinearLayout myLinearLayout;
     private List<MarkerInfoUtil> infos;
     //显示marker
     private boolean showMarker = false;
@@ -160,6 +164,9 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     private String locationDescribe;
     //POI搜索相关
     public PoiSearch mPoiSearch = null;
+//    SharedPreferences sp = getSharedPreferences("tags", Context.MODE_PRIVATE);
+//    Boolean isfirst = sp.getBoolean("isfirst", true);
+
 
 
     @Override
@@ -171,12 +178,22 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     protected void initData() {
         classify.check(R.id.allBike);
         ButterKnife.bind(this);
+
+        boolean islogin = SPUtils.contains(this, "islogin");
+        Log.d("9999",islogin+"");
+        if(islogin){
+            mInstructions.setVisibility(View.GONE);
+        }else {
+            mInstructions.setVisibility(View.VISIBLE);
+        }
+
+
         // 初始化GeoCoder模块，注册事件监听
         mSearch = GeoCoder.newInstance();
         mSearch.setOnGetGeoCodeResultListener(this);
-        //POI搜索相关
-        mPoiSearch = PoiSearch.newInstance();
-        mPoiSearch.setOnGetPoiSearchResultListener(this);
+//        //POI搜索相关
+//        mPoiSearch = PoiSearch.newInstance();
+//        mPoiSearch.setOnGetPoiSearchResultListener(this);
 
         mMap = mMapView.getMap();
         mMapView.showZoomControls(false);
@@ -202,6 +219,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 //        mMap.setOnMapStatusChangeListener(this);
     }
 
+    //询问手机权限的方法
     private void getPersimmions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             ArrayList<String> permissions = new ArrayList<String>();
@@ -227,7 +245,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 permissionInfo += "Manifest.permission.READ_PHONE_STATE Deny \n";
             }
             // 打开照相机的权限
-            if(addPermission(permissions,Manifest.permission.CAMERA)){
+            if (addPermission(permissions, Manifest.permission.CAMERA)) {
                 permissionInfo += "Manifest.permission.CAMERA Deny \n";
             }
 
@@ -391,10 +409,37 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             @Override
             public boolean onMarkerClick(Marker marker) {
                 LatLng latlng = marker.getPosition();
-//                setMarkerInfo();
+
+////                setMarkerInfo();
+////                BikeInfo bikeInfo = (BikeInfo) marker.getExtraInfo().get("BikeInfo");
+//                Bundle extraInfo = marker.getExtraInfo();
+//                int period = marker.getPeriod();
+//                float title = marker.getRotate();
+//                Log.d("444",period+"---"+latlng+"\n"+title);
+//                InfoWindow mInfoWindow;
+//                // 生成一个TextView用户在地图中显示InfoWindow
+//                TextView location = new TextView(getApplicationContext());
+////                location.setBackgroundResource(R.mipmap.location_tips);
+//                location.setPadding(30, 20, 30, 50);
+////                location.setText(bikeInfo.getBikeAddress());
+//
+//                Point p = mMap.getProjection().toScreenLocation(latlng);
+//                p.y -= 47;
+//                LatLng llInfo = mMap.getProjection().fromScreenLocation(p);
+//
+//                //创建InfoWindow , 传入 view， 地理坐标， y 轴偏移量
+//                mInfoWindow = new InfoWindow(location, llInfo, p.y);
+//                // 显示InfoWindow
+//                mMap.showInfoWindow(mInfoWindow);
+//                mInstructions.setVisibility(View.GONE);
+//                // 设置详细信息布局为可见
+//                myLinearLayout.setVisibility(View.VISIBLE);
+//                // 根据商家信息为详细信息布局设置信息
+////                popupInfo(myLinearLayout, bikeInfo);
+
                 addOverlay(infos);
                 reverseGeoCoder(latlng);
-                return false;
+                return true;
             }
         });
     }
@@ -412,13 +457,13 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 ToastUtils.showLong(MainActivity.this, text + "-----" + position);
                 if (position == 0) {
                     Intent unlock = new Intent(MainActivity.this, CustomerServiceActivity.class);
-                    unlock.putExtra("name","0");
+                    unlock.putExtra("name", "0");
                     startActivity(unlock);
                 }
 
-                if (position == 1){
+                if (position == 1) {
                     Intent cycleFailure = new Intent(MainActivity.this, CustomerServiceActivity.class);
-                    cycleFailure.putExtra("name","1");
+                    cycleFailure.putExtra("name", "1");
                     startActivity(cycleFailure);
 
                 }
@@ -451,16 +496,19 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                     .show();
             return;
         }
-        Toast.makeText(MainActivity.this, result.getAddress(),
+
+        String address = result.getAddress();
+        Toast.makeText(MainActivity.this, address,
                 Toast.LENGTH_LONG).show();
-        ToastUtils.showLong(MainActivity.this, result.getLocation().latitude + "------" + result.getLocation().longitude);
-        latitude = result.getLocation().latitude;
-        longitude = result.getLocation().longitude;
-        countDistance(mCurrentLantitude, mCurrentLongitude, latitude, longitude);
+        LatLng latLng = result.getLocation();
+        ToastUtils.showLong(MainActivity.this, latLng.latitude + "------" + latLng.longitude);
+        latitude = latLng.latitude;
+        longitude = latLng.longitude;
+        countDistance(mCurrentLantitude, mCurrentLongitude, latLng,address);
 
     }
 
-    private void countDistance(double mCurrentLantitude, double mCurrentLongitude, double latitude, double longitude) {
+    private void countDistance(double mCurrentLantitude, double mCurrentLongitude, final LatLng latLng, final String address) {
         RoutePlanSearch search = RoutePlanSearch.newInstance();        //百度的搜索路线的类
 //        DrivingRoutePlanOption drivingRoutePlanOption = new DrivingRoutePlanOption();
         //步行路线参数类
@@ -468,7 +516,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
         //起始坐标和终点坐标
         PlanNode startPlanNode = PlanNode.withLocation(new LatLng(mCurrentLantitude, mCurrentLongitude));  // lat  long
-        PlanNode endPlanNode = PlanNode.withLocation(new LatLng(latitude, longitude));
+        PlanNode endPlanNode = PlanNode.withLocation(latLng);
         walkingRoutePlanOption.from(startPlanNode);
         walkingRoutePlanOption.to(endPlanNode);
         search.walkingSearch(walkingRoutePlanOption);
@@ -480,7 +528,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 }
                 if (result.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
                     //起终点或途经点地址有岐义，通过以下接口获取建议查询信息
-                    //result.getSuggestAddrInfo()
+//                    result.getSuggestAddrInfo();
                     return;
                 }
 
@@ -489,6 +537,30 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                     int duration = walkingRouteLine.getDuration();
                     Log.d("距离", duration + "米");
                     Toast.makeText(App.getContext(), "你距离目标" + duration + "米", Toast.LENGTH_SHORT).show();
+
+
+                    BitmapDescriptor descriptor;
+//                    TextView tv = new TextView(App.getContext());
+
+                    String dur = new String(Integer.toString(duration));
+                    LinearLayout view = (LinearLayout) LayoutInflater.from(MainActivity.this).inflate(R.layout.item_popwindow, null);
+                    BikeInfo info = new BikeInfo(address,dur);
+                    view.setBackgroundColor(Color.parseColor("#ffffff"));
+//                    popupInfo(view, info);
+                    descriptor = BitmapDescriptorFactory.fromView(view);
+
+                    //3:
+                    InfoWindow mInfoWindow = new InfoWindow(descriptor, latLng, -100, new InfoWindow.OnInfoWindowClickListener() {
+                        @Override
+                        public void onInfoWindowClick() {
+                            // 隐藏弹窗！
+                            mMap.hideInfoWindow();
+                        }
+                    });
+
+                    //4:
+                    mMap.showInfoWindow(mInfoWindow);
+
                 }
 
                 /**
@@ -555,45 +627,45 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
     }
 
-    @Override
-    public void onGetPoiResult(PoiResult poiResult) {
-
-    }
-
-    @Override
-    public void onGetPoiDetailResult(PoiDetailResult poiDetailResult) {
-
-        if (poiDetailResult.error != SearchResult.ERRORNO.NO_ERROR) {
-            // 检索失败
-        } else {
-            //1:
-            BitmapDescriptor descriptor;
-            Button btn = new Button(this);
-            btn.setBackgroundColor(0xAA00FF00);
-            btn.setText(poiDetailResult.getName() + "\r\n" + poiDetailResult.getAddress());
-
-            //2:
-            descriptor = BitmapDescriptorFactory.fromView(btn);
-
-            //3:
-            InfoWindow mInfoWindow = new InfoWindow(descriptor, poiDetailResult.getLocation(), -100, new InfoWindow.OnInfoWindowClickListener() {
-                @Override
-                public void onInfoWindowClick() {
-                    // 隐藏弹窗！
-                    mMap.hideInfoWindow();
-                }
-            });
-
-            //4:
-            mMap.showInfoWindow(mInfoWindow);
-        }
-
-    }
-
-    @Override
-    public void onGetPoiIndoorResult(PoiIndoorResult poiIndoorResult) {
-
-    }
+//    @Override
+//    public void onGetPoiResult(PoiResult poiResult) {
+//
+//    }
+//
+//    @Override
+//    public void onGetPoiDetailResult(PoiDetailResult poiDetailResult) {
+//
+//        if (poiDetailResult.error != SearchResult.ERRORNO.NO_ERROR) {
+//            // 检索失败
+//        } else {
+//            //1:
+//            BitmapDescriptor descriptor;
+//            Button btn = new Button(this);
+//            btn.setBackgroundColor(0xAA00FF00);
+//            btn.setText(poiDetailResult.getName() + "\r\n" + poiDetailResult.getAddress());
+//
+//            //2:
+//            descriptor = BitmapDescriptorFactory.fromView(btn);
+//
+//            //3:
+//            InfoWindow mInfoWindow = new InfoWindow(descriptor, poiDetailResult.getLocation(), -100, new InfoWindow.OnInfoWindowClickListener() {
+//                @Override
+//                public void onInfoWindowClick() {
+//                    // 隐藏弹窗！
+//                    mMap.hideInfoWindow();
+//                }
+//            });
+//
+//            //4:
+//            mMap.showInfoWindow(mInfoWindow);
+//        }
+//
+//    }
+//
+//    @Override
+//    public void onGetPoiIndoorResult(PoiIndoorResult poiIndoorResult) {
+//
+//    }
 
 //    @Override
 //    public void onMapStatusChangeStart(MapStatus mapStatus) {
@@ -823,5 +895,40 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         return super.onKeyDown(keyCode, event);
     }
 
+
+    private class ViewHolder {
+        TextView bike_location_info, distance;
+        Button btn_order;
+    }
+
+    /**
+     * 根据info为布局上的控件设置信息
+     */
+    protected void popupInfo(LinearLayout mMarkerLy, BikeInfo info) {
+        ViewHolder viewHolder = null;
+        if (mMarkerLy.getTag() != null) {
+            mMarkerLy = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.item_popwindow, null);
+            viewHolder = new ViewHolder();
+
+            viewHolder.bike_location_info = (TextView) mMarkerLy
+                    .findViewById(R.id.bike_location_info);
+            viewHolder.distance = (TextView) mMarkerLy
+                    .findViewById(R.id.distance);
+            viewHolder.btn_order = (Button) mMarkerLy
+                    .findViewById(R.id.order);
+            viewHolder.btn_order.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ToastUtils.showLong(MainActivity.this, "你点击了约车按钮");
+                }
+            });
+            mMarkerLy.setTag(viewHolder);
+        }
+        viewHolder = (ViewHolder) mMarkerLy.getTag();
+
+        viewHolder.distance.setText(info.getDistance());
+        viewHolder.bike_location_info.setText(info.getBikeAddress());
+
+    }
 
 }

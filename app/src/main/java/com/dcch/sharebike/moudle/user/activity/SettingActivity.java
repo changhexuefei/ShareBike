@@ -8,6 +8,8 @@ import android.widget.RelativeLayout;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
+import com.dcch.sharebike.utils.SPUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -62,6 +64,11 @@ public class SettingActivity extends BaseActivity {
             case R.id.rechargeAgreement:
                 break;
             case R.id.signOut:
+                SPUtils.clear(this);
+                Intent i1= new Intent(this, PersonalCenterActivity.class);
+                i1.putExtra("name","unLogin");
+                startActivity(i1);
+                finish();
                 break;
         }
     }
