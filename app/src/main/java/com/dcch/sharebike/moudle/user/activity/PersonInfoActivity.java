@@ -53,6 +53,8 @@ public class PersonInfoActivity extends BaseActivity {
                 break;
             case R.id.userIcon:
                 ToastUtils.showLong(this,"选择头像");
+                Intent selectPhoto = new Intent(this,PickPhotoActivity.class);
+                startActivity(selectPhoto);
                 break;
             case R.id.userNickname:
                 ToastUtils.showLong(this,"昵称");

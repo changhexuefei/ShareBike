@@ -98,7 +98,9 @@
         <activity android:name=".moudle.user.activity.MyJourneyActivity" />
         <activity android:name=".moudle.user.activity.UserGuideActivity" />
         <activity android:name=".moudle.user.activity.CustomerServiceActivity" />
-        <activity android:name=".moudle.user.activity.MyMessageActivity"></activity>
+        <activity android:name=".moudle.user.activity.MyMessageActivity" />
+        <activity android:name=".moudle.login.activity.AuthenticationOkActivity" />
+        <activity android:name=".moudle.user.activity.PickPhotoActivity"></activity>
     </application>
 
 </manifest>

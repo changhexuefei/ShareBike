@@ -9,6 +9,7 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -17,8 +18,11 @@ import android.widget.Toast;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.utils.InPutUtils;
 import com.dcch.sharebike.utils.SPUtils;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONObject;
 
@@ -26,6 +30,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
+import okhttp3.Call;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener, TextWatcher {
 
@@ -148,6 +153,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         switch (view.getId()) {
 
             case R.id.getSecurityCode:
+                testAPI(phone);
                 new AlertDialog.Builder(LoginActivity.this)
                         .setTitle("发送短信")
                         .setMessage("我们将把验证码发送到以下号码:\n" + "+86:" + phone)
@@ -219,6 +225,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         if (!TextUtils.isEmpty(phone) && InPutUtils.isMobilePhone(phone)) {
             getSecurityCode.setClickable(true);
             getSecurityCode.setBackgroundColor(Color.parseColor("#F05B47"));
+
         } else {
             getSecurityCode.setText("获取验证码");
             getSecurityCode.setClickable(false);
@@ -233,4 +240,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         }
 
     }
+    public void testAPI(String phone){
+        OkHttpUtils.post().url(Api.BASE_URL).addParams("phone",phone).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                Log.d("测试",response);
+            }
+        });
+    }
+
 }

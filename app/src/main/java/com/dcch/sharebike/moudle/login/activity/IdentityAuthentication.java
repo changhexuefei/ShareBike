@@ -1,5 +1,6 @@
 package com.dcch.sharebike.moudle.login.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -51,12 +52,11 @@ public class IdentityAuthentication extends BaseActivity implements TextWatcher 
                 finish();
                 break;
             case R.id.btn_authentication:
-//                Intent i1 = new Intent(this,);
+                Intent authentication = new Intent(this,AuthenticationOkActivity.class);
 //                Intent backToMain = new Intent(this, MainActivity.class);
-////                backToMain.putExtra("result","correct");
-//                startActivity(backToMain);
+//                backToMain.putExtra("result","correct");
+                startActivity(authentication);
 //                ToastUtils.showShort(this,"实名认证成功");
-                finish();
                 break;
         }
     }

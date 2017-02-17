@@ -36,32 +36,32 @@
 
         <!--头像-->
         <RelativeLayout
-            android:gravity="center_vertical"
             android:id="@+id/userIcon"
             android:layout_width="match_parent"
-            android:layout_height="80dp">
+            android:layout_height="80dp"
+            android:gravity="center_vertical">
 
             <TextView
-                android:layout_centerVertical="true"
                 style="@style/user_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:text="头像" />
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_centerVertical="true"
                 android:id="@+id/userInfoIcon"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/fuhao"
                 android:src="@drawable/hint_card_1" />
 
             <TextView
-                android:layout_centerVertical="true"
                 android:id="@+id/fuhao"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:drawableRight="@mipmap/forward"
                 android:padding="10dp" />
         </RelativeLayout>
@@ -85,8 +85,8 @@
                 android:text="昵称" />
 
             <TextView
-                style="@style/text_style"
                 android:id="@+id/nickName"
+                style="@style/text_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="加油" />
@@ -111,8 +111,8 @@
                 android:text="姓名" />
 
             <TextView
-                style="@style/text_other_style"
                 android:id="@+id/realName"
+                style="@style/text_other_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="中国" />
@@ -137,8 +137,8 @@
                 android:text="实名认证" />
 
             <TextView
-                style="@style/text_other_style"
                 android:id="@+id/authority"
+                style="@style/text_other_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="已认证" />
@@ -163,8 +163,8 @@
                 android:text="手机号" />
 
             <TextView
-                style="@style/text_style"
                 android:id="@+id/telephone"
+                style="@style/text_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="111****1111" />

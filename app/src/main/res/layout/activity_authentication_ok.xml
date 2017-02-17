@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_authentication_ok"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.dcch.sharebike.moudle.login.activity.AuthenticationOkActivity">
+
+    <FrameLayout
+        android:id="@+id/authentication_ok"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorHeading">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp"
+            android:src="@mipmap/back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="注册完成"
+            android:textColor="@color/common"
+            android:textSize="16sp" />
+    </FrameLayout>
+
+
+<RelativeLayout
+    android:id="@+id/ok_icon"
+    android:layout_below="@+id/authentication_ok"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/register_complete_ic" />
+
+
+
+
+</RelativeLayout>
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:layout_below="@+id/ok_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="恭喜您注册成功!" />
+
+
+    <Button
+        android:id="@+id/back_to_main"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="200dp"
+        android:layout_alignParentBottom="true"
+        android:textSize="16sp"
+        android:textColor="#ffffff"
+        android:background="@color/colorHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="去骑车"
+
+
+        />
+
+
+
+</RelativeLayout>
