@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_recharge_deposit"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    tools:context="com.dcch.sharebike.moudle.user.activity.RechargeDepositActivity">
+
+    <FrameLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#41c0dc">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp"
+            android:src="@mipmap/back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/title_recharge"
+            android:textColor="@color/common"
+            android:textSize="16sp"/>
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/ra1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top">
+
+        <TextView
+            android:id="@+id/tv10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:text="金额"/>
+
+        <TextView
+            android:id="@+id/tv11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv10"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:text="299元"
+            android:textSize="16sp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv11"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="5dp"
+            android:text="骑行单车必须支付押金，押金可退还"
+            />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/pay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/ra1"
+        android:orientation="vertical">
+
+        <RelativeLayout
+
+            android:id="@+id/aliArea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/ali"
+                style="@style/rb_pay_type"
+                android:drawableLeft="@drawable/alipay_ic"
+                android:text="@string/zhifubao"/>
+
+            <CheckBox
+                android:id="@+id/ali_checkbox"
+                style="@style/checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#F9F9F9"/>
+
+        <RelativeLayout
+            android:id="@+id/weixinArea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff">
+
+            <TextView
+                android:id="@+id/weixin"
+                style="@style/rb_pay_type"
+                android:drawableLeft="@drawable/weixin_ic"
+                android:text="@string/weixin"/>
+
+            <CheckBox
+                android:id="@+id/weixin_checkbox"
+                style="@style/checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btn_recharge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="#41c0dc"
+        android:text="@string/recharge"
+        android:textColor="#ffffff"
+        android:textSize="16sp"/>
+
+</RelativeLayout>

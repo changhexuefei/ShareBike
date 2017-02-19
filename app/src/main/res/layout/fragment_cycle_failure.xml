@@ -166,7 +166,7 @@
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
+                    android:layout_alignBottom="@+id/cycle_photo"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@+id/cycle_photo"
                     android:text="请拍摄违规停车的照片含周围环境"

@@ -7,9 +7,12 @@ import android.widget.LinearLayout;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+
 
 public class UserGuideActivity extends BaseActivity {
 
@@ -25,8 +28,8 @@ public class UserGuideActivity extends BaseActivity {
     LinearLayout topUpInstructions;
     @BindView(R.id.report)
     LinearLayout report;
-    @BindView(R.id.unFindCar)
-    LinearLayout unFindCar;
+    @BindView(R.id.unFindBike)
+    LinearLayout unFindBike;
     @BindView(R.id.allQuestion)
     LinearLayout allQuestion;
 
@@ -40,21 +43,21 @@ public class UserGuideActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.back, R.id.lock, R.id.breakdown, R.id.depositInstructions, R.id.topUpInstructions, R.id.report, R.id.unFindCar, R.id.allQuestion})
+    @OnClick({R.id.back, R.id.lock, R.id.breakdown, R.id.depositInstructions, R.id.topUpInstructions, R.id.report, R.id.unFindBike, R.id.allQuestion})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
                 finish();
                 break;
             case R.id.lock:
-                Intent customerService = new Intent(this,CustomerServiceActivity.class);
-                customerService.putExtra("name","0");
-                startActivity(customerService);
+                Intent unLock = new Intent(this,CustomerServiceActivity.class);
+                unLock.putExtra("name","0");
+                startActivity(unLock);
                 break;
             case R.id.breakdown:
-                Intent i2 = new Intent(this,CustomerServiceActivity.class);
-                i2.putExtra("name","1");
-                startActivity(i2);
+                Intent bikeTrouble = new Intent(this,CustomerServiceActivity.class);
+                bikeTrouble.putExtra("name","1");
+                startActivity(bikeTrouble);
 
                 break;
             case R.id.depositInstructions:
@@ -62,10 +65,17 @@ public class UserGuideActivity extends BaseActivity {
             case R.id.topUpInstructions:
                 break;
             case R.id.report:
+                Intent reportIllegalParking = new Intent(this,CustomerServiceActivity.class);
+                reportIllegalParking.putExtra("name","3");
+                startActivity(reportIllegalParking);
                 break;
-            case R.id.unFindCar:
+            case R.id.unFindBike:
                 break;
             case R.id.allQuestion:
+                ToastUtils.showShort(this,"全部问题");
+//               Intent allQuestionPage = new Intent(this,CustomerServiceActivity.class);
+//                allQuestionPage.putExtra("name","all");
+//                startActivity(allQuestionPage);
                 break;
         }
     }

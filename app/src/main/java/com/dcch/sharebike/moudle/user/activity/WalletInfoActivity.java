@@ -1,5 +1,7 @@
 package com.dcch.sharebike.moudle.user.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
@@ -8,11 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
-import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.utils.ToastUtils;
-import com.hss01248.dialog.StyledDialog;
-import com.hss01248.dialog.interfaces.MyDialogListener;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -65,19 +64,26 @@ public class WalletInfoActivity extends BaseActivity {
     }
 
     private void popupDialog() {
-        StyledDialog.buildMdAlert(this, "提示", msg,  new MyDialogListener() {
-            @Override
-            public void onFirst() {
-                ToastUtils.showLong(App.getContext(),"1");
-            }
+        new AlertDialog.Builder(this)
+                .setTitle("提示")
+                .setMessage("骑行单车必须支付押金，押金可退还")
+                .setNegativeButton("充押金", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ToastUtils.showShort(WalletInfoActivity.this,which+"");
+                        Intent rechargeDeposit = new Intent(WalletInfoActivity.this,RechargeDepositActivity.class);
+                        startActivity(rechargeDeposit);
+                    }
+                })
+                .setPositiveButton("去充值", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ToastUtils.showShort(WalletInfoActivity.this,which+"");
+                        Intent rechargeBikeFare = new Intent(WalletInfoActivity.this,RechargeBikeFareActivity.class);
+                        startActivity(rechargeBikeFare);
 
-            @Override
-            public void onSecond() {
-                ToastUtils.showLong(App.getContext(),"2");
-            }
-
-        }).setBtnText("去充值", "充押金")
-                .setTitleColor(R.color.colorTitle)
+                    }
+                }).create()
                 .show();
     }
 }

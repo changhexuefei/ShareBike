@@ -1,108 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:id="@+id/my_linearLayout"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/bike_location_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@mipmap/bike_info_board_location"
-        android:drawablePadding="4dp"
-        android:padding="15dp"
-        android:text="地址信息" />
+              android:id="@+id/pop_layout"
+              android:background="#ffffff"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
 
     <LinearLayout
-
+        android:id="@+id/my_linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1">
+        <TextView
+            android:id="@+id/bike_location_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/bike_info_board_location"
+            android:drawablePadding="4dp"
+            android:padding="15dp"
+            android:text="地址信息"/>
 
-            <TextView
-                android:id="@+id/unitPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:text="1.0元" />
+        <LinearLayout
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/unitPrice"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="2dp"
-                android:text="每30分钟" />
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
 
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1">
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/unitPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:text="1.0元"/>
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/distance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:text="1.0米" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/distance"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="2dp"
-                android:text="距离起始位置" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/unitPrice"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="2dp"
+                    android:text="每30分钟"/>
 
 
-        </RelativeLayout>
+            </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/arrivalTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:text="1.0分钟" />
+                <TextView
+                    android:id="@+id/distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:text="1.0米"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/arrivalTime"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="2dp"
-                android:text="步行可到达" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/distance"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="2dp"
+                    android:text="距离起始位置"/>
 
 
-        </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/arrivalTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:text="1.0分钟"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/arrivalTime"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="2dp"
+                    android:text="步行可到达"/>
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/order"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@color/colorHeading"
+            android:text="预约用车"
+            android:textColor="#ffffff"/>
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/order"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@color/colorHeading"
-        android:text="预约用车"
-        android:textColor="#ffffff" />
 
 
 </LinearLayout>
