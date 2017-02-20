@@ -54,7 +54,8 @@ public class PersonInfoActivity extends BaseActivity {
             case R.id.userIcon:
                 ToastUtils.showLong(this,"选择头像");
                 Intent selectPhoto = new Intent(this,PickPhotoActivity.class);
-                startActivity(selectPhoto);
+//                startActivity(selectPhoto);
+                startActivityForResult(selectPhoto,1);
                 break;
             case R.id.userNickname:
                 ToastUtils.showLong(this,"昵称");
@@ -73,5 +74,18 @@ public class PersonInfoActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case 0:
+
+                break;
+
+            case 1:
+
+                break;
+
+
+        }
+
+
     }
 }

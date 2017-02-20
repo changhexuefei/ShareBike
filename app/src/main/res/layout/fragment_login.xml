@@ -1,8 +1,10 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context="com.dcch.sharebike.moudle.login.fragment.LoginFragment">
 
     <ScrollView
@@ -30,7 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:background="#41c0dc"
-                    android:src="@drawable/user_profile_grass" />
+                    android:src="@drawable/user_profile_grass"/>
 
                 <TextView
                     android:id="@+id/nickName"
@@ -39,23 +41,23 @@
                     android:layout_below="@+id/userIcon"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="6dp"
-                    android:text="加油" />
+                    android:text="加油"/>
                 <!--信用积分-->
                 <TextView
-                    android:layout_marginTop="5dp"
                     android:id="@+id/creditScore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/nickName"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/shape_text"
-                   android:layout_below="@+id/nickName"
                     android:paddingBottom="3dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:paddingTop="3dp"
                     android:text="信用积分100 >"
                     android:textColor="#ffffff"
-                    android:textSize="11sp" />
+                    android:textSize="11sp"/>
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/userIcon"
@@ -66,7 +68,7 @@
                     android:layout_marginTop="10dp"
                     android:src="@mipmap/avatar_default_login"
                     app:civ_border_color="#fff"
-                    app:civ_border_width="2dp" />
+                    app:civ_border_width="2dp"/>
             </RelativeLayout>
 
             <LinearLayout
@@ -85,7 +87,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:text="0" />
+                        android:text="0"/>
 
                     <TextView
                         android:id="@+id/textView"
@@ -93,14 +95,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:text="累计骑行(公里)" />
+                        android:text="累计骑行(公里)"/>
 
                 </LinearLayout>
 
                 <View
                     android:layout_width="0.5dp"
                     android:layout_height="match_parent"
-                    android:background="@color/lineColor" />
+                    android:background="@color/lineColor"/>
 
                 <LinearLayout
 
@@ -115,7 +117,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:text="0" />
+                        android:text="0"/>
 
                     <TextView
                         android:id="@+id/textView1"
@@ -123,14 +125,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:text="节约碳排放(千克)" />
+                        android:text="节约碳排放(千克)"/>
 
                 </LinearLayout>
 
                 <View
                     android:layout_width="0.5dp"
                     android:layout_height="match_parent"
-                    android:background="@color/lineColor" />
+                    android:background="@color/lineColor"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -144,7 +146,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:text="0" />
+                        android:text="0"/>
 
                     <TextView
                         android:id="@+id/textView2"
@@ -152,7 +154,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:text="运动成就(大卡)" />
+                        android:text="运动成就(大卡)"/>
 
                 </LinearLayout>
             </LinearLayout>
@@ -162,7 +164,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginTop="2dp"
-                android:background="@color/lineColor" />
+                android:background="@color/lineColor"/>
             <!--钱包-->
             <RelativeLayout
                 android:id="@+id/wallet"
@@ -175,7 +177,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="我的钱包" />
+                    android:text="我的钱包"/>
 
                 <TextView
                     android:id="@+id/remainSum"
@@ -185,14 +187,14 @@
                     android:drawablePadding="10dp"
                     android:drawableRight="@mipmap/forward"
                     android:padding="10dp"
-                    android:text="48元" />
+                    android:text="48元"/>
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginTop="2dp"
-                android:background="@color/lineColor" />
+                android:background="@color/lineColor"/>
             <!--优惠-->
             <RelativeLayout
                 android:id="@+id/favorable"
@@ -205,21 +207,21 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="我的优惠" />
+                    android:text="我的优惠"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:drawableRight="@mipmap/forward"
-                    android:padding="10dp" />
+                    android:padding="10dp"/>
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginTop="2dp"
-                android:background="@color/lineColor" />
+                android:background="@color/lineColor"/>
             <!--行程-->
             <RelativeLayout
                 android:id="@+id/journey"
@@ -232,21 +234,21 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="我的行程" />
+                    android:text="我的行程"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:drawableRight="@mipmap/forward"
-                    android:padding="10dp" />
+                    android:padding="10dp"/>
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="6dp"
                 android:layout_marginTop="2dp"
-                android:background="@color/lineColor" />
+                android:background="@color/lineColor"/>
             <!--消息-->
             <RelativeLayout
                 android:id="@+id/message"
@@ -259,21 +261,21 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="我的消息" />
+                    android:text="我的消息"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:drawableRight="@mipmap/forward"
-                    android:padding="10dp" />
+                    android:padding="10dp"/>
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginTop="2dp"
-                android:background="@color/lineColor" />
+                android:background="@color/lineColor"/>
             <!--邀请好友-->
             <RelativeLayout
                 android:id="@+id/friend"
@@ -286,21 +288,21 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="邀请好友" />
+                    android:text="邀请好友"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:drawableRight="@mipmap/forward"
-                    android:padding="10dp" />
+                    android:padding="10dp"/>
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginTop="2dp"
-                android:background="@color/lineColor" />
+                android:background="@color/lineColor"/>
             <!--用户指南-->
             <RelativeLayout
                 android:id="@+id/guide"
@@ -313,21 +315,21 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="用户指南" />
+                    android:text="用户指南"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:drawableRight="@mipmap/forward"
-                    android:padding="10dp" />
+                    android:padding="10dp"/>
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginTop="2dp"
-                android:background="@color/lineColor" />
+                android:background="@color/lineColor"/>
             <!--设置-->
             <RelativeLayout
                 android:id="@+id/setting"
@@ -340,19 +342,19 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="设置" />
+                    android:text="设置"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:drawableRight="@mipmap/forward"
-                    android:padding="10dp" />
+                    android:padding="10dp"/>
             </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
 
 
 

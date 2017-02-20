@@ -1,5 +1,7 @@
 package com.dcch.sharebike.moudle.user.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
@@ -8,8 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
-import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
-import com.dcch.sharebike.utils.SPUtils;
+import com.dcch.sharebike.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -64,11 +65,23 @@ public class SettingActivity extends BaseActivity {
             case R.id.rechargeAgreement:
                 break;
             case R.id.signOut:
-                SPUtils.clear(this);
-                Intent i1= new Intent(this, PersonalCenterActivity.class);
-                i1.putExtra("name","unLogin");
-                startActivity(i1);
-                finish();
+
+               new AlertDialog.Builder(this)
+                       .setTitle("退出登录")
+                       .setMessage("确定退出登录吗？")
+                       .setNegativeButton("取消",null)
+                       .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                           @Override
+                           public void onClick(DialogInterface dialog, int which) {
+                               ToastUtils.showShort(SettingActivity.this,""+which);
+                           }
+                       }).create()
+                       .show();
+//                SPUtils.clear(this);
+//                Intent i1= new Intent(this, PersonalCenterActivity.class);
+//                i1.putExtra("name","unLogin");
+//                startActivity(i1);
+//                finish();
                 break;
         }
     }

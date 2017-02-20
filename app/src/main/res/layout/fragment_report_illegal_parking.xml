@@ -1,0 +1,116 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="com.dcch.sharebike.moudle.user.fragment.ReportIllegalParkingFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="30dp"
+            android:text="举报违停，加信用分"
+            android:textColor="#000000"
+            android:textSize="18sp"/>
+
+        <RelativeLayout
+            android:id="@+id/scan_code"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="#eae8e8">
+
+            <ImageView
+                android:id="@+id/report_issue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:src="@mipmap/report_issue_scan_qrcode"/>
+
+            <TextView
+                android:id="@+id/bike_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_toRightOf="@+id/report_issue"
+                android:text="扫描二维码或者手动输入编码"/>
+
+            <TextView
+                android:id="@+id/tips"
+                android:layout_width="100dp"
+                android:layout_height="20dp"
+                android:layout_alignLeft="@+id/bike_code"
+                android:layout_below="@+id/bike_code"
+                android:layout_toRightOf="@+id/report_issue"
+                android:text="重新扫码或输入"
+                android:textColor="#e71212"
+                android:textSize="10sp"
+                android:visibility="invisible"/>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+
+                android:id="@+id/select_photo"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="30dp"
+                android:src="@mipmap/report_violation_default"/>
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/select_photo"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@+id/select_photo"
+                android:text="请拍摄违规停车的照片含周围环境"
+                android:textSize="10sp"/>
+        </RelativeLayout>
+
+        <com.louisgeek.multiedittextviewlib.MultiEditInputView
+
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/questionDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="30dp"
+            android:padding="5dp"
+            app:contentHeight="100dp"
+            app:hintText="备注"
+            app:maxCount="140"/>
+
+
+        <TextView
+            android:id="@+id/confirm"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_margin="15dp"
+            android:background="#c6bfbf"
+            android:enabled="false"
+            android:gravity="center"
+            android:text="提交"
+            android:textColor="#ffffff"
+            android:textSize="18sp"/>
+
+    </LinearLayout>
+
+</FrameLayout>
