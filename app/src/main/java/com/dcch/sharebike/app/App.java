@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.OkHttpClient;
 
 public class App extends Application {
@@ -38,6 +39,9 @@ public class App extends Application {
         super.onCreate();
         SDKInitializer.initialize(getApplicationContext());
         mContext = getApplicationContext();
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
+
         //初始化OkHttp
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(new LoggerInterceptor("HttpUtils"))

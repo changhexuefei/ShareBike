@@ -19,7 +19,7 @@ android {
 //        //配置极光推送
 //        manifestPlaceholders = [
 //                JPUSH_PKGNAME: applicationId,
-//                JPUSH_APPKEY : "b8dfd483777e6301eb028cb2", //JPush上注册的包名对应的appkey.
+//                JPUSH_APPKEY : "008791cd27d527134a8291b7", //JPush上注册的包名对应的appkey.
 //                JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
 //        ]
 
@@ -77,7 +77,6 @@ dependencies {
     compile 'com.android.support:design:24.2.1'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
-    compile 'cn.finalteam.rxgalleryfinal:library:0.0.3'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-
+    compile files('libs/jcore-android_v1.1.0.jar')
+    compile files('libs/jpush-android_v3.0.1.jar')
 }

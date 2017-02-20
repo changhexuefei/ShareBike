@@ -198,12 +198,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 //                compareVerificationCode("86", phone, securityCode.getText().toString());
                 if (phone!=null && verificationCode != null && verificationCode.equals(seCode)) {
                     registerAndLogin(phone);
-                    finish();
+
                 }else {
                     ToastUtils.showShort(this,"验证码错误");
                 }
-
-
                 break;
             case R.id.rules:
                 Intent intent = new Intent(this, AgreementActivity.class);
@@ -276,7 +274,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 UserInfo userInfo = gson.fromJson(response, UserInfo.class);
                 if(userInfo.getMessagecode().equals("1")){
                     startActivity(new Intent(LoginActivity.this, RechargeActivity.class));
-                    finish();
+                    LoginActivity.this.finish();
                     //储存用户信息(登录储存一次)
                     SPUtils.put(LoginActivity.this, "userDetail", response);
                     SPUtils.put(App.getContext(), "islogin", true);

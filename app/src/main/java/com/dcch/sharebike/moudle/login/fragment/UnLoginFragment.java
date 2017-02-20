@@ -37,6 +37,6 @@ public class UnLoginFragment extends Fragment {
     public void onClick() {
         Intent intent = new Intent(getContext(), LoginActivity.class);
         startActivity(intent);
-        getActivity().finish();
+
     }
 }

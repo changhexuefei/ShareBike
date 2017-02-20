@@ -14,8 +14,7 @@ import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 
 import butterknife.BindView;
-
-import static com.dcch.sharebike.R.id.login;
+import cn.jpush.android.api.JPushInterface;
 
 public class SplashActivity extends BaseActivity {
 
@@ -74,15 +73,15 @@ public class SplashActivity extends BaseActivity {
         }
     }
 
-//	@Override
-//	protected void onResume() {
-//		super.onResume();
-//		JPushInterface.onResume(this);
-//	}
-//
-//	@Override
-//	protected void onPause() {
-//		super.onPause();
-//		JPushInterface.onPause(this);
-//	}
+	@Override
+	protected void onResume() {
+		super.onResume();
+		JPushInterface.onResume(this);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		JPushInterface.onPause(this);
+	}
 }

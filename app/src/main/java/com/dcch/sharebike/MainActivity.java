@@ -19,8 +19,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ZoomControls;
@@ -118,14 +116,14 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     TextView mScan;
     @BindView(R.id.top)
     FrameLayout top;
-    @BindView(R.id.allBike)
-    RadioButton allBike;
-    @BindView(R.id.one)
-    RadioButton one;
-    @BindView(R.id.two)
-    RadioButton two;
-    @BindView(R.id.classify)
-    RadioGroup classify;
+//    @BindView(R.id.allBike)
+//    RadioButton allBike;
+//    @BindView(R.id.one)
+//    RadioButton one;
+//    @BindView(R.id.two)
+//    RadioButton two;
+//    @BindView(R.id.classify)
+//    RadioGroup classify;
     private final int SDK_PERMISSION_REQUEST = 127;
 
     //    private List<MarkerInfoUtil> infos;
@@ -192,7 +190,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
     @Override
     protected void initData() {
-        classify.check(R.id.allBike);
+//        classify.check(R.id.allBike);
         ButterKnife.bind(this);
 
         if (SPUtils.isLogin()) {
@@ -345,7 +343,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     }
 
 
-    @OnClick({R.id.MyCenter, R.id.seek, R.id.btn_my_location, R.id.instructions, R.id.btn_my_help, R.id.scan, R.id.allBike, R.id.one, R.id.two})
+    @OnClick({R.id.MyCenter, R.id.seek, R.id.btn_my_location, R.id.instructions, R.id.btn_my_help, R.id.scan})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.MyCenter:
@@ -400,13 +398,13 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 startActivityForResult(i4, 0);
                 break;
 
-            case R.id.allBike:
-                break;
-            case R.id.one:
-
-                break;
-            case R.id.two:
-                break;
+//            case R.id.allBike:
+//                break;
+//            case R.id.one:
+//
+//                break;
+//            case R.id.two:
+//                break;
         }
     }
 
@@ -890,7 +888,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         @Override
         public BitmapDescriptor getStartMarker() {
             if (useDefaultIcon) {
-                return BitmapDescriptorFactory.fromResource(0);
+                return BitmapDescriptorFactory.fromResource(R.drawable.unchecked);
             }
             return null;
         }
@@ -903,7 +901,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         @Override
         public BitmapDescriptor getTerminalMarker() {
             if (useDefaultIcon) {
-                return BitmapDescriptorFactory.fromResource(0);
+                return BitmapDescriptorFactory.fromResource(R.drawable.unchecked);
             }
             return null;
         }

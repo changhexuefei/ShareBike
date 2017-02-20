@@ -15,5 +15,11 @@ public class PickPhotoActivity extends BaseActivity {
     @Override
     protected void initData() {
 
+
+
     }
+
+
+
+
 }
