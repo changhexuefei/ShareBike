@@ -59,6 +59,8 @@ public class WalletInfoActivity extends BaseActivity {
                 break;
             case R.id.chargeDeposit:
                 ToastUtils.showLong(this,"充押金");
+                Intent rechargeDeposit = new Intent(WalletInfoActivity.this,RechargeDepositActivity.class);
+                startActivity(rechargeDeposit);
                 break;
         }
     }

@@ -44,6 +44,7 @@
         android:textColor="#716F76"/>
     
     <EditText
+        android:textSize="12sp"
         android:gravity="center"
         android:hint="按需输入充值金额，最低一元"
         android:background="#e1dede"
@@ -64,7 +65,9 @@
             style="@style/rb_money_check"
             android:text="￥10.00"/>
 
-
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="match_parent" />
 
         <RadioButton
             android:id="@+id/rb_rg1_20"
@@ -77,9 +80,12 @@
         android:id="@+id/rg_rec_rg2"
         style="@style/rg_money">
         <RadioButton
-            android:id="@+id/rb_rg1_50"
+            android:id="@+id/rb_rg2_50"
             style="@style/rb_money_check"
             android:text="￥50.00"/>
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="match_parent" />
         <RadioButton
             android:id="@+id/rb_rg2_100"
             style="@style/rb_money_check"
@@ -87,6 +93,8 @@
     </RadioGroup>
 
     <LinearLayout
+        android:layout_marginTop="10dp"
+        android:background="#ffffff"
         android:id="@+id/pay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -96,7 +104,7 @@
 
         <RelativeLayout
 
-            android:id="@+id/aliArea"
+            android:id="@+id/rbf_aliArea"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -107,7 +115,7 @@
                 android:text="@string/zhifubao"/>
 
             <CheckBox
-                android:id="@+id/ali_checkbox"
+                android:id="@+id/rbf_ali_checkbox"
                 style="@style/checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -119,10 +127,10 @@
             android:background="#F9F9F9"/>
 
         <RelativeLayout
-            android:id="@+id/weixinArea"
+            android:id="@+id/rbf_weixinArea"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff">
+            >
 
             <TextView
                 android:id="@+id/weixin"
@@ -131,14 +139,14 @@
                 android:text="@string/weixin"/>
 
             <CheckBox
-                android:id="@+id/weixin_checkbox"
+                android:id="@+id/rbf_weixin_checkbox"
                 style="@style/checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </RelativeLayout>
     </LinearLayout>
     <Button
-        android:id="@+id/btn_recharge"
+        android:id="@+id/btn_rbf_recharge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -146,7 +154,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:background="#41c0dc"
-        android:text="@string/recharge"
+        android:text="车费充值"
         android:textColor="#ffffff"
         android:textSize="16sp"/>
 

@@ -36,8 +36,8 @@ public class LoginFragment extends Fragment {
     TextView creditScore;
     @BindView(R.id.userIcon)
     CircleImageView userIcon;
-    @BindView(R.id.distance)
-    TextView distance;
+    @BindView(R.id.person_distance)
+    TextView person_distance;
     @BindView(R.id.discharge)
     TextView discharge;
     @BindView(R.id.sportsAchievement)
@@ -119,6 +119,7 @@ public class LoginFragment extends Fragment {
                 ToastUtils.showLong(getContext(), "设置");
                 Intent setting = new Intent(App.getContext(), SettingActivity.class);
                 startActivity(setting);
+//                getActivity().finish();
                 break;
         }
     }

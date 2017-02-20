@@ -10,6 +10,8 @@ import android.widget.RelativeLayout;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
+import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 
 import butterknife.BindView;
@@ -51,7 +53,7 @@ public class SettingActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.usualAddress:
-                Intent address = new Intent(this,UsualAddressActivity.class);
+                Intent address = new Intent(this, UsualAddressActivity.class);
                 startActivity(address);
                 break;
             case R.id.checkVersions:
@@ -66,17 +68,22 @@ public class SettingActivity extends BaseActivity {
                 break;
             case R.id.signOut:
 
-               new AlertDialog.Builder(this)
-                       .setTitle("退出登录")
-                       .setMessage("确定退出登录吗？")
-                       .setNegativeButton("取消",null)
-                       .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                           @Override
-                           public void onClick(DialogInterface dialog, int which) {
-                               ToastUtils.showShort(SettingActivity.this,""+which);
-                           }
-                       }).create()
-                       .show();
+                new AlertDialog.Builder(this)
+                        .setTitle("退出登录")
+                        .setMessage("确定退出登录吗？")
+                        .setNegativeButton("取消", null)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ToastUtils.showShort(SettingActivity.this, "" + which);
+                                Intent i1 = new Intent(SettingActivity.this, PersonalCenterActivity.class);
+                                i1.putExtra("name", "unLogin");
+                                startActivity(i1);
+                                finish();
+                                SPUtils.put(SettingActivity.this, "islogin", false);
+                            }
+                        }).create()
+                        .show();
 //                SPUtils.clear(this);
 //                Intent i1= new Intent(this, PersonalCenterActivity.class);
 //                i1.putExtra("name","unLogin");

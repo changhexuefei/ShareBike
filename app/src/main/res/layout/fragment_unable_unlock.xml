@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="com.dcch.sharebike.moudle.user.fragment.UnableUnlockFragment">
 
     <ScrollView
@@ -24,54 +26,54 @@
                 android:textSize="14sp" />
 
             <RelativeLayout
-                android:background="#eae8e8"
                 android:id="@+id/scan_code"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:background="#eae8e8">
 
                 <ImageView
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
                     android:id="@+id/report_issue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
                     android:src="@mipmap/report_issue_scan_qrcode" />
 
                 <TextView
-                    android:layout_marginRight="10dp"
                     android:id="@+id/bike_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
                     android:layout_toRightOf="@+id/report_issue"
                     android:text="扫描二维码或者手动输入编码" />
 
                 <TextView
-                    android:layout_alignLeft="@+id/bike_code"
-                    android:textSize="10sp"
-                    android:textColor="#e71212"
                     android:id="@+id/tips"
                     android:layout_width="100dp"
                     android:layout_height="20dp"
+                    android:layout_alignLeft="@+id/bike_code"
                     android:layout_below="@+id/bike_code"
                     android:layout_toRightOf="@+id/report_issue"
                     android:text="重新扫码或输入"
+                    android:textColor="#e71212"
+                    android:textSize="10sp"
                     android:visibility="invisible" />
 
             </RelativeLayout>
 
 
             <TextView
-                android:textSize="16sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="20dp"
                 android:text="1.观察车锁是否亮起"
-                android:textColor="#000000" />
+                android:textColor="#000000"
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -83,13 +85,13 @@
                 android:textColor="#000000" />
 
             <TextView
-                android:textSize="16sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="20dp"
                 android:text="2.提示单车处于故障中，请换其他单车"
-                android:textColor="#000000" />
+                android:textColor="#000000"
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -101,13 +103,13 @@
                 android:textColor="#000000" />
 
             <TextView
-                android:textSize="16sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="20dp"
                 android:text="3.提示单车处于故障中，请换其他单车"
-                android:textColor="#000000" />
+                android:textColor="#000000"
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -119,27 +121,27 @@
                 android:textColor="#000000" />
 
             <com.louisgeek.multiedittextviewlib.MultiEditInputView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/questionDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="15dp"
                 android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
                 android:padding="5dp"
                 app:contentHeight="100dp"
                 app:hintText="补充问题描述"
-                app:maxCount="140"
-                android:id="@+id/questionDesc" />
+                app:maxCount="140" />
 
 
             <TextView
-                android:layout_marginBottom="20dp"
-                android:enabled="false"
                 android:id="@+id/confirm"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_margin="15dp"
+                android:layout_marginBottom="20dp"
                 android:background="#c6bfbf"
+                android:enabled="false"
                 android:gravity="center"
                 android:text="提交"
                 android:textColor="#ffffff"

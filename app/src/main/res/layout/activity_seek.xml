@@ -4,6 +4,8 @@
     android:id="@+id/activity_seek"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="com.dcch.sharebike.moudle.search.activity.SeekActivity">
 
     <RelativeLayout
@@ -11,8 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#000000"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
+
         android:orientation="horizontal">
 
         <Button
@@ -26,13 +27,13 @@
             android:textColor="#ffffff" />
 
         <EditText
-            android:background="@null"
             android:id="@+id/search"
             android:layout_width="240dp"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="10dp"
+            android:background="@null"
             android:cursorVisible="true"
             android:drawablePadding="4dp"
             android:drawableStart="@mipmap/search"
@@ -41,8 +42,8 @@
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:singleLine="true"
-            android:textColorHint="#c7c2c2"
             android:textColor="#ffffff"
+            android:textColorHint="#c7c2c2"
             android:textCursorDrawable="@null" />
 
         <ImageButton
