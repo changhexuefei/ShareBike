@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -116,7 +115,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     TextView mScan;
     @BindView(R.id.top)
     FrameLayout top;
-//    @BindView(R.id.allBike)
+    //    @BindView(R.id.allBike)
 //    RadioButton allBike;
 //    @BindView(R.id.one)
 //    RadioButton one;
@@ -230,7 +229,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     protected void initListener() {
         //地图状态改变相关监听
 //        mMap.setOnMapStatusChangeListener(this);
-
 
 
     }
@@ -397,14 +395,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 Intent i4 = new Intent(this, CaptureActivity.class);
                 startActivityForResult(i4, 0);
                 break;
-
-//            case R.id.allBike:
-//                break;
-//            case R.id.one:
-//
-//                break;
-//            case R.id.two:
-//                break;
         }
     }
 
@@ -572,8 +562,11 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                     Toast.makeText(App.getContext(), "你距离目标" + mDuration + "米", Toast.LENGTH_SHORT).show();
 
                     menuWindow = new SelectPicPopupWindow(MainActivity.this, itemsOnClick);
-                    menuWindow.showAtLocation(findViewById(R.id.mapView), Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, -48);
+                    //指定父视图，显示在父控件的某个位置（Gravity.TOP,Gravity.RIGHT等）
+                    //  menuWindow.showAtLocation(findViewById(R.id.mapView), Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, -48);
 
+                    //设置显示在某个指定控件的下方
+                    menuWindow.showAsDropDown(findViewById(R.id.top));
 
                 }
 
@@ -702,7 +695,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 //
 //        mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(cenpt));
 //    }
-
 
 
     /**
