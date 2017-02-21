@@ -569,20 +569,17 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                     menuWindow.showAsDropDown(findViewById(R.id.top));
 
                 }
-
                 /**
                  * public java.util.List<WalkingRouteLine> getRouteLines()
                  * 获取所有步行规划路线
                  * 返回:所有步行规划路线
                  * */
                 WalkingRouteOverlay overlay = new MyWalkingRouteOverlay(mMap);
-
                 /**
                  * 设置地图 Marker 覆盖物点击事件监听者
                  * 需要实现的方法：     onMarkerClick(Marker marker)
                  * */
                 mMap.setOnMarkerClickListener(overlay);
-
                 routeOverlay = overlay;
 
                 /**
