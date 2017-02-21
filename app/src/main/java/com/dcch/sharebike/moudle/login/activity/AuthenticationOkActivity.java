@@ -41,6 +41,8 @@ public class AuthenticationOkActivity extends BaseActivity {
                 Intent backToMain= new Intent(this, MainActivity.class);
                 backToMain.putExtra("success","ok");
                 startActivity(backToMain);
+                //这里需要将验证成功的消息发送到服务器，从服务器中获得标记，并且将信息
+                //保存到本地的sp文件中
                 finish();
                 break;
         }

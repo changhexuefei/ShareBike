@@ -1,10 +1,12 @@
 package com.dcch.sharebike.moudle.user.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2017/2/17 0017.
  */
 
-public class UserInfo {
+public class UserInfo implements Serializable {
 
 
     /**
@@ -46,6 +48,30 @@ public class UserInfo {
     private int userage;
     private Object userimage;
     private String messagecode;
+
+    @Override
+    public String toString() {
+        return "UserInfo{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", idcard=" + idcard +
+                ", useraddress=" + useraddress +
+                ", aggregateAmount=" + aggregateAmount +
+                ", pledgeCash=" + pledgeCash +
+                ", minaggregate=" + minaggregate +
+                ", maxaggregate=" + maxaggregate +
+                ", integral=" + integral +
+                ", status=" + status +
+                ", mileage=" + mileage +
+                ", password=" + password +
+                ", usersex=" + usersex +
+                ", userage=" + userage +
+                ", userimage=" + userimage +
+                ", messagecode='" + messagecode + '\'' +
+                '}';
+    }
 
     public int getId() {
         return id;

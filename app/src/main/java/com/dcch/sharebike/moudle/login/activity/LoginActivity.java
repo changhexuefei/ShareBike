@@ -4,8 +4,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.utils.InPutUtils;
@@ -30,6 +33,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.simple.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -71,7 +75,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     getSecurityCode.setText("获取验证码");
                     getSecurityCode.setBackgroundColor(Color.parseColor("#F05B47"));
                     getSecurityCode.setClickable(true);
-                    getSecurityCode(phone);
+//                    getSecurityCode(phone);
                     break;
 //                case SMSDDK_HANDLER:
 //                    int event = msg.arg1;
@@ -218,6 +222,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     protected void onDestroy() {
 //        SMSSDK.unregisterAllEventHandler();
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -273,11 +278,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 Gson gson = new Gson();
                 UserInfo userInfo = gson.fromJson(response, UserInfo.class);
                 if(userInfo.getMessagecode().equals("1")){
+                    ToastUtils.showLong(LoginActivity.this,"验证码验证成功！");
                     startActivity(new Intent(LoginActivity.this, RechargeActivity.class));
+                    EventBus.getDefault().post(new MessageEvent(),"gone");
+                    Log.d("用户信息",userInfo.toString());
                     LoginActivity.this.finish();
                     //储存用户信息(登录储存一次)
-                    SPUtils.put(LoginActivity.this, "userDetail", response);
+//                    SPUtils.put(LoginActivity.this, "userDetail", response);
+
+                    SPUtils.put(LoginActivity.this,"nickName",userInfo.getNickName());
                     SPUtils.put(App.getContext(), "islogin", true);
+                    Log.d("用户",SPUtils.get(LoginActivity.this,"userDetail",null)+"");
                 }else if(userInfo.getMessagecode().equals("0")){
                     ToastUtils.showShort(LoginActivity.this, "登录失败！");
                 }else {
@@ -287,16 +298,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         });
     }
 
+
+
+
     public void getSecurityCode(String phone) {
         OkHttpUtils.post().url(Api.BASE_URL + Api.REGISTER).addParams("phone", phone).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
                 ToastUtils.showLong(App.getContext(), "网络错误，请重试");
+                LogUtils.e(e.getMessage());
             }
 
             @Override
             public void onResponse(String response, int id) {
                 Log.d("测试", response);
+                ToastUtils.showLong(LoginActivity.this,"验证码已发送");
                 try {
                     JSONObject object = new JSONObject(response);
                     verificationCode = object.getString("code");
@@ -306,6 +322,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 }
             }
         });
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
     }
 
 }

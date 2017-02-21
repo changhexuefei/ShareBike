@@ -12,12 +12,9 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.moudle.login.fragment.LoginFragment;
 import com.dcch.sharebike.moudle.login.fragment.UnLoginFragment;
-import com.dcch.sharebike.utils.SPUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
-
 
 
 public class PersonalCenterActivity extends BaseActivity {
@@ -43,36 +40,33 @@ public class PersonalCenterActivity extends BaseActivity {
 
     @OnClick(R.id.back)
     public void onClick() {
-        if(SPUtils.isLogin()){
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        }else {
-            SPUtils.put(this,"islogin",false);
-            finish();
-        }
+        Intent backToLoginMain = new Intent(PersonalCenterActivity.this, MainActivity.class);
+        startActivity(backToLoginMain);
+        finish();
+
     }
 
-    private void showFragment(){
+    private void showFragment() {
         hideFragments();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
-        Log.d("=====",name);
+        Log.d("=====", name);
         if (name.equals("login")) {
-            Log.d("______","qqqqqqq");
-            if(lf == null){
+            Log.d("______", "qqqqqqq");
+            if (lf == null) {
                 lf = new LoginFragment();
                 ft.add(R.id.showFragment, lf);
                 ft.show(lf);
-                Log.d("+++++++","wwwwwww");
+                Log.d("+++++++", "wwwwwww");
             }
         }
         if (name.equals("unLogin")) {
-            if(uf == null){
+            if (uf == null) {
                 uf = new UnLoginFragment();
                 ft.add(R.id.showFragment, uf);
                 ft.show(uf);
-                Log.d("######","eeeeee");
+                Log.d("######", "eeeeee");
             }
         }
         ft.commit();
@@ -94,8 +88,5 @@ public class PersonalCenterActivity extends BaseActivity {
 
         transaction.commit();
     }
-
-
-
 
 }

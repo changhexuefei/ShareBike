@@ -9,10 +9,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.dcch.sharebike.R;
+import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
+
+import org.simple.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -78,9 +82,14 @@ public class SettingActivity extends BaseActivity {
                                 ToastUtils.showShort(SettingActivity.this, "" + which);
                                 Intent i1 = new Intent(SettingActivity.this, PersonalCenterActivity.class);
                                 i1.putExtra("name", "unLogin");
+                                //用EventBus发送消息给个人中心
+                                EventBus.getDefault().post(new MessageEvent(),"unLogin");
+                                //给主页发送消息
+                                EventBus.getDefault().post(new MessageEvent(),"visible");
                                 startActivity(i1);
+                                SPUtils.clear(App.getContext());
+//                                SPUtils.put(SettingActivity.this, "islogin", false);
                                 finish();
-                                SPUtils.put(SettingActivity.this, "islogin", false);
                             }
                         }).create()
                         .show();
