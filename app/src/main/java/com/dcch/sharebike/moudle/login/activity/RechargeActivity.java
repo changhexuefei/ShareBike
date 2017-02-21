@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.utils.ToastUtils;
@@ -17,8 +18,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class RechargeActivity extends BaseActivity {
-
-
     @BindView(R.id.back)
     ImageView back;
 
@@ -52,6 +51,8 @@ public class RechargeActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
+                Intent backToLoginMain = new Intent(RechargeActivity.this, MainActivity.class);
+                startActivity(backToLoginMain);
                 finish();
                 break;
             case R.id.btn_recharge:
@@ -67,9 +68,9 @@ public class RechargeActivity extends BaseActivity {
                 aliCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                        if(isChecked){
+                        if (isChecked) {
                             ToastUtils.showShort(RechargeActivity.this, "选中支付宝支付");
-                        }else {
+                        } else {
 
                         }
                     }
@@ -83,9 +84,9 @@ public class RechargeActivity extends BaseActivity {
                 weixinCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                        if(isChecked){
+                        if (isChecked) {
                             ToastUtils.showShort(RechargeActivity.this, "选中微信支付");
-                        }else{
+                        } else {
 
                         }
                     }

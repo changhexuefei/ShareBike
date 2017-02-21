@@ -3,6 +3,7 @@ package com.dcch.sharebike.http;
 import android.util.Log;
 
 import com.dcch.sharebike.http.response.ResponseHandler;
+import com.dcch.sharebike.utils.LogUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -19,7 +20,7 @@ import okhttp3.OkHttpClient;
 
 public class HttpUtils {
 
-	private static final String SPLIT = "|*|";
+	private static final String SPLIT = "/";
 //
 	/**
 	 * 初始化 okHttpClient
@@ -34,27 +35,27 @@ public class HttpUtils {
 	 * 异步post请求
 	 *
 	 * @param c       接口类型
-	 * @param a       接口名称
+	 * @param
 	 * @param params  接口参数
 	 * @param handler 接口回调
 	 * @return 本次请求的tag，用于取消请求
 	 */
-	public static String post(String c, String a, List<String> params, final ResponseHandler handler) {
+	public static String post(String c,  List<String> params, final ResponseHandler handler) {
 		String t = time();
-//		String p = "";
-//		if (params != null) {
-//			for (int i = 0; i < params.size(); i++) {
-//				p += params.get(i);
-//				if (i < params.size() - 1) {
-//					p += SPLIT;
-//				}
-//			}
-//			LogUtils.e(p);
-//		}
+		String p = "";
+		if (params != null) {
+			for (int i = 0; i < params.size(); i++) {
+				p += params.get(i);
+				if (i < params.size() - 1) {
+					p += SPLIT;
+				}
+			}
+			LogUtils.e(p);
+		}
 //		String j = Md5Utils.md5(c + a + t + Api.KEY);
 		Map<String, String> param = new HashMap<>();
 		param.put("c", c);
-		param.put("a", a);
+//		param.put("a", a);
 		param.put("t", t);
 //		param.put("j", j);
 //		param.put("p", Base64.encodeToString(p.getBytes(), Base64.DEFAULT));
@@ -82,12 +83,12 @@ public class HttpUtils {
 	 * 异步post请求
 	 *
 	 * @param c       接口类型
-	 * @param a       接口名称
+	 * @param
 	 * @param handler 接口回调
 	 * @return 本次请求的tag，用于取消请求
 	 */
-	public static String post(String c, String a, final ResponseHandler handler) {
-		return post(c, a, null, handler);
+	public static String post(String c, final ResponseHandler handler) {
+		return post(c,  null, handler);
 	}
 
 	/**

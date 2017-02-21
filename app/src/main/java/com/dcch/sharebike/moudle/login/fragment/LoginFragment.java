@@ -4,6 +4,7 @@ package com.dcch.sharebike.moudle.login.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.dcch.sharebike.moudle.user.activity.PersonInfoActivity;
 import com.dcch.sharebike.moudle.user.activity.SettingActivity;
 import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
 import com.dcch.sharebike.moudle.user.activity.WalletInfoActivity;
+import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 
 import butterknife.BindView;
@@ -65,14 +67,24 @@ public class LoginFragment extends Fragment {
     }
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.bind(this, view);
+        if(SPUtils.isLogin()){
+            String nickname = (String) SPUtils.get(App.getContext(), "nickName", "");
+            Log.d("ooooo",nickname);
+            String nn = nickname.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
+            nickName.setText(nn);
+//            remainSum.setText(String.valueOf(info.getPledgeCash()));
+        }
         return view;
     }
+
+
 
     @OnClick({R.id.creditScore, R.id.userIcon, R.id.wallet, R.id.favorable, R.id.journey, R.id.message, R.id.friend, R.id.guide, R.id.setting})
     public void onClick(View view) {
@@ -123,4 +135,5 @@ public class LoginFragment extends Fragment {
                 break;
         }
     }
+
 }

@@ -19,6 +19,11 @@
             android:drawablePadding="4dp"
             android:padding="15dp"
             android:text="地址信息"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/lineColor"
+            />
 
         <LinearLayout
 
