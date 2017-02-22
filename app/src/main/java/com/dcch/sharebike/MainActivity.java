@@ -69,6 +69,7 @@ import com.dcch.sharebike.moudle.home.bean.BikeInfo;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.moudle.search.activity.SeekActivity;
 import com.dcch.sharebike.moudle.user.activity.CustomerServiceActivity;
+import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.overlayutil.OverlayManager;
 import com.dcch.sharebike.overlayutil.WalkingRouteOverlay;
 import com.dcch.sharebike.utils.LogUtils;
@@ -625,18 +626,13 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
                     //设置显示在某个指定控件的下方
                     menuWindow.showAsDropDown(findViewById(R.id.top));
-//                    menuWindow.setOutsideTouchable(false);
-
-
                 }
-
                 /**
                  * public java.util.List<WalkingRouteLine> getRouteLines()
                  * 获取所有步行规划路线
                  * 返回:所有步行规划路线
                  * */
                 WalkingRouteOverlay overlay = new MyWalkingRouteOverlay(mMap);
-
                 /**
                  * 设置地图 Marker 覆盖物点击事件监听者
                  * 需要实现的方法：     onMarkerClick(Marker marker)
@@ -761,7 +757,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     public class MyLocationListener implements BDLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
-
             // map view 销毁后不在处理新接收的位置
             if (location == null || mMapView == null)
                 return;
@@ -775,10 +770,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             // 设置定位数据
             mMap.setMyLocationData(locData);
             mCurrentLantitude = location.getLatitude();
-//            Log.d("纬度",mCurrentLantitude+"");
             mCurrentLongitude = location.getLongitude();
-//            Log.d("经度",mCurrentLongitude+"");
-
 
 //            BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory
 //                    .fromResource(R.mipmap.search_center_ic);
@@ -1032,8 +1024,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
             // 设置按钮监听
             mOrder.setOnClickListener(itemsOnClick);
-
-
             // 设置SelectPicPopupWindow的View
             this.setContentView(mMenuView);
 
@@ -1070,16 +1060,23 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         }
     }
 
-    //退出登录后，设置页面发来的消息，将mInstructions控件显示
+    //退出登录页面后，设置页面发来的消息，将mInstructions控件显示
     @Subscriber(tag = "visible", mode = ThreadMode.ASYNC)
     private void receiveFromSetting(MessageEvent info) {
         LogUtils.e(info.toString());
         mInstructions.setVisibility(View.VISIBLE);
     }
 
-    //登录成功后，登录页面发来的消息，将mInstructions控件隐藏
+    //登录成功页面发来的消息，将mInstructions控件隐藏
     @Subscriber(tag = "gone", mode = ThreadMode.ASYNC)
     private void receiveFromLogin(MessageEvent info) {
+        LogUtils.e(info.toString());
+        mInstructions.setVisibility(View.GONE);
+    }
+
+    //登录成功后，登录页面发来的消息，将user对象暂时传递到主页面
+    @Subscriber(tag = "user", mode = ThreadMode.ASYNC)
+    private void receiveFromLogin(UserInfo info) {
         LogUtils.e(info.toString());
         mInstructions.setVisibility(View.GONE);
     }

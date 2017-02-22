@@ -20,7 +20,7 @@ import okhttp3.OkHttpClient;
 
 public class HttpUtils {
 
-	private static final String SPLIT = "/";
+	private static final String SPLIT = "&";
 //
 	/**
 	 * 初始化 okHttpClient
@@ -34,13 +34,13 @@ public class HttpUtils {
 	/**
 	 * 异步post请求
 	 *
-	 * @param c       接口类型
-	 * @param
+	 * //@param c       接口类型
+	 * @param a 	  接口名称
 	 * @param params  接口参数
 	 * @param handler 接口回调
 	 * @return 本次请求的tag，用于取消请求
 	 */
-	public static String post(String c,  List<String> params, final ResponseHandler handler) {
+	public static String post(String a,  List<String> params, final ResponseHandler handler) {
 		String t = time();
 		String p = "";
 		if (params != null) {
@@ -54,9 +54,9 @@ public class HttpUtils {
 		}
 //		String j = Md5Utils.md5(c + a + t + Api.KEY);
 		Map<String, String> param = new HashMap<>();
-		param.put("c", c);
-//		param.put("a", a);
+		param.put("a", a);
 		param.put("t", t);
+//		param.put("c", c);
 //		param.put("j", j);
 //		param.put("p", Base64.encodeToString(p.getBytes(), Base64.DEFAULT));
 		Log.d("555555",param.toString());
@@ -82,13 +82,13 @@ public class HttpUtils {
 	/**
 	 * 异步post请求
 	 *
-	 * @param c       接口类型
-	 * @param
+	 * // @param c       接口类型
+	 * @param a 	  接口名称
 	 * @param handler 接口回调
 	 * @return 本次请求的tag，用于取消请求
 	 */
-	public static String post(String c, final ResponseHandler handler) {
-		return post(c,  null, handler);
+	public static String post(String a, final ResponseHandler handler) {
+		return post(a,  null, handler);
 	}
 
 	/**
