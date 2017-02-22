@@ -104,6 +104,7 @@
     <!--android:textSize="12sp" />-->
 
     <TextView
+        android:textSize="12sp"
         android:clickable="false"
         android:id="@+id/getSecurityCode"
         android:layout_width="90dp"
@@ -118,7 +119,7 @@
         android:textColor="#ffffff" />
 
     <TextView
-        android:enabled="false"
+        android:clickable="false"
         android:id="@+id/confirm"
         android:layout_width="330dp"
         android:layout_height="40dp"

@@ -76,24 +76,24 @@ public class WalkingRouteOverlay extends OverlayManager {
                 }
             }
         }
-        // starting
-        if (mRouteLine.getStarting() != null) {
-            overlayList.add((new MarkerOptions())
-                    .position(mRouteLine.getStarting().getLocation())
-                            .icon(getStartMarker() != null ? getStartMarker() :
-                                    BitmapDescriptorFactory
-                                            .fromAssetWithDpi("Icon_start.png")).zIndex(10));
-        }
+//        // starting
+//        if (mRouteLine.getStarting() != null) {
+//            overlayList.add((new MarkerOptions())
+//                    .position(mRouteLine.getStarting().getLocation())
+//                            .icon(getStartMarker() != null ? getStartMarker() :
+//                                    BitmapDescriptorFactory
+//                                            .fromAssetWithDpi("Icon_start.png")).zIndex(10));
+//        }
         // terminal
-        if (mRouteLine.getTerminal() != null) {
-            overlayList
-                    .add((new MarkerOptions())
-                            .position(mRouteLine.getTerminal().getLocation())
-                                    .icon(getTerminalMarker() != null ? getTerminalMarker() :
-                                            BitmapDescriptorFactory
-                                                    .fromAssetWithDpi("Icon_end.png"))
-                                                            .zIndex(10));
-        }
+//        if (mRouteLine.getTerminal() != null) {
+//            overlayList
+//                    .add((new MarkerOptions())
+//                            .position(mRouteLine.getTerminal().getLocation())
+//                                    .icon(getTerminalMarker() != null ? getTerminalMarker() :
+//                                            BitmapDescriptorFactory
+//                                                    .fromAssetWithDpi("Icon_end.png"))
+//                                                            .zIndex(10));
+//        }
 
         // poly line list
         if (mRouteLine.getAllStep() != null

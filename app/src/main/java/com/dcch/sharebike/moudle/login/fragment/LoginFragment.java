@@ -23,6 +23,9 @@ import com.dcch.sharebike.moudle.user.activity.WalletInfoActivity;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -67,23 +70,33 @@ public class LoginFragment extends Fragment {
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.bind(this, view);
-        if(SPUtils.isLogin()){
-            String nickname = (String) SPUtils.get(App.getContext(), "nickName", "");
-            Log.d("ooooo",nickname);
-            String nn = nickname.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
-            nickName.setText(nn);
+        if (SPUtils.isLogin()) {
+            String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
+            Log.d("ooooo", userDetail);
+            if (userDetail != null) {
+                try {
+                    JSONObject object = new JSONObject(userDetail);
+//                    UserInfo info = new UserInfo();
+                    String nickname = object.getString("nickName");
+                    String nn = nickname.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
+                    nickName.setText(nn);
+                    remainSum.setText(String.valueOf(object.optString("pledgeCash")));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+//
 //            remainSum.setText(String.valueOf(info.getPledgeCash()));
         }
         return view;
     }
-
 
 
     @OnClick({R.id.creditScore, R.id.userIcon, R.id.wallet, R.id.favorable, R.id.journey, R.id.message, R.id.friend, R.id.guide, R.id.setting})
@@ -111,12 +124,12 @@ public class LoginFragment extends Fragment {
                 break;
             case R.id.journey:
                 ToastUtils.showLong(getContext(), "行程");
-                Intent myJourney = new Intent(App.getContext(),MyJourneyActivity.class);
+                Intent myJourney = new Intent(App.getContext(), MyJourneyActivity.class);
                 startActivity(myJourney);
                 break;
             case R.id.message:
                 ToastUtils.showLong(getContext(), "消息");
-                Intent myMessage = new Intent(App.getContext(),MyMessageActivity.class);
+                Intent myMessage = new Intent(App.getContext(), MyMessageActivity.class);
                 startActivity(myMessage);
                 break;
             case R.id.friend:
@@ -124,7 +137,7 @@ public class LoginFragment extends Fragment {
                 break;
             case R.id.guide:
                 ToastUtils.showLong(getContext(), "用户指南");
-                Intent userGuide = new Intent(App.getContext(),UserGuideActivity.class);
+                Intent userGuide = new Intent(App.getContext(), UserGuideActivity.class);
                 startActivity(userGuide);
                 break;
             case R.id.setting:

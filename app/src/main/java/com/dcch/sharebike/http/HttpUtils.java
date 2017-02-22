@@ -3,7 +3,6 @@ package com.dcch.sharebike.http;
 import android.util.Log;
 
 import com.dcch.sharebike.http.response.ResponseHandler;
-import com.dcch.sharebike.utils.LogUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -20,7 +19,7 @@ import okhttp3.OkHttpClient;
 
 public class HttpUtils {
 
-	private static final String SPLIT = "&";
+//	private static final String SPLIT = "&";
 //
 	/**
 	 * 初始化 okHttpClient
@@ -42,16 +41,16 @@ public class HttpUtils {
 	 */
 	public static String post(String a,  List<String> params, final ResponseHandler handler) {
 		String t = time();
-		String p = "";
-		if (params != null) {
-			for (int i = 0; i < params.size(); i++) {
-				p += params.get(i);
-				if (i < params.size() - 1) {
-					p += SPLIT;
-				}
-			}
-			LogUtils.e(p);
-		}
+//		String p = "";
+//		if (params != null) {
+//			for (int i = 0; i < params.size(); i++) {
+//				p += params.get(i);
+//				if (i < params.size() - 1) {
+//					p += SPLIT;
+//				}
+//			}
+//			LogUtils.e(p);
+//		}
 //		String j = Md5Utils.md5(c + a + t + Api.KEY);
 		Map<String, String> param = new HashMap<>();
 		param.put("a", a);

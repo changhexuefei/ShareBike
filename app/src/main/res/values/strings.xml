@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ShareBike</string>
+    <string name="app_name">麒麟单车</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="recharge">押金充值</string>
     <string name="tip2">车费不在押金内扣除，需另外缴费</string>
