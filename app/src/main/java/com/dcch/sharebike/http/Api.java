@@ -11,11 +11,11 @@ public class Api {
 	public static final String REGISTER = "register.do?";
 	//注册登录
 	public static final String SAVEUSER = "saveUser.do?";
+	//请求车辆信息
 	public static final String GINPUT = "findBicycle.do?";
-
+	//预约用车
 	public static  final  String BOOKBIKE ="addBookingCar.do?";
-
-
-//	public static final String REGISTER="register";
+	//取消预约用车
+	public static final String CANCELBOOK="updateBookingCar.do?";
 
 }

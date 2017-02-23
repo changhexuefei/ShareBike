@@ -8,8 +8,8 @@
     <string name="zhifubao">支付宝</string>
     <string name="tip">押金（可退）</string>
     <string name="title_recharge">押金充值</string>
-    <string name="instructions">共享单车使用说明</string>
-    <string name="share_title">共享单车</string>
+    <string name="instructions">麒麟单车使用说明</string>
+    <string name="share_title">麒麟单车</string>
     <string name="unlocking">扫码开锁</string>
     <string name="all">全部单车</string>
     <string name="one">一类车</string>
