@@ -67,6 +67,7 @@ import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.listener.MyOrientationListener;
 import com.dcch.sharebike.moudle.home.bean.BikeInfo;
+import com.dcch.sharebike.moudle.login.activity.NotLoginActivity;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.moudle.search.activity.SeekActivity;
 import com.dcch.sharebike.moudle.user.activity.CustomerServiceActivity;
@@ -422,9 +423,9 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 break;
             case R.id.btn_my_help:
                 ToastUtils.showLong(this, "我是帮助");
-//                Intent i3 = new Intent(this, PersonalCenterActivity.class);
-//                startActivity(i3);
-                popupDialog();
+                Intent i3 = new Intent(this, NotLoginActivity.class);
+                startActivity(i3);
+//                popupDialog();
                 break;
             case R.id.scan:
                 ToastUtils.showLong(this, "我是扫描");
