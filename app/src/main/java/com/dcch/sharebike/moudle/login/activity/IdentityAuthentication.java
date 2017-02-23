@@ -57,6 +57,7 @@ public class IdentityAuthentication extends BaseActivity implements TextWatcher 
 //                backToMain.putExtra("result","correct");
                 startActivity(authentication);
 //                ToastUtils.showShort(this,"实名认证成功");
+                finish();
                 break;
         }
     }

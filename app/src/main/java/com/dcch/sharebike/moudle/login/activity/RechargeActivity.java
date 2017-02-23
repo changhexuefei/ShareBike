@@ -59,6 +59,7 @@ public class RechargeActivity extends BaseActivity {
                 Intent intent = new Intent(this, IdentityAuthentication.class);
                 //将选中的支付方式和money_sum的值传递到微信或者支付宝的支付页面
                 startActivity(intent);
+                finish();
                 break;
 
             case R.id.aliArea:

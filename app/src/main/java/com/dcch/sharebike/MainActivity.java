@@ -41,7 +41,6 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.geocode.GeoCodeResult;
@@ -67,7 +66,6 @@ import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.listener.MyOrientationListener;
 import com.dcch.sharebike.moudle.home.bean.BikeInfo;
-import com.dcch.sharebike.moudle.login.activity.NotLoginActivity;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.moudle.search.activity.SeekActivity;
 import com.dcch.sharebike.moudle.user.activity.CustomerServiceActivity;
@@ -423,9 +421,9 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 break;
             case R.id.btn_my_help:
                 ToastUtils.showLong(this, "我是帮助");
-                Intent i3 = new Intent(this, NotLoginActivity.class);
-                startActivity(i3);
-//                popupDialog();
+//                Intent i3 = new Intent(this, PersonalCenterActivity.class);
+//                startActivity(i3);
+                popupDialog();
                 break;
             case R.id.scan:
                 ToastUtils.showLong(this, "我是扫描");
