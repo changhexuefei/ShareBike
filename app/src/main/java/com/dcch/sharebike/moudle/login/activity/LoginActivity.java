@@ -187,6 +187,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 startActivity(intent);
                 break;
             case R.id.back:
+                EventBus.getDefault().post(new MessageEvent(), "show");
                 finish();
                 break;
         }
@@ -289,7 +290,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     EventBus.getDefault().post(new MessageEvent(), "gone");
                     Log.d("用户信息", userInfo.toString());
                     LoginActivity.this.finish();
-//                    EventBus.getDefault().post(userInfo, "user");
+//
                     //储存用户信息(登录储存一次)
                     SPUtils.put(LoginActivity.this, "userDetail", response);
 //                    SPUtils.put(App.getContext(),"cashStatus",0);

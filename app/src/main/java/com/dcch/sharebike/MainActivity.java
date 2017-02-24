@@ -4,9 +4,8 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -66,7 +65,13 @@ import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.listener.MyOrientationListener;
 import com.dcch.sharebike.moudle.home.bean.BikeInfo;
+import com.dcch.sharebike.moudle.home.bean.BookingBikeInfo;
+import com.dcch.sharebike.moudle.login.activity.ClickCameraPopupActivity;
+import com.dcch.sharebike.moudle.login.activity.ClickMyHelpActivity;
+import com.dcch.sharebike.moudle.login.activity.IdentityAuthentication;
+import com.dcch.sharebike.moudle.login.activity.LoginActivity;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
+import com.dcch.sharebike.moudle.login.activity.RechargeActivity;
 import com.dcch.sharebike.moudle.search.activity.SeekActivity;
 import com.dcch.sharebike.moudle.user.activity.CustomerServiceActivity;
 import com.dcch.sharebike.overlayutil.OverlayManager;
@@ -74,6 +79,7 @@ import com.dcch.sharebike.overlayutil.WalkingRouteOverlay;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
+import com.google.gson.Gson;
 import com.hss01248.dialog.StyledDialog;
 import com.hss01248.dialog.bottomsheet.BottomSheetBean;
 import com.hss01248.dialog.interfaces.MyItemDialogListener;
@@ -97,7 +103,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 
+@RuntimePermissions
 public class MainActivity extends BaseActivity implements OnGetGeoCoderResultListener {
     @BindView(R.id.mapView)
     MapView mMapView;
@@ -183,7 +192,10 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     private int userid;
     private BookBikePopupWindow bookBikePopupWindow;
     private int bicycleNo;
-
+    private int cashStatus;
+    private int status;
+    private String bikeID;
+    private String bookingCarId;
 
 
     @Override
@@ -195,6 +207,9 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     protected void initData() {
 //        classify.check(R.id.allBike);
         ButterKnife.bind(this);
+        MainActivityPermissionsDispatcher.initPermissionWithCheck(this);
+        showCamera();
+        initPermission();
 
         if (SPUtils.isLogin()) {
             mInstructions.setVisibility(View.GONE);
@@ -224,7 +239,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         initOritationListener();
 //        setMarkerInfo();
         clickBaiduMapMark();
-        getPersimmions();
+//        getPersimmions();
         clickDismissOverlay();
     }
 
@@ -268,55 +283,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
     }
 
-    //询问手机权限的方法
-    private void getPersimmions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            ArrayList<String> permissions = new ArrayList<String>();
-            /***
-             * 定位权限为必须权限，用户如果禁止，则每次进入都会申请
-             */
-            // 定位精确位置
-            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-            }
-            if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-            }
-            /*
-             * 读写权限和电话状态权限非必要权限(建议授予)只会申请一次，用户同意或者禁止，只会弹一次
-			 */
-            // 读写权限
-            if (addPermission(permissions, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                permissionInfo += "Manifest.permission.WRITE_EXTERNAL_STORAGE Deny \n";
-            }
-            // 读取电话状态权限
-            if (addPermission(permissions, Manifest.permission.READ_PHONE_STATE)) {
-                permissionInfo += "Manifest.permission.READ_PHONE_STATE Deny \n";
-            }
-            // 打开照相机的权限
-            if (addPermission(permissions, Manifest.permission.CAMERA)) {
-                permissionInfo += "Manifest.permission.CAMERA Deny \n";
-            }
-
-            if (permissions.size() > 0) {
-                requestPermissions(permissions.toArray(new String[permissions.size()]), SDK_PERMISSION_REQUEST);
-            }
-        }
-    }
-
-    private boolean addPermission(ArrayList<String> permissionsList, String permission) {
-        if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) { // 如果应用没有获得对应权限,则添加到列表中,准备批量申请
-            if (shouldShowRequestPermissionRationale(permission)) {
-                return true;
-            } else {
-                permissionsList.add(permission);
-                return false;
-            }
-
-        } else {
-            return true;
-        }
-    }
 
     public void reverseGeoCoder(LatLng latlng) {
         //反向地理编码的功能
@@ -421,16 +387,51 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 break;
             case R.id.btn_my_help:
                 ToastUtils.showLong(this, "我是帮助");
-//                Intent i3 = new Intent(this, PersonalCenterActivity.class);
-//                startActivity(i3);
-                popupDialog();
+                Intent i3 = new Intent(this, ClickMyHelpActivity.class);
+                startActivity(i3);
+//                popupDialog();
                 break;
             case R.id.scan:
                 ToastUtils.showLong(this, "我是扫描");
-                Intent i4 = new Intent(this, CaptureActivity.class);
-                startActivityForResult(i4, 0);
+                if (SPUtils.isLogin() && cashStatus == 1 && status == 1) {
+                    MainActivityPermissionsDispatcher.showCameraWithCheck(this);
+                    Intent i4 = new Intent(this, CaptureActivity.class);
+                    startActivityForResult(i4, 0);
+                } else if (SPUtils.isLogin() && cashStatus == 0) {
+                    Intent i4 = new Intent(this, RechargeActivity.class);
+                    startActivity(i4);
+                } else if (SPUtils.isLogin() && cashStatus == 1 && status == 0) {
+                    Intent i4 = new Intent(this, IdentityAuthentication.class);
+                    startActivity(i4);
+                } else {
+
+//                    没有登录的情况设置Activity
+//                    mBtnMyHelp.setVisibility(View.GONE);
+//                    mBtnMyLocation.setVisibility(View.GONE);
+//                    mScan.setVisibility(View.GONE);
+                    startActivity(new Intent(MainActivity.this, ClickCameraPopupActivity.class));
+
+                }
                 break;
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+
+    }
+
+
+    @NeedsPermission(Manifest.permission.CAMERA)
+    void showCamera() {
+
+    }
+
+    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
+    void initPermission() {
+
     }
 
     private void addOverlay(List bikeInfos) {
@@ -445,7 +446,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
             for (int i = 0; i < bikeInfos.size(); i++) {
                 bikeInfo = (BikeInfo) bikeInfos.get(i);
-                Log.d("%%%%%%%", bikeInfo +"");
+                Log.d("%%%%%%%", bikeInfo + "");
                 String lat = bikeInfo.getLatitude();
                 Log.d("&&&&&&&", lat);
                 String lng = bikeInfo.getLongitude();
@@ -484,7 +485,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                     reverseGeoCoder(latlng);
                     return true;
                 }
-
                 return false;
             }
         });
@@ -495,22 +495,17 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
         @Override
         public void onClick(View v) {
-            menuWindow.dismiss();
             switch (v.getId()) {
                 case R.id.order:
-                    if (SPUtils.isLogin()) {
-                        mInstructions.setVisibility(View.GONE);
-                    } else if (!SPUtils.isLogin()) {
-                        mInstructions.setVisibility(View.VISIBLE);
-                    }
 //                    mMap.clear();
                     menuWindow.setOutsideTouchable(true);
 //                    addOverlay(bikeInfos);
 //                    setUserMapCenter();
                     ToastUtils.showShort(MainActivity.this, "预约车辆");
-
-
-                    if (SPUtils.isLogin()) {
+                    //&& cashStatus == 1 && status == 1
+                    if (SPUtils.isLogin() ) {
+                        menuWindow.dismiss();
+                        mInstructions.setVisibility(View.GONE);
                         String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
                         Log.d("ooooo", userDetail);
                         if (userDetail != null) {
@@ -518,11 +513,16 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                                 JSONObject object = new JSONObject(userDetail);
                                 int bicycleId = bikeInfo.getBicycleId();
                                 int id = object.getInt("id");
-                                bicycleNo=bikeInfo.getBicycleNo();
-                                Log.d("zixinghe",bicycleNo+"");
+                                cashStatus = object.getInt("cashStatus");
+                                status = object.getInt("status");
+                                bicycleNo = bikeInfo.getBicycleNo();
+                                Log.d("zixinghe", bicycleNo + "");
                                 String uID = String.valueOf(id);
-                                String bikeID = String.valueOf(bicycleId);
+                                bikeID = String.valueOf(bicycleId);
                                 bookingBike(uID, bikeID);
+//                                UiSettings uiSettings = mMap.getUiSettings();
+//                                uiSettings.setZoomGesturesEnabled(false);
+
                                 bookBikePopupWindow = new BookBikePopupWindow(MainActivity.this, bookBikeItemsOnClick);
                                 //指定父视图，显示在父控件的某个位置（Gravity.TOP,Gravity.RIGHT等）
                                 //  menuWindow.showAtLocation(findViewById(R.id.mapView), Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, -48);
@@ -531,8 +531,14 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                         }
+                    } else if (SPUtils.isLogin() && cashStatus == 0) {
+                        startActivity(new Intent(MainActivity.this, RechargeActivity.class));
+                    } else if (SPUtils.isLogin() && cashStatus == 1 && status == 0) {
+                        startActivity(new Intent(MainActivity.this, IdentityAuthentication.class));
+                    } else {
+                        mInstructions.setVisibility(View.VISIBLE);
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     }
             }
         }
@@ -547,14 +553,33 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                     addOverlay(bikeInfos);
                     setUserMapCenter();
                     bookBikePopupWindow.setFocusable(true);
-                    UiSettings uiSettings = mMap.getUiSettings();
-                    uiSettings.setAllGesturesEnabled(false);
+
                     ToastUtils.showShort(MainActivity.this, "取消预约车辆");
+                    cancelBookingBike(bikeID);
                     break;
             }
-
         }
     };
+
+    private void cancelBookingBike(String bikeID) {
+       Map<String,String> map = new HashMap<>();
+        map.put("bookingCarId",bookingCarId);
+        map.put("bicycleId",bikeID);
+        Log.d("自行车",bikeID);
+        ToastUtils.showShort(MainActivity.this,bikeID);
+        OkHttpUtils.post().url(Api.BASE_URL+Api.CANCELBOOK).params(map).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                LogUtils.d("CANCEL", response);
+            }
+        });
+
+    }
 
 
     private void bookingBike(String uID, String bikeID) {
@@ -571,7 +596,11 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
             @Override
             public void onResponse(String response, int id) {
-                LogUtils.d("yuyu", response);
+                Gson gson = new Gson();
+                BookingBikeInfo bookingBikeInfo = gson.fromJson(response, BookingBikeInfo.class);
+                bookingCarId = bookingBikeInfo.getBookingCarId();
+                LogUtils.d("bookingCarId",bookingCarId);
+                String bookingCarDate = bookingBikeInfo.getBookingCarDate();
             }
         });
     }
@@ -997,6 +1026,16 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 //            Log.d("456",resultAddress);
             mDistance.setText(String.valueOf(mDuration) + "米");
             // 设置按钮监听
+
+            if (SPUtils.isLogin() && cashStatus == 1 && status == 1) {
+                mOrder.setText("预约用车");
+            } else if (SPUtils.isLogin() && cashStatus == 0) {
+                mOrder.setText("完成注册即可骑单车");
+            } else if (SPUtils.isLogin() && cashStatus == 1 && status == 0) {
+                mOrder.setText("完成注册即可骑单车");
+            } else {
+                mOrder.setText("立即登录即可骑单车");
+            }
             mOrder.setOnClickListener(itemsOnClick);
             // 设置SelectPicPopupWindow的View
             this.setContentView(mMenuView);
@@ -1007,13 +1046,13 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             // 设置SelectPicPopupWindow弹出窗体的高
             this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
             // 设置SelectPicPopupWindow弹出窗体可点击
-            this.setFocusable(true);
+//            this.setFocusable(true);
 ////             设置SelectPicPopupWindow弹出窗体动画效果
 //            this.setAnimationStyle(R.style.PopupAnimation);
             // 实例化一个ColorDrawable颜色为半透明
-//        ColorDrawable dw = new ColorDrawable(0x00000000);
+//            ColorDrawable dw = new ColorDrawable(0x00000000);
             // 设置SelectPicPopupWindow弹出窗体的背景
-//        this.setBackgroundDrawable(dw);
+//            this.setBackgroundDrawable(dw);
             // mMenuView添加OnTouchListener监听判断获取触屏位置如果在选择框外面则销毁弹出框
             mMenuView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -1053,7 +1092,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             mCancel = (Button) mCancelBookBikeWindow.findViewById(R.id.cancel_book);
             //为控件赋值
             mBookBikeLocationInfo.setText(resultAddress);
-            Log.d("自行车标号",bicycleNo+"");
+            Log.d("自行车标号", bicycleNo + "");
             mBikeNumber.setText(String.valueOf(bicycleNo));
 
             // 设置按钮监听

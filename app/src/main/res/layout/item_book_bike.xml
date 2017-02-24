@@ -80,8 +80,7 @@
             android:layout_toRightOf="@+id/bookTips"
             android:text="保留时间" />
 
-        <TextView
-
+        <com.dcch.sharebike.view.CountdownTextView
             android:id="@+id/hold_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
