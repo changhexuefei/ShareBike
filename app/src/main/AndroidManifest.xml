@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.dcch.sharebike">
+    package="com.dcch.sharebike">
 
-    <uses-sdk android:minSdkVersion="7"/>
+    <uses-sdk android:minSdkVersion="7" />
+
     <!-- Required -->
     <permission
         android:name="${applicationId}.permission.JPUSH_MESSAGE"
@@ -30,56 +31,54 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
 
-
-
     <!-- 添加屏幕及版本支持 -->
     <supports-screens
         android:anyDensity="true"
         android:largeScreens="true"
         android:normalScreens="true"
         android:resizeable="true"
-        android:smallScreens="true"/>
+        android:smallScreens="true" />
 
     <!-- mob短信 需要的权限 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-    <uses-permission android:name="android.permission.GET_TASKS"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!-- SD卡权限 -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <!-- 读取联系人权限 -->
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <!-- 录音权限 -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <!-- 联网权限 -->
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <!-- 打电话权限 -->
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <!-- 网络定位 -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- 这个权限用于访问GPS定位 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- 用于读取手机当前的状态 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- SD卡读取权限，用户写入离线定位数据 -->
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.GET_TASKS"/>
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <application
         android:name=".app.App"
@@ -92,65 +91,63 @@
         <!-- 百度地图相关配置 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="TtIrDwFCwHcYPlf9xMNfRjPPMyY8yGfj"/>
+            android:value="TtIrDwFCwHcYPlf9xMNfRjPPMyY8yGfj" />
 
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".activity.SplashActivity">
+            android:launchMode="singleTask">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.GuideActivity"/>
+        <activity android:name=".activity.SplashActivity"></activity>
+        <activity android:name=".activity.GuideActivity" />
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
+            android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote">
             <intent-filter>
-                <action android:name="com.baidu.location.service_v4.1"/>
+                <action android:name="com.baidu.location.service_v4.1" />
             </intent-filter>
         </service>
 
-        <activity android:name=".moudle.login.activity.PersonalCenterActivity"/>
-        <activity android:name=".moudle.login.activity.LoginActivity"/>
-        <activity android:name=".moudle.search.activity.SeekActivity"/>
-        <activity android:name=".moudle.login.activity.AgreementActivity"/>
-        <activity android:name=".moudle.login.activity.RechargeActivity"/>
-        <activity android:name=".moudle.login.activity.IdentityAuthentication"/>
-        <activity android:name=".moudle.user.activity.PersonInfoActivity"/>
-        <activity android:name=".moudle.user.activity.CreditIntegralActivity"/>
-        <activity android:name=".moudle.user.activity.WalletInfoActivity"/>
-        <activity android:name=".moudle.user.activity.TransactionDetailActivity"/>
-        <activity android:name=".moudle.user.activity.SettingActivity"/>
-        <activity android:name=".moudle.user.activity.UsualAddressActivity"/>
-        <activity android:name=".moudle.user.activity.ChangeUserNickNameActivity"/>
-        <activity android:name=".moudle.user.activity.MyJourneyActivity"/>
-        <activity android:name=".moudle.user.activity.UserGuideActivity"/>
-        <activity android:name=".moudle.user.activity.MyMessageActivity"/>
-        <activity android:name=".moudle.login.activity.AuthenticationOkActivity"/>
-        <activity android:name=".moudle.user.activity.PickPhotoActivity"/>
+        <activity android:name=".moudle.login.activity.PersonalCenterActivity" />
+        <activity android:name=".moudle.login.activity.LoginActivity" />
+        <activity android:name=".moudle.search.activity.SeekActivity" />
+        <activity android:name=".moudle.login.activity.AgreementActivity" />
+        <activity android:name=".moudle.login.activity.RechargeActivity" />
+        <activity android:name=".moudle.login.activity.IdentityAuthentication" />
+        <activity android:name=".moudle.user.activity.PersonInfoActivity" />
+        <activity android:name=".moudle.user.activity.CreditIntegralActivity" />
+        <activity android:name=".moudle.user.activity.WalletInfoActivity" />
+        <activity android:name=".moudle.user.activity.TransactionDetailActivity" />
+        <activity android:name=".moudle.user.activity.SettingActivity" />
+        <activity android:name=".moudle.user.activity.UsualAddressActivity" />
+        <activity android:name=".moudle.user.activity.ChangeUserNickNameActivity" />
+        <activity android:name=".moudle.user.activity.MyJourneyActivity" />
+        <activity android:name=".moudle.user.activity.UserGuideActivity" />
+        <activity android:name=".moudle.user.activity.MyMessageActivity" />
+        <activity android:name=".moudle.login.activity.AuthenticationOkActivity" />
+        <activity android:name=".moudle.user.activity.PickPhotoActivity" />
         <activity
             android:name=".moudle.user.activity.CustomerServiceActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".moudle.user.activity.RechargeDepositActivity">
-        </activity>
-        <activity android:name=".moudle.user.activity.RechargeBikeFareActivity">
-        </activity>
-        <!-- Required SDK 核心功能-->
+            android:launchMode="singleTask" />
+        <activity android:name=".moudle.user.activity.RechargeDepositActivity" />
+        <activity android:name=".moudle.user.activity.RechargeBikeFareActivity" />
+        <!-- Required SDK 核心功能 -->
         <!-- 可配置android:process参数将PushService放在其他进程中 -->
         <service
             android:name="cn.jpush.android.service.PushService"
             android:enabled="true"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.REGISTER" />
                 <action android:name="cn.jpush.android.intent.REPORT" />
@@ -165,19 +162,21 @@
             android:name="cn.jpush.android.service.DaemonService"
             android:enabled="true"
             android:exported="true">
-            <intent-filter >
+            <intent-filter>
                 <action android:name="cn.jpush.android.intent.DaemonService" />
-                <category android:name="${applicationId}"/>
+
+                <category android:name="${applicationId}" />
             </intent-filter>
         </service>
 
-        <!-- Required SDK核心功能-->
+        <!-- Required SDK核心功能 -->
         <receiver
             android:name="cn.jpush.android.service.PushReceiver"
-            android:enabled="true" >
+            android:enabled="true">
             <intent-filter android:priority="1000">
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
-                <category android:name="${applicationId}"/>
+
+                <category android:name="${applicationId}" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -187,65 +186,79 @@
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>
 
-        <!-- Required SDK核心功能-->
+        <!-- Required SDK核心功能 -->
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:exported="false" >
+            android:exported="false"
+            android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="cn.jpush.android.ui.PushActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="${applicationId}" />
             </intent-filter>
         </activity>
 
-        <!-- Required SDK核心功能-->
+        <!-- Required SDK核心功能 -->
         <service
             android:name="cn.jpush.android.service.DownloadService"
             android:enabled="true"
-            android:exported="false" >
-        </service>
+            android:exported="false"></service>
 
-        <!-- Required SDK核心功能-->
+        <!-- Required SDK核心功能 -->
         <receiver android:name="cn.jpush.android.service.AlarmReceiver" />
 
-        <!-- User defined. 用户自定义的广播接收器-->
+        <!-- User defined. 用户自定义的广播接收器 -->
         <receiver
             android:name=".receiver.MyReceiver"
             android:enabled="true">
             <intent-filter>
-                <!--Required 用户注册SDK的intent-->
+
+                <!-- Required 用户注册SDK的intent -->
                 <action android:name="cn.jpush.android.intent.REGISTRATION" />
-                <!--Required 用户接收SDK消息的intent-->
+                <!-- Required 用户接收SDK消息的intent -->
                 <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
-                <!--Required 用户接收SDK通知栏信息的intent-->
+                <!-- Required 用户接收SDK通知栏信息的intent -->
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
-                <!--Required 用户打开自定义通知栏的intent-->
+                <!-- Required 用户打开自定义通知栏的intent -->
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
                 <!-- 接收网络变化 连接/断开 since 1.6.3 -->
                 <action android:name="cn.jpush.android.intent.CONNECTION" />
+
                 <category android:name="${applicationId}" />
             </intent-filter>
         </receiver>
 
         <!-- Required. For publish channel feature -->
-        <!-- JPUSH_CHANNEL 是为了方便开发者统计APK分发渠道。-->
+        <!-- JPUSH_CHANNEL 是为了方便开发者统计APK分发渠道。 -->
         <!-- 例如: -->
         <!-- 发到 Google Play 的APK可以设置为 google-play; -->
         <!-- 发到其他市场的 APK 可以设置为 xxx-market。 -->
-        <!-- 目前这个渠道统计功能的报表还未开放。-->
-        <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default"/>
+        <!-- 目前这个渠道统计功能的报表还未开放。 -->
+        <meta-data
+            android:name="JPUSH_CHANNEL"
+            android:value="developer-default" />
         <!-- Required. AppKey copied from Portal -->
-        <meta-data android:name="JPUSH_APPKEY" android:value="008791cd27d527134a8291b7"/>
+        <meta-data
+            android:name="JPUSH_APPKEY"
+            android:value="008791cd27d527134a8291b7" />
 
+        <activity
+            android:name=".moudle.login.activity.ClickCameraPopupActivity"
+            android:theme="@style/translucent">
 
+            <!-- android:theme="@android:style/Theme.Dialog" -->
 
-
+        </activity>
+        <activity android:name=".moudle.login.activity.ClickMyHelpActivity"
+            android:theme="@style/translucent"
+            ></activity>
     </application>
 
 </manifest>

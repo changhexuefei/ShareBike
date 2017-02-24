@@ -80,5 +80,8 @@ dependencies {
     compile files('libs/jcore-android_v1.1.0.jar')
     compile files('libs/jpush-android_v3.0.1.jar')
     compile files('libs/androideventbus-1.0.5.jar')
+    compile 'com.android.support:cardview-v7:23.1.1'
+    compile 'com.github.hotchemi:permissionsdispatcher:2.3.0'
+    annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.0'
 
 }

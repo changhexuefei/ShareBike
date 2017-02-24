@@ -3,11 +3,12 @@ package com.dcch.sharebike;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -67,6 +68,8 @@ import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.listener.MyOrientationListener;
 import com.dcch.sharebike.moudle.home.bean.BikeInfo;
 import com.dcch.sharebike.moudle.home.bean.BookingBikeInfo;
+import com.dcch.sharebike.moudle.login.activity.ClickCameraPopupActivity;
+import com.dcch.sharebike.moudle.login.activity.ClickMyHelpActivity;
 import com.dcch.sharebike.moudle.login.activity.IdentityAuthentication;
 import com.dcch.sharebike.moudle.login.activity.LoginActivity;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
@@ -78,6 +81,7 @@ import com.dcch.sharebike.overlayutil.WalkingRouteOverlay;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
+import com.dcch.sharebike.view.CountdownTextView;
 import com.google.gson.Gson;
 import com.hss01248.dialog.StyledDialog;
 import com.hss01248.dialog.bottomsheet.BottomSheetBean;
@@ -102,7 +106,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 
+
+@RuntimePermissions
 public class MainActivity extends BaseActivity implements OnGetGeoCoderResultListener {
     @BindView(R.id.mapView)
     MapView mMapView;
@@ -203,6 +211,9 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     protected void initData() {
 //        classify.check(R.id.allBike);
         ButterKnife.bind(this);
+        MainActivityPermissionsDispatcher.initPermissionWithCheck(this);
+        initPermission();
+        showCamera();
 
         if (SPUtils.isLogin()) {
             mInstructions.setVisibility(View.GONE);
@@ -232,7 +243,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         initOritationListener();
 //        setMarkerInfo();
         clickBaiduMapMark();
-        getPersimmions();
+
         clickDismissOverlay();
     }
 
@@ -242,18 +253,17 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             public void onMapClick(LatLng latLng) {
 //                ToastUtils.showShort(MainActivity.this,"我是latlng"+latLng);
                 mMap.clear();
+
                 addOverlay(bikeInfos);
                 //由于menuWindow会和地图抢夺焦点，所以在设置他的属性时设置为不能获得焦点
                 //就能够满足一起消失的功能
-                if (menuWindow != null) {
-                    menuWindow.dismiss();
-                }
+
                 if (SPUtils.isLogin()) {
                     mInstructions.setVisibility(View.GONE);
                 } else if (!SPUtils.isLogin()) {
                     mInstructions.setVisibility(View.VISIBLE);
                 }
-
+                menuWindow.dismiss();
                 setUserMapCenter();
             }
 
@@ -276,55 +286,55 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
     }
 
-    //询问手机权限的方法
-    private void getPersimmions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            ArrayList<String> permissions = new ArrayList<String>();
-            /***
-             * 定位权限为必须权限，用户如果禁止，则每次进入都会申请
-             */
-            // 定位精确位置
-            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-            }
-            if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-            }
-            /*
-             * 读写权限和电话状态权限非必要权限(建议授予)只会申请一次，用户同意或者禁止，只会弹一次
-			 */
-            // 读写权限
-            if (addPermission(permissions, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                permissionInfo += "Manifest.permission.WRITE_EXTERNAL_STORAGE Deny \n";
-            }
-            // 读取电话状态权限
-            if (addPermission(permissions, Manifest.permission.READ_PHONE_STATE)) {
-                permissionInfo += "Manifest.permission.READ_PHONE_STATE Deny \n";
-            }
-            // 打开照相机的权限
-            if (addPermission(permissions, Manifest.permission.CAMERA)) {
-                permissionInfo += "Manifest.permission.CAMERA Deny \n";
-            }
-
-            if (permissions.size() > 0) {
-                requestPermissions(permissions.toArray(new String[permissions.size()]), SDK_PERMISSION_REQUEST);
-            }
-        }
-    }
-
-    private boolean addPermission(ArrayList<String> permissionsList, String permission) {
-        if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) { // 如果应用没有获得对应权限,则添加到列表中,准备批量申请
-            if (shouldShowRequestPermissionRationale(permission)) {
-                return true;
-            } else {
-                permissionsList.add(permission);
-                return false;
-            }
-
-        } else {
-            return true;
-        }
-    }
+//    //询问手机权限的方法
+//    private void getPersimmions() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            ArrayList<String> permissions = new ArrayList<String>();
+//            /***
+//             * 定位权限为必须权限，用户如果禁止，则每次进入都会申请
+//             */
+//            // 定位精确位置
+//            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+//            }
+//            if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+//            }
+//            /*
+//             * 读写权限和电话状态权限非必要权限(建议授予)只会申请一次，用户同意或者禁止，只会弹一次
+//			 */
+//            // 读写权限
+//            if (addPermission(permissions, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+//                permissionInfo += "Manifest.permission.WRITE_EXTERNAL_STORAGE Deny \n";
+//            }
+//            // 读取电话状态权限
+//            if (addPermission(permissions, Manifest.permission.READ_PHONE_STATE)) {
+//                permissionInfo += "Manifest.permission.READ_PHONE_STATE Deny \n";
+//            }
+//            // 打开照相机的权限
+//            if (addPermission(permissions, Manifest.permission.CAMERA)) {
+//                permissionInfo += "Manifest.permission.CAMERA Deny \n";
+//            }
+//
+//            if (permissions.size() > 0) {
+//                requestPermissions(permissions.toArray(new String[permissions.size()]), SDK_PERMISSION_REQUEST);
+//            }
+//        }
+//    }
+//
+//    private boolean addPermission(ArrayList<String> permissionsList, String permission) {
+//        if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) { // 如果应用没有获得对应权限,则添加到列表中,准备批量申请
+//            if (shouldShowRequestPermissionRationale(permission)) {
+//                return true;
+//            } else {
+//                permissionsList.add(permission);
+//                return false;
+//            }
+//
+//        } else {
+//            return true;
+//        }
+//    }
 
     public void reverseGeoCoder(LatLng latlng) {
         //反向地理编码的功能
@@ -429,27 +439,51 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 break;
             case R.id.btn_my_help:
                 ToastUtils.showLong(this, "我是帮助");
-//                Intent i3 = new Intent(this, PersonalCenterActivity.class);
-//                startActivity(i3);
-                popupDialog();
+                Intent i3 = new Intent(this, ClickMyHelpActivity.class);
+                startActivity(i3);
+//                popupDialog();
                 break;
             case R.id.scan:
                 ToastUtils.showLong(this, "我是扫描");
                 if (SPUtils.isLogin() && cashStatus == 1 && status == 1) {
+                    MainActivityPermissionsDispatcher.showCameraWithCheck(this);
                     Intent i4 = new Intent(this, CaptureActivity.class);
                     startActivityForResult(i4, 0);
                 } else if (SPUtils.isLogin() && cashStatus == 0) {
                     Intent i4 = new Intent(this, RechargeActivity.class);
                     startActivity(i4);
-                }else if(SPUtils.isLogin() && cashStatus == 1 && status == 0){
+                } else if (SPUtils.isLogin() && cashStatus == 1 && status == 0) {
                     Intent i4 = new Intent(this, IdentityAuthentication.class);
                     startActivity(i4);
-                }else{
-                    //没有登录的情况事项窗口式Activity
+                } else {
+
+//                    没有登录的情况设置Activity
+//                    mBtnMyHelp.setVisibility(View.GONE);
+//                    mBtnMyLocation.setVisibility(View.GONE);
+//                    mScan.setVisibility(View.GONE);
+                    startActivity(new Intent(MainActivity.this, ClickCameraPopupActivity.class));
 
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+
+    }
+
+
+    @NeedsPermission(Manifest.permission.CAMERA)
+    void showCamera() {
+
+    }
+
+    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
+    void initPermission() {
+
     }
 
     private void addOverlay(List bikeInfos) {
@@ -485,10 +519,9 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 //添加marker
                 mMarker = (Marker) mMap.addOverlay(options);
             }
+        } else {
+            ToastUtils.showLong(this, "当前周围没有车辆");
         }
-//      else {
-//            ToastUtils.showLong(this, "当前周围没有车辆");
-//        }
     }
 
     private void clickBaiduMapMark() {
@@ -498,6 +531,9 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 if (marker != null) {
                     LatLng latlng = marker.getPosition();
                     mInstructions.setVisibility(View.GONE);
+                    if (menuWindow != null) {
+                        menuWindow.dismiss();
+                    }
 //                    ToastUtils.showShort(MainActivity.this, "我是marker" + marker);
                     addOverlay(bikeInfos);//
                     reverseGeoCoder(latlng);
@@ -516,13 +552,16 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             switch (v.getId()) {
                 case R.id.order:
 //                    mMap.clear();
+                    if (menuWindow != null) {
+                        menuWindow.dismiss();
+                    }
                     menuWindow.setOutsideTouchable(true);
 //                    addOverlay(bikeInfos);
 //                    setUserMapCenter();
                     ToastUtils.showShort(MainActivity.this, "预约车辆");
                     //&& cashStatus == 1 && status == 1
-                    if (SPUtils.isLogin() ) {
-                        menuWindow.dismiss();
+                    if (SPUtils.isLogin()) {
+
                         mInstructions.setVisibility(View.GONE);
                         String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
                         Log.d("ooooo", userDetail);
@@ -538,14 +577,14 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                                 String uID = String.valueOf(id);
                                 bikeID = String.valueOf(bicycleId);
                                 bookingBike(uID, bikeID);
-//                                UiSettings uiSettings = mMap.getUiSettings();
-//                                uiSettings.setZoomGesturesEnabled(false);
 
                                 bookBikePopupWindow = new BookBikePopupWindow(MainActivity.this, bookBikeItemsOnClick);
                                 //指定父视图，显示在父控件的某个位置（Gravity.TOP,Gravity.RIGHT等）
                                 //  menuWindow.showAtLocation(findViewById(R.id.mapView), Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, -48);
                                 //设置显示在某个指定控件的下方
                                 bookBikePopupWindow.showAsDropDown(findViewById(R.id.top));
+
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -557,6 +596,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                     } else {
                         mInstructions.setVisibility(View.VISIBLE);
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        routeOverlay.removeFromMap();
                     }
             }
         }
@@ -571,21 +611,29 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                     addOverlay(bikeInfos);
                     setUserMapCenter();
                     bookBikePopupWindow.setFocusable(true);
-
                     ToastUtils.showShort(MainActivity.this, "取消预约车辆");
-                    cancelBookingBike(bikeID);
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("取消预约")
+                            .setMessage("每天可预约5次，确认要取消吗？")
+                            .setNegativeButton("取消", null)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    cancelBookingBike(bikeID);
+                                }
+                            }).create().show();
                     break;
             }
         }
     };
 
     private void cancelBookingBike(String bikeID) {
-       Map<String,String> map = new HashMap<>();
-        map.put("bookingCarId",bookingCarId);
-        map.put("bicycleId",bikeID);
-        Log.d("自行车",bikeID);
-        ToastUtils.showShort(MainActivity.this,bikeID);
-        OkHttpUtils.post().url(Api.BASE_URL+Api.CANCELBOOK).params(map).build().execute(new StringCallback() {
+        Map<String, String> map = new HashMap<>();
+        map.put("bookingCarId", bookingCarId);
+        map.put("bicycleId", bikeID);
+        Log.d("自行车", bikeID);
+        ToastUtils.showShort(MainActivity.this, bikeID);
+        OkHttpUtils.post().url(Api.BASE_URL + Api.CANCELBOOK).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
 
@@ -617,7 +665,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 Gson gson = new Gson();
                 BookingBikeInfo bookingBikeInfo = gson.fromJson(response, BookingBikeInfo.class);
                 bookingCarId = bookingBikeInfo.getBookingCarId();
-                LogUtils.d("bookingCarId",bookingCarId);
+                LogUtils.d("bookingCarId", bookingCarId);
                 String bookingCarDate = bookingBikeInfo.getBookingCarDate();
             }
         });
@@ -862,9 +910,10 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                } else {
-                    ToastUtils.showLong(App.getContext(), "当前周围没有车辆");
                 }
+//                else {
+//                    ToastUtils.showLong(App.getContext(), "当前周围没有车辆");
+//                }
             }
         });
     }
@@ -1089,10 +1138,11 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         }
     }
 
+
     public class BookBikePopupWindow extends PopupWindow {
         TextView mBookBikeLocationInfo;
         TextView mBikeNumber;
-        TextView mHoldTime;
+        CountdownTextView mHoldTime;
         Button mCancel;
         private View mCancelBookBikeWindow;
 
@@ -1106,13 +1156,17 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             mBookBikeLocationInfo = (TextView) mCancelBookBikeWindow.findViewById(R.id.book_bike_location_info);
             mBikeNumber = (TextView) mCancelBookBikeWindow.findViewById(R.id.bikeNumber);
 
-            mHoldTime = (TextView) mCancelBookBikeWindow.findViewById(R.id.hold_time);
+            mHoldTime = (CountdownTextView) mCancelBookBikeWindow.findViewById(R.id.hold_time);
             mCancel = (Button) mCancelBookBikeWindow.findViewById(R.id.cancel_book);
             //为控件赋值
             mBookBikeLocationInfo.setText(resultAddress);
-            Log.d("自行车标号", bicycleNo + "");
+            mHoldTime.init("%s", 900);
+            mHoldTime.start(1);
+//            if(){
+//
+//
+//            }
             mBikeNumber.setText(String.valueOf(bicycleNo));
-
             // 设置按钮监听
             mCancel.setOnClickListener(bookBikeItemsOnClick);
             // 设置SelectPicPopupWindow的View
@@ -1163,6 +1217,16 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     private void receiveFromLogin(MessageEvent info) {
         LogUtils.e(info.toString());
         mInstructions.setVisibility(View.GONE);
+    }
+
+    //登录页面发来的消息，将mInstructions控件隐藏
+    @Subscriber(tag = "show", mode = ThreadMode.ASYNC)
+    private void showWidget(MessageEvent info) {
+        LogUtils.d("SHOW", info.toString());
+
+//        mBtnMyHelp.setVisibility(View.VISIBLE);
+//        mBtnMyLocation.setVisibility(View.VISIBLE);
+//        mScan.setVisibility(View.VISIBLE);
     }
 
 }
