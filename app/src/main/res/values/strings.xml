@@ -14,4 +14,8 @@
     <string name="all">全部单车</string>
     <string name="one">一类车</string>
     <string name="two">二类车</string>
+    <string name="mobile_tip_one">原手机号退押金(2-7个工作日到帐)</string>
+    <string name="mobile_tip_two">更换手机号，登录重新交押金</string>
+    <string name="mobile_tip_there">车费余额，行程等信息不变</string>
+    <string name="mobile_title">手机号</string>
 </resources>

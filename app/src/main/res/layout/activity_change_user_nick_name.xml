@@ -4,7 +4,6 @@
     android:id="@+id/activity_change_user_nick_name"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context="com.dcch.sharebike.moudle.user.activity.ChangeUserNickNameActivity">
 
     <FrameLayout
@@ -38,10 +37,12 @@
             android:text="保存"
             android:textColor="@color/common"
             android:textSize="16sp" />
-
     </FrameLayout>
     
-    <TextView
+    <EditText
+        android:padding="10dp"
+        android:drawableRight="@mipmap/clear_text"
+        android:background="@null"
         android:id="@+id/change_nickname"
         android:layout_marginTop="20dp"
         android:layout_below="@+id/nicknameInfo"

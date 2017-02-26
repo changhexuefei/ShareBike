@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.xys.libzxing"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.xys.libzxing">
 
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
@@ -9,7 +9,11 @@
         android:allowBackup="true"
         android:label="@string/app_name">
         <activity android:name=".zxing.activity.CaptureActivity"/>
-
+        <activity
+            android:name=".zxing.activity.ClickCameraPopupActivity"
+            android:theme="@style/translucent"
+            >
+        </activity>
     </application>
 
 </manifest>

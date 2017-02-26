@@ -11,15 +11,19 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
-import com.dcch.sharebike.moudle.user.activity.PickPhotoActivity;
 import com.louisgeek.multiedittextviewlib.MultiEditInputView;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.finalteam.rxgalleryfinal.RxGalleryFinal;
+import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
+import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultSubscriber;
+import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,9 +66,23 @@ public class ReportIllegalParkingFragment extends Fragment {
                 startActivityForResult(i4, 0);
                 break;
             case R.id.select_photo:
-                Intent selectPhoto = new Intent(App.getContext(),PickPhotoActivity.class);
-//                startActivity(selectPhoto);
-                startActivityForResult(selectPhoto,1);
+                RxGalleryFinal.with(getActivity())
+                        .image()
+                        .radio()
+                        .crop()
+                        .imageLoader(ImageLoaderType.GLIDE)
+                        .subscribe(new RxBusResultSubscriber<ImageRadioResultEvent>() {
+                            @Override
+                            protected void onEvent(ImageRadioResultEvent imageRadioResultEvent) throws Exception {
+                                //得到图片的路径
+                                String result = imageRadioResultEvent.getResult().getOriginalPath();
+                                if (result != null && !result.equals("")) {
+                                    //将图片赋值给图片控件
+                                    Glide.with(App.getContext()).load(result).into(mSelectPhoto);
+                                    //下一步将选择的图片上传到服务器
+                                }
+                            }
+                        }).openGallery();
                 break;
             case R.id.confirm:
                 break;

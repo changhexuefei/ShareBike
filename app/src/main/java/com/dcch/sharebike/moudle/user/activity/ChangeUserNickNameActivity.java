@@ -2,11 +2,13 @@ package com.dcch.sharebike.moudle.user.activity;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -19,7 +21,8 @@ public class ChangeUserNickNameActivity extends BaseActivity {
     @BindView(R.id.save_nickname)
     TextView saveNickname;
     @BindView(R.id.change_nickname)
-    TextView changeNickname;
+    EditText changeNickname;
+    private String mNickname;
 
     @Override
     protected int getLayoutId() {
@@ -28,6 +31,12 @@ public class ChangeUserNickNameActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        Intent intent = getIntent();
+        mNickname = intent.getStringExtra("nickname");
+        if (!mNickname.equals("") && mNickname != null) {
+            changeNickname.setText(mNickname);
+        }
+
 
     }
 
@@ -39,18 +48,27 @@ public class ChangeUserNickNameActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.save_nickname:
-                getIntentInfo();
+                String newName = changeNickname.getText().toString().trim();
+                if (newName != null) {
+                    if (newName.equals("")) {
+                        ToastUtils.showLong(ChangeUserNickNameActivity.this, "昵称不能为空！");
+                    }else if (newName.equals(mNickname)) {
+                        ToastUtils.showLong(ChangeUserNickNameActivity.this, "昵称不能相同，请重新提交！");
+                    }else {
+                        saveNewName(newName);
+                        finish();
+                    }
+                }
+
                 break;
         }
     }
-    public void getIntentInfo(){
-        Intent intent = getIntent();
-        String nickname = intent.getStringExtra("nickname");
-        if(!nickname.equals("") && nickname != null){
 
-
-        }
-
+    private void saveNewName(String newName) {
+        Intent result = new Intent();
+        result.putExtra("newName", newName);
+        this.setResult(0, result);
     }
+
 
 }

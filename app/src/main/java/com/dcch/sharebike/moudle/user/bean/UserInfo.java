@@ -10,10 +10,10 @@ public class UserInfo implements Serializable {
 
 
     /**
-     * id : 110
+     * id : 119
      * name :
-     * nickName : 17701116666
-     * phone : 17701116666
+     * nickName : 17701273631
+     * phone : 17701273631
      * idcard : null
      * useraddress : null
      * aggregateAmount : 0
@@ -21,13 +21,14 @@ public class UserInfo implements Serializable {
      * minaggregate : 0
      * maxaggregate : 0
      * integral : 0
-     * status : 0
      * mileage : null
      * password : null
      * usersex : 0
      * userage : 0
      * userimage : null
      * messagecode : 1
+     * cashStatus : 0
+     * status : 0
      */
 
     private int id;
@@ -41,37 +42,14 @@ public class UserInfo implements Serializable {
     private int minaggregate;
     private int maxaggregate;
     private int integral;
-    private int status;
     private Object mileage;
     private Object password;
     private int usersex;
     private int userage;
     private Object userimage;
     private String messagecode;
-
-    @Override
-    public String toString() {
-        return "UserInfo{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", nickName='" + nickName + '\'' +
-                ", phone='" + phone + '\'' +
-                ", idcard=" + idcard +
-                ", useraddress=" + useraddress +
-                ", aggregateAmount=" + aggregateAmount +
-                ", pledgeCash=" + pledgeCash +
-                ", minaggregate=" + minaggregate +
-                ", maxaggregate=" + maxaggregate +
-                ", integral=" + integral +
-                ", status=" + status +
-                ", mileage=" + mileage +
-                ", password=" + password +
-                ", usersex=" + usersex +
-                ", userage=" + userage +
-                ", userimage=" + userimage +
-                ", messagecode='" + messagecode + '\'' +
-                '}';
-    }
+    private int cashStatus;
+    private int status;
 
     public int getId() {
         return id;
@@ -161,14 +139,6 @@ public class UserInfo implements Serializable {
         this.integral = integral;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
     public Object getMileage() {
         return mileage;
     }
@@ -215,5 +185,21 @@ public class UserInfo implements Serializable {
 
     public void setMessagecode(String messagecode) {
         this.messagecode = messagecode;
+    }
+
+    public int getCashStatus() {
+        return cashStatus;
+    }
+
+    public void setCashStatus(int cashStatus) {
+        this.cashStatus = cashStatus;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

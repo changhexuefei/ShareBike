@@ -393,7 +393,8 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 break;
             case R.id.scan:
                 ToastUtils.showLong(this, "我是扫描");
-                if (SPUtils.isLogin() && cashStatus == 1 && status == 1) {
+                // && cashStatus == 1 && status == 1
+                if (SPUtils.isLogin()) {
                     MainActivityPermissionsDispatcher.showCameraWithCheck(this);
                     Intent i4 = new Intent(this, CaptureActivity.class);
                     startActivityForResult(i4, 0);
@@ -468,9 +469,9 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 mMarker = (Marker) mMap.addOverlay(options);
             }
         }
-//      else {
-//            ToastUtils.showLong(this, "当前周围没有车辆");
-//        }
+      else {
+            ToastUtils.showLong(this, "当前周围没有车辆");
+        }
     }
 
     private void clickBaiduMapMark() {
@@ -520,8 +521,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                                 String uID = String.valueOf(id);
                                 bikeID = String.valueOf(bicycleId);
                                 bookingBike(uID, bikeID);
-//                                UiSettings uiSettings = mMap.getUiSettings();
-//                                uiSettings.setZoomGesturesEnabled(false);
 
                                 bookBikePopupWindow = new BookBikePopupWindow(MainActivity.this, bookBikeItemsOnClick);
                                 //指定父视图，显示在父控件的某个位置（Gravity.TOP,Gravity.RIGHT等）
@@ -553,7 +552,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                     addOverlay(bikeInfos);
                     setUserMapCenter();
                     bookBikePopupWindow.setFocusable(true);
-
                     ToastUtils.showShort(MainActivity.this, "取消预约车辆");
                     cancelBookingBike(bikeID);
                     break;
@@ -844,8 +842,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                } else {
-                    ToastUtils.showLong(App.getContext(), "当前周围没有车辆");
                 }
             }
         });
@@ -897,7 +893,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             mSearch.destroy();
         }
         System.exit(0);
-
     }
 
     @Override

@@ -186,8 +186,7 @@
                     android:layout_alignParentRight="true"
                     android:drawablePadding="10dp"
                     android:drawableRight="@mipmap/forward"
-                    android:padding="10dp"
-                    android:text="48元"/>
+                    android:padding="10dp"/>
             </RelativeLayout>
 
             <View

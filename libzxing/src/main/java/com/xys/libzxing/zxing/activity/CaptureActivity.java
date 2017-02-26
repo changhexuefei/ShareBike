@@ -25,12 +25,17 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.zxing.Result;
 import com.xys.libzxing.R;
@@ -55,6 +60,11 @@ import java.lang.reflect.Field;
 public final class CaptureActivity extends Activity implements SurfaceHolder.Callback {
 
     private static final String TAG = CaptureActivity.class.getSimpleName();
+    ImageView mBack;
+    TextView mHelpTip;
+    RadioButton mManualInput;
+    RadioButton mOpenFlashLight;
+    RadioGroup mCaptureMaskBottom;
 
     private CameraManager cameraManager;
     private CaptureActivityHandler handler;
@@ -83,8 +93,11 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_capture);
-
+        mBack = (ImageView) findViewById(R.id.back);
+        mHelpTip = (TextView) findViewById(R.id.help_tip);
+        mCaptureMaskBottom = (RadioGroup) findViewById(R.id.capture_mask_bottom);
         scanPreview = (SurfaceView) findViewById(R.id.capture_preview);
         scanContainer = (RelativeLayout) findViewById(R.id.capture_container);
         scanCropView = (RelativeLayout) findViewById(R.id.capture_crop_view);
@@ -92,7 +105,19 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
         inactivityTimer = new InactivityTimer(this);
         beepManager = new BeepManager(this);
-
+        mBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        mHelpTip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(CaptureActivity.this,ClickCameraPopupActivity.class));
+                Toast.makeText(CaptureActivity.this,"您需要帮助",Toast.LENGTH_SHORT).show();
+            }
+        });
         TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0.0f, Animation
                 .RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT,
                 0.9f);
@@ -302,4 +327,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         }
         return 0;
     }
+
+
+
 }

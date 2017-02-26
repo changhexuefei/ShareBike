@@ -20,6 +20,7 @@ import com.dcch.sharebike.moudle.user.activity.PersonInfoActivity;
 import com.dcch.sharebike.moudle.user.activity.SettingActivity;
 import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
 import com.dcch.sharebike.moudle.user.activity.WalletInfoActivity;
+import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 
@@ -63,6 +64,7 @@ public class LoginFragment extends Fragment {
     RelativeLayout setting;
     @BindView(R.id.remainSum)
     TextView remainSum;
+    private UserInfo mInfo;
 
 
     public LoginFragment() {
@@ -82,18 +84,39 @@ public class LoginFragment extends Fragment {
             if (userDetail != null) {
                 try {
                     JSONObject object = new JSONObject(userDetail);
-//                    UserInfo info = new UserInfo();
-                    String nickname = object.getString("nickName");
-                    String nn = nickname.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
-                    nickName.setText(nn);
-                    remainSum.setText(String.valueOf(object.optString("pledgeCash")));
+                    mInfo = new UserInfo();
+                    mInfo.setNickName(object.getString("nickName"));
+                    mInfo.setName(object.getString("name"));
+                    mInfo.setPhone(object.getString("phone"));
+                    mInfo.setStatus(object.getInt("status"));
+                    mInfo.setPledgeCash(object.getInt("pledgeCash"));
+                    mInfo.setCashStatus(object.getInt("cashStatus"));
+                    //用户头像应该为string类型的图像路径
+
+//                        mInfo.setUserimage(object.getString("userimage"));
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
+                //手机号中间四位数字用*号代替的做法
+                if (mInfo!=null) {
+                    String nn = mInfo.getNickName().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
+                    nickName.setText(nn);
+                    remainSum.setText(String.valueOf(mInfo.getPledgeCash()));
+                    //骑行距离
+//                    person_distance.setText();
+                    //节约碳排放
+//                    discharge.setText();
+                    //运动成就
+//                    sportsAchievement.setText();
+                    //用户头像
+                    if(mInfo.getUserimage()==null){
+                        userIcon.setImageResource(R.mipmap.avatar_default_login);
+                    }else {
+                        //使用用户自定义的头像
+                    }
+                }
             }
-//
-//            remainSum.setText(String.valueOf(info.getPledgeCash()));
         }
         return view;
     }
@@ -110,6 +133,9 @@ public class LoginFragment extends Fragment {
             case R.id.userIcon:
                 ToastUtils.showLong(getContext(), "用户头像");
                 Intent personInfo = new Intent(App.getContext(), PersonInfoActivity.class);
+                Bundle userBundle = new Bundle();
+                userBundle.putSerializable("userBundle",mInfo);
+                personInfo.putExtras(userBundle);
                 startActivity(personInfo);
                 break;
             case R.id.wallet:

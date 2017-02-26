@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_mobile_num"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.dcch.sharebike.moudle.user.activity.MobileNumActivity">
+
+    <FrameLayout
+        android:id="@+id/mobile_num"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/colorHeading">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp"
+            android:src="@mipmap/back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/mobile_title"
+            android:textColor="@color/common"
+            android:textSize="16sp"/>
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/mobile_icon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/mobile_num"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:src="@mipmap/mobile_phone_ic"/>
+
+    <TextView
+        android:id="@+id/phone_show"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mobile_icon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:text="您当前的手机号为11111111111"
+        android:textColor="#000000"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/tip_one"
+        style="@style/mobile_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/phone_show"
+        android:layout_marginTop="25dp"
+        android:text="@string/mobile_tip_one"/>
+
+    <TextView
+        android:id="@+id/tip_two"
+        style="@style/mobile_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tip_one"
+        android:layout_below="@+id/tip_one"
+        android:text="@string/mobile_tip_two"/>
+
+    <TextView
+        style="@style/mobile_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tip_one"
+        android:layout_below="@+id/tip_two"
+        android:text="@string/mobile_tip_there"/>
+
+    <Button
+        android:id="@+id/replace_mobile_num"
+        android:textSize="14sp"
+        android:textColor="@color/common"
+        android:text="更换手机号"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="30dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+</RelativeLayout>
