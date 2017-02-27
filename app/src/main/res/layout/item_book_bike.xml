@@ -80,14 +80,13 @@
             android:layout_toRightOf="@+id/bookTips"
             android:text="保留时间" />
 
-        <com.dcch.sharebike.view.CountdownTextView
+        <com.dcch.sharebike.MainActivity.CountdownTextView
             android:id="@+id/hold_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/tv_hold_time"
-            android:text="14:59"
             android:textColor="#000000" />
 
         </RelativeLayout>

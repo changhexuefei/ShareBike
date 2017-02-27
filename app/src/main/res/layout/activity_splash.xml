@@ -6,9 +6,34 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
+
+
+
     <ImageView
         android:id="@+id/welcome_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/activity_splash_background" />
+        android:background="@drawable/timg" />
+    <TextView
+        android:textSize="30dp"
+        android:layout_marginTop="180dp"
+        android:textColor="#ffffff"
+        android:layout_marginLeft="60dp"
+        android:id="@+id/tv01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="麒麟单车"
+        />
+    <TextView
+        android:textSize="30dp"
+        android:layout_marginTop="10dp"
+        android:textColor="#ffffff"
+        android:layout_marginLeft="150dp"
+        android:layout_below="@+id/tv01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="共享快乐"
+        />
+
+
 </RelativeLayout>

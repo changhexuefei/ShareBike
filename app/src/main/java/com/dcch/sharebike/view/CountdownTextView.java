@@ -76,6 +76,7 @@ public class CountdownTextView extends TextView {
                 case what_count_down_tick:
                     if(mSeconds <= 0){
                         setText(String.format(mStrFormat,"00:00"));
+
                     }else {
                         Log.e(TAG,"mSeconds="+mSeconds+"#what_count_down_tick:"+second2TimeSecond(mSeconds)+"#"+String.format(mStrFormat,second2TimeSecond(mSeconds)));
                         setText(mStrFormat== null ?second2TimeSecond(mSeconds):String.format(mStrFormat,second2TimeSecond(mSeconds)));
