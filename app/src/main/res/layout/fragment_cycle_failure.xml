@@ -60,7 +60,7 @@
                     android:layout_below="@+id/bike_code"
                     android:layout_toRightOf="@+id/report_issue"
                     android:text="重新扫码或输入"
-                    android:textColor="#e71212"
+                    android:textColor="@color/colorTitle"
                     android:textSize="10sp"
                     android:visibility="invisible"/>
 

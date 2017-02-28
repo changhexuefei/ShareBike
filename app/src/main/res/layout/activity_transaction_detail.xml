@@ -36,7 +36,7 @@
             android:layout_gravity="center|right"
             android:gravity="center"
             android:text="退款说明"
-            android:textColor="@color/common"
+            android:textColor="#ffffff"
             android:textSize="14sp" />
     </FrameLayout>
 

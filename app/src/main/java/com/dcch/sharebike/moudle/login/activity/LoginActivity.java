@@ -252,15 +252,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
         if (!TextUtils.isEmpty(phone) && InPutUtils.isMobilePhone(phone)) {
             getSecurityCode.setClickable(true);
-            getSecurityCode.setBackgroundColor(Color.parseColor("#F05B47"));
+            getSecurityCode.setBackgroundColor(Color.parseColor("#F8941D"));
 
         }
 
 
         if (!TextUtils.isEmpty(seCode) && !TextUtils.isEmpty(phone)) {
-            getSecurityCode.setBackgroundColor(Color.parseColor("#c6bfbf"));
+            getSecurityCode.setBackgroundColor(Color.parseColor("#F8941D"));
             confirm.setClickable(true);
-            confirm.setBackgroundColor(Color.parseColor("#41c0dc"));
+            confirm.setBackgroundColor(Color.parseColor("#F8941D"));
 
         } else {
             confirm.setClickable(false);
