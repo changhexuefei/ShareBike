@@ -276,8 +276,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 //        setMarkerInfo();
         clickBaiduMapMark();
         clickDismissOverlay();
-
-
     }
 
     private void checkBookingBikeInfoByUserID(String uID) {
@@ -504,7 +502,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                     startActivity(i3);
                 } else {
                     popupDialog();
-
                 }
                 break;
             case R.id.scan:
@@ -743,7 +740,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         strings.add(new BottomSheetBean(R.mipmap.report, "举报违停"));
         strings.add(new BottomSheetBean(R.mipmap.other, "其他问题"));
 
-
         StyledDialog.buildBottomSheetGv(this, "客户服务", strings, "", 2, new MyItemDialogListener() {
             @Override
             public void onItemClick(CharSequence text, int position) {
@@ -758,13 +754,11 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                     Intent bikeTrouble = new Intent(MainActivity.this, CustomerServiceActivity.class);
                     bikeTrouble.putExtra("name", "1");
                     startActivity(bikeTrouble);
-
                 }
                 if (position == 2) {
                     Intent reportIllegalParking = new Intent(MainActivity.this, CustomerServiceActivity.class);
                     reportIllegalParking.putExtra("name", "3");
                     startActivity(reportIllegalParking);
-
                 }
                 if (position == 3) {
                     Intent reportIllegalParking = new Intent(MainActivity.this, CustomerServiceActivity.class);
