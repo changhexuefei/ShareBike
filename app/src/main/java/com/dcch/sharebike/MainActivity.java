@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -300,6 +301,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             @Override
             public void onMapClick(LatLng latLng) {
                 mMap.clear();
+
                 addOverlay(bikeInfos);
                 //由于menuWindow会和地图抢夺焦点，所以在设置他的属性时设置为不能获得焦点
                 //就能够满足一起消失的功能
@@ -535,10 +537,12 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     //百度地图的覆盖物点击方法
     private void clickBaiduMapMark() {
         mMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
+
             @Override
             public boolean onMarkerClick(Marker marker) {
                 if (marker != null) {
                     LatLng latlng = marker.getPosition();
+//                    mMap.removeMakersOverlay(ids);
                     mInstructions.setVisibility(View.GONE);
 //                    ToastUtils.showShort(MainActivity.this, "我是marker" + marker);
                     addOverlay(bikeInfos);//
@@ -628,7 +632,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         OkHttpUtils.post().url(Api.BASE_URL + Api.CANCELBOOK).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-
+                LogUtils.e(e.getMessage());
             }
 
             @Override
@@ -649,7 +653,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             @Override
             public void onError(Call call, Exception e, int id) {
                 LogUtils.e(e.getMessage());
-
             }
 
             @Override
@@ -764,7 +767,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                     }
                 }
             });
-
         }
     }
 
@@ -847,6 +849,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                  * 注： 该方法只对Marker类型的overlay有效
                  * */
                 overlay.zoomToSpan();
+
             }
 
 
@@ -1347,7 +1350,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             }
         }
         private Handler mHandler = new Handler() {
-            public void handleMessage(android.os.Message msg) {
+            public void handleMessage(Message msg) {
                 switch (msg.what){
                     case what_count_down_tick:
                         if(mSeconds <= 0){
