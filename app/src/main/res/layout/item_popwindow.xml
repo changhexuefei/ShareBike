@@ -114,7 +114,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:background="@color/colorHeading"
+            android:background="@color/colorTitle"
             android:text="预约用车"
             android:textColor="#ffffff"/>
 

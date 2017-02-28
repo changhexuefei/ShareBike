@@ -38,7 +38,7 @@
 
     <style name="login_title">
         <item name="android:gravity">center</item>
-        <item name="android:textColor">#d71616</item>
+        <item name="android:textColor">@color/colorTitle</item>
         <item name="android:textSize">26sp</item>
     </style>
 

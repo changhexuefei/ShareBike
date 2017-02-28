@@ -18,4 +18,5 @@
     <string name="mobile_tip_two">更换手机号，登录重新交押金</string>
     <string name="mobile_tip_there">车费余额，行程等信息不变</string>
     <string name="mobile_title">手机号</string>
+    <string name="cash_pledge">199</string>
 </resources>

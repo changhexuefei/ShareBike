@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorHeading">#41c0dc</color>
-    <color name="colorTitle">#F05B47</color>
-    <color name="common">#ffffff</color>
+    <color name="colorTitle">#F8941D</color>
+    <color name="common">#262262</color>
     <color name="lineColor">#f4f0f0</color>
     <color name="translucent_background">#80000000</color>
 </resources>
