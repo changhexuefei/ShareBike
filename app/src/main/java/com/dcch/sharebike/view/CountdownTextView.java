@@ -70,13 +70,18 @@ public class CountdownTextView extends TextView {
             mTimerMap.get(position).schedule(mTimerTask,0,1000);
         }
     }
+    public void finish(){
+        mTimerTask.cancel();
+        mSeconds=0;
+    }
+
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what){
                 case what_count_down_tick:
                     if(mSeconds <= 0){
                         setText(String.format(mStrFormat,"00:00"));
-
+                        finish();
                     }else {
                         Log.e(TAG,"mSeconds="+mSeconds+"#what_count_down_tick:"+second2TimeSecond(mSeconds)+"#"+String.format(mStrFormat,second2TimeSecond(mSeconds)));
                         setText(mStrFormat== null ?second2TimeSecond(mSeconds):String.format(mStrFormat,second2TimeSecond(mSeconds)));
