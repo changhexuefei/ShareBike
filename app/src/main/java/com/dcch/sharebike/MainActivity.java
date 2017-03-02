@@ -66,6 +66,7 @@ import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.listener.MyOrientationListener;
 import com.dcch.sharebike.moudle.home.bean.BikeInfo;
+import com.dcch.sharebike.moudle.home.bean.BikeRentalOrderInfo;
 import com.dcch.sharebike.moudle.home.bean.BookingBikeInfo;
 import com.dcch.sharebike.moudle.home.bean.UserBookingBikeInfo;
 import com.dcch.sharebike.moudle.login.activity.ClickCameraPopupActivity;
@@ -81,7 +82,10 @@ import com.dcch.sharebike.overlayutil.WalkingRouteOverlay;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
+import com.dcch.sharebike.view.BikeRentalOrderPopupWindow;
+import com.dcch.sharebike.view.BookBikePopupWindow;
 import com.dcch.sharebike.view.MyCountDownTimer;
+import com.dcch.sharebike.view.UserBookingBikePopupWindow;
 import com.google.gson.Gson;
 import com.hss01248.dialog.StyledDialog;
 import com.hss01248.dialog.bottomsheet.BottomSheetBean;
@@ -97,10 +101,7 @@ import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 import org.simple.eventbus.ThreadMode;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -189,7 +190,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     //    private Address locationDescribe;
     //POI搜索相关
 //    public PoiSearch mPoiSearch = null;
-    private SelectPicPopupWindow menuWindow; // 自定义的头像编辑弹出框
+    private SelectPicPopupWindow menuWindow = null; // 自定义弹出框
     private int mDuration;
     private String resultAddress;
     private String address1;
@@ -198,7 +199,8 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     private MapStatusUpdate mMapStatusUpdate;
     private BikeInfo bikeInfo;
     //    private int userid;
-    private BookBikePopupWindow bookBikePopupWindow;
+    private BookBikePopupWindow bookBikePopupWindow = null ;
+    private UserBookingBikePopupWindow userBookingBikePopupWindow = null;
     private int bicycleNo;
     private int cashStatus;
     private int status;
@@ -211,7 +213,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     private String uID;
     private String currentTime;
     private String bookingCarDate;
-    private UserBookingBikeInfo userBookingBikeInfo;
+    private UserBookingBikeInfo userBookingBikeInfo = null;
     private Double locationLongitude;
     private Double locationLatitude;
     private long diff;
@@ -220,11 +222,15 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     private LatLng clickMarkLatlng;
     private LatLng currentLatLng;
     private boolean isBook = false;
+    private boolean isShowRideOrder = false;
     private double clickLat;
     private double clickLon;
     private String bikeNo = "";
     private MyCountDownTimer timer;
     private String count;
+    private BookingBikeInfo bookingBikeInfo=null;
+    private BikeRentalOrderInfo bikeRentalOrderInfo = null;
+    private BikeRentalOrderPopupWindow orderPopupWindow = null;
 
 
     @Override
@@ -237,10 +243,11 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 //        classify.check(R.id.allBike);
         ButterKnife.bind(this);
         MainActivityPermissionsDispatcher.initPermissionWithCheck(this);
-        stringDate = getStringDate();
+//        stringDate = getStringDate();
         showCamera();
         initPermission();
         userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
+        Log.d("用户明细", userDetail);
         object = null;
         try {
             object = new JSONObject(userDetail);
@@ -315,15 +322,16 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                                      bookingCarId = userBookingBikeInfo.getBookingCarId();
                                      if (bikeNo != null && !bikeNo.equals("")
                                              && resultAddress != null && !resultAddress.equals("")
-                                             && bookingCarId != null && !bookingCarId.equals("")
-                                             ) {
+                                             && bookingCarId != null && !bookingCarId.equals("")) {
                                          Log.d("自行车地址", resultAddress);
+                                         bikeInfo.setAddress(resultAddress);
+                                         bicycleNo = Integer.valueOf(bikeNo).intValue();
+                                         bikeInfo.setBicycleNo(bicycleNo);
                                          mMap.clear();
                                          forLocationAddMark(clickLon, clickLat);
-                                         bicycleNo = Integer.valueOf(bikeNo).intValue();
-//
-                                         bookBikePopupWindow = new BookBikePopupWindow(MainActivity.this, bookBikeItemsOnClick);
-                                         bookBikePopupWindow.showAsDropDown(findViewById(R.id.top));
+
+                                         userBookingBikePopupWindow = new UserBookingBikePopupWindow(MainActivity.this, userBookingBikeInfo, bookBikeItemsOnClick);
+                                         userBookingBikePopupWindow.showAsDropDown(findViewById(R.id.top));
                                      }
                                      if (bicycleId != 0) {
                                          bikeID = String.valueOf(bicycleId);
@@ -335,13 +343,10 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                                      if (userBookingBikeInfoLatitude != null && !userBookingBikeInfoLatitude.equals("")) {
                                          locationLatitude = Double.valueOf(userBookingBikeInfoLatitude);
                                      }
-
 //                                     if (locationLatitude != null && !locationLatitude.equals("")
 //                                             && locationLongitude != null && !locationLatitude.equals("")) {
 //                                         forLocationAddMark(locationLongitude, locationLatitude);
 //                                     }
-
-
                                  } else {
                                      addOverlay(bikeInfos);
                                  }
@@ -376,26 +381,28 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             public void onMapClick(LatLng latLng) {
                 //当客户已经约车，这时客户点击地图，只显示预约的车辆和路线的覆盖物，其余消失。
                 if (isBook) {
+                    mMap.clear();
                     forLocationAddMark(clickLon, clickLat);
                     paintingLine(currentLatLng, clickMarkLatlng);
-
-                } else {
+                }
+                if (isShowRideOrder) {
                     mMap.clear();
-                    addOverlay(bikeInfos);
                 }
                 //由于menuWindow会和地图抢夺焦点，所以在设置他的属性时设置为不能获得焦点
                 //就能够满足一起消失的功能
                 if (menuWindow != null) {
                     menuWindow.dismiss();
                 }
-                if (bookBikePopupWindow != null) {
-
-                }
+//                if (bookBikePopupWindow != null) {
+//
+//                }
                 if (SPUtils.isLogin()) {
                     mInstructions.setVisibility(View.GONE);
                 } else if (!SPUtils.isLogin()) {
                     mInstructions.setVisibility(View.VISIBLE);
                 }
+                mMap.clear();
+                addOverlay(bikeInfos);
                 setUserMapCenter();
             }
 
@@ -406,8 +413,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 return false;
             }
         });
-
-
     }
 
     @Override
@@ -584,17 +589,11 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             OverlayOptions options;
             for (int i = 0; i < bikeInfos.size(); i++) {
                 bikeInfo = (BikeInfo) bikeInfos.get(i);
-
                 String lat = bikeInfo.getLatitude();
-
                 String lng = bikeInfo.getLongitude();
-
                 double lat1 = Double.parseDouble(lat);
-
                 double lng1 = Double.parseDouble(lng);
-
                 latLng = new LatLng(lat1, lng1);
-
                 //设置marker
                 options = new MarkerOptions()
                         .position(latLng)//设置位置
@@ -614,10 +613,16 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         mMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                if (marker != null && !isBook) {
+                if (marker != null) {
+                    int period = marker.getPeriod();
+                    Log.d("图层", period + "");
                     clickMarkLatlng = marker.getPosition();
                     if (menuWindow != null && !menuWindow.equals("")) {
                         menuWindow.dismiss();
+                    }
+                    if (isBook) {
+
+
                     }
                     mInstructions.setVisibility(View.GONE);
                     addOverlay(bikeInfos);//
@@ -637,66 +642,65 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.order:
-                    queryBookingNum(phone);
-                    LogUtils.d("电话", phone);
-
-                    if (count != null && !count.equals("")) {
-                        int num = Integer.valueOf(count);
-                        Log.d("rrrr", num + "");
-                        if (num > 0 && num < 5) {
 //                    addOverlay(bikeInfos);
 //                    setUserMapCenter();
-                            ToastUtils.showShort(MainActivity.this, "预约车辆");
-                            //&& cashStatus == 1 && status == 1
-                            if (SPUtils.isLogin()) {
-                                mMap.clear();
-                                isBook = true;
-                                if (menuWindow != null && !menuWindow.equals("")) {
-                                    menuWindow.setOutsideTouchable(true);
-                                    menuWindow.dismiss();
+//
+                    //&& cashStatus == 1 && status == 1
+                    if (SPUtils.isLogin()) {
+                        ToastUtils.showShort(MainActivity.this, "我登录了");
+                        if (phone != null && !phone.equals("")) {
+                            queryBookingNum(phone);
+                            LogUtils.d("电话", phone);
+                        }
+                        // ! &&
+                        if (count != null && !count.equals("") && Integer.valueOf(count) < 5) {
+                            LogUtils.d("++++++count", count);
+                            mMap.clear();
+
+                            if (menuWindow != null && !menuWindow.equals("")) {
+                                menuWindow.setOutsideTouchable(true);
+                                menuWindow.dismiss();
+                            }
+                            if (clickMarkLatlng != null && !clickMarkLatlng.equals("")) {
+                                clickLat = clickMarkLatlng.latitude;
+                                clickLon = clickMarkLatlng.longitude;
+                                forLocationAddMark(clickLon, clickLat);
+                                paintingLine(currentLatLng, clickMarkLatlng);
+                            }
+                            mInstructions.setVisibility(View.GONE);
+                            Log.d("ooooo", userDetail);
+                            if (userDetail != null) {
+                                try {
+                                    int bicycleId = bikeInfo.getBicycleId();
+                                    cashStatus = object.getInt("cashStatus");
+                                    status = object.getInt("status");
+                                    bicycleNo = bikeInfo.getBicycleNo();
+                                    Log.d("zixinghe", bicycleNo + "");
+                                    bikeID = String.valueOf(bicycleId);
+                                    bikeNo = String.valueOf(bicycleNo);
+                                    bookingBike(uID, bikeNo);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                                if (clickMarkLatlng != null && !clickMarkLatlng.equals("")) {
-                                    clickLat = clickMarkLatlng.latitude;
-                                    clickLon = clickMarkLatlng.longitude;
-                                    forLocationAddMark(clickLon, clickLat);
-                                    paintingLine(currentLatLng, clickMarkLatlng);
-                                }
-                                mInstructions.setVisibility(View.GONE);
-                                Log.d("ooooo", userDetail);
-                                if (userDetail != null) {
-                                    try {
-                                        int bicycleId = bikeInfo.getBicycleId();
-                                        cashStatus = object.getInt("cashStatus");
-                                        status = object.getInt("status");
-                                        bicycleNo = bikeInfo.getBicycleNo();
-                                        Log.d("zixinghe", bicycleNo + "");
-                                        bikeID = String.valueOf(bicycleId);
-                                        bikeNo = String.valueOf(bicycleNo);
-                                        bookingBike(uID, bikeNo);
-                                        bookBikePopupWindow = new BookBikePopupWindow(MainActivity.this, bookBikeItemsOnClick);
-                                        //指定父视图，显示在父控件的某个位置（Gravity.TOP,Gravity.RIGHT等）
-                                        //  menuWindow.showAtLocation(findViewById(R.id.mapView), Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, -48);
-                                        //设置显示在某个指定控件的下方
-                                        bookBikePopupWindow.showAsDropDown(findViewById(R.id.top));
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            } else if (SPUtils.isLogin() && cashStatus == 0) {
-                                startActivity(new Intent(MainActivity.this, RechargeActivity.class));
-                            } else if (SPUtils.isLogin() && cashStatus == 1 && status == 0) {
-                                startActivity(new Intent(MainActivity.this, IdentityAuthentication.class));
-                            } else {
-                                mInstructions.setVisibility(View.VISIBLE);
-                                startActivity(new Intent(MainActivity.this, LoginActivity.class));
                             }
                         } else {
+                            ToastUtils.showLong(MainActivity.this, "抱歉，您今天已经预约5次，明天再来吧。");
+                            menuWindow.setFocusable(true);
                             menuWindow.dismiss();
                             mMap.clear();
                             addOverlay(bikeInfos);
                             setUserMapCenter();
-                            ToastUtils.showLong(MainActivity.this, "抱歉，您今天已经预约5次，明天再来吧。");
+//                            }
                         }
+                    } else if (SPUtils.isLogin() && cashStatus == 0) {
+                        startActivity(new Intent(MainActivity.this, RechargeActivity.class));
+                        //
+                    } else if (SPUtils.isLogin() && cashStatus == 1 && status == 0) {
+                        startActivity(new Intent(MainActivity.this, IdentityAuthentication.class));
+                    } else {
+                        ToastUtils.showShort(MainActivity.this, "我没登录");
+                        mInstructions.setVisibility(View.VISIBLE);
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     }
             }
 
@@ -709,7 +713,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.cancel_book:
-
                     new AlertDialog.Builder(MainActivity.this).setTitle("取消预约")
                             .setMessage("每天可预约5次，确认要取消吗?")
                             .setNegativeButton("取消", null)
@@ -729,10 +732,11 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         }
     };
 
+    //根据手机号，查询预约次数
     private void queryBookingNum(String phone) {
-
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone);
+        Log.d("手机号", phone);
         OkHttpUtils.post().url(Api.BASE_URL + Api.BOOKINGNUMBER).params(map).build().execute(new StringCallback() {
 
             @Override
@@ -742,10 +746,11 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
             @Override
             public void onResponse(String response, int id) {
-                LogUtils.d("次数", response);
+//                LogUtils.d("次数", response);
                 try {
                     JSONObject object = new JSONObject(response);
                     count = object.getString("count");
+                    Log.d("次数", count);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -753,11 +758,12 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         });
     }
 
-    private void cancelBookingBike(String bookingCarId, String bikeNo) {
-        if (bookingCarId != null && !bookingCarId.equals("") && bikeNo != null && !bikeNo.equals("")) {
+    //取消预约的方法
+    private void cancelBookingBike(String bookingCarId, String bicycleNo) {
+        if (bookingCarId != null && !bookingCarId.equals("") && bicycleNo != null && !bicycleNo.equals("")) {
             Map<String, String> map = new HashMap<>();
             map.put("bookingCarId", bookingCarId);
-            map.put("bicycleNo", bikeNo);
+            map.put("bicycleNo", bicycleNo);
 
             OkHttpUtils.post().url(Api.BASE_URL + Api.CANCELBOOK).params(map).build().execute(new StringCallback() {
                 @Override
@@ -776,7 +782,9 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                         if (resultStatus.equals("1") && bookingCarStatus == 1) {
                             ToastUtils.showLong(MainActivity.this, "取消成功！");
                             isBook = false;
-                            bookBikePopupWindow.dismiss();
+                            if (bookBikePopupWindow != null && !bookBikePopupWindow.equals("")) {
+                                bookBikePopupWindow.dismiss();
+                            }
                             setUserMapCenter();
                             LogUtils.d("uuu", bikeInfos + "");
                             setUserMapCenter();
@@ -794,7 +802,8 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         }
     }
 
-    private void bookingBike(String uID, String bikeNo) {
+    //预约车辆的方法
+    private void bookingBike(String uID, final String bikeNo) {
         ToastUtils.showShort(this, uID);
         Map<String, String> map = new HashMap<>();
         map.put("userId", uID);
@@ -807,12 +816,39 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
             @Override
             public void onResponse(String response, int id) {
+//                isBook = true;
                 Gson gson = new Gson();
-                BookingBikeInfo bookingBikeInfo = gson.fromJson(response, BookingBikeInfo.class);
+                bookingBikeInfo = gson.fromJson(response, BookingBikeInfo.class);
+                Log.d("111111",bookingBikeInfo+"");
                 bookingCarId = bookingBikeInfo.getBookingCarId();
                 LogUtils.d("bookingCarId", bookingCarId);
                 bookingCarDate = bookingBikeInfo.getBookingCarDate();
+                Object address = bookingBikeInfo.getAddress();
+                Log.d("34343434", address + "");
+                final String bicycleNo = bookingBikeInfo.getBicycleNo();
                 Log.d("预约成功", response);
+                bookBikePopupWindow = new BookBikePopupWindow(MainActivity.this, bookingBikeInfo, bookBikeItemsOnClick);
+                //指定父视图，显示在父控件的某个位置（Gravity.TOP,Gravity.RIGHT等）
+                //  menuWindow.showAtLocation(findViewById(R.id.mapView), Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, -48);
+                //设置显示在某个指定控件的下方
+                bookBikePopupWindow.showAsDropDown(findViewById(R.id.top));
+                timer = (MyCountDownTimer) new MyCountDownTimer(600000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        bookBikePopupWindow.mHoldTime.setText(toClock(millisUntilFinished));
+                    }
+
+                    @Override
+                    public String toClock(long millis) {
+                        return super.toClock(millis);
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        cancelBookingBike(bookingCarId, bicycleNo);
+                    }
+                }.start();
             }
         });
     }
@@ -902,6 +938,16 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                                 @Override
                                 public void onResponse(String response, int id) {
                                     LogUtils.d("rrrrrr", response);
+                                    isShowRideOrder = true;
+                                    Gson gson = new Gson();
+                                    bikeRentalOrderInfo = gson.fromJson(response, BikeRentalOrderInfo.class);
+                                    String bicycleNo = bikeRentalOrderInfo.getBicycleNo();
+                                    ToastUtils.showShort(MainActivity.this, bicycleNo);
+                                    orderPopupWindow = new BikeRentalOrderPopupWindow(MainActivity.this, bikeRentalOrderInfo);
+                                    mMap.clear();
+                                    orderPopupWindow.showAsDropDown(findViewById(R.id.top));
+                                    orderPopupWindow.setOutsideTouchable(false);
+                                    orderPopupWindow.setFocusable(false);
                                 }
                             });
                         }
@@ -1422,86 +1468,68 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         }
     }
 
-    public class BookBikePopupWindow extends PopupWindow {
-        TextView mBookBikeLocationInfo;
-        TextView mBikeNumber;
-        TextView mHoldTime;
-        Button mCancel;
-        private View mCancelBookBikeWindow;
+//    public class BookBikePopupWindow extends PopupWindow {
+//        TextView mBookBikeLocationInfo;
+//        TextView mBikeNumber;
+//        TextView mHoldTime;
+//        Button mCancel;
+//        private View mCancelBookBikeWindow;
+//
+//
+//        public BookBikePopupWindow(Context context, View.OnClickListener bookBikeItemsOnClick) {
+//            super(context);
+//            //创建布局反射器
+//            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//            //加载布局
+//            mCancelBookBikeWindow = inflater.inflate(R.layout.item_book_bike, null);
+//            //初始化控件
+//            mBookBikeLocationInfo = (TextView) mCancelBookBikeWindow.findViewById(R.id.book_bike_location_info);
+//            mBikeNumber = (TextView) mCancelBookBikeWindow.findViewById(R.id.bikeNumber);
+//            mHoldTime = (TextView) mCancelBookBikeWindow.findViewById(R.id.hold_time);
+//            mCancel = (Button) mCancelBookBikeWindow.findViewById(R.id.cancel_book);
+//            //为控件赋值
+//            mBookBikeLocationInfo.setText(resultAddress);
+//            Log.d("自行车标号", bicycleNo + "");
+//            mBikeNumber.setText(String.valueOf(bicycleNo));
 
-
-        public BookBikePopupWindow(Context context, View.OnClickListener bookBikeItemsOnClick) {
-            super(context);
-            //创建布局反射器
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            //加载布局
-            mCancelBookBikeWindow = inflater.inflate(R.layout.item_book_bike, null);
-            //初始化控件
-            mBookBikeLocationInfo = (TextView) mCancelBookBikeWindow.findViewById(R.id.book_bike_location_info);
-            mBikeNumber = (TextView) mCancelBookBikeWindow.findViewById(R.id.bikeNumber);
-            mHoldTime = (TextView) mCancelBookBikeWindow.findViewById(R.id.hold_time);
-            mCancel = (Button) mCancelBookBikeWindow.findViewById(R.id.cancel_book);
-            //为控件赋值
-            mBookBikeLocationInfo.setText(resultAddress);
-            Log.d("自行车标号", bicycleNo + "");
-            mBikeNumber.setText(String.valueOf(bicycleNo));
-            timer = (MyCountDownTimer) new MyCountDownTimer(9000, 1000) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    mHoldTime.setText(toClock(millisUntilFinished));
-                }
-
-                @Override
-                public String toClock(long millis) {
-                    return super.toClock(millis);
-                }
-
-                @Override
-                public void onFinish() {
-                    super.onFinish();
-                    cancelBookingBike(bookingCarId, bikeNo);
-                }
-            }.start();
-
-
-            // 设置按钮监听
-            mCancel.setOnClickListener(bookBikeItemsOnClick);
-            // 设置SelectPicPopupWindow的View
-            this.setContentView(mCancelBookBikeWindow);
-            // 设置SelectPicPopupWindow的View
-            this.setContentView(mCancelBookBikeWindow);
-            // 设置SelectPicPopupWindow弹出窗体的宽
-            this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-            // 设置SelectPicPopupWindow弹出窗体的高
-            this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-            // 设置SelectPicPopupWindow弹出窗体可点击
-//            this.setFocusable(true);
-////             设置SelectPicPopupWindow弹出窗体动画效果
-//            this.setAnimationStyle(R.style.PopupAnimation);
-            // 实例化一个ColorDrawable颜色为半透明
-//        ColorDrawable dw = new ColorDrawable(0x00000000);
-            // 设置SelectPicPopupWindow弹出窗体的背景
-//        this.setBackgroundDrawable(dw);
-            // mMenuView添加OnTouchListener监听判断获取触屏位置如果在选择框外面则销毁弹出框
-            mCancelBookBikeWindow.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                @SuppressLint("ClickableViewAccessibility")
-                public boolean onTouch(View v, MotionEvent event) {
-
-                    int height = mCancelBookBikeWindow.findViewById(R.id.book_bike_pop_layout).getTop();
-                    int y = (int) event.getY();
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        if (y < height) {
-                            dismiss();
-                        }
-                    }
-                    return true;
-                }
-            });
-        }
-
-
-    }
+//            // 设置按钮监听
+//            mCancel.setOnClickListener(bookBikeItemsOnClick);
+//            // 设置SelectPicPopupWindow的View
+//            this.setContentView(mCancelBookBikeWindow);
+//            // 设置SelectPicPopupWindow的View
+//            this.setContentView(mCancelBookBikeWindow);
+//            // 设置SelectPicPopupWindow弹出窗体的宽
+//            this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+//            // 设置SelectPicPopupWindow弹出窗体的高
+//            this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+//            // 设置SelectPicPopupWindow弹出窗体可点击
+////            this.setFocusable(false);
+//////             设置SelectPicPopupWindow弹出窗体动画效果
+////            this.setAnimationStyle(R.style.PopupAnimation);
+//            // 实例化一个ColorDrawable颜色为半透明
+////        ColorDrawable dw = new ColorDrawable(0x00000000);
+//            // 设置SelectPicPopupWindow弹出窗体的背景
+////        this.setBackgroundDrawable(dw);
+//            // mMenuView添加OnTouchListener监听判断获取触屏位置如果在选择框外面则销毁弹出框
+//            mCancelBookBikeWindow.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                @SuppressLint("ClickableViewAccessibility")
+//                public boolean onTouch(View v, MotionEvent event) {
+//
+//                    int height = mCancelBookBikeWindow.findViewById(R.id.book_bike_pop_layout).getTop();
+//                    int y = (int) event.getY();
+//                    if (event.getAction() == MotionEvent.ACTION_UP) {
+//                        if (y < height) {
+//                            dismiss();
+//                        }
+//                    }
+//                    return true;
+//                }
+//            });
+//        }
+//
+//
+//    }
 
 
     //退出登录页面后，设置页面发来的消息，将mInstructions控件显示
@@ -1518,35 +1546,35 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         mInstructions.setVisibility(View.GONE);
     }
 
-    /*
-    * 获取系统时间
-    */
-    private String getStringDate() {
-        Date currentTime = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateString = formatter.format(currentTime);
-        return dateString;
-    }
+//    /*
+//    * 获取系统时间
+//    */
+//    private String getStringDate() {
+//        Date currentTime = new Date();
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        String dateString = formatter.format(currentTime);
+//        return dateString;
+//    }
 
 
-    public long countTime(String stringDate, String bookingCarDate) {
-
-        try {
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date date1 = df.parse(stringDate);
-            Date date2 = df.parse(bookingCarDate);
-            //这样得到的差值是微秒级别
-            diff = date1.getTime() - date2.getTime();
-            LogUtils.d("时间差", diff + "");
-//            long days = diff / (1000 * 60 * 60 * 24);
-//            long hours = (diff - days * (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
-//            long minutes = (diff - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return diff;
-    }
+//    public long countTime(String stringDate, String bookingCarDate) {
+//
+//        try {
+//            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            Date date1 = df.parse(stringDate);
+//            Date date2 = df.parse(bookingCarDate);
+//            //这样得到的差值是微秒级别
+//            diff = date1.getTime() - date2.getTime();
+//            LogUtils.d("时间差", diff + "");
+////            long days = diff / (1000 * 60 * 60 * 24);
+////            long hours = (diff - days * (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
+////            long minutes = (diff - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);
+//
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        return diff;
+//    }
 
 
 }

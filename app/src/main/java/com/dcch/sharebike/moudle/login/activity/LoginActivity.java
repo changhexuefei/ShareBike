@@ -292,12 +292,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     LoginActivity.this.finish();
 //
                     //储存用户信息(登录储存一次)
-                    SPUtils.put(LoginActivity.this, "userDetail", response);
+                    SPUtils.put(App.getContext(), "userDetail", response);
 //                    SPUtils.put(App.getContext(),"cashStatus",0);
 //                    SPUtils.put(LoginActivity.this, "nickName", userInfo.getNickName());
 
                     SPUtils.put(App.getContext(), "islogin", true);
-                    Log.d("用户", SPUtils.get(LoginActivity.this, "userDetail", null) + "");
+
                 } else if (userInfo.getMessagecode().equals("0")) {
                     ToastUtils.showShort(LoginActivity.this, "登录失败！");
                 } else {

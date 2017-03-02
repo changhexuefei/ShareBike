@@ -11,6 +11,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
+import com.dcch.sharebike.moudle.user.bean.UserInfo;
+import com.dcch.sharebike.utils.SPUtils;
 
 
 /**
@@ -18,21 +20,17 @@ import com.dcch.sharebike.R;
  */
 public class SelectPicPopupWindow extends PopupWindow {
 
-
-
+    private UserInfo userInfo;
     TextView mBikeLocationInfo;
-
     TextView mUnitPrice;
-
     TextView mDistance;
-
     TextView mArrivalTime;
-
     Button mOrder;
     private View mMenuView;
 
-    public SelectPicPopupWindow(Context context, View.OnClickListener itemsOnClick) {
+    public SelectPicPopupWindow(Context context, UserInfo userInfo, View.OnClickListener itemsOnClick) {
         super(context);
+        this.userInfo = userInfo;
 
         //创建布局反射器
         LayoutInflater inflater = (LayoutInflater) context
@@ -50,7 +48,17 @@ public class SelectPicPopupWindow extends PopupWindow {
 
         // 设置按钮监听
         mOrder.setOnClickListener(itemsOnClick);
-
+        if (SPUtils.isLogin() && userInfo != null && !userInfo.equals("")) {
+            if (userInfo.getCashStatus() == 1 && userInfo.getStatus() == 1) {
+                mOrder.setText("预约用车");
+            } else if (userInfo.getCashStatus() == 0) {
+                mOrder.setText("完成注册即可骑单车");
+            } else if (userInfo.getCashStatus() == 1 && userInfo.getStatus() == 0) {
+                mOrder.setText("完成注册即可骑单车");
+            }
+        } else {
+            mOrder.setText("立即登录即可骑单车");
+        }
 
         // 设置SelectPicPopupWindow的View
         this.setContentView(mMenuView);

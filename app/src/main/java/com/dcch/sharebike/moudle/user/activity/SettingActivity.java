@@ -88,7 +88,7 @@ public class SettingActivity extends BaseActivity {
                                 EventBus.getDefault().post(new MessageEvent(),"visible");
                                 startActivity(i1);
                                 SPUtils.clear(App.getContext());
-//                                SPUtils.put(SettingActivity.this, "islogin", false);
+                                SPUtils.put(SettingActivity.this, "islogin", false);
                                 finish();
                             }
                         }).create()

@@ -8,19 +8,22 @@ public class BookingBikeInfo {
 
 
     /**
-     * bookingCarId : 4482b048f12948c08376908f1d51868b
-     * bookingCarNo : bookingcar201702231703208408779
-     * userId : 32
+     * bookingCarId : 728581a0c1284526b4d4135634462244
+     * bookingCarNo : bookingcar201703021651215615796
+     * userId : 34
      * name : null
      * phone : null
      * nickName : null
      * idCard : null
-     * bicycleId : 46
-     * bicycleNo : null
-     * bookingCarDate : 2017-02-23 17:03:20
+     * bicycleId : 0
+     * bicycleNo : 1000800053
+     * bookingCarDate : 2017-03-02 16:51:21
      * bookingCarStatus : 0
      * resultStatus : 1
      * remark : null
+     * longitude : null
+     * latitude : null
+     * address : null
      */
 
     private String bookingCarId;
@@ -31,11 +34,14 @@ public class BookingBikeInfo {
     private Object nickName;
     private Object idCard;
     private int bicycleId;
-    private Object bicycleNo;
+    private String bicycleNo;
     private String bookingCarDate;
     private int bookingCarStatus;
     private String resultStatus;
     private Object remark;
+    private Object longitude;
+    private Object latitude;
+    private Object address;
 
     public String getBookingCarId() {
         return bookingCarId;
@@ -101,11 +107,11 @@ public class BookingBikeInfo {
         this.bicycleId = bicycleId;
     }
 
-    public Object getBicycleNo() {
+    public String getBicycleNo() {
         return bicycleNo;
     }
 
-    public void setBicycleNo(Object bicycleNo) {
+    public void setBicycleNo(String bicycleNo) {
         this.bicycleNo = bicycleNo;
     }
 
@@ -139,5 +145,29 @@ public class BookingBikeInfo {
 
     public void setRemark(Object remark) {
         this.remark = remark;
+    }
+
+    public Object getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Object longitude) {
+        this.longitude = longitude;
+    }
+
+    public Object getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Object latitude) {
+        this.latitude = latitude;
+    }
+
+    public Object getAddress() {
+        return address;
+    }
+
+    public void setAddress(Object address) {
+        this.address = address;
     }
 }
