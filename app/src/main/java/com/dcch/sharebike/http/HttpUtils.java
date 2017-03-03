@@ -7,7 +7,6 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -35,11 +34,11 @@ public class HttpUtils {
 	 *
 	 * //@param c       接口类型
 	 * @param a 	  接口名称
-	 * @param params  接口参数
+	 * @param param  接口参数
 	 * @param handler 接口回调
 	 * @return 本次请求的tag，用于取消请求
 	 */
-	public static String post(String a,  List<String> params, final ResponseHandler handler) {
+	public static String post(String a,  Map<String,String> param, final ResponseHandler handler) {
 		String t = time();
 //		String p = "";
 //		if (params != null) {
@@ -52,7 +51,7 @@ public class HttpUtils {
 //			LogUtils.e(p);
 //		}
 //		String j = Md5Utils.md5(c + a + t + Api.KEY);
-		Map<String, String> param = new HashMap<>();
+		 param = new HashMap<>();
 		param.put("a", a);
 		param.put("t", t);
 //		param.put("c", c);
