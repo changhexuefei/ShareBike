@@ -39,17 +39,15 @@ public class BookBikePopupWindow extends PopupWindow {
         mBikeNumber = (TextView) mCancelBookBikeWindow.findViewById(R.id.bikeNumber);
         mHoldTime = (TextView) mCancelBookBikeWindow.findViewById(R.id.hold_time);
         mCancel = (Button) mCancelBookBikeWindow.findViewById(R.id.cancel_book);
-
         //为控件赋值
-        if (bookingBikeInfo != null && !bookingBikeInfo.equals("")) {
             String address = String.valueOf(bookingBikeInfo.getAddress());
-            if (address==null) {
-                mBookBikeLocationInfo.setText("未知地址");
-            } else {
+            if (address!=null) {
                 mBookBikeLocationInfo.setText(address);
+            } else {
+                mBookBikeLocationInfo.setText("未知地址");
             }
             mBikeNumber.setText(String.valueOf(bookingBikeInfo.getBicycleNo()));
-        }
+
         // 设置按钮监听
         mCancel.setOnClickListener(bookBikeItemsOnClick);
         // 设置SelectPicPopupWindow的View

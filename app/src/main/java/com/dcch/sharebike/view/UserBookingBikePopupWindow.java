@@ -18,7 +18,7 @@ import com.dcch.sharebike.moudle.home.bean.UserBookingBikeInfo;
  * Created by Administrator on 2017/3/2 0002.
  */
 
-public class UserBookingBikePopupWindow extends PopupWindow{
+public class UserBookingBikePopupWindow extends PopupWindow {
     private UserBookingBikeInfo userBookingBikeInfo;
     TextView mBookBikeLocationInfo;
     TextView mBikeNumber;
@@ -26,9 +26,9 @@ public class UserBookingBikePopupWindow extends PopupWindow{
     Button mCancel;
     private View mUserBookBikeWindow;
 
-    public UserBookingBikePopupWindow(Context context, UserBookingBikeInfo userBookingBikeInfo, View.OnClickListener bookBikeItemsOnClick) {
+    public UserBookingBikePopupWindow(Context context, UserBookingBikeInfo userBookingBikeInfo, View.OnClickListener userBookBikeItemsOnClick) {
         super(context);
-        this.userBookingBikeInfo =userBookingBikeInfo;
+        this.userBookingBikeInfo = userBookingBikeInfo;
         //创建布局反射器
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //加载布局
@@ -40,12 +40,12 @@ public class UserBookingBikePopupWindow extends PopupWindow{
         mCancel = (Button) mUserBookBikeWindow.findViewById(R.id.cancel_book);
 
         //为控件赋值
-        if(userBookingBikeInfo!=null && !userBookingBikeInfo.equals("")){
+        if (userBookingBikeInfo != null && !userBookingBikeInfo.equals("")) {
             mBookBikeLocationInfo.setText(userBookingBikeInfo.getAddress());
             mBikeNumber.setText(String.valueOf(userBookingBikeInfo.getBicycleNo()));
         }
         // 设置按钮监听
-        mCancel.setOnClickListener(bookBikeItemsOnClick);
+        mCancel.setOnClickListener(userBookBikeItemsOnClick);
         // 设置SelectPicPopupWindow的View
         this.setContentView(mUserBookBikeWindow);
         // 设置SelectPicPopupWindow的View
@@ -64,13 +64,12 @@ public class UserBookingBikePopupWindow extends PopupWindow{
 //        this.setBackgroundDrawable(dw);
         // mMenuView添加OnTouchListener监听判断获取触屏位置如果在选择框外面则销毁弹出框
         mUserBookBikeWindow.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    @SuppressLint("ClickableViewAccessibility")
-                    public boolean onTouch(View v, MotionEvent event) {
-
+            @Override
+            @SuppressLint("ClickableViewAccessibility")
+            public boolean onTouch(View v, MotionEvent event) {
                 int height = mUserBookBikeWindow.findViewById(R.id.book_bike_pop_layout).getTop();
                 int y = (int) event.getY();
-                if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getAction() == MotionEvent.ACTION_UP ) {
                     if (y < height) {
                         dismiss();
                     }
