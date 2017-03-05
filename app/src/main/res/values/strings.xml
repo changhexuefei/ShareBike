@@ -19,4 +19,16 @@
     <string name="mobile_tip_there">车费余额，行程等信息不变</string>
     <string name="mobile_title">手机号</string>
     <string name="cash_pledge">199</string>
+    <string name="findTrouble">发现车辆故障</string>
+    <string name="scan_tips">扫描二维码或者手动输入编码</string>
+    <string name="scan_tip_one">重新扫码或输入</string>
+    <string name="option_one">二维码脱落</string>
+    <string name="option_two">把套歪了</string>
+    <string name="option_there">车铃丢了</string>
+    <string name="option_four">踏板坏了</string>
+    <string name="option_five">龙头歪斜</string>
+    <string name="option_six">刹车失灵</string>
+    <string name="option_seven">其他</string>
+    <string name="hint">请拍摄违规停车的照片含周围环境</string>
+    <string name="upload">提交</string>
 </resources>

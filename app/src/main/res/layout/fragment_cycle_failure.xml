@@ -21,7 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="30dp"
-                android:text="发现车辆故障"
+                android:text="@string/findTrouble"
                 android:textColor="#000000"
                 android:textSize="18sp" />
 
@@ -49,7 +49,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
                     android:layout_toRightOf="@+id/report_issue"
-                    android:text="扫描二维码或者手动输入编码" />
+                    android:text="@string/scan_tips" />
 
                 <TextView
                     android:id="@+id/tips"
@@ -58,7 +58,7 @@
                     android:layout_alignLeft="@+id/bike_code"
                     android:layout_below="@+id/bike_code"
                     android:layout_toRightOf="@+id/report_issue"
-                    android:text="重新扫码或输入"
+                    android:text="@string/scan_tip_one"
                     android:textColor="@color/colorTitle"
                     android:textSize="10sp"
                     android:visibility="invisible" />
@@ -76,14 +76,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
-                    android:text="二维码脱落" />
+                    android:text="@string/option_one" />
 
                 <CheckBox
                     android:id="@+id/questionTwo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="把套歪了" />
+                    android:text="@string/option_two" />
 
             </LinearLayout>
 
@@ -97,14 +97,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
-                    android:text="车铃丢了" />
+                    android:text="@string/option_there" />
 
                 <CheckBox
                     android:id="@+id/questionFour"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="踏板坏了" />
+                    android:text="@string/option_four" />
 
 
             </LinearLayout>
@@ -120,14 +120,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
-                    android:text="龙头歪斜" />
+                    android:text="@string/option_five" />
 
                 <CheckBox
                     android:id="@+id/questionSix"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="刹车失灵" />
+                    android:text="@string/option_six" />
 
             </LinearLayout>
 
@@ -141,7 +141,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
-                    android:text="其他" />
+                    android:text="@string/option_seven" />
             </LinearLayout>
 
             <RelativeLayout
@@ -162,7 +162,7 @@
                     android:layout_alignBottom="@+id/cycle_photo"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@+id/cycle_photo"
-                    android:text="请拍摄违规停车的照片含周围环境"
+                    android:text="@string/hint"
                     android:textSize="10sp" />
             </RelativeLayout>
 
@@ -187,7 +187,7 @@
                 android:layout_margin="15dp"
                 android:background="#c6bfbf"
                 android:gravity="center"
-                android:text="提交"
+                android:text="@string/upload"
                 android:textColor="#ffffff"
                 android:textSize="18sp" />
 

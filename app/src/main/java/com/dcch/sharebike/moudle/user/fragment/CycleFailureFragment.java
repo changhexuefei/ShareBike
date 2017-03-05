@@ -71,6 +71,7 @@ public class CycleFailureFragment extends Fragment {
     private String result;
     private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
     private static final String TAG = RequestManager.class.getSimpleName();
+    public static final String BOUNDARY = "--my_boundary--";
 
     public CycleFailureFragment() {
         // Required empty public constructor
@@ -127,7 +128,6 @@ public class CycleFailureFragment extends Fragment {
                             protected void onEvent(ImageRadioResultEvent imageRadioResultEvent) throws Exception {
                                 //得到图片的路径
                                 result = imageRadioResultEvent.getResult().getOriginalPath();
-
                                 if (result != null && !result.equals("")) {
                                     //将图片赋值给图片控件
                                     Glide.with(App.getContext()).load(result).into(mCyclePhoto);
@@ -142,21 +142,15 @@ public class CycleFailureFragment extends Fragment {
                 Bitmap bitmap = getimage(result);
                 String imageResult = bitmapToBase64(bitmap);
 //                File imageResult = new File(result);
-                Log.d("图片路劲",imageResult+"");
-                String CONTENT_TYPE = "multipart/form-data"; //内容类型
+                Log.d("图片路径",imageResult+"");
                 Map<String,String> map = new HashMap<>();
                 map.put("userId",uID);
-                map.put("bicycleNo","");
-                map.put("faultDescription","");
+                map.put("bicycleNo",bikeNo);
+                map.put("faultDescription",contentText);
                 map.put("selectFaultDescription","");
-//                Request fileRequest = getFileRequest(Api.BASE_URL + Api.ADDTROUBLEORDER, imageResult, map);
-//                Log.d("相应",fileRequest+"");
-
-
                 map.put("imageFile",imageResult);
-
                 OkHttpUtils.post().url(Api.BASE_URL+Api.ADDTROUBLEORDER).params(map)
-                        .build()
+                        .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY).build()
                     .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
