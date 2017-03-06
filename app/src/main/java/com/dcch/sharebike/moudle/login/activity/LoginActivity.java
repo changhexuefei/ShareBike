@@ -22,8 +22,6 @@ import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.http.Api;
-import com.dcch.sharebike.http.HttpUtils;
-import com.dcch.sharebike.http.response.JsonResponseHandler;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.utils.InPutUtils;
 import com.dcch.sharebike.utils.LogUtils;
@@ -33,10 +31,9 @@ import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.simple.eventbus.EventBus;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -310,41 +307,41 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     public void getSecurityCode(String phone) {
 
-        List<String> p = new ArrayList<>();
-        p.add(phone);
-        HttpUtils.post(Api.REGISTER, p, new JsonResponseHandler() {
-            @Override
-            public void onError(Call call, Exception e, int id) {
-
-            }
-
-            @Override
-            public void onSuccess(String response, int id) {
-                LogUtils.d("登录", response);
-            }
-        });
-
-
-//        OkHttpUtils.post().url(Api.BASE_URL + Api.REGISTER).addParams("phone", phone).build().execute(new StringCallback() {
+//        List<String> p = new ArrayList<>();
+//        p.add(phone);
+//        HttpUtils.post(Api.REGISTER, p, new JsonResponseHandler() {
 //            @Override
 //            public void onError(Call call, Exception e, int id) {
-//                ToastUtils.showLong(App.getContext(), "网络错误，请重试");
-//                LogUtils.e(e.getMessage());
+//
 //            }
 //
 //            @Override
-//            public void onResponse(String response, int id) {
-//                Log.d("测试", response);
-//                ToastUtils.showLong(LoginActivity.this, "验证码已发送");
-//                try {
-//                    JSONObject object = new JSONObject(response);
-//                    verificationCode = object.getString("code");
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
+//            public void onSuccess(String response, int id) {
+//                LogUtils.d("登录", response);
 //            }
 //        });
+
+
+        OkHttpUtils.post().url(Api.BASE_URL + Api.REGISTER).addParams("phone", phone).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                ToastUtils.showLong(App.getContext(), "网络错误，请重试");
+                LogUtils.e(e.getMessage());
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                Log.d("测试", response);
+                ToastUtils.showLong(LoginActivity.this, "验证码已发送");
+                try {
+                    JSONObject object = new JSONObject(response);
+                    verificationCode = object.getString("code");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override

@@ -47,8 +47,13 @@ public class SelectPicPopupWindow extends PopupWindow {
 
         //为控件赋值
         if (mBikeInfo != null && !mBikeInfo.equals("")) {
-            mBikeLocationInfo.setText(mBikeInfo.getAddress());
-            mUnitPrice.setText(String.valueOf(mBikeInfo.getUnitPrice()));
+            String address = mBikeInfo.getAddress();
+            if (address != null && !address.equals("")) {
+                mBikeLocationInfo.setText(mBikeInfo.getAddress());
+            } else {
+                mBikeLocationInfo.setText("未知地址");
+            }
+            mUnitPrice.setText(String.valueOf(mBikeInfo.getUnitPrice()) + "元");
         }
 
         // 设置按钮监听
@@ -62,8 +67,8 @@ public class SelectPicPopupWindow extends PopupWindow {
         this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         // 设置SelectPicPopupWindow弹出窗体的高
         this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        // 设置SelectPicPopupWindow弹出窗体可点击
-        this.setFocusable(true);
+        // 设置SelectPicPopupWinow弹出窗体可点击
+        this.setFocusable(false);
         // 设置SelectPicPopupWindow弹出窗体动画效果
 //        this.setAnimationStyle(R.style.PopupAnimation);
         // 实例化一个ColorDrawable颜色为半透明
@@ -149,7 +154,6 @@ public class SelectPicPopupWindow extends PopupWindow {
 //            });
 //        }
 //    }
-
 
 
 }

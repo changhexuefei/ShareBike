@@ -1,37 +1,42 @@
 package com.dcch.sharebike.moudle.home.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2017/2/17 0017.
  */
 
-public class BikeInfo {
+public class BikeInfo  implements Serializable{
+
 
     /**
-     * bicycleId : 39
-     * bicycleNo : 1000800039
-     * bicycleName : 火麒麟
-     * bicycleTypeId : 四代
+     * bicycleId : 2
+     * bicycleNo : 1000800002
+     * bicycleName : null
+     * bicycleTypeId : null
      * unitPrice : 0
      * price : 0
-     * manufacturer : 溪谷科技
-     * organization_ID : 1
-     * address : 北京市海淀区
+     * manufacturer : null
+     * organization_ID : 0
+     * organization_Name : null
+     * address : 北京市上地五街
      * usestate : 0
      * anomaly : 0
-     * delflag : 0
-     * createTime : 1486703758000
+     * reservestate : 0
+     * delflag : null
+     * createTime : null
      * releaseTime : null
      * userId : null
-     * lockRemark : lock4567
-     * systemTime : null
+     * lockRemark : null
+     * systemTime : 2017-01-16 15:14:08.0
      * bicycletime : null
      * sleephour : null
      * positiontype : null
      * locknum : 0
      * electricity : 0
      * online : null
-     * longitude : 116.31416476027793
-     * latitude : 40.049456963226345
+     * longitude : 116.31316476027793
+     * latitude : 40.048456963226345
      * minLat : null
      * maxLat : null
      * minLng : null
@@ -40,21 +45,23 @@ public class BikeInfo {
 
     private int bicycleId;
     private int bicycleNo;
-    private String bicycleName;
-    private String bicycleTypeId;
+    private Object bicycleName;
+    private Object bicycleTypeId;
     private int unitPrice;
     private int price;
-    private String manufacturer;
+    private Object manufacturer;
     private int organization_ID;
+    private Object organization_Name;
     private String address;
     private int usestate;
     private int anomaly;
-    private String delflag;
-    private long createTime;
+    private int reservestate;
+    private Object delflag;
+    private Object createTime;
     private Object releaseTime;
     private Object userId;
-    private String lockRemark;
-    private Object systemTime;
+    private Object lockRemark;
+    private String systemTime;
     private Object bicycletime;
     private Object sleephour;
     private Object positiontype;
@@ -84,19 +91,19 @@ public class BikeInfo {
         this.bicycleNo = bicycleNo;
     }
 
-    public String getBicycleName() {
+    public Object getBicycleName() {
         return bicycleName;
     }
 
-    public void setBicycleName(String bicycleName) {
+    public void setBicycleName(Object bicycleName) {
         this.bicycleName = bicycleName;
     }
 
-    public String getBicycleTypeId() {
+    public Object getBicycleTypeId() {
         return bicycleTypeId;
     }
 
-    public void setBicycleTypeId(String bicycleTypeId) {
+    public void setBicycleTypeId(Object bicycleTypeId) {
         this.bicycleTypeId = bicycleTypeId;
     }
 
@@ -116,11 +123,11 @@ public class BikeInfo {
         this.price = price;
     }
 
-    public String getManufacturer() {
+    public Object getManufacturer() {
         return manufacturer;
     }
 
-    public void setManufacturer(String manufacturer) {
+    public void setManufacturer(Object manufacturer) {
         this.manufacturer = manufacturer;
     }
 
@@ -130,6 +137,14 @@ public class BikeInfo {
 
     public void setOrganization_ID(int organization_ID) {
         this.organization_ID = organization_ID;
+    }
+
+    public Object getOrganization_Name() {
+        return organization_Name;
+    }
+
+    public void setOrganization_Name(Object organization_Name) {
+        this.organization_Name = organization_Name;
     }
 
     public String getAddress() {
@@ -156,19 +171,27 @@ public class BikeInfo {
         this.anomaly = anomaly;
     }
 
-    public String getDelflag() {
+    public int getReservestate() {
+        return reservestate;
+    }
+
+    public void setReservestate(int reservestate) {
+        this.reservestate = reservestate;
+    }
+
+    public Object getDelflag() {
         return delflag;
     }
 
-    public void setDelflag(String delflag) {
+    public void setDelflag(Object delflag) {
         this.delflag = delflag;
     }
 
-    public long getCreateTime() {
+    public Object getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(long createTime) {
+    public void setCreateTime(Object createTime) {
         this.createTime = createTime;
     }
 
@@ -188,19 +211,19 @@ public class BikeInfo {
         this.userId = userId;
     }
 
-    public String getLockRemark() {
+    public Object getLockRemark() {
         return lockRemark;
     }
 
-    public void setLockRemark(String lockRemark) {
+    public void setLockRemark(Object lockRemark) {
         this.lockRemark = lockRemark;
     }
 
-    public Object getSystemTime() {
+    public String getSystemTime() {
         return systemTime;
     }
 
-    public void setSystemTime(Object systemTime) {
+    public void setSystemTime(String systemTime) {
         this.systemTime = systemTime;
     }
 
