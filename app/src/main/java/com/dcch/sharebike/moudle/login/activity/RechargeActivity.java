@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 
 import butterknife.BindView;
@@ -51,9 +52,13 @@ public class RechargeActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
-                Intent backToLoginMain = new Intent(RechargeActivity.this, MainActivity.class);
-                startActivity(backToLoginMain);
-                finish();
+                if(SPUtils.isLogin()){
+                    Intent backToLoginMain = new Intent(RechargeActivity.this, MainActivity.class);
+                    startActivity(backToLoginMain);
+                    finish();
+                }else {
+                    finish();
+                }
                 break;
             case R.id.btn_recharge:
                 Intent intent = new Intent(this, IdentityAuthentication.class);
@@ -65,7 +70,6 @@ public class RechargeActivity extends BaseActivity {
             case R.id.aliArea:
                 aliCheckbox.setChecked(true);
                 weixinCheckbox.setChecked(false);
-
                 aliCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
