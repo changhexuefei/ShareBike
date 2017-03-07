@@ -29,8 +29,6 @@ import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
  * A simple {@link Fragment} subclass.
  */
 public class ReportIllegalParkingFragment extends Fragment {
-
-
     @BindView(R.id.bike_code)
     TextView mBikeCode;
     @BindView(R.id.tips)
@@ -43,7 +41,6 @@ public class ReportIllegalParkingFragment extends Fragment {
     MultiEditInputView mQuestionDesc;
     @BindView(R.id.confirm)
     TextView mConfirm;
-
     public ReportIllegalParkingFragment() {
 
     }

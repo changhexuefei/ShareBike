@@ -21,6 +21,7 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.alipay.AliPay;
 import com.dcch.sharebike.alipay.PayResult;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.ToastUtils;
@@ -71,9 +72,13 @@ public class RechargeActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
-                Intent backToLoginMain = new Intent(RechargeActivity.this, MainActivity.class);
-                startActivity(backToLoginMain);
-                finish();
+                if(SPUtils.isLogin()){
+                    Intent backToLoginMain = new Intent(RechargeActivity.this, MainActivity.class);
+                    startActivity(backToLoginMain);
+                    finish();
+                }else {
+                    finish();
+                }
                 break;
             case R.id.aliArea:
                 aliCheckbox.setChecked(true);

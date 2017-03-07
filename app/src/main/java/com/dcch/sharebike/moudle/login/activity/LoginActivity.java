@@ -35,6 +35,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.simple.eventbus.EventBus;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
@@ -247,16 +250,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void afterTextChanged(Editable editable) {
-
         phone = userPhone.getText().toString().trim();
         seCode = securityCode.getText().toString().trim();
-
         if (!TextUtils.isEmpty(phone) && InPutUtils.isMobilePhone(phone)) {
             getSecurityCode.setClickable(true);
             getSecurityCode.setBackgroundColor(Color.parseColor("#F8941D"));
-
         }
-
 
         if (!TextUtils.isEmpty(seCode) && !TextUtils.isEmpty(phone)) {
             getSecurityCode.setBackgroundColor(Color.parseColor("#c6bfbf"));
@@ -267,12 +266,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             confirm.setClickable(false);
             confirm.setBackgroundColor(Color.parseColor("#c6bfbf"));
         }
-
     }
 
     private void registerAndLogin(String phone) {
-        OkHttpUtils.post().url(Api.BASE_URL + Api.SAVEUSER).addParams("phone", phone).build().execute(new StringCallback() {
-
+        Map<String, String> map = new HashMap<>();
+        map.put("phone", phone);
+        OkHttpUtils.post().url(Api.BASE_URL + Api.SAVEUSER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
                 LogUtils.e("onError:" + e.getMessage());
@@ -281,7 +280,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
             @Override
             public void onResponse(String response, int id) {
-
                 Log.d("测试", response);
                 Gson gson = new Gson();
                 UserInfo userInfo = gson.fromJson(response, UserInfo.class);
@@ -291,7 +289,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     EventBus.getDefault().post(new MessageEvent(), "gone");
                     Log.d("用户信息", userInfo.toString());
                     LoginActivity.this.finish();
-//
                     //储存用户信息(登录储存一次)
                     SPUtils.put(App.getContext(), "userDetail", response);
                     SPUtils.put(App.getContext(), "islogin", true);
