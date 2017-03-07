@@ -1,12 +1,14 @@
 package com.dcch.sharebike.moudle.user.fragment;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,7 +35,12 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,7 +78,9 @@ public class CycleFailureFragment extends Fragment {
     private String result;
     private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
     private static final String TAG = RequestManager.class.getSimpleName();
-    public static final String BOUNDARY = "--my_boundary--";
+    public static final String BOUNDARY = "ZnGpDtePMx0KrHh_G0X99Yef9r8JZsRJSXC";
+    private String actionUrl = Api.BASE_URL + Api.ADDTROUBLEORDER;
+    private String newName = "image.jpg";
 
     public CycleFailureFragment() {
         // Required empty public constructor
@@ -80,8 +89,8 @@ public class CycleFailureFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(SPUtils.isLogin()){
-           String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
+        if (SPUtils.isLogin()) {
+            String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
             Log.d("用户明细", userDetail);
             try {
                 JSONObject object = new JSONObject(userDetail);
@@ -141,27 +150,32 @@ public class CycleFailureFragment extends Fragment {
 
                 Bitmap bitmap = getimage(result);
                 String imageResult = bitmapToBase64(bitmap);
-//                File imageResult = new File(result);
-                Log.d("图片路径",imageResult+"");
-                Map<String,String> map = new HashMap<>();
-                map.put("userId",uID);
-                map.put("bicycleNo",bikeNo);
-                map.put("faultDescription",contentText);
-                map.put("selectFaultDescription","");
-                map.put("imageFile",imageResult);
-                OkHttpUtils.post().url(Api.BASE_URL+Api.ADDTROUBLEORDER).params(map)
-                        .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY).build()
-                    .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        LogUtils.e(e.getMessage());
-                    }
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                            Log.d("上传",response);
-                    }
-                });
+                uploadFile();
+//                File imageResult = new File(result);
+                Log.d("图片路径", imageResult + "");
+                Map<String, String> map = new HashMap<>();
+                map.put("userId", uID);
+                map.put("bicycleNo", bikeNo);
+                map.put("faultDescription", contentText);
+                map.put("selectFaultDescription", "");
+                map.put("imageFile", imageResult);
+                OkHttpUtils
+                        .post()
+                        .url(Api.BASE_URL + Api.ADDTROUBLEORDER)
+                        .params(map)
+                        .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY).build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                LogUtils.e(e.getMessage());
+                            }
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                Log.d("上传", response);
+                            }
+                        });
                 break;
         }
     }
@@ -251,79 +265,75 @@ public class CycleFailureFragment extends Fragment {
         return compressImage(bitmap);//压缩好比例大小后再进行质量压缩
     }
 
-//    public static Request  getFileRequest(String url, File file, Map<String, String> maps){
-//        MultipartBody.Builder builder=  new MultipartBody.Builder().setType(MultipartBody.FORM);
-//        if(maps==null){
-//            builder.addPart( Headers.of("Content-Disposition", "form-data; name=\"file\";filename=\"file.jpg\""), RequestBody.create(MediaType.parse("image/png"),file)
-//            ).build();
-//
-//        }else{
-//            for (String key : maps.keySet()) {
-//                builder.addFormDataPart(key, maps.get(key));
-//            }
-//
-//            builder.addPart( Headers.of("Content-Disposition", "form-data; name=\"file\";filename=\"file.jpg\""), RequestBody.create(MediaType.parse("image/png"),file)
-//            );
-//
-//        }
-//        RequestBody body=builder.build();
-//        return new Request.Builder().url(url).post(body).build();
-//
-//    }
+    /* 上传文件至Server的方法 */
+    private void uploadFile() {
+        String end = "\r\n";
+        String twoHyphens = "--";
+        String boundary = "*****";
+        try {
 
-//    /**
-//     *上传文件
-//     * @param actionUrl 接口地址
-//     * @param paramsMap 参数
-//     * @param callBack 回调
-//     * @param <T>
-//     */
-//    public <T>void upLoadFile(String actionUrl, HashMap<String, Object> paramsMap, final ReqCallBack<T> callBack) {
-//        try {
-//            //补全请求地址
-//            String requestUrl = String.format("%s/%s", upload_head, actionUrl);
-//            MultipartBody.Builder builder = new MultipartBody.Builder();
-//            //设置类型
-//            builder.setType(MultipartBody.FORM);
-//            //追加参数
-//            for (String key : paramsMap.keySet()) {
-//                Object object = paramsMap.get(key);
-//                if (!(object instanceof File)) {
-//                    builder.addFormDataPart(key, object.toString());
-//                } else {
-//                    File file = (File) object;
-//                    builder.addFormDataPart(key, file.getName(), RequestBody.create(null, file));
-//                }
-//            }
-//            //创建RequestBody
-//            RequestBody body = builder.build();
-//            //创建Request
-//            final Request request = new Request.Builder().url(requestUrl).post(body).build();
-//            //单独设置参数 比如读取超时时间
-//            final Call call = mOkHttpClient.newBuilder().writeTimeout(50, TimeUnit.SECONDS).build().newCall(request);
-//            call.enqueue(new Callback() {
-//                @Override
-//                public void onFailure(Call call, IOException e) {
-//                    Log.e(TAG, e.toString());
-//                    failedCallBack("上传失败", callBack);
-//                }
-//
-//                @Override
-//                public void onResponse(Call call, Response response) throws IOException {
-//                    if (response.isSuccessful()) {
-//                        String string = response.body().string();
-//                        Log.e(TAG, "response ----->" + string);
-//                        successCallBack((T) string, callBack);
-//                    } else {
-//                        failedCallBack("上传失败", callBack);
-//                    }
-//                }
-//            });
-//        } catch (Exception e) {
-//            Log.e(TAG, e.toString());
-//        }
-//    }
+            URL url = new URL(actionUrl);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+          /* 允许Input、Output，不使用Cache */
+            con.setDoInput(true);
+            con.setDoOutput(true);
+            con.setUseCaches(false);
+          /* 设置传送的method=POST */
+            con.setRequestMethod("POST");
+          /* setRequestProperty */
+            con.setRequestProperty("Connection", "Keep-Alive");
+            con.setRequestProperty("Charset", "UTF-8");
+            con.setRequestProperty("Content-Type",
+                    "multipart/form-data;boundary=" + boundary);
+          /* 设置DataOutputStream */
+            DataOutputStream ds = new DataOutputStream(con.getOutputStream());
+            ds.writeBytes(twoHyphens + boundary + end);
+            ds.writeBytes("Content-Disposition: form-data; " +
+                    "name=\"file1\";filename=\"" +
+                    MEDIA_TYPE_PNG + "\"" + end);
+            ds.writeBytes(end);
+          /* 取得文件的FileInputStream */
+            FileInputStream fStream = new FileInputStream(result);
+          /* 设置每次写入1024bytes */
+            int bufferSize = 1024;
+            byte[] buffer = new byte[bufferSize];
+            int length = -1;
+          /* 从文件读取数据至缓冲区 */
+            while ((length = fStream.read(buffer)) != -1) {
+            /* 将资料写入DataOutputStream中 */
+                ds.write(buffer, 0, length);
+            }
+            ds.writeBytes(end);
+            ds.writeBytes(twoHyphens + boundary + twoHyphens + end);
+          /* close streams */
+            fStream.close();
+            ds.flush();
+          /* 取得Response内容 */
+            InputStream is = con.getInputStream();
+            int ch;
+            StringBuffer b = new StringBuffer();
+            while ((ch = is.read()) != -1) {
+                b.append((char) ch);
+            }
+          /* 将Response显示于Dialog */
+            showDialog("上传成功" + b.toString().trim());
+          /* 关闭DataOutputStream */
+            ds.close();
+        } catch (Exception e) {
+            showDialog("上传失败" + e);
+        }
+    }
 
+    /* 显示Dialog的method */
+    private void showDialog(String mess) {
+        new AlertDialog.Builder(getActivity()).setTitle("Message")
+                .setMessage(mess)
+                .setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .show();
+    }
 
 
 }

@@ -340,7 +340,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                                              locationLongitude = Double.valueOf(userBookingBikeInfoLongitude);
                                              locationLatitude = Double.valueOf(userBookingBikeInfoLatitude);
                                              Log.d("eeeeeeee",locationLatitude+"\n"+locationLongitude);
-
                                              isShowBookOrder = true;
                                              mMap.clear();
                                              forLocationAddMark(locationLongitude, locationLatitude);
