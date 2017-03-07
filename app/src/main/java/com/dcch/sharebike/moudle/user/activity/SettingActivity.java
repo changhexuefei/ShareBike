@@ -83,9 +83,9 @@ public class SettingActivity extends BaseActivity {
                                 Intent i1 = new Intent(SettingActivity.this, PersonalCenterActivity.class);
                                 i1.putExtra("name", "unLogin");
                                 //用EventBus发送消息给个人中心
-                                EventBus.getDefault().post(new MessageEvent(),"unLogin");
+                                EventBus.getDefault().post(new MessageEvent(), "unLogin");
                                 //给主页发送消息
-                                EventBus.getDefault().post(new MessageEvent(),"visible");
+                                EventBus.getDefault().post(new MessageEvent(), "visible");
                                 startActivity(i1);
                                 SPUtils.clear(App.getContext());
                                 SPUtils.put(SettingActivity.this, "islogin", false);
@@ -93,11 +93,7 @@ public class SettingActivity extends BaseActivity {
                             }
                         }).create()
                         .show();
-//                SPUtils.clear(this);
-//                Intent i1= new Intent(this, PersonalCenterActivity.class);
-//                i1.putExtra("name","unLogin");
-//                startActivity(i1);
-//                finish();
+
                 break;
         }
     }

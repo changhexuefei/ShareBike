@@ -259,7 +259,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
 
         if (!TextUtils.isEmpty(seCode) && !TextUtils.isEmpty(phone)) {
-            getSecurityCode.setBackgroundColor(Color.parseColor("#F8941D"));
+            getSecurityCode.setBackgroundColor(Color.parseColor("#c6bfbf"));
             confirm.setClickable(true);
             confirm.setBackgroundColor(Color.parseColor("#F8941D"));
 
@@ -306,21 +306,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
 
     public void getSecurityCode(String phone) {
-
-//        List<String> p = new ArrayList<>();
-//        p.add(phone);
-//        HttpUtils.post(Api.REGISTER, p, new JsonResponseHandler() {
-//            @Override
-//            public void onError(Call call, Exception e, int id) {
-//
-//            }
-//
-//            @Override
-//            public void onSuccess(String response, int id) {
-//                LogUtils.d("登录", response);
-//            }
-//        });
-
 
         OkHttpUtils.post().url(Api.BASE_URL + Api.REGISTER).addParams("phone", phone).build().execute(new StringCallback() {
             @Override

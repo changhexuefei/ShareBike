@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.utils.InPutUtils;
@@ -49,6 +50,8 @@ public class IdentityAuthentication extends BaseActivity implements TextWatcher 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
+                Intent backToLoginMain = new Intent(IdentityAuthentication.this, MainActivity.class);
+                startActivity(backToLoginMain);
                 finish();
                 break;
             case R.id.btn_authentication:

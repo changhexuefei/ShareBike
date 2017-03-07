@@ -78,4 +78,12 @@ public class PersonalCenterActivity extends BaseActivity {
         transaction.commit();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent backToLoginMain = new Intent(PersonalCenterActivity.this, MainActivity.class);
+        startActivity(backToLoginMain);
+        finish();
+
+    }
 }

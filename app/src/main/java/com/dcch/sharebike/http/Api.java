@@ -27,6 +27,7 @@ public class Api {
     public static final String BOOKINGNUMBER = "getBookingCarCountByPhone.do?";
     //上传文字和图片的接口
     public static final String ADDTROUBLEORDER = "addTroubleOrder.do?";
-
+    //支付宝支付
+    public static final String ALIPAY = "alipay.do?";
 
 }
