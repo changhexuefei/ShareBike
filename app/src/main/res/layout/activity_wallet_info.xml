@@ -98,6 +98,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/showArea"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="押金0元"

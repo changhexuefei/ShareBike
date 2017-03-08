@@ -20,13 +20,17 @@ import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.alipay.AliPay;
 import com.dcch.sharebike.alipay.PayResult;
+import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
-import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,6 +58,8 @@ public class RechargeActivity extends BaseActivity {
 
     private static final int SDK_PAY_FLAG = 1;
     private static final int SDK_AUTH_FLAG = 2;
+    private String userID;
+
 
     @Override
     protected int getLayoutId() {
@@ -64,7 +70,18 @@ public class RechargeActivity extends BaseActivity {
     protected void initData() {
         //默认支付宝选中
         aliCheckbox.setChecked(true);
-        String money_sum = money.getText().toString().trim();
+//        String money_sum = money.getText().toString().trim();
+        String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
+        Log.d("用户明细", userDetail);
+        try {
+            JSONObject object = new JSONObject(userDetail);
+            int id = object.getInt("id");
+            Log.d("手机号", id + "");
+            userID = String.valueOf(id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -72,13 +89,9 @@ public class RechargeActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
-                if(SPUtils.isLogin()){
-                    Intent backToLoginMain = new Intent(RechargeActivity.this, MainActivity.class);
-                    startActivity(backToLoginMain);
-                    finish();
-                }else {
-                    finish();
-                }
+                Intent backToLoginMain = new Intent(RechargeActivity.this, MainActivity.class);
+                startActivity(backToLoginMain);
+                finish();
                 break;
             case R.id.aliArea:
                 aliCheckbox.setChecked(true);
@@ -116,37 +129,38 @@ public class RechargeActivity extends BaseActivity {
                 final AliPay aliPay = new AliPay(this);
                 String outTradeNo = aliPay.getOutTradeNo();
                 String moneySum = money.getText().toString().trim();
-                Map<String,String> map = new HashMap<>();
-                map.put("outtradeno",outTradeNo);
-                map.put("orderbody","交押金");
-                map.put("subject","押金");
-                map.put("money","0.01");
-                OkHttpUtils.post().url(Api.BASE_URL+Api.ALIPAY).params(map).build().execute(new StringCallback() {
+                Map<String, String> map = new HashMap<>();
+                map.put("outtradeno", outTradeNo);
+                map.put("orderbody", "交押金");
+                map.put("subject", "押金");
+                map.put("money", "0.01");
+                OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAY).params(map).build().execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         LogUtils.d(e.getMessage());
                     }
-                 @Override
+
+                    @Override
                     public void onResponse(final String response, int id) {
-                            LogUtils.d("支付",response);
+                        LogUtils.d("支付", response);
 
-                     Runnable payRunnable = new Runnable() {
-                         @Override
-                         public void run() {
-                             EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
-                             PayTask task = new PayTask(RechargeActivity.this);
-                             Map<String, String> stringStringMap = task.payV2(response, true);
-                             Message msg = new Message();
-                             msg.what = SDK_PAY_FLAG;
-                             msg.obj = stringStringMap;
-                             handler.sendMessage(msg);
+                        Runnable payRunnable = new Runnable() {
+                            @Override
+                            public void run() {
+                                EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
+                                PayTask task = new PayTask(RechargeActivity.this);
+                                Map<String, String> stringStringMap = task.payV2(response, true);
+                                Message msg = new Message();
+                                msg.what = SDK_PAY_FLAG;
+                                msg.obj = stringStringMap;
+                                handler.sendMessage(msg);
 
-                         }
-                     };
-                     // 必须异步调用
-                     Thread payThread = new Thread(payRunnable);
-                     payThread.start();
-                 }
+                            }
+                        };
+                        // 必须异步调用
+                        Thread payThread = new Thread(payRunnable);
+                        payThread.start();
+                    }
                 });
                 break;
         }
@@ -159,15 +173,19 @@ public class RechargeActivity extends BaseActivity {
             switch (msg.what) {
                 case SDK_PAY_FLAG: {
                     PayResult payResult = new PayResult((Map<String, String>) msg.obj);
-                    Log.d("问题原因",payResult.toString());
+                    Log.d("问题原因", payResult.toString());
                     // 支付宝返回此次支付结果及加签，建议对支付宝签名信息拿签约时支付宝提供的公钥做验签
                     // String resultInfo = payResult.getResult();
                     String resultStatus = payResult.getResultStatus();
                     if (TextUtils.equals(resultStatus, "9000")) {
+                        save(userID);
                         Toast.makeText(RechargeActivity.this, "支付成功",
                                 Toast.LENGTH_SHORT).show();
+
                         Intent intent = new Intent(RechargeActivity.this, IdentityAuthentication.class);
+
                         startActivity(intent);
+
                         finish();
 
                     } else {
@@ -185,4 +203,31 @@ public class RechargeActivity extends BaseActivity {
             }
         }
     };
+
+    private void save(String userID) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", userID);
+        OkHttpUtils.post().url(Api.BASE_URL + Api.UPDATEUSERCASHSTATUS).params(map).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                Log.e("onError:", e.getMessage());
+
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                Log.d("交押金后", response);
+                //接口还未好
+
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent backToLoginMain = new Intent(RechargeActivity.this, MainActivity.class);
+        startActivity(backToLoginMain);
+        finish();
+    }
 }

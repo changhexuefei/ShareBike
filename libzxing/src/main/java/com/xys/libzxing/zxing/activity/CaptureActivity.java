@@ -55,6 +55,8 @@ import java.lang.reflect.Field;
 public final class CaptureActivity extends Activity implements SurfaceHolder.Callback {
 
     private static final String TAG = CaptureActivity.class.getSimpleName();
+    ImageView mBack;
+
 
     private CameraManager cameraManager;
     private CaptureActivityHandler handler;

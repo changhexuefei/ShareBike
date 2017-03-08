@@ -35,6 +35,8 @@ public class AuthenticationOkActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
+                Intent backToLoginMain = new Intent(AuthenticationOkActivity.this, MainActivity.class);
+                startActivity(backToLoginMain);
                 finish();
                 break;
             case R.id.back_to_main:
@@ -46,5 +48,13 @@ public class AuthenticationOkActivity extends BaseActivity {
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent backToLoginMain = new Intent(AuthenticationOkActivity.this, MainActivity.class);
+        startActivity(backToLoginMain);
+        finish();
     }
 }

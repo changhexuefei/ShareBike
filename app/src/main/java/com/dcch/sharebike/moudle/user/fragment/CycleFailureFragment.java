@@ -1,29 +1,26 @@
 package com.dcch.sharebike.moudle.user.fragment;
 
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.http.Api;
-import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.louisgeek.multiedittextviewlib.MultiEditInputView;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
@@ -35,13 +32,10 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -52,8 +46,9 @@ import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
 import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultSubscriber;
 import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
 import okhttp3.Call;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
+
+import static android.app.Activity.RESULT_OK;
+import static com.dcch.sharebike.R.id.tips;
 
 
 /**
@@ -63,7 +58,7 @@ public class CycleFailureFragment extends Fragment {
 
     @BindView(R.id.bike_code)
     TextView mBikeCode;
-    @BindView(R.id.tips)
+    @BindView(tips)
     TextView mTips;
     @BindView(R.id.scan_code)
     RelativeLayout mScanCode;
@@ -73,14 +68,26 @@ public class CycleFailureFragment extends Fragment {
     MultiEditInputView mQuestionDesc;
     @BindView(R.id.upload)
     TextView upload;
-    private OkHttpClient mOkHttpClient;
+    @BindView(R.id.questionOne)
+    CheckBox questionOne;
+    @BindView(R.id.questionTwo)
+    CheckBox questionTwo;
+    @BindView(R.id.questionThere)
+    CheckBox questionThere;
+    @BindView(R.id.questionFour)
+    CheckBox questionFour;
+    @BindView(R.id.questionFive)
+    CheckBox questionFive;
+    @BindView(R.id.questionSix)
+    CheckBox questionSix;
+    @BindView(R.id.questionSeven)
+    CheckBox questionSeven;
     private String uID;
     private String result;
-    private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
-    private static final String TAG = RequestManager.class.getSimpleName();
+    List<CheckBox> checkBoxes = new ArrayList<>();
+
+
     public static final String BOUNDARY = "ZnGpDtePMx0KrHh_G0X99Yef9r8JZsRJSXC";
-    private String actionUrl = Api.BASE_URL + Api.ADDTROUBLEORDER;
-    private String newName = "image.jpg";
 
     public CycleFailureFragment() {
         // Required empty public constructor
@@ -94,10 +101,8 @@ public class CycleFailureFragment extends Fragment {
             Log.d("用户明细", userDetail);
             try {
                 JSONObject object = new JSONObject(userDetail);
-
                 int id = object.getInt("id");
                 uID = String.valueOf(id);
-
                 Log.d("用户ID", uID);
 
             } catch (JSONException e) {
@@ -105,8 +110,6 @@ public class CycleFailureFragment extends Fragment {
             }
 
         }
-
-
     }
 
     @Override
@@ -115,14 +118,40 @@ public class CycleFailureFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_cycle_failure, container, false);
         ButterKnife.bind(this, view);
+//        questionOne.setOnCheckedChangeListener(listener);
+//        questionTwo.setOnCheckedChangeListener(listener);
+//        questionThere.setOnCheckedChangeListener(listener);
+//        questionFour.setOnCheckedChangeListener(listener);
+//        questionFive.setOnCheckedChangeListener(listener);
+//        questionSix.setOnCheckedChangeListener(listener);
+//        questionSeven.setOnCheckedChangeListener(listener);
+
+        checkBoxes.add(questionOne);
+        checkBoxes.add(questionTwo);
+        checkBoxes.add(questionThere);
+        checkBoxes.add(questionFour);
+        checkBoxes.add(questionFive);
+        checkBoxes.add(questionSix);
+        checkBoxes.add(questionSeven);
         return view;
+    }
+
+    public void getValues(View v) {
+
+        String content = "";
+        for (CheckBox cbx : checkBoxes) {
+            if (cbx.isChecked()) {
+                content += cbx.getText() + "\n";
+            }
+        }
+
     }
 
     @OnClick({R.id.scan_code, R.id.cycle_photo, R.id.upload})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.scan_code:
-                Intent i4 = new Intent(App.getContext(), CaptureActivity.class);
+                Intent i4 = new Intent(getActivity(), CaptureActivity.class);
                 startActivityForResult(i4, 0);
                 break;
 
@@ -135,8 +164,9 @@ public class CycleFailureFragment extends Fragment {
                         .subscribe(new RxBusResultSubscriber<ImageRadioResultEvent>() {
                             @Override
                             protected void onEvent(ImageRadioResultEvent imageRadioResultEvent) throws Exception {
-                                //得到图片的路径
+                                //得到图片的完整路径
                                 result = imageRadioResultEvent.getResult().getOriginalPath();
+                                Log.d("图片", result);
                                 if (result != null && !result.equals("")) {
                                     //将图片赋值给图片控件
                                     Glide.with(App.getContext()).load(result).into(mCyclePhoto);
@@ -147,28 +177,24 @@ public class CycleFailureFragment extends Fragment {
             case R.id.upload:
                 String bikeNo = mBikeCode.getText().toString().trim();
                 String contentText = mQuestionDesc.getContentText().trim();
-
                 Bitmap bitmap = getimage(result);
                 String imageResult = bitmapToBase64(bitmap);
-
-                uploadFile();
-//                File imageResult = new File(result);
-                Log.d("图片路径", imageResult + "");
+                Log.d("图片",imageResult);
                 Map<String, String> map = new HashMap<>();
                 map.put("userId", uID);
                 map.put("bicycleNo", bikeNo);
                 map.put("faultDescription", contentText);
-                map.put("selectFaultDescription", "");
+                map.put("selectFaultDescription", "1");
                 map.put("imageFile", imageResult);
-                OkHttpUtils
-                        .post()
+                OkHttpUtils.post()
                         .url(Api.BASE_URL + Api.ADDTROUBLEORDER)
+                        .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)
                         .params(map)
-                        .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY).build()
+                        .build()
                         .execute(new StringCallback() {
                             @Override
                             public void onError(Call call, Exception e, int id) {
-                                LogUtils.e(e.getMessage());
+                                Log.d("错误", e.getMessage());
                             }
 
                             @Override
@@ -183,6 +209,15 @@ public class CycleFailureFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 0) {
+            Bundle bundle = data.getExtras();
+            if (bundle != null) {
+                result = bundle.getString("result");
+                mBikeCode.setText(result);
+                mTips.setVisibility(View.VISIBLE);
+            }
+        }
+
     }
 
     /**
@@ -225,7 +260,6 @@ public class CycleFailureFragment extends Fragment {
      * @return
      */
     private Bitmap compressImage(Bitmap image) {
-
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
         int options = 100;
@@ -265,75 +299,17 @@ public class CycleFailureFragment extends Fragment {
         return compressImage(bitmap);//压缩好比例大小后再进行质量压缩
     }
 
-    /* 上传文件至Server的方法 */
-    private void uploadFile() {
-        String end = "\r\n";
-        String twoHyphens = "--";
-        String boundary = "*****";
-        try {
-
-            URL url = new URL(actionUrl);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-          /* 允许Input、Output，不使用Cache */
-            con.setDoInput(true);
-            con.setDoOutput(true);
-            con.setUseCaches(false);
-          /* 设置传送的method=POST */
-            con.setRequestMethod("POST");
-          /* setRequestProperty */
-            con.setRequestProperty("Connection", "Keep-Alive");
-            con.setRequestProperty("Charset", "UTF-8");
-            con.setRequestProperty("Content-Type",
-                    "multipart/form-data;boundary=" + boundary);
-          /* 设置DataOutputStream */
-            DataOutputStream ds = new DataOutputStream(con.getOutputStream());
-            ds.writeBytes(twoHyphens + boundary + end);
-            ds.writeBytes("Content-Disposition: form-data; " +
-                    "name=\"file1\";filename=\"" +
-                    MEDIA_TYPE_PNG + "\"" + end);
-            ds.writeBytes(end);
-          /* 取得文件的FileInputStream */
-            FileInputStream fStream = new FileInputStream(result);
-          /* 设置每次写入1024bytes */
-            int bufferSize = 1024;
-            byte[] buffer = new byte[bufferSize];
-            int length = -1;
-          /* 从文件读取数据至缓冲区 */
-            while ((length = fStream.read(buffer)) != -1) {
-            /* 将资料写入DataOutputStream中 */
-                ds.write(buffer, 0, length);
-            }
-            ds.writeBytes(end);
-            ds.writeBytes(twoHyphens + boundary + twoHyphens + end);
-          /* close streams */
-            fStream.close();
-            ds.flush();
-          /* 取得Response内容 */
-            InputStream is = con.getInputStream();
-            int ch;
-            StringBuffer b = new StringBuffer();
-            while ((ch = is.read()) != -1) {
-                b.append((char) ch);
-            }
-          /* 将Response显示于Dialog */
-            showDialog("上传成功" + b.toString().trim());
-          /* 关闭DataOutputStream */
-            ds.close();
-        } catch (Exception e) {
-            showDialog("上传失败" + e);
-        }
-    }
-
-    /* 显示Dialog的method */
-    private void showDialog(String mess) {
-        new AlertDialog.Builder(getActivity()).setTitle("Message")
-                .setMessage(mess)
-                .setNegativeButton("确定", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
-                .show();
-    }
-
-
+//    CompoundButton.OnCheckedChangeListener listener = new CompoundButton.OnCheckedChangeListener() {
+//
+//        @Override
+//        public void onCheckedChanged(CompoundButton buttonView,
+//                                     boolean isChecked) {
+//
+//            CheckBox box = (CheckBox) buttonView;
+//            Toast.makeText(App.getContext(),
+//                    "获取的值:" + isChecked + "xxxxx" + box.getText(),
+//                    Toast.LENGTH_LONG).show();
+//
+//        }
+//    };
 }
