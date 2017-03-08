@@ -99,4 +99,11 @@ public class IdentityAuthentication extends BaseActivity implements TextWatcher 
         getPersonNameAndIDCard();
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent backToLoginMain = new Intent(IdentityAuthentication.this, MainActivity.class);
+        startActivity(backToLoginMain);
+    }
 }
