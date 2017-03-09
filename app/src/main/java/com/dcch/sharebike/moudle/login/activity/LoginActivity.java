@@ -138,8 +138,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     }
 
     public void init() {
-//        phone = userPhone.getText().toString().trim();
-//        seCode = securityCode.getText().toString().trim();
+        phone = userPhone.getText().toString().trim();
+        seCode = securityCode.getText().toString().trim();
     }
 
 //    private void initSDK() {
@@ -250,8 +250,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void afterTextChanged(Editable editable) {
-        phone = userPhone.getText().toString().trim();
-        seCode = securityCode.getText().toString().trim();
 
         if (!TextUtils.isEmpty(phone) && InPutUtils.isMobilePhone(phone)) {
             getSecurityCode.setClickable(true);
