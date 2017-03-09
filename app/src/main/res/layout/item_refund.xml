@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="250dp"
+    android:layout_width="wrap_content"
+    android:id="@+id/refund_area"
+    android:background="@drawable/dialog_refund_bg"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <ImageView
-        android:layout_alignParentTop="true"
-        android:id="@+id/iv_refund"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        app:srcCompat="@drawable/share_mobike_img" />
 
     <TextView
-        android:layout_below="@+id/iv_refund"
+        android:layout_marginTop="130dp"
+        android:gravity="center"
+        android:padding="20dp"
         android:id="@+id/tv_tip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,31 +20,26 @@
 
     <LinearLayout
         android:layout_below="@+id/tv_tip"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:id="@+id/button"
+            android:background="@color/color_ff"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/btn_cancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="取消" />
 
         <Button
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
             android:textColor="#ffffff"
             android:background="@color/colorTitle"
-            android:id="@+id/button2"
+            android:id="@+id/btn_confirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="退押金" />
-
-
     </LinearLayout>
-
-
 </RelativeLayout>

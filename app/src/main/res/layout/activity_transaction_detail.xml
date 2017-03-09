@@ -29,24 +29,47 @@
             android:textSize="18sp" />
 
         <TextView
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_gravity="center|right"
             android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:text="退款说明"
             android:textColor="#ffffff"
             android:textSize="14sp" />
     </FrameLayout>
 
-    <FrameLayout
-        android:layout_below="@+id/detail"
+
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:id="@+id/transact_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+    </com.github.jdsjlzx.recyclerview.LRecyclerView>
 
-    </FrameLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detail"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:id="@+id/iv_noPay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/recharge_history_empty_img" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_noPay"
+            android:layout_centerHorizontal="true"
+            android:text="您还没有充值，去充值吧"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
 
 
 </RelativeLayout>

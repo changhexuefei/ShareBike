@@ -40,8 +40,8 @@
                     android:background="@drawable/shape_text"
                     android:enabled="true"
                     android:paddingBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
                     android:paddingTop="5dp"
                     android:text="登录/注册"
                     android:textColor="#ffffff"/>

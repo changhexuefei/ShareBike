@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="20dp"
+    android:layout_marginTop="10dp"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="付款成功"
+        android:textColor="#000000"
+        android:textSize="14sp" />
+
+        <TextView
+            android:layout_alignLeft="@+id/tips"
+            android:layout_below="@+id/tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2017-03-09 13:22"
+            android:textSize="12sp"
+            android:id="@+id/transaction_time" />
+
+        <TextView
+            android:id="@+id/bikeNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0000000000" />
+
+
+
+
+
+        <TextView
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:drawableLeft="@mipmap/my_trip_item_duration_img"
+            android:id="@+id/place_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="骑行时间："
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/duration"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="7分钟" />
+
+        <TextView
+
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="40dp"
+            android:drawableLeft="@mipmap/my_trip_item_cost_img"
+            android:id="@+id/address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="骑行花费:"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/money_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1.00元"
+            />
+
+</RelativeLayout>

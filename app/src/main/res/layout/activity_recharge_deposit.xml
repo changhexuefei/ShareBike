@@ -52,7 +52,7 @@
             android:layout_below="@+id/tv10"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
-            android:text="299元"
+            android:text="199元"
             android:textSize="16sp"
             />
 
@@ -65,7 +65,6 @@
             android:layout_marginTop="5dp"
             android:text="骑行单车必须支付押金，押金可退还"
             />
-
 
     </RelativeLayout>
 

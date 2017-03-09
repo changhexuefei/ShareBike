@@ -48,11 +48,27 @@
         android:layout_below="@+id/journey"
         android:visibility="gone"></ListView>
 
+
+    <RelativeLayout
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/journey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <ImageView
+        android:layout_marginTop="10dp"
+        android:id="@+id/iv_no_journey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/empty_view_img"
+        android:layout_centerHorizontal="true" />
     <TextView
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/iv_no_journey"
         android:id="@+id/no_journey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="您还没有骑行记录，快来体验吧"
-        android:textSize="20sp" />
+        android:textSize="16sp" />
+    </RelativeLayout>
 </RelativeLayout>

@@ -1,78 +1,60 @@
 package com.dcch.sharebike.listener;
 
-import android.util.Log;
-
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
-import com.baidu.location.Poi;
-
-import java.util.List;
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.MapStatus;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.route.PlanNode;
 
 /**
  * Created by Administrator on 2017/2/7 0007.
  */
 
 public class MyLocationListener implements BDLocationListener {
-    @Override
-    public void onReceiveLocation(BDLocation location) {
-        //Receive Location
-        StringBuffer sb = new StringBuffer(256);
-        sb.append("time : ");
-        sb.append(location.getTime());
-        sb.append("\nerror code : ");
-        sb.append(location.getLocType());
-        sb.append("\nlatitude : ");
-        sb.append(location.getLatitude());
-        sb.append("\nlontitude : ");
-        sb.append(location.getLongitude());
-        sb.append("\nradius : ");
-        sb.append(location.getRadius());
-        if (location.getLocType() == BDLocation.TypeGpsLocation) {// GPS定位结果
-            sb.append("\nspeed : ");
-            sb.append(location.getSpeed());// 单位：公里每小时
-            sb.append("\nsatellite : ");
-            sb.append(location.getSatelliteNumber());
-            sb.append("\nheight : ");
-            sb.append(location.getAltitude());// 单位：米
-            sb.append("\ndirection : ");
-            sb.append(location.getDirection());// 单位度
-            sb.append("\naddr : ");
-            sb.append(location.getAddrStr());
-            sb.append("\ndescribe : ");
-            sb.append("gps定位成功");
 
-        } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果
-            sb.append("\naddr : ");
-            sb.append(location.getAddrStr());
-            //运营商信息
-            sb.append("\noperationers : ");
-            sb.append(location.getOperators());
-            sb.append("\ndescribe : ");
-            sb.append("网络定位成功");
-        } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {// 离线定位结果
-            sb.append("\ndescribe : ");
-            sb.append("离线定位成功，离线定位结果也是有效的");
-        } else if (location.getLocType() == BDLocation.TypeServerError) {
-            sb.append("\ndescribe : ");
-            sb.append("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
-        } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
-            sb.append("\ndescribe : ");
-            sb.append("网络不同导致定位失败，请检查网络是否通畅");
-        } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
-            sb.append("\ndescribe : ");
-            sb.append("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
+    private boolean isFirstLoc = true;
+    private MapView mMapView;
+    private BaiduMap mBaiduMap = mMapView.getMap();
+    private int mXDirection;
+
+
+
+    @Override
+    public void onReceiveLocation(BDLocation bdLocation) {
+        // map view 销毁后不在处理新接收的位置
+        if (bdLocation == null || mMapView == null) {
+            return;
         }
-        sb.append("\nlocationdescribe : ");
-        sb.append(location.getLocationDescribe());// 位置语义化信息
-        List<Poi> list = location.getPoiList();// POI数据
-        if (list != null) {
-            sb.append("\npoilist size = : ");
-            sb.append(list.size());
-            for (Poi p : list) {
-                sb.append("\npoi= : ");
-                sb.append(p.getId() + " " + p.getName() + " " + p.getRank());
-            }
+        MyLocationData locData = new MyLocationData.Builder()
+                .accuracy(bdLocation.getRadius())
+                .direction(mXDirection)//设定图标方向     // 此处设置开发者获取到的方向信息，顺时针0-360
+                .latitude(bdLocation.getLatitude())
+                .longitude(bdLocation.getLongitude()).build();
+        mBaiduMap.setMyLocationData(locData);
+       Double currentLatitude = bdLocation.getLatitude();
+        Double currentLongitude = bdLocation.getLongitude();
+//        current_addr.setText(bdLocation.getAddrStr());
+      LatLng currentLL = new LatLng(bdLocation.getLatitude(),
+                bdLocation.getLongitude());
+        PlanNode startNodeStr = PlanNode.withLocation(currentLL);
+        //option.setScanSpan(5000)，每隔5000ms这个方法就会调用一次，而有些我们只想调用一次，所以要判断一下isFirstLoc
+        if (isFirstLoc) {
+            isFirstLoc = false;
+            LatLng ll = new LatLng(bdLocation.getLatitude(),
+                    bdLocation.getLongitude());
+            MapStatus.Builder builder = new MapStatus.Builder();
+            //地图缩放比设置为18
+            builder.target(ll).zoom(18.0f);
+            mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+          Double  changeLatitude = bdLocation.getLatitude();
+            Double changeLongitude = bdLocation.getLongitude();
+//            if (!isServiceLive) {
+//                addOverLayout(currentLatitude, currentLongitude);
+//            }
         }
-        Log.i("BaiduLocationApiDem", sb.toString());
     }
 }

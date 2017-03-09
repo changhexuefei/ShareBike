@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
+import com.dcch.sharebike.view.RefundPopuwindow;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,6 +24,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class WalletInfoActivity extends BaseActivity {
+    private RefundPopuwindow refundPopuwindow;
+
+
     String msg = "骑行单车必须支付押金，押金可退还。";
     @BindView(R.id.back)
     ImageView back;
@@ -88,10 +93,19 @@ public class WalletInfoActivity extends BaseActivity {
                 }
                 break;
             case R.id.chargeDeposit:
-                Intent rechargeDeposit = new Intent(WalletInfoActivity.this, RechargeDepositActivity.class);
-                startActivity(rechargeDeposit);
+                showRefundPopuwindow();
+//                Intent rechargeDeposit = new Intent(WalletInfoActivity.this, RechargeDepositActivity.class);
+//                startActivity(rechargeDeposit);
                 break;
         }
+    }
+
+    private void showRefundPopuwindow() {
+        if (refundPopuwindow != null && !refundPopuwindow.equals("")) {
+            refundPopuwindow.dismiss();
+        }
+        refundPopuwindow = new RefundPopuwindow(WalletInfoActivity.this, refundViewOnClick);
+        refundPopuwindow.showAtLocation(findViewById(R.id.activity_wallet_info), Gravity.CENTER, 0, 0);
     }
 
     private void popupDialog() {
@@ -117,5 +131,21 @@ public class WalletInfoActivity extends BaseActivity {
                 }).create()
                 .show();
     }
+
+    View.OnClickListener refundViewOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.btn_cancel:
+                    refundPopuwindow.dismiss();
+                    break;
+                case R.id.btn_confirm:
+                    ToastUtils.showShort(WalletInfoActivity.this, "您点击的是退押金按钮");
+                    break;
+
+            }
+        }
+    };
+
 
 }

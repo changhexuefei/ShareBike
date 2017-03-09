@@ -44,6 +44,7 @@
         android:textColor="#716F76"/>
     
     <EditText
+        android:visibility="gone"
         android:textSize="12sp"
         android:gravity="center"
         android:hint="按需输入充值金额，最低一元"
