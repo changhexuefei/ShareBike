@@ -252,9 +252,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public void afterTextChanged(Editable editable) {
         phone = userPhone.getText().toString().trim();
         seCode = securityCode.getText().toString().trim();
+
         if (!TextUtils.isEmpty(phone) && InPutUtils.isMobilePhone(phone)) {
             getSecurityCode.setClickable(true);
             getSecurityCode.setBackgroundColor(Color.parseColor("#F8941D"));
+        }else {
+            getSecurityCode.setClickable(false);
         }
 
         if (!TextUtils.isEmpty(seCode) && !TextUtils.isEmpty(phone)) {
