@@ -47,7 +47,8 @@ public class RechargeDepositActivity extends BaseActivity {
     RelativeLayout rdWeixinArea;
     @BindView(R.id.btn_rd_recharge)
     Button btnRdRecharge;
-
+    private final static String  orderbody = "交押金";
+    private final  static  String subject ="押金";
     private static final int SDK_PAY_FLAG = 1;
     private static final int SDK_AUTH_FLAG = 2;
 
@@ -77,13 +78,15 @@ public class RechargeDepositActivity extends BaseActivity {
                 rdWeixinCheckbox.setChecked(true);
                 break;
             case R.id.btn_rd_recharge:
+                if(rdAliCheckbox.isChecked()){
                 final AliPay aliPay = new AliPay(this);
                 String outTradeNo = aliPay.getOutTradeNo();
                 String moneySum = figure.getText().toString().trim();
+                moneySum=moneySum.substring(0,moneySum.length()-1);
                 Map<String, String> map = new HashMap<>();
                 map.put("outtradeno", outTradeNo);
-                map.put("orderbody", "交押金");
-                map.put("subject", "押金");
+                map.put("orderbody", orderbody);
+                map.put("subject", subject);
                 map.put("money", moneySum);
                 OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAY).params(map).build().execute(new StringCallback() {
                     @Override
@@ -93,8 +96,7 @@ public class RechargeDepositActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(final String response, int id) {
-                        LogUtils.d("支付", response);
-
+//                        LogUtils.d("支付", response);
                         Runnable payRunnable = new Runnable() {
                             @Override
                             public void run() {
@@ -113,6 +115,10 @@ public class RechargeDepositActivity extends BaseActivity {
                         payThread.start();
                     }
                 });
+                }else if(rdWeixinCheckbox.isChecked()){
+                    //微信支付
+
+                }
                 break;
         }
     }

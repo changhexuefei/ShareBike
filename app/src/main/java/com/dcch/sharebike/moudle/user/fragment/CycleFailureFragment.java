@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.utils.SPUtils;
+import com.dcch.sharebike.utils.ToastUtils;
 import com.louisgeek.multiedittextviewlib.MultiEditInputView;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -56,7 +58,7 @@ import static com.dcch.sharebike.R.id.tips;
  */
 public class CycleFailureFragment extends Fragment {
 
-    @BindView(R.id.bike_code)
+    @BindView(R.id.cf_bike_code)
     TextView mBikeCode;
     @BindView(tips)
     TextView mTips;
@@ -82,12 +84,23 @@ public class CycleFailureFragment extends Fragment {
     CheckBox questionSix;
     @BindView(R.id.questionSeven)
     CheckBox questionSeven;
+    @BindView(R.id.one)
+    LinearLayout one;
+    @BindView(R.id.two)
+    LinearLayout two;
+    @BindView(R.id.there)
+    LinearLayout there;
+    @BindView(R.id.four)
+    LinearLayout four;
     private String uID;
     private String result;
     List<CheckBox> checkBoxes = new ArrayList<>();
 
 
     public static final String BOUNDARY = "ZnGpDtePMx0KrHh_G0X99Yef9r8JZsRJSXC";
+    private String postion;
+    private String bikeNo;
+    private String contentText;
 
     public CycleFailureFragment() {
         // Required empty public constructor
@@ -126,26 +139,20 @@ public class CycleFailureFragment extends Fragment {
 //        questionSix.setOnCheckedChangeListener(listener);
 //        questionSeven.setOnCheckedChangeListener(listener);
 
-        checkBoxes.add(questionOne);
-        checkBoxes.add(questionTwo);
-        checkBoxes.add(questionThere);
-        checkBoxes.add(questionFour);
-        checkBoxes.add(questionFive);
-        checkBoxes.add(questionSix);
-        checkBoxes.add(questionSeven);
         return view;
     }
 
-    public void getValues(View v) {
+    public void getID(View v) {
 
         String content = "";
+
         for (CheckBox cbx : checkBoxes) {
             if (cbx.isChecked()) {
-                content += cbx.getText() + "\n";
+                content += cbx.getId() + "\n";
             }
         }
-
     }
+
 
     @OnClick({R.id.scan_code, R.id.cycle_photo, R.id.upload})
     public void onClick(View view) {
@@ -175,33 +182,48 @@ public class CycleFailureFragment extends Fragment {
                         }).openGallery();
                 break;
             case R.id.upload:
-                String bikeNo = mBikeCode.getText().toString().trim();
-                String contentText = mQuestionDesc.getContentText().trim();
+                bikeNo = mBikeCode.getText().toString().trim();
+                contentText = mQuestionDesc.getContentText().trim();
                 Bitmap bitmap = getimage(result);
                 String imageResult = bitmapToBase64(bitmap);
-                Log.d("图片",imageResult);
-                Map<String, String> map = new HashMap<>();
-                map.put("userId", uID);
-                map.put("bicycleNo", bikeNo);
-                map.put("faultDescription", contentText);
-                map.put("selectFaultDescription", "1");
-                map.put("imageFile", imageResult);
-                OkHttpUtils.post()
-                        .url(Api.BASE_URL + Api.ADDTROUBLEORDER)
-                        .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)
-                        .params(map)
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                Log.d("错误", e.getMessage());
-                            }
+                Log.d("图片", imageResult);
 
-                            @Override
-                            public void onResponse(String response, int id) {
-                                Log.d("上传", response);
-                            }
-                        });
+                if (!uID.equals("") && uID != null && !bikeNo.equals("") && bikeNo != null) {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("userId", uID);
+                    map.put("bicycleNo", bikeNo);
+                    map.put("faultDescription", contentText);
+                    map.put("selectFaultDescription", "1");
+                    map.put("imageFile", imageResult);
+                    OkHttpUtils.post()
+                            .url(Api.BASE_URL + Api.ADDTROUBLEORDER)
+                            .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)
+                            .params(map)
+                            .build()
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onError(Call call, Exception e, int id) {
+                                    Log.d("错误", e.getMessage());
+                                }
+
+                                @Override
+                                public void onResponse(String response, int id) {
+                                    Log.d("上传成功", response);
+                                    //{"resultStatus":"1"}
+                                    try {
+                                        JSONObject object = new JSONObject(response);
+                                        String resultStatus = object.optString("resultStatus");
+                                        if(resultStatus.equals("1")){
+                                            ToastUtils.showLong(getActivity(),"上传成功！");
+                                        }else if(resultStatus.equals("0")){
+                                            ToastUtils.showLong(getActivity(),"上传失败！");
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                }
                 break;
         }
     }
@@ -299,17 +321,4 @@ public class CycleFailureFragment extends Fragment {
         return compressImage(bitmap);//压缩好比例大小后再进行质量压缩
     }
 
-//    CompoundButton.OnCheckedChangeListener listener = new CompoundButton.OnCheckedChangeListener() {
-//
-//        @Override
-//        public void onCheckedChanged(CompoundButton buttonView,
-//                                     boolean isChecked) {
-//
-//            CheckBox box = (CheckBox) buttonView;
-//            Toast.makeText(App.getContext(),
-//                    "获取的值:" + isChecked + "xxxxx" + box.getText(),
-//                    Toast.LENGTH_LONG).show();
-//
-//        }
-//    };
 }

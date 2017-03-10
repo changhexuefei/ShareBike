@@ -66,7 +66,7 @@ public class UserGuideActivity extends BaseActivity {
                 break;
             case R.id.report:
                 Intent reportIllegalParking = new Intent(this,CustomerServiceActivity.class);
-                reportIllegalParking.putExtra("name","3");
+                reportIllegalParking.putExtra("name","2");
                 startActivity(reportIllegalParking);
                 break;
             case R.id.unFindBike:

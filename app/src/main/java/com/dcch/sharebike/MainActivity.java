@@ -55,6 +55,7 @@ import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteLine;
 import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
@@ -72,6 +73,7 @@ import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.moudle.login.activity.RechargeActivity;
 import com.dcch.sharebike.moudle.search.activity.SeekActivity;
 import com.dcch.sharebike.moudle.user.activity.CustomerServiceActivity;
+import com.dcch.sharebike.moudle.user.activity.RechargeDepositActivity;
 import com.dcch.sharebike.overlayutil.OverlayManager;
 import com.dcch.sharebike.overlayutil.WalkingRouteOverlay;
 import com.dcch.sharebike.utils.LogUtils;
@@ -183,7 +185,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
      */
     private int mXDirection;
     private GeoCoder mSearch = null;
-
     private double latitude;
     private double longitude;
     //    private Address locationDescribe;
@@ -235,10 +236,8 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     private BookingBikeInfo bookingBikeInfo = null;
     private BikeRentalOrderInfo bikeRentalOrderInfo = null;
     private BikeRentalOrderPopupWindow orderPopupWindow = null;
-
     private String mCastTime;
     private String mDistance;
-
     private LatLng latLng;
     private WalkingRouteLine walkingRouteLine;
 
@@ -497,19 +496,15 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.MyCenter:
-                ToastUtils.showLong(this, "我是个人中心");
                 Intent personal = new Intent(this, PersonalCenterActivity.class);
                 startActivity(personal);
                 break;
             case R.id.seek:
-                ToastUtils.showLong(this, "我是搜索");
                 Intent seek = new Intent(this, SeekActivity.class);
                 seek.putExtra("address", address1);
                 startActivity(seek);
                 break;
             case R.id.btn_my_location:
-                //点击定位按钮，回到当前的位置
-                ToastUtils.showLong(this, "我是位置");
                 MyLocationData data = new MyLocationData.Builder()
                         .accuracy(1000)//范围半径，单位：米
                         .latitude(mCurrentLantitude)//
@@ -525,8 +520,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 if (SPUtils.isLogin()) {
                     popupDialog();
                 } else {
-                    Intent myHelp = new Intent(this, ClickMyHelpActivity.class);
-                    startActivity(myHelp);
+                    startActivity(new Intent(this, ClickMyHelpActivity.class));
                 }
                 break;
             case R.id.scan:
@@ -534,19 +528,19 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 // && cashStatus == 1 && status == 1
                 if (SPUtils.isLogin()) {
                     MainActivityPermissionsDispatcher.showCameraWithCheck(this);
-                    Intent i4 = new Intent(this, CaptureActivity.class);
-                    startActivityForResult(i4, 0);
+                    startActivityForResult(new Intent(this, CaptureActivity.class), 0);
                 } else if (SPUtils.isLogin() && cashStatus == 0) {
                     Intent i4 = new Intent(this, RechargeActivity.class);
                     startActivity(i4);
                 } else if (SPUtils.isLogin() && cashStatus == 1 && status == 0) {
-                    Intent i4 = new Intent(this, IdentityAuthentication.class);
-                    startActivity(i4);
+                    startActivity(new Intent(this, IdentityAuthentication.class));
+                } else if (SPUtils.isLogin() && cashStatus == 0 && status == 1) {
+                    startActivity(new Intent(this, RechargeDepositActivity.class));
                 } else {
-//                    没有登录的情况设置Activity
-//                    mBtnMyHelp.setVisibility(View.GONE);
-//                    mBtnMyLocation.setVisibility(View.GONE);
-//                    mScan.setVisibility(View.GONE);
+////                    没有登录的情况设置Activity
+//                    mBtnMyHelp.setVisibility(View.INVISIBLE);
+//                    mBtnMyLocation.setVisibility(View.INVISIBLE);
+//                    mScan.setVisibility(View.INVISIBLE);
                     startActivity(new Intent(MainActivity.this, ClickCameraPopupActivity.class));
                 }
                 break;
@@ -585,6 +579,8 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 double lat1 = Double.parseDouble(lat);
                 double lng1 = Double.parseDouble(lng);
                 latLng = new LatLng(lat1, lng1);
+                double distance1 = DistanceUtil.getDistance(latLng, currentLatLng);
+                ToastUtils.showShort(MainActivity.this, distance1 + "");
                 //设置marker
                 OverlayOptions options = new MarkerOptions()
                         .position(latLng)//设置位置
@@ -645,6 +641,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 case R.id.order:
                     //&& cashStatus == 1 && status == 1
                     if (SPUtils.isLogin()) {
+                        mInstructions.setVisibility(View.GONE);
                         ToastUtils.showShort(MainActivity.this, "我登录了");
                         if (phone != null && !phone.equals("")) {
                             queryBookingNum(phone);
@@ -663,7 +660,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                             clickLon = clickMarkLatlng.longitude;
                             forLocationAddMark(clickLon, clickLat);
                         }
-                        mInstructions.setVisibility(View.GONE);
+
                         Log.d("ooooo", userDetail);
                         if (userDetail != null) {
                             try {
@@ -783,7 +780,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             OkHttpUtils.post().url(Api.BASE_URL + Api.CANCELBOOK).params(map).build().execute(new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
-                    LogUtils.e(e.getMessage());
+                    Log.e("错误",e.getMessage());
                 }
 
                 @Override
@@ -1003,7 +1000,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         countDistance(currentLatLng, latLng);
     }
 
-
     //第一次点击图标时，画路线的方法
     private void countDistance(LatLng currentLatLng, LatLng latLng) {
         RoutePlanSearch search = RoutePlanSearch.newInstance();        //百度的搜索路线的类
@@ -1206,7 +1202,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         }
     }
 
-
     /**
      * 实现定位回调监听
      */
@@ -1340,7 +1335,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         super.onStop();
     }
 
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -1420,7 +1414,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         return super.onKeyDown(keyCode, event);
     }
 
-
     //退出登录页面后，设置页面发来的消息，将mInstructions控件显示
     @Subscriber(tag = "visible", mode = ThreadMode.ASYNC)
     private void receiveFromSetting(MessageEvent info) {
@@ -1433,6 +1426,15 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     private void receiveFromLogin(MessageEvent info) {
         LogUtils.e(info.toString());
         mInstructions.setVisibility(View.GONE);
+    }
+
+    //摄像机页面发来的消息，将mBtnMyHelp控件显示
+
+    @Subscriber(tag = "allShow", mode = ThreadMode.ASYNC)
+    private void receiveFromClickCameraPopuActivity(MessageEvent info) {
+//        mBtnMyHelp.setVisibility(View.VISIBLE);
+//        mBtnMyLocation.setVisibility(View.VISIBLE);
+//        mScan.setVisibility(View.VISIBLE);
     }
 
     /*

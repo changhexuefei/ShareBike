@@ -43,7 +43,7 @@
                     android:src="@mipmap/report_issue_scan_qrcode" />
 
                 <TextView
-                    android:id="@+id/bike_code"
+                    android:id="@+id/cf_bike_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -66,6 +66,7 @@
             </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/one"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginTop="15dp">
@@ -88,6 +89,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/two"
                 android:layout_width="match_parent"
                 android:layout_height="30dp">
 
@@ -110,6 +112,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/there"
                 android:layout_width="match_parent"
                 android:layout_height="30dp">
 
@@ -132,6 +135,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/four"
                 android:layout_width="match_parent"
                 android:layout_height="30dp">
 

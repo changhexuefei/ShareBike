@@ -23,6 +23,7 @@ import com.dcch.sharebike.alipay.PayResult;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -34,7 +35,6 @@ import butterknife.OnClick;
 import okhttp3.Call;
 
 public class RechargeBikeFareActivity extends BaseActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
-
 
     @BindView(R.id.back)
     ImageView back;
@@ -64,6 +64,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
     LinearLayout pay;
     @BindView(R.id.btn_rbf_recharge)
     Button btnRbfRecharge;
+    String rechargeNumber = "";
 
     private static final int SDK_PAY_FLAG = 1;
     private static final int SDK_AUTH_FLAG = 2;
@@ -76,11 +77,13 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
     @Override
     protected void initData() {
         rbfAliCheckbox.setChecked(true);
+        rbRg110.setChecked(true);
+        String s1 = rbRg110.getText().toString().trim();
+        rechargeNumber = s1.substring(1, s1.length());
     }
 
     @Override
     protected void initListener() {
-        super.initListener();
         rgRecRg1.setOnCheckedChangeListener(this);
         rgRecRg2.setOnCheckedChangeListener(this);
 
@@ -92,7 +95,6 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
             case R.id.back:
                 finish();
                 break;
-
             case R.id.rbf_aliArea:
                 rbfAliCheckbox.setChecked(true);
                 rbfWeixinCheckbox.setChecked(false);
@@ -102,68 +104,85 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                 rbfWeixinCheckbox.setChecked(true);
                 break;
             case R.id.btn_rbf_recharge:
-                AliPay aliPay = new AliPay(this);
-                String outTradeNo = aliPay.getOutTradeNo();
-//                String moneySum = money.getText().toString().trim();
-                Map<String, String> map = new HashMap<>();
-                map.put("outtradeno", outTradeNo);
-                map.put("orderbody", "交车费");
-                map.put("subject", "车费");
-                map.put("money", "0.01");
-                OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAY).params(map).build().execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        LogUtils.d(e.getMessage());
-                    }
 
-                    @Override
-                    public void onResponse(final String response, int id) {
-                        LogUtils.d("支付", response);
-                        Runnable payRunnable = new Runnable() {
-                            @Override
-                            public void run() {
-                                EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
-                                PayTask task = new PayTask(RechargeBikeFareActivity.this);
-                                Map<String, String> stringStringMap = task.payV2(response, true);
-                                Message msg = new Message();
-                                msg.what = SDK_PAY_FLAG;
-                                msg.obj = stringStringMap;
-                                handler.sendMessage(msg);
-                            }
-                        };
-                        // 必须异步调用
-                        Thread payThread = new Thread(payRunnable);
-                        payThread.start();
-                    }
-                });
+                //这里要分两种情况，调取微信和支付宝的支付方式
+                if (rbfAliCheckbox.isChecked()) {
+                    //选择支付宝，调取支付宝的支付方法
+                    AliPay aliPay = new AliPay(this);
+                    String outTradeNo = aliPay.getOutTradeNo();
+
+                    Map<String, String> map = new HashMap<>();
+                    map.put("outtradeno", outTradeNo);
+                    map.put("orderbody", "交车费");
+                    map.put("subject", "车费");
+                    map.put("money", rechargeNumber);
+                    ToastUtils.showShort(RechargeBikeFareActivity.this, rechargeNumber);
+                    OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAY).params(map).build().execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            LogUtils.d(e.getMessage());
+                        }
+
+                        @Override
+                        public void onResponse(final String response, int id) {
+                            LogUtils.d("支付", response);
+                            Runnable payRunnable = new Runnable() {
+                                @Override
+                                public void run() {
+                                    EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
+                                    PayTask task = new PayTask(RechargeBikeFareActivity.this);
+                                    Map<String, String> stringStringMap = task.payV2(response, true);
+                                    Message msg = new Message();
+                                    msg.what = SDK_PAY_FLAG;
+                                    msg.obj = stringStringMap;
+                                    handler.sendMessage(msg);
+                                }
+                            };
+                            // 必须异步调用
+                            Thread payThread = new Thread(payRunnable);
+                            payThread.start();
+                        }
+                    });
+                } else if (rbfWeixinCheckbox.isChecked()) {
+                    //调取微信的支付方式
+
+                }
                 break;
         }
     }
 
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-        switch (checkedId){
+        switch (checkedId) {
             case R.id.rb_rg1_10:
                 rgRecRg2.clearCheck();
                 radioGroup.check(R.id.rb_rg1_10);
-
+                String s1 = rbRg110.getText().toString().trim();
+                rechargeNumber = s1.substring(1, s1.length());
                 break;
             case R.id.rb_rg1_20:
                 rgRecRg2.clearCheck();
                 radioGroup.check(R.id.rb_rg1_20);
+                String s2 = rbRg120.getText().toString().trim();
+                rechargeNumber = s2.substring(1, s2.length());
                 break;
 
             case R.id.rb_rg2_50:
                 rgRecRg1.clearCheck();
                 radioGroup.check(R.id.rb_rg2_50);
+                String s3 = rbRg250.getText().toString().trim();
+                rechargeNumber = s3.substring(1, s3.length());
                 break;
             case R.id.rb_rg2_100:
                 rgRecRg1.clearCheck();
                 radioGroup.check(R.id.rb_rg2_100);
+                String s4 = rbRg2100.getText().toString().trim();
+                rechargeNumber = s4.substring(1, s4.length());
                 break;
 
         }
     }
+
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
