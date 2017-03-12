@@ -40,7 +40,7 @@ public class WalletInfoActivity extends BaseActivity {
     private int cashStatus;
     private RefundPopuwindow refundPopuwindow;
     private final String msg = "骑行单车必须支付押金，押金可退还。";
-    private final  String tipOne ="押金299元";
+    private final  String tipOne ="押金199元";
     private final  String tipTwo ="押金0元";
     private final String tipThere ="押金退款";
     private final String tipFour ="充押金";

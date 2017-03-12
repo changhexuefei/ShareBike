@@ -71,7 +71,6 @@ public class SettingActivity extends BaseActivity {
             case R.id.rechargeAgreement:
                 break;
             case R.id.signOut:
-
                 new AlertDialog.Builder(this)
                         .setTitle("退出登录")
                         .setMessage("确定退出登录吗？")

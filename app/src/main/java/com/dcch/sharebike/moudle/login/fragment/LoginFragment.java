@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.moudle.user.activity.CreditIntegralActivity;
+import com.dcch.sharebike.moudle.user.activity.InviteFriendsActivity;
 import com.dcch.sharebike.moudle.user.activity.MyJourneyActivity;
 import com.dcch.sharebike.moudle.user.activity.MyMessageActivity;
 import com.dcch.sharebike.moudle.user.activity.PersonInfoActivity;
@@ -70,8 +71,6 @@ public class LoginFragment extends Fragment {
     public LoginFragment() {
 
     }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -160,6 +159,8 @@ public class LoginFragment extends Fragment {
                 break;
             case R.id.friend:
                 ToastUtils.showLong(getContext(), "邀请好友");
+                startActivity(new Intent(getActivity(),InviteFriendsActivity.class));
+
                 break;
             case R.id.guide:
                 ToastUtils.showLong(getContext(), "用户指南");

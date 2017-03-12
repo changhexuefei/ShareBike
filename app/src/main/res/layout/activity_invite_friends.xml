@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.dcch.sharebike.moudle.user.activity.InviteFriendsActivity">
+
+    <FrameLayout
+        android:id="@+id/inviteFriendsArea"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#41c0dc">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp"
+            android:src="@mipmap/back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/inviteFriends"
+            android:textColor="@color/common"
+            android:textSize="16sp"/>
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/invite_icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/inviteFriendsArea"
+        android:src="@drawable/share_mobike_img"/>
+
+    <TextView
+        android:id="@+id/tv_tip_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/invite_icon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="@string/inviteTipOne"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tv_tip_two"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_tip_one"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="6dp"
+        android:gravity="center"
+        android:text="@string/inviteTipTwo"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/tv_tip_there"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_tip_two"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:text="@string/inviteTipThere"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/tv_tip_four"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_tip_there"
+        android:layout_centerHorizontal="true"
+        android:text="XXX635535"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+
+    <RelativeLayout
+        android:id="@+id/updateArea"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/tv_tip_four">
+
+        <TextView
+            android:id="@+id/updateInvitationCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:text="@string/inviteUpdateCode"
+            android:textColor="@color/colorTitle"
+            android:textSize="16sp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_tip"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/updateArea"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/shareArea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="6dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/inviteShare"/>
+    </RelativeLayout>
+
+    <RadioGroup
+        android:id="@+id/sharePlatform"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_below="@+id/rl_tip"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/shareWeiChat"
+            style="@style/share_style"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:drawableTop="@mipmap/umeng_socialize_wechat"
+            android:text="微信"/>
+
+        <RadioButton
+            android:id="@+id/shareWeiChatCircle"
+            style="@style/share_style"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:drawableTop="@mipmap/umeng_socialize_wxcircle"
+            android:text="微信朋友圈"/>
+
+        <RadioButton
+            android:id="@+id/shareQQ"
+            style="@style/share_style"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:drawableTop="@mipmap/umeng_socialize_qq_on"
+            android:text="QQ好友"/>
+
+        <RadioButton
+            android:id="@+id/shareQQZONE"
+            style="@style/share_style"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:drawableTop="@mipmap/umeng_socialize_qzone_on"
+            android:text="QQ空间"/>
+
+        <RadioButton
+            android:id="@+id/shareSina"
+            style="@style/share_style"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:drawableTop="@mipmap/umeng_socialize_sina_on"
+            android:text="微博"/>
+
+    </RadioGroup>
+
+
+</RelativeLayout>

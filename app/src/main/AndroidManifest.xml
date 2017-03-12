@@ -3,7 +3,10 @@
           package="com.dcch.sharebike">
 
     <uses-sdk android:minSdkVersion="7"/>
-    <uses-feature android:name="android.hardware.camera" android:required="true"/>
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true"/>
     <!-- Required -->
     <permission
         android:name="${applicationId}.permission.JPUSH_MESSAGE"
@@ -82,24 +85,33 @@
     <uses-permission android:name="android.permission.GET_TASKS"/>
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
 
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <!-- 蓝牙分享所需的权限 -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
+
+
     <application
         android:name=".app.App"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/sharebike"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:hardwareAccelerated="true"
-        >
-        <!--android:theme="@style/Theme_Light"-->
+        android:theme="@style/AppTheme">
 
+        <!-- android:theme="@style/Theme_Light" -->
 
-        <!-- 百度地图相关配置 -->
-        <meta-data
-            android:name="com.baidu.lbsapi.API_KEY"
-            android:value="TtIrDwFCwHcYPlf9xMNfRjPPMyY8yGfj"/>
         <activity android:name="com.xys.libzxing.zxing.activity.CaptureActivity"/>
-
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask"/>
@@ -111,11 +123,40 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.GuideActivity"/>
-        <!--<activity-->
-            <!--android:name="com.mob.tools.MobUIShell"-->
-            <!--android:configChanges="keyboardHidden|orientation|screenSize"-->
-            <!--android:theme="@android:style/Theme.Translucent.NoTitleBar"-->
-            <!--android:windowSoftInputMode="stateHidden|adjustResize"/>-->
+        <activity
+            android:name="com.mob.tools.MobUIShell"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+            <!-- QQ和QQ空间分享 QQ登录的回调必须要配置的 -->
+            <intent-filter>
+                <data android:scheme="tencent100371282" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <!-- 新浪微博客户端分享回调必须配置 -->
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!--微信分享回调 -->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+
+        <!-- 百度地图相关配置 -->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="TtIrDwFCwHcYPlf9xMNfRjPPMyY8yGfj"/>
 
         <service
             android:name="com.baidu.location.f"
@@ -207,6 +248,7 @@
             android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="cn.jpush.android.ui.PushActivity"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="${applicationId}"/>
             </intent-filter>
@@ -274,14 +316,10 @@
         <activity
             android:name="cn.finalteam.rxgalleryfinal.ui.activity.MediaActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
-            />
-
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
-            android:screenOrientation="portrait"
-            />
-
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
@@ -294,10 +332,11 @@
             android:exported="false"
             android:screenOrientation="behind">
         </activity>
+
         <service android:name=".service.GPSService"/>
 
-
-
+        <activity android:name=".moudle.user.activity.InviteFriendsActivity">
+        </activity>
     </application>
 
 </manifest>

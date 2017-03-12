@@ -31,4 +31,11 @@
     <string name="option_seven">其他</string>
     <string name="hint">请拍摄违规停车的照片含周围环境</string>
     <string name="upload">提交</string>
+    <string name="myMessage">我的消息</string>
+    <string name="inviteFriends">邀请好友</string>
+    <string name="inviteTipTwo">好友用您的邀请码成功注册，您的信用值会增加哦!</string>
+    <string name="inviteTipOne">邀请好友一起骑行</string>
+    <string name="inviteTipThere">您的专属邀请码为：</string>
+    <string name="inviteUpdateCode">修改</string>
+    <string name="inviteShare">分享到</string>
 </resources>
