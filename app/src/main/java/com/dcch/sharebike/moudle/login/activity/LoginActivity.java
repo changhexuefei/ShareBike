@@ -42,7 +42,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener, TextWatcher {
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.userPhone)
     EditText userPhone;
@@ -138,8 +138,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     }
 
     public void init() {
-        phone = userPhone.getText().toString().trim();
-        seCode = securityCode.getText().toString().trim();
+
+
     }
 
 //    private void initSDK() {
@@ -161,8 +161,61 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     protected void initListener() {
-        userPhone.addTextChangedListener(this);
-        securityCode.addTextChangedListener(this);
+        userPhone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (!s.equals("") && s != null) {
+                    phone = s.toString().trim();
+                    if (TextUtils.isEmpty(phone)) {
+                        getSecurityCode.setEnabled(false);
+                        getSecurityCode.setBackgroundColor(Color.parseColor("#c6bfbf"));
+                    } else if (!InPutUtils.isMobilePhone(phone)) {
+                        getSecurityCode.setEnabled(false);
+                        getSecurityCode.setBackgroundColor(Color.parseColor("#c6bfbf"));
+                    }else if(!TextUtils.isEmpty(phone) && InPutUtils.isMobilePhone(phone)){
+                        getSecurityCode.setEnabled(true);
+                        getSecurityCode.setBackgroundColor(Color.parseColor("#F8941D"));
+                    }
+                }
+            }
+        });
+        securityCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.equals("") && s != null) {
+                    seCode = s.toString().trim();
+                    if(TextUtils.isEmpty(seCode)){
+                        confirm.setEnabled(false);
+                        confirm.setBackgroundColor(Color.parseColor("#c6bfbf"));
+                    }else if(!TextUtils.isEmpty(phone)){
+                        confirm.setEnabled(true);
+                        confirm.setBackgroundColor(Color.parseColor("#F8941D"));
+                    }
+                }
+
+            }
+        });
     }
 
     @OnClick({R.id.getSecurityCode, R.id.confirm, R.id.rules, R.id.back})
@@ -234,39 +287,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 //        SMSSDK.unregisterAllEventHandler();
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//        getSecurityCode.setClickable(false);
-//        getSecurityCode.setBackgroundColor(Color.parseColor("#c6bfbf"));
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-
-        if (!TextUtils.isEmpty(phone) && InPutUtils.isMobilePhone(phone)) {
-            getSecurityCode.setClickable(true);
-            getSecurityCode.setBackgroundColor(Color.parseColor("#F8941D"));
-        }else {
-            getSecurityCode.setClickable(false);
-        }
-
-        if (!TextUtils.isEmpty(seCode) && !TextUtils.isEmpty(phone)) {
-            getSecurityCode.setBackgroundColor(Color.parseColor("#c6bfbf"));
-            confirm.setClickable(true);
-            confirm.setBackgroundColor(Color.parseColor("#F8941D"));
-
-        } else {
-            confirm.setClickable(false);
-            confirm.setBackgroundColor(Color.parseColor("#c6bfbf"));
-        }
     }
 
     private void registerAndLogin(String phone) {

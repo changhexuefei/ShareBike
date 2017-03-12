@@ -101,6 +101,7 @@ public class CycleFailureFragment extends Fragment {
     private String postion;
     private String bikeNo;
     private String contentText;
+    private String mImageResult;
 
     public CycleFailureFragment() {
         // Required empty public constructor
@@ -184,17 +185,17 @@ public class CycleFailureFragment extends Fragment {
             case R.id.upload:
                 bikeNo = mBikeCode.getText().toString().trim();
                 contentText = mQuestionDesc.getContentText().trim();
-                Bitmap bitmap = getimage(result);
-                String imageResult = bitmapToBase64(bitmap);
-                Log.d("图片", imageResult);
-
+                if (!result.equals("") && result != null) {
+                    Bitmap bitmap = getimage(result);
+                    mImageResult = bitmapToBase64(bitmap);
+                }
                 if (!uID.equals("") && uID != null && !bikeNo.equals("") && bikeNo != null) {
                     Map<String, String> map = new HashMap<>();
                     map.put("userId", uID);
                     map.put("bicycleNo", bikeNo);
                     map.put("faultDescription", contentText);
                     map.put("selectFaultDescription", "1");
-                    map.put("imageFile", imageResult);
+                    map.put("imageFile", mImageResult);
                     OkHttpUtils.post()
                             .url(Api.BASE_URL + Api.ADDTROUBLEORDER)
                             .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)
@@ -213,10 +214,10 @@ public class CycleFailureFragment extends Fragment {
                                     try {
                                         JSONObject object = new JSONObject(response);
                                         String resultStatus = object.optString("resultStatus");
-                                        if(resultStatus.equals("1")){
-                                            ToastUtils.showLong(getActivity(),"上传成功！");
-                                        }else if(resultStatus.equals("0")){
-                                            ToastUtils.showLong(getActivity(),"上传失败！");
+                                        if (resultStatus.equals("1")) {
+                                            ToastUtils.showLong(getActivity(), "上传成功！");
+                                        } else if (resultStatus.equals("0")) {
+                                            ToastUtils.showLong(getActivity(), "上传失败！");
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();

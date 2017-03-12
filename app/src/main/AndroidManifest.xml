@@ -9,6 +9,8 @@
         android:name="${applicationId}.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature"/>
     <!-- Required -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE"/>
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -109,11 +111,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.GuideActivity"/>
-        <activity
-            android:name="com.mob.tools.MobUIShell"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
+        <!--<activity-->
+            <!--android:name="com.mob.tools.MobUIShell"-->
+            <!--android:configChanges="keyboardHidden|orientation|screenSize"-->
+            <!--android:theme="@android:style/Theme.Translucent.NoTitleBar"-->
+            <!--android:windowSoftInputMode="stateHidden|adjustResize"/>-->
 
         <service
             android:name="com.baidu.location.f"
@@ -292,6 +294,7 @@
             android:exported="false"
             android:screenOrientation="behind">
         </activity>
+        <service android:name=".service.GPSService"/>
 
 
 

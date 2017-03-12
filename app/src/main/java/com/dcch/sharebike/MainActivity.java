@@ -1,8 +1,13 @@
 package com.dcch.sharebike;
 
 import android.Manifest;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.TimeZone;
 import android.os.Bundle;
@@ -102,6 +107,7 @@ import org.simple.eventbus.ThreadMode;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -240,6 +246,12 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     private String mDistance;
     private LatLng latLng;
     private WalkingRouteLine walkingRouteLine;
+    private LocationReceiver lr;
+    private AlarmManager alarmManager;
+    private PendingIntent pi;
+    private static final String LOCSTART = "START_LOCATING";
+
+
 
 
     @Override
@@ -572,6 +584,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.ease_icon_marka);
             LatLng latLng = null;
             Marker mMarker = null;
+            List<Double> doubles = new ArrayList<>();
             for (int i = 0; i < bikeInfos.size(); i++) {
                 bikeInfo = (BikeInfo) bikeInfos.get(i);
                 String lat = bikeInfo.getLatitude();
@@ -579,7 +592,9 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 double lat1 = Double.parseDouble(lat);
                 double lng1 = Double.parseDouble(lng);
                 latLng = new LatLng(lat1, lng1);
+                //两点之间直线距离的算法
                 double distance1 = DistanceUtil.getDistance(latLng, currentLatLng);
+                doubles.add(distance1);
                 ToastUtils.showShort(MainActivity.this, distance1 + "");
                 //设置marker
                 OverlayOptions options = new MarkerOptions()
@@ -595,6 +610,9 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 bundle.putSerializable("bikeInfo", bikeInfo);
                 mMarker.setExtraInfo(bundle);
             }
+            //去除集合中的最小值
+            Double min = Collections.min(doubles);
+            Log.d("最小值", min + "");
         } else {
             ToastUtils.showLong(this, "当前周围没有车辆");
         }
@@ -622,7 +640,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 mInstructions.setVisibility(View.GONE);
                 mMap.clear();
                 addOverlay(bikeInfos);//
-
                 return true;
             }
         });
@@ -630,7 +647,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
     private void reverseGeoCoder(LatLng clickMarkLatlng) {
         mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(clickMarkLatlng));
-
     }
 
     //预约车辆的点击监听事件
@@ -660,8 +676,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                             clickLon = clickMarkLatlng.longitude;
                             forLocationAddMark(clickLon, clickLat);
                         }
-
-                        Log.d("ooooo", userDetail);
                         if (userDetail != null) {
                             try {
                                 int bicycleId = bikeInfo.getBicycleId();
@@ -780,7 +794,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             OkHttpUtils.post().url(Api.BASE_URL + Api.CANCELBOOK).params(map).build().execute(new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
-                    Log.e("错误",e.getMessage());
+                    Log.e("错误", e.getMessage());
                 }
 
                 @Override
@@ -965,6 +979,21 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                                     bikeRentalOrderInfo = gson.fromJson(response, BikeRentalOrderInfo.class);
                                     String bicycleNo = bikeRentalOrderInfo.getBicycleNo();
                                     ToastUtils.showShort(MainActivity.this, bicycleNo);
+                                    //测试GPS
+                                    Intent intent = new Intent(LOCSTART);
+                                    pi = PendingIntent.getService(getApplicationContext(), 0, intent,
+                                            PendingIntent.FLAG_UPDATE_CURRENT);
+                                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10000, pi);
+                                    Toast.makeText(getApplicationContext(), "GPS测试开始", Toast.LENGTH_SHORT).show();
+
+                                    /**
+                                     * alarmManager.cancel(pi);
+                                     Intent intent = new Intent(LOCSTART);
+                                     stopService(intent);
+                                     Toast.makeText(getApplicationContext(), "GPS测试结束", Toast.LENGTH_SHORT).show();
+                                     *
+                                     */
+
                                     orderPopupWindow = new BikeRentalOrderPopupWindow(MainActivity.this, bikeRentalOrderInfo);
                                     mMap.clear();
                                     orderPopupWindow.showAsDropDown(findViewById(R.id.top));
@@ -1288,7 +1317,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         });
     }
 
-
     //设置中心点
     private void setUserMapCenter() {
         LatLng cenpt = new LatLng(mCurrentLantitude, mCurrentLongitude);
@@ -1310,6 +1338,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         super.onDestroy();
         //反注册EventBus
         EventBus.getDefault().unregister(this);
+        unregisterReceiver(lr);
         mMapView.onDestroy();
         mMapView = null;
         //释放资源
@@ -1358,6 +1387,13 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         super.onCreate(savedInstanceState);
         //注册EventBus
         EventBus.getDefault().register(this);
+        alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        lr = new LocationReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("NEW LOCATION SENT");
+        registerReceiver(lr, intentFilter);
+
+
     }
 
     /**
@@ -1465,4 +1501,17 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         }
         return diff;
     }
+
+    class LocationReceiver extends BroadcastReceiver {
+
+        String locationMsg = "";
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO Auto-generated method stub
+            locationMsg = intent.getStringExtra("newLoca");
+//            content.setText(locationMsg);
+        }
+    }
+
+
 }

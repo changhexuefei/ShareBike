@@ -21,6 +21,7 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.utils.SPUtils;
+import com.dcch.sharebike.utils.ToastUtils;
 import com.louisgeek.multiedittextviewlib.MultiEditInputView;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -44,6 +45,8 @@ import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultSubscriber;
 import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
 import okhttp3.Call;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -65,6 +68,7 @@ public class ReportIllegalParkingFragment extends Fragment {
     String contentText;
     public static final String BOUNDARY = "ZnGpDtePMx0KrHh_G0X99Yef9r8JZsRJSXC";
     private String result;
+    private String mImageResult;
 
     public ReportIllegalParkingFragment() {
 
@@ -91,12 +95,8 @@ public class ReportIllegalParkingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_report_illegal_parking, container, false);
         ButterKnife.bind(this, view);
-        bikeNo= mBikeCode.getText().toString().trim();
-
-
         return view;
     }
 
@@ -127,15 +127,19 @@ public class ReportIllegalParkingFragment extends Fragment {
                         }).openGallery();
                 break;
             case R.id.confirm:
-                Bitmap bitmap = getimage(result);
-                String imageResult = bitmapToBase64(bitmap);
-                if(!uID.equals("")&&uID!=null && !bikeNo.equals("") && bikeNo!=null){
+                bikeNo = mBikeCode.getText().toString().trim();
+
+                if (!result.equals("") && result != null) {
+                    Bitmap bitmap = getimage(result);
+                    mImageResult = bitmapToBase64(bitmap);
+                }
+                if (!uID.equals("") && uID != null && !bikeNo.equals("") && bikeNo != null) {
                     Map<String, String> map = new HashMap<>();
                     map.put("userId", uID);
                     map.put("bicycleNo", bikeNo);
                     map.put("faultDescription", contentText);
                     map.put("selectFaultDescription", "");
-                    map.put("imageFile", imageResult);
+                    map.put("imageFile", mImageResult);
                     OkHttpUtils.post()
                             .url(Api.BASE_URL + Api.ADDTROUBLEORDER)
                             .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)
@@ -150,6 +154,17 @@ public class ReportIllegalParkingFragment extends Fragment {
                                 @Override
                                 public void onResponse(String response, int id) {
                                     Log.d("上传成功", response);
+                                    try {
+                                        JSONObject object = new JSONObject(response);
+                                        String resultStatus = object.optString("resultStatus");
+                                        if (resultStatus.equals("1")) {
+                                            ToastUtils.showLong(getActivity(), "上传成功！");
+                                        } else if (resultStatus.equals("0")) {
+                                            ToastUtils.showLong(getActivity(), "上传失败！");
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             });
                 }
@@ -160,6 +175,14 @@ public class ReportIllegalParkingFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 0) {
+            Bundle bundle = data.getExtras();
+            if (bundle != null) {
+                result = bundle.getString("result");
+                mBikeCode.setText(result);
+                mTips.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     /**
@@ -240,5 +263,4 @@ public class ReportIllegalParkingFragment extends Fragment {
         bitmap = BitmapFactory.decodeFile(srcPath, newOpts);
         return compressImage(bitmap);//压缩好比例大小后再进行质量压缩
     }
-
 }

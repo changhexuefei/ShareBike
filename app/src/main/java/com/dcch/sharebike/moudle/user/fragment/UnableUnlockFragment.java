@@ -16,6 +16,7 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.utils.SPUtils;
+import com.dcch.sharebike.utils.ToastUtils;
 import com.louisgeek.multiedittextviewlib.MultiEditInputView;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -70,10 +71,7 @@ public class UnableUnlockFragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
         }
-
-
     }
 
     @Override
@@ -81,8 +79,7 @@ public class UnableUnlockFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_unable_unlock, container, false);
         ButterKnife.bind(this, view);
-        bikeNo= bikeCode.getText().toString().trim();
-        contentText=questionDesc.getContentText().toString().trim();
+
 
 
         return view;
@@ -96,6 +93,8 @@ public class UnableUnlockFragment extends Fragment {
                 startActivityForResult(i4, 0);
                 break;
             case R.id.confirm:
+                bikeNo= bikeCode.getText().toString().trim();
+                contentText=questionDesc.getContentText().toString().trim();
                 if(!uID.equals("")&&uID!=null && !bikeNo.equals("") && bikeNo!=null){
                 Map<String, String> map = new HashMap<>();
                 map.put("userId", uID);
@@ -117,6 +116,17 @@ public class UnableUnlockFragment extends Fragment {
                             @Override
                             public void onResponse(String response, int id) {
                                 Log.d("上传成功", response);
+                                try {
+                                    JSONObject object = new JSONObject(response);
+                                    String resultStatus = object.optString("resultStatus");
+                                    if (resultStatus.equals("1")) {
+                                        ToastUtils.showLong(getActivity(), "上传成功！");
+                                    } else if (resultStatus.equals("0")) {
+                                        ToastUtils.showLong(getActivity(), "上传失败！");
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         });
                 }
