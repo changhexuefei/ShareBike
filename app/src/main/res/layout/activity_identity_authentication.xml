@@ -7,7 +7,7 @@
     tools:context="com.dcch.sharebike.moudle.login.activity.IdentityAuthentication">
 
     <FrameLayout
-        android:id="@+id/top"
+        android:id="@+id/identity_top"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#41c0dc">
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="实名认证"
+            android:text="@string/identity_area"
             android:textColor="@color/common"
             android:textSize="16sp" />
     </FrameLayout>
@@ -43,16 +43,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="实名认证"
+            android:text="@string/realName_identity_title"
             android:textColor="#000000"
             android:textSize="20sp" />
 
         <EditText
-            android:hint="请输入姓名"
             android:id="@+id/userRealName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
+            android:hint="@string/identity_tip_one"
             android:padding="15dp"
             android:textSize="14sp" />
 
@@ -62,12 +62,12 @@
             android:background="#e1dada" />
 
         <EditText
-            android:hint="请输入身份证号"
-            android:maxLength="18"
             android:id="@+id/IDCardNo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
+            android:hint="@string/indetity_tip_two"
+            android:maxLength="18"
             android:padding="15dp"
             android:textSize="14sp" />
 
@@ -78,7 +78,6 @@
     </LinearLayout>
 
     <Button
-
         android:id="@+id/btn_authentication"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -88,8 +87,8 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="40dp"
         android:background="#c6bfbf"
-        android:clickable="false"
-        android:text="去认证"
+        android:enabled="false"
+        android:text="@string/to_identity"
         android:textColor="#ffffff"
         android:textSize="16sp" />
 
@@ -97,12 +96,12 @@
         android:id="@+id/flowChart"
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/identity_top"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_below="@+id/top"
-        android:layout_alignParentStart="true">
+        android:paddingRight="10dp">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -120,7 +119,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:text="手机验证" />
+                android:text="@string/phone_verification" />
 
         </RelativeLayout>
 
@@ -146,16 +145,16 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:text="押金交纳" />
+                android:text="@string/deposit_pay" />
 
         </RelativeLayout>
 
         <View
+            android:id="@+id/view2"
             android:layout_width="30dp"
             android:layout_height="2dp"
             android:background="#41c0dc"
-            android:padding="4dp"
-            android:id="@+id/view2" />
+            android:padding="4dp" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -172,7 +171,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:text="实名认证" />
+                android:text="@string/realName_identity" />
 
         </RelativeLayout>
 
@@ -187,10 +186,10 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_centerInParent="true"
                 android:id="@+id/imageView2"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_centerInParent="true"
                 android:src="@mipmap/before" />
 
             <TextView
@@ -198,14 +197,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:text="注册完成" />
-
-
+                android:text="@string/register_OK" />
         </RelativeLayout>
 
-
     </LinearLayout>
-    <!--android:background="#41c0dc"-->
-
-
 </RelativeLayout>

@@ -8,18 +8,14 @@ import com.dcch.sharebike.base.BaseActivity;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-/**
- * 钱包中交易明细页面
- */
-
-public class TransactionDetailActivity extends BaseActivity {
+public class AboutUsActivity extends BaseActivity {
 
     @BindView(R.id.back)
     ImageView back;
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_transaction_detail;
+        return R.layout.activity_about_us;
     }
 
     @Override
@@ -27,8 +23,10 @@ public class TransactionDetailActivity extends BaseActivity {
 
     }
 
+
     @OnClick(R.id.back)
     public void onClick() {
         finish();
+
     }
 }

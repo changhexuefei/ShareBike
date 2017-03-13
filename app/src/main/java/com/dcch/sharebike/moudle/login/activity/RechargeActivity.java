@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,7 +24,6 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
-import com.dcch.sharebike.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -70,7 +68,6 @@ public class RechargeActivity extends BaseActivity {
     protected void initData() {
         //默认支付宝选中
         aliCheckbox.setChecked(true);
-//        String money_sum = money.getText().toString().trim();
         String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
         Log.d("用户明细", userDetail);
         try {
@@ -81,9 +78,7 @@ public class RechargeActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
-
 
     @OnClick({R.id.back, R.id.btn_recharge, R.id.aliArea, R.id.weixinArea})
     public void onClick(View view) {
@@ -96,72 +91,55 @@ public class RechargeActivity extends BaseActivity {
             case R.id.aliArea:
                 aliCheckbox.setChecked(true);
                 weixinCheckbox.setChecked(false);
-
-                aliCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                        if (isChecked) {
-                            ToastUtils.showShort(RechargeActivity.this, "选中支付宝支付");
-                        } else {
-
-                        }
-                    }
-                });
-
                 break;
 
             case R.id.weixinArea:
                 weixinCheckbox.setChecked(true);
                 aliCheckbox.setChecked(false);
-                weixinCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                        if (isChecked) {
-                            ToastUtils.showShort(RechargeActivity.this, "选中微信支付");
-                        } else {
-
-                        }
-                    }
-                });
                 break;
 
             case R.id.btn_recharge:
-                final AliPay aliPay = new AliPay(this);
-                String outTradeNo = aliPay.getOutTradeNo();
-                String moneySum = money.getText().toString().trim();
-                Map<String, String> map = new HashMap<>();
-                map.put("outtradeno", outTradeNo);
-                map.put("orderbody", "交押金");
-                map.put("subject", "押金");
-                map.put("money", "0.01");
-                OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAY).params(map).build().execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        LogUtils.d(e.getMessage());
-                    }
+                if (aliCheckbox.isChecked()) {
+                    final AliPay aliPay = new AliPay(this);
+                    String outTradeNo = aliPay.getOutTradeNo();
+                    String moneySum = money.getText().toString().trim();
+                    Map<String, String> map = new HashMap<>();
+                    map.put("outtradeno", outTradeNo);
+                    map.put("orderbody", "交押金");
+                    map.put("subject", "押金");
+                    map.put("money", moneySum);
+                    OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAY).params(map).build().execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            LogUtils.d(e.getMessage());
+                        }
 
-                    @Override
-                    public void onResponse(final String response, int id) {
-                        LogUtils.d("支付", response);
+                        @Override
+                        public void onResponse(final String response, int id) {
+                            LogUtils.d("支付", response);
 
-                        Runnable payRunnable = new Runnable() {
-                            @Override
-                            public void run() {
-                                EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
-                                PayTask task = new PayTask(RechargeActivity.this);
-                                Map<String, String> stringStringMap = task.payV2(response, true);
-                                Message msg = new Message();
-                                msg.what = SDK_PAY_FLAG;
-                                msg.obj = stringStringMap;
-                                handler.sendMessage(msg);
+                            Runnable payRunnable = new Runnable() {
+                                @Override
+                                public void run() {
+                                    EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
+                                    PayTask task = new PayTask(RechargeActivity.this);
+                                    Map<String, String> stringStringMap = task.payV2(response, true);
+                                    Message msg = new Message();
+                                    msg.what = SDK_PAY_FLAG;
+                                    msg.obj = stringStringMap;
+                                    handler.sendMessage(msg);
 
-                            }
-                        };
-                        // 必须异步调用
-                        Thread payThread = new Thread(payRunnable);
-                        payThread.start();
-                    }
-                });
+                                }
+                            };
+                            // 必须异步调用
+                            Thread payThread = new Thread(payRunnable);
+                            payThread.start();
+                        }
+                    });
+                }else if(weixinCheckbox.isChecked()){
+                    //微信支付
+
+                }
                 break;
         }
     }
@@ -217,7 +195,7 @@ public class RechargeActivity extends BaseActivity {
             @Override
             public void onResponse(String response, int id) {
                 Log.d("交押金后", response);
-                //接口还未好
+
 
             }
         });

@@ -72,6 +72,7 @@
                 android:layout_marginTop="15dp">
 
                 <CheckBox
+                    android:tag="1"
                     android:id="@+id/questionOne"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -80,6 +81,7 @@
                     android:text="@string/option_one" />
 
                 <CheckBox
+                    android:tag="2"
                     android:id="@+id/questionTwo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -94,6 +96,7 @@
                 android:layout_height="30dp">
 
                 <CheckBox
+                    android:tag="3"
                     android:id="@+id/questionThere"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -102,6 +105,7 @@
                     android:text="@string/option_there" />
 
                 <CheckBox
+                    android:tag="4"
                     android:id="@+id/questionFour"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -118,6 +122,7 @@
 
 
                 <CheckBox
+                    android:tag="5"
                     android:id="@+id/questionFive"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -126,6 +131,7 @@
                     android:text="@string/option_five" />
 
                 <CheckBox
+                    android:tag="6"
                     android:id="@+id/questionSix"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -140,6 +146,7 @@
                 android:layout_height="30dp">
 
                 <CheckBox
+                    android:tag="7"
                     android:id="@+id/questionSeven"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

@@ -35,7 +35,7 @@ import okhttp3.Call;
  * 实名认证页面
  */
 
-public class IdentityAuthentication extends BaseActivity implements TextWatcher {
+public class IdentityAuthentication extends BaseActivity {
 
     @BindView(R.id.back)
     ImageView back;
@@ -56,9 +56,7 @@ public class IdentityAuthentication extends BaseActivity implements TextWatcher 
 
     @Override
     protected void initData() {
-
         String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-
         try {
             JSONObject object = new JSONObject(userDetail);
             int id = object.getInt("id");
@@ -66,16 +64,56 @@ public class IdentityAuthentication extends BaseActivity implements TextWatcher 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        realName = userRealName.getText().toString().trim();
-        cardNum = IDCardNo.getText().toString().trim();
     }
 
     @Override
     protected void initListener() {
+        IDCardNo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-        IDCardNo.addTextChangedListener(this);
-        userRealName.addTextChangedListener(this);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(!editable.toString().trim().equals("") && editable!=null){
+                    cardNum=editable.toString().trim();
+                    if(!InPutUtils.IDCardValidate(cardNum)){
+                        btnAuthentication.setEnabled(false);
+                        btnAuthentication.setBackgroundColor(Color.parseColor("#c6bfbf"));
+                    }else if(TextUtils.isEmpty(realName)){
+                        btnAuthentication.setEnabled(false);
+                        btnAuthentication.setBackgroundColor(Color.parseColor("#c6bfbf"));
+                    }else if(InPutUtils.IDCardValidate(cardNum)&&!TextUtils.isEmpty(realName) ){
+                        btnAuthentication.setEnabled(true);
+                        btnAuthentication.setBackgroundColor(Color.parseColor("#F8941D"));
+                    }
+                }
+            }
+        });
+        userRealName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(!editable.toString().trim().equals("") && editable!=null){
+                    realName=editable.toString().trim();
+                }
+            }
+        });
     }
 
     @OnClick({R.id.back, R.id.btn_authentication})
@@ -92,13 +130,11 @@ public class IdentityAuthentication extends BaseActivity implements TextWatcher 
                 Intent authentication = new Intent(IdentityAuthentication.this, AuthenticationOkActivity.class);
                 startActivity(authentication);
                 finish();
-
                 break;
         }
     }
 
     private void verifyRealName(String uID, String realName, String cardNum) {
-
         Map<String, String> map = new HashMap<>();
         map.put("userId", uID);
         map.put("name", realName);
@@ -120,42 +156,11 @@ public class IdentityAuthentication extends BaseActivity implements TextWatcher 
         });
     }
 
-    //获得用户输入的姓名和身份证号的方法
-    public void getPersonNameAndIDCard() {
-
-        if (!TextUtils.isEmpty(realName) && !TextUtils.isEmpty(cardNum) && InPutUtils.IDCardValidate(cardNum)) {
-            btnAuthentication.setClickable(true);
-            btnAuthentication.setBackgroundColor(Color.parseColor("#41c0dc"));
-
-        } else {
-            btnAuthentication.setClickable(false);
-            btnAuthentication.setBackgroundColor(Color.parseColor("#c6bfbf"));
-        }
-
-
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-//        ToastUtils.showShort(this,editable.toString().trim());
-        getPersonNameAndIDCard();
-
-    }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         Intent backToLoginMain = new Intent(IdentityAuthentication.this, MainActivity.class);
         startActivity(backToLoginMain);
+        finish();
     }
 }

@@ -32,7 +32,7 @@
         android:layout_below="@+id/tv01"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="共享快乐"
+        android:text="骑乐无比"
         />
 
 

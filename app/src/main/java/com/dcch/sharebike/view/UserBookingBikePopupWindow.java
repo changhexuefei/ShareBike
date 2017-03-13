@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ public class UserBookingBikePopupWindow extends PopupWindow {
     TextView mBookBikeLocationInfo;
     TextView mBikeNumber;
     public TextView mHoldTime;
+    public ImageView forBellIcon;
     Button mCancel;
     private View mUserBookBikeWindow;
 
@@ -38,7 +40,7 @@ public class UserBookingBikePopupWindow extends PopupWindow {
         mBikeNumber = (TextView) mUserBookBikeWindow.findViewById(R.id.bikeNumber);
         mHoldTime = (TextView) mUserBookBikeWindow.findViewById(R.id.hold_time);
         mCancel = (Button) mUserBookBikeWindow.findViewById(R.id.cancel_book);
-
+        forBellIcon = (ImageView) mUserBookBikeWindow.findViewById(R.id.forBellIcon);
         //为控件赋值
         if (userBookingBikeInfo != null && !userBookingBikeInfo.equals("")) {
             mBookBikeLocationInfo.setText(userBookingBikeInfo.getAddress());
@@ -46,6 +48,7 @@ public class UserBookingBikePopupWindow extends PopupWindow {
         }
         // 设置按钮监听
         mCancel.setOnClickListener(userBookBikeItemsOnClick);
+        forBellIcon.setOnClickListener(userBookBikeItemsOnClick);
         // 设置SelectPicPopupWindow的View
         this.setContentView(mUserBookBikeWindow);
         // 设置SelectPicPopupWindow的View

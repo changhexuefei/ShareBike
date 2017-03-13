@@ -61,8 +61,10 @@ public class SettingActivity extends BaseActivity {
                 startActivity(address);
                 break;
             case R.id.checkVersions:
+                ToastUtils.showShort(SettingActivity.this,"未发现新版本");
                 break;
             case R.id.aboutUs:
+                startActivity(new Intent(SettingActivity.this,AboutUsActivity.class));
                 break;
             case R.id.userAgreement:
                 break;

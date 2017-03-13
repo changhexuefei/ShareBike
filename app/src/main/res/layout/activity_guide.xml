@@ -22,7 +22,7 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:paddingTop="2dp"
-        android:text="立即使用"
+        android:text="@string/guide_tips"
         android:textColor="@drawable/btn_start_main_textcolor_selector"
         android:textSize="16sp"
         android:visibility="invisible" />

@@ -44,18 +44,20 @@
     <com.github.jdsjlzx.recyclerview.LRecyclerView
         android:id="@+id/transact_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/detail"
+        android:visibility="gone">
 
     </com.github.jdsjlzx.recyclerview.LRecyclerView>
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/detail"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="20dp">
+        android:layout_centerInParent="true">
 
         <ImageView
+            android:layout_centerHorizontal="true"
             android:id="@+id/iv_noPay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

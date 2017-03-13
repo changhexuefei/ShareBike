@@ -18,7 +18,7 @@ public class SPUtils {
 	/**
 	 * 保存在手机里面的文件名
 	 */
-	public static final String FILE_NAME = "yjbz_data";
+	public static final String FILE_NAME = "qldc_data";
 
 	/**
 	 * 保存数据的方法，我们需要拿到保存数据的具体类型，然后根据类型调用不同的保存方法
@@ -173,4 +173,9 @@ public class SPUtils {
 	public static boolean isLogin() {
 		return (boolean) get(App.getContext(), "islogin", false);
 	}
+
+	public static boolean isFirst(){
+		return (boolean) get(App.getContext(), "isfirst", true);
+	}
+
 }

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.dcch.sharebike.moudle.user.activity.AboutUsActivity">
+
+    <FrameLayout
+        android:id="@+id/au"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorHeading">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp"
+            android:src="@mipmap/back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="关于我们"
+            android:textColor="@color/common"
+            android:textSize="16sp" />
+    </FrameLayout>
+
+    <ImageView
+        android:scaleType="center"
+        android:id="@+id/app_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/au"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/sharebike" />
+
+    <TextView
+        android:id="@+id/app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/app_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="麒麟单车"
+        android:textColor="#000000"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/app_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/app_name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="v1.0.0"
+        android:textColor="#000000" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/app_version"
+        android:layout_marginTop="60dp"
+        android:background="#ffffff"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/wx"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:drawableLeft="@mipmap/weixinnumber"
+                android:drawablePadding="4dp"
+                android:text="微信公众号"
+                android:textColor="#000000" />
+
+            <TextView
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:text="麒麟单车"
+                android:textColor="@color/colorTitle" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="300dp"
+            android:layout_height="0.5dp"
+            android:layout_gravity="center"
+            android:background="#d7d3d3" />
+
+        <RelativeLayout
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:drawableLeft="@mipmap/phone"
+                android:drawablePadding="4dp"
+                android:text="联系电话"
+                android:textColor="#000000" />
+
+
+            <TextView
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:text="4000000000"
+                android:textColor="@color/colorTitle" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="300dp"
+            android:layout_height="0.5dp"
+            android:layout_gravity="center"
+            android:background="#d7d3d3" />
+
+        <RelativeLayout
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/phone"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:drawableLeft="@mipmap/email"
+                android:drawablePadding="4dp"
+                android:text="电子邮箱"
+                android:textColor="#000000" />
+
+            <TextView
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:text="123456789@163.com"
+                android:textColor="@color/colorTitle" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="300dp"
+            android:layout_height="0.5dp"
+            android:layout_gravity="center"
+            android:background="#d7d3d3" />
+
+        <RelativeLayout
+            android:id="@+id/official_website"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/email"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:drawableLeft="@mipmap/official_website"
+                android:drawablePadding="4dp"
+                android:text="官方网站"
+                android:textColor="#000000" />
+
+            <TextView
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:text="70bikes.cn"
+                android:textColor="@color/colorTitle" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

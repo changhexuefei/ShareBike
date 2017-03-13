@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ public class BookBikePopupWindow extends PopupWindow {
     TextView mBookBikeLocationInfo;
     TextView mBikeNumber;
     public TextView mHoldTime;
+    public ImageView forBellIcon;
     Button mCancel;
     private View mCancelBookBikeWindow;
 
@@ -39,6 +41,7 @@ public class BookBikePopupWindow extends PopupWindow {
         mBikeNumber = (TextView) mCancelBookBikeWindow.findViewById(R.id.bikeNumber);
         mHoldTime = (TextView) mCancelBookBikeWindow.findViewById(R.id.hold_time);
         mCancel = (Button) mCancelBookBikeWindow.findViewById(R.id.cancel_book);
+        forBellIcon = (ImageView) mCancelBookBikeWindow.findViewById(R.id.forBellIcon);
         //为控件赋值
             String address = String.valueOf(bookingBikeInfo.getAddress());
             if (address!=null) {
@@ -50,6 +53,7 @@ public class BookBikePopupWindow extends PopupWindow {
 
         // 设置按钮监听
         mCancel.setOnClickListener(bookBikeItemsOnClick);
+        forBellIcon.setOnClickListener(bookBikeItemsOnClick);
         // 设置SelectPicPopupWindow的View
         this.setContentView(mCancelBookBikeWindow);
         // 设置SelectPicPopupWindow的View
@@ -61,7 +65,7 @@ public class BookBikePopupWindow extends PopupWindow {
         // 设置SelectPicPopupWindow弹出窗体可点击
 //            this.setFocusable(false);
 ////             设置SelectPicPopupWindow弹出窗体动画效果
-//            this.setAnimationStyle(R.style.PopupAnimation);
+//            this.setAnimationStyle(R.style.PopupWindowAnimation);
         // 实例化一个ColorDrawable颜色为半透明
 //        ColorDrawable dw = new ColorDrawable(0x00000000);
         // 设置SelectPicPopupWindow弹出窗体的背景

@@ -21,13 +21,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
-import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.utils.SPUtils;
-import com.dcch.sharebike.utils.ToastUtils;
 import com.louisgeek.multiedittextviewlib.MultiEditInputView;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,9 +32,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,7 +41,6 @@ import cn.finalteam.rxgalleryfinal.RxGalleryFinal;
 import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
 import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultSubscriber;
 import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
-import okhttp3.Call;
 
 import static android.app.Activity.RESULT_OK;
 import static com.dcch.sharebike.R.id.tips;
@@ -132,6 +125,14 @@ public class CycleFailureFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_cycle_failure, container, false);
         ButterKnife.bind(this, view);
+
+        checkBoxes.add(questionOne);
+        checkBoxes.add(questionTwo);
+        checkBoxes.add(questionThere);
+        checkBoxes.add(questionFour);
+        checkBoxes.add(questionFive);
+        checkBoxes.add(questionSix);
+        checkBoxes.add(questionSeven);
 //        questionOne.setOnCheckedChangeListener(listener);
 //        questionTwo.setOnCheckedChangeListener(listener);
 //        questionThere.setOnCheckedChangeListener(listener);
@@ -143,15 +144,14 @@ public class CycleFailureFragment extends Fragment {
         return view;
     }
 
-    public void getID(View v) {
-
+    public String getTag(List<CheckBox> checkBoxes ) {
         String content = "";
-
         for (CheckBox cbx : checkBoxes) {
             if (cbx.isChecked()) {
-                content += cbx.getId() + "\n";
+                content +=String.valueOf(cbx.getTag()) + ";";
             }
         }
+        return content;
     }
 
 
@@ -185,46 +185,49 @@ public class CycleFailureFragment extends Fragment {
             case R.id.upload:
                 bikeNo = mBikeCode.getText().toString().trim();
                 contentText = mQuestionDesc.getContentText().trim();
+                String tag = getTag(checkBoxes);
+                Log.d("多选",tag);
+
                 if (!result.equals("") && result != null) {
                     Bitmap bitmap = getimage(result);
                     mImageResult = bitmapToBase64(bitmap);
                 }
-                if (!uID.equals("") && uID != null && !bikeNo.equals("") && bikeNo != null) {
-                    Map<String, String> map = new HashMap<>();
-                    map.put("userId", uID);
-                    map.put("bicycleNo", bikeNo);
-                    map.put("faultDescription", contentText);
-                    map.put("selectFaultDescription", "1");
-                    map.put("imageFile", mImageResult);
-                    OkHttpUtils.post()
-                            .url(Api.BASE_URL + Api.ADDTROUBLEORDER)
-                            .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)
-                            .params(map)
-                            .build()
-                            .execute(new StringCallback() {
-                                @Override
-                                public void onError(Call call, Exception e, int id) {
-                                    Log.d("错误", e.getMessage());
-                                }
-
-                                @Override
-                                public void onResponse(String response, int id) {
-                                    Log.d("上传成功", response);
-                                    //{"resultStatus":"1"}
-                                    try {
-                                        JSONObject object = new JSONObject(response);
-                                        String resultStatus = object.optString("resultStatus");
-                                        if (resultStatus.equals("1")) {
-                                            ToastUtils.showLong(getActivity(), "上传成功！");
-                                        } else if (resultStatus.equals("0")) {
-                                            ToastUtils.showLong(getActivity(), "上传失败！");
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-                }
+//                if (!uID.equals("") && uID != null && !bikeNo.equals("") && bikeNo != null) {
+//                    Map<String, String> map = new HashMap<>();
+//                    map.put("userId", uID);
+//                    map.put("bicycleNo", bikeNo);
+//                    map.put("faultDescription", contentText);
+//                    map.put("selectFaultDescription", "1");
+//                    map.put("imageFile", mImageResult);
+//                    OkHttpUtils.post()
+//                            .url(Api.BASE_URL + Api.ADDTROUBLEORDER)
+//                            .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)
+//                            .params(map)
+//                            .build()
+//                            .execute(new StringCallback() {
+//                                @Override
+//                                public void onError(Call call, Exception e, int id) {
+//                                    Log.d("错误", e.getMessage());
+//                                }
+//
+//                                @Override
+//                                public void onResponse(String response, int id) {
+//                                    Log.d("上传成功", response);
+//                                    //{"resultStatus":"1"}
+//                                    try {
+//                                        JSONObject object = new JSONObject(response);
+//                                        String resultStatus = object.optString("resultStatus");
+//                                        if (resultStatus.equals("1")) {
+//                                            ToastUtils.showLong(getActivity(), "上传成功！");
+//                                        } else if (resultStatus.equals("0")) {
+//                                            ToastUtils.showLong(getActivity(), "上传失败！");
+//                                        }
+//                                    } catch (JSONException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                            });
+//                }
                 break;
         }
     }
@@ -240,7 +243,6 @@ public class CycleFailureFragment extends Fragment {
                 mTips.setVisibility(View.VISIBLE);
             }
         }
-
     }
 
     /**
