@@ -1418,8 +1418,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("NEW LOCATION SENT");
         registerReceiver(lr, intentFilter);
-
-
     }
 
     /**
@@ -1463,11 +1461,11 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        if(!menuWindow.equals("") && menuWindow!=null){
-            menuWindow.dismiss();
-            mMap.clear();
-            addOverlay(bikeInfos);
-        }
+//        if(!menuWindow.equals("") && menuWindow!=null){
+//            menuWindow.dismiss();
+//            mMap.clear();
+//            addOverlay(bikeInfos);
+//        }
         //按下的如果是BACK键，同时没有重复
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
             if ((System.currentTimeMillis() - mExitTime) > 2000) {
@@ -1542,6 +1540,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         public void onReceive(Context context, Intent intent) {
             // TODO Auto-generated method stub
             locationMsg = intent.getStringExtra("newLoca");
+            Log.d("广播",locationMsg);
 //            content.setText(locationMsg);
         }
     }
