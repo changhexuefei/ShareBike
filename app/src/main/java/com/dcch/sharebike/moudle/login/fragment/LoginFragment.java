@@ -36,7 +36,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class LoginFragment extends Fragment {
 
-
     @BindView(R.id.nickName)
     TextView nickName;
     @BindView(R.id.creditScore)
@@ -66,8 +65,6 @@ public class LoginFragment extends Fragment {
     @BindView(R.id.remainSum)
     TextView remainSum;
     private UserInfo mInfo;
-
-
     public LoginFragment() {
 
     }
@@ -78,6 +75,7 @@ public class LoginFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.bind(this, view);
         if (SPUtils.isLogin()) {
+            //从服务端拿到客户信息
             String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
             Log.d("ooooo", userDetail);
             if (userDetail != null) {
@@ -119,7 +117,6 @@ public class LoginFragment extends Fragment {
         }
         return view;
     }
-
 
     @OnClick({R.id.creditScore, R.id.userIcon, R.id.wallet, R.id.favorable, R.id.journey, R.id.message, R.id.friend, R.id.guide, R.id.setting})
     public void onClick(View view) {

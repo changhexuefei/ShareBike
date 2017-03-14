@@ -48,4 +48,24 @@
     <string name="identity_tip_one">请输入姓名</string>
     <string name="indetity_tip_two">请输入身份证号</string>
     <string name="identity_area">实名认证</string>
+    <string name="company_mail">ditek@ditek.com.cn</string>
+    <string name="email">电子邮箱</string>
+    <string name="company_phone">010-82601206</string>
+    <string name="phone">联系电话</string>
+    <string name="weixinpublic">微信公众号</string>
+    <string name="public_name">麒麟单车</string>
+    <string name="about_us">关于我们</string>
+    <string name="qilinbikes">麒麟单车</string>
+    <string name="publicity">麒麟单车，骑乐无比</string>
+    <string name="company_name">北京迪辰创和科技有限责任公司</string>
+    <string name="my_wallet">我的钱包</string>
+    <string name="my_favorable">我的优惠</string>
+    <string name="my_journey">我的行程</string>
+    <string name="my_message">我的消息</string>
+    <string name="invite_friends">邀请好友</string>
+    <string name="user_guide">用户指南</string>
+    <string name="setting">设置</string>
+    <string name="cumulative_cycling">累计骑行(公里)</string>
+    <string name="saving_carbon_emissions">节约碳排放(千克)</string>
+    <string name="sports_achievement">运动成就(大卡)</string>
 </resources>

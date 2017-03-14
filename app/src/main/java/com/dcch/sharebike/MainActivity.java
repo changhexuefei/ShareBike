@@ -287,7 +287,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         } else {
             mInstructions.setVisibility(View.VISIBLE);
         }
-
         bikeInfos = new ArrayList<BikeInfo>();
         // 初始化GeoCoder模块，注册事件监听
         mSearch = GeoCoder.newInstance();
@@ -297,9 +296,9 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 //        mPoiSearch.setOnGetPoiSearchResultListener(this);
         mMap = mMapView.getMap();
         mMapView.showZoomControls(false);
-        //隐藏logo和缩放图标
+        //隐藏logo和缩放图标child instanceof ImageView ||
         View child = mMapView.getChildAt(1);
-        if (child != null && (child instanceof ImageView || child instanceof ZoomControls)) {
+        if (child != null && child instanceof ZoomControls) {
             child.setVisibility(View.INVISIBLE);
         }
         //隐藏地图上比例尺
@@ -554,7 +553,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             case R.id.scan:
                 ToastUtils.showLong(this, "我是扫描");
                 // && cashStatus == 1 && status == 1
-                if (SPUtils.isLogin() && cashStatus == 1 && status == 1) {
+                if (SPUtils.isLogin() ) {
                     MainActivityPermissionsDispatcher.showCameraWithCheck(this);
                     startActivityForResult(new Intent(this, CaptureActivity.class), 0);
                 } else if (SPUtils.isLogin() && cashStatus == 0) {
@@ -1291,13 +1290,13 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 setUserMapCenter();
                 if (uID != null && !uID.equals("")) {
                     checkBookingBikeInfoByUserID(uID);
+                } else {
+                    //根据手机定位地点，得到车辆信息的方法
+                    getBikeInfo(mCurrentLantitude, mCurrentLongitude);
                 }
-//                //根据手机定位地点，得到手机定位点的周围半径1000米范围内的车辆信息的方法
-//                getBikeInfo(mCurrentLantitude, mCurrentLongitude);
             }
             //根据手机定位的不同得到定位点信息，将这个信息传递给搜索页面
             address1 = location.getAddrStr();
-
         }
     }
 
@@ -1460,12 +1459,14 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     //点击手机上的返回键退出App的方法
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-//        if(!menuWindow.equals("") && menuWindow!=null){
-//            menuWindow.dismiss();
-//            mMap.clear();
-//            addOverlay(bikeInfos);
-//        }
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (menuWindow != null) {
+                menuWindow.dismiss();
+                mMap.clear();
+                addOverlay(bikeInfos);
+                setUserMapCenter();
+            }
+        }
         //按下的如果是BACK键，同时没有重复
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
             if ((System.currentTimeMillis() - mExitTime) > 2000) {
@@ -1506,6 +1507,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     /*
     * 获取系统的北京时间
     */
+
     private String getStringDate() {
         Date currentTime = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -1533,16 +1535,14 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     }
 
     class LocationReceiver extends BroadcastReceiver {
-
         String locationMsg = "";
 
         @Override
         public void onReceive(Context context, Intent intent) {
             // TODO Auto-generated method stub
             locationMsg = intent.getStringExtra("newLoca");
-            Log.d("广播",locationMsg);
+            Log.d("广播", locationMsg);
 //            content.setText(locationMsg);
         }
     }
-
 }

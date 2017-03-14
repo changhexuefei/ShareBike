@@ -16,7 +16,6 @@
             android:orientation="vertical">
 
             <TextView
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -56,7 +55,7 @@
                     android:layout_width="100dp"
                     android:layout_height="20dp"
                     android:layout_alignLeft="@+id/bike_code"
-                    android:layout_below="@+id/bike_code"
+                    android:layout_below="@+id/cf_bike_code"
                     android:layout_toRightOf="@+id/report_issue"
                     android:text="@string/scan_tip_one"
                     android:textColor="@color/colorTitle"

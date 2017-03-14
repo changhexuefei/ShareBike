@@ -30,6 +30,7 @@ public class BDGpsServiceListener implements BDLocationListener {
 
     //发送广播，提示更新界面
     private void sendToActivity(String str){
+        Log.d("hhhh",str);
         Intent intent = new Intent();
         intent.putExtra("newLoca", str);
         intent.setAction("NEW LOCATION SENT");

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.dcch.sharebike.listener.BDGpsServiceListener;
@@ -17,7 +16,7 @@ import com.dcch.sharebike.listener.BDGpsServiceListener;
 public class GPSService extends Service {
     private static final int minTime = 60000;
     private LocationClient locationClient;
-    private BDLocationListener locationListener;
+    private BDGpsServiceListener locationListener;
     private LocationClientOption lco;
 
     @Override

@@ -24,19 +24,19 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="关于我们"
+            android:text="@string/about_us"
             android:textColor="@color/common"
             android:textSize="16sp" />
     </FrameLayout>
 
     <ImageView
-        android:scaleType="center"
+        android:scaleType="fitXY"
         android:id="@+id/app_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_below="@+id/au"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:src="@drawable/sharebike" />
 
     <TextView
@@ -46,9 +46,9 @@
         android:layout_below="@+id/app_logo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:text="麒麟单车"
+        android:text="@string/qilinbikes"
         android:textColor="#000000"
-        android:textSize="14sp" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/app_version"
@@ -82,7 +82,7 @@
                 android:layout_marginLeft="20dp"
                 android:drawableLeft="@mipmap/weixinnumber"
                 android:drawablePadding="4dp"
-                android:text="微信公众号"
+                android:text="@string/weixinpublic"
                 android:textColor="#000000" />
 
             <TextView
@@ -91,7 +91,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"
-                android:text="麒麟单车"
+                android:text="@string/public_name"
                 android:textColor="@color/colorTitle" />
         </RelativeLayout>
 
@@ -115,7 +115,7 @@
                 android:layout_marginLeft="20dp"
                 android:drawableLeft="@mipmap/phone"
                 android:drawablePadding="4dp"
-                android:text="联系电话"
+                android:text="@string/phone"
                 android:textColor="#000000" />
 
 
@@ -125,7 +125,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"
-                android:text="4000000000"
+                android:text="@string/company_phone"
                 android:textColor="@color/colorTitle" />
         </RelativeLayout>
 
@@ -150,7 +150,7 @@
                 android:layout_marginLeft="20dp"
                 android:drawableLeft="@mipmap/email"
                 android:drawablePadding="4dp"
-                android:text="电子邮箱"
+                android:text="@string/email"
                 android:textColor="#000000" />
 
             <TextView
@@ -159,7 +159,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"
-                android:text="123456789@163.com"
+                android:text="@string/company_mail"
                 android:textColor="@color/colorTitle" />
         </RelativeLayout>
 
@@ -196,8 +196,15 @@
                 android:text="70bikes.cn"
                 android:textColor="@color/colorTitle" />
         </RelativeLayout>
-
     </LinearLayout>
 
-
+    <TextView
+        android:textSize="14sp"
+        android:textColor="#000000"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/company_name" />
 </RelativeLayout>

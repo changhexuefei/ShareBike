@@ -42,7 +42,7 @@ public class App extends Application {
         mContext = getApplicationContext();
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
-
+        ShareSDK.initSDK(this);
         //初始化OkHttp
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(new LoggerInterceptor("HttpUtils"))

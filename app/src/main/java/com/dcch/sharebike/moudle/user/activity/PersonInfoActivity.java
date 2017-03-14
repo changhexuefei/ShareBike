@@ -62,6 +62,8 @@ public class PersonInfoActivity extends BaseActivity {
     RelativeLayout phone;
     private UserInfo mUserBundle;
     private String uID;
+    private String result;
+    public static final String BOUNDARY = "ZnGpDtePMx0KrHh_G0X99Yef9r8JZsRJSXC";
 
     @Override
     protected int getLayoutId() {
@@ -83,8 +85,6 @@ public class PersonInfoActivity extends BaseActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-
             Intent intent = getIntent();
             Bundle user = intent.getExtras();
             if (user != null) {
@@ -128,7 +128,7 @@ public class PersonInfoActivity extends BaseActivity {
                             @Override
                             protected void onEvent(ImageRadioResultEvent imageRadioResultEvent) throws Exception {
                                 //得到图片的路径
-                                String result = imageRadioResultEvent.getResult().getOriginalPath();
+                                result = imageRadioResultEvent.getResult().getOriginalPath();
                                 Log.d("图片地址", result);
                                 Bitmap bitmap = getimage(result);
                                 String mImageResult = bitmapToBase64(bitmap);
@@ -137,25 +137,40 @@ public class PersonInfoActivity extends BaseActivity {
                                     //将图片赋值给图片控件
                                     Glide.with(App.getContext()).load(result).into(userInfoIcon);
                                     //下一步将选择的图片上传到服务器
-                                    Map<String,String> map = new HashMap<>();
-                                    map.put("imageFile",mImageResult);
-                                    map.put("userId",uID);
+                                    Map<String, String> map = new HashMap<>();
+                                    map.put("imageFile", mImageResult);
+                                    map.put("userId", uID);
                                     //用户上传头像的方法
-                                    OkHttpUtils.post().url(Api.BASE_URL+"").params(map).build().execute(new StringCallback() {
+                                    OkHttpUtils.post().url(Api.BASE_URL + Api.UPLOADAVATAR)
+                                            .params(map)
+                                            .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)
+                                            .build()
+                                            .execute(new StringCallback() {
                                         @Override
                                         public void onError(Call call, Exception e, int id) {
-
+                                            Log.e("错误", e.getMessage());
+                                            ToastUtils.showShort(PersonInfoActivity.this,"服务器暂时不可用，请稍后再试");
                                         }
 
                                         @Override
                                         public void onResponse(String response, int id) {
                                             //根据返回值判断上传成功或者失败
+                                            Log.d("上传头像",response);
+                                            //{"code":"1"}
+                                            try {
+                                                JSONObject object = new JSONObject(response);
+                                                String code = object.optString("code");
+                                                if(code.equals("1")){
+                                                    ToastUtils.showShort(PersonInfoActivity.this,"头像上传成功!");
+                                                }else if(code.equals("0")){
+                                                    ToastUtils.showShort(PersonInfoActivity.this,"头像上传失败!");
+                                                }
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
                                         }
                                     });
-
-
-
-
                                 }
                             }
                         }).openGallery();
@@ -191,22 +206,33 @@ public class PersonInfoActivity extends BaseActivity {
                         String userNickName = nickName.getText().toString().trim();
                         if (!userNickName.equals("") && userNickName != null) {
                             Map<String, String> map = new HashMap<>();
-                            map.put("userId",uID);
+                            map.put("userId", uID);
                             map.put("nickName", userNickName);
                             /**
                              * 上传用户昵称的方法
                              *
                              */
-                            OkHttpUtils.post().url(Api.BASE_URL+"").params(map).build().execute(new StringCallback() {
+                            OkHttpUtils.post().url(Api.BASE_URL + Api.EDITUSER).params(map).build().execute(new StringCallback() {
                                 @Override
                                 public void onError(Call call, Exception e, int id) {
-
+                                    Log.e("修改昵称的请求失败",e.getMessage());
+                                    ToastUtils.showShort(PersonInfoActivity.this,"服务器暂时不可用，请稍后再试");
                                 }
 
                                 @Override
                                 public void onResponse(String response, int id) {
                                     //根据返回值成功和失败的判断
-
+                                    try {
+                                        JSONObject object = new JSONObject(response);
+                                        String code = object.optString("code");
+                                        if(code.equals("1")){
+                                            ToastUtils.showShort(PersonInfoActivity.this,"昵称修改成功!");
+                                        }else if(code.equals("0")){
+                                            ToastUtils.showShort(PersonInfoActivity.this,"昵称修改失败!");
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             });
                         }
@@ -215,7 +241,6 @@ public class PersonInfoActivity extends BaseActivity {
             }
         }
     }
-
     /**
      * 将bitmap转换成base64字符串
      *

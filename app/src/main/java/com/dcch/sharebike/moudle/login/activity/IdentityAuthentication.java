@@ -126,7 +126,7 @@ public class IdentityAuthentication extends BaseActivity {
                 break;
             case R.id.btn_authentication:
                 //实名认证的接口
-                verifyRealName(uID, realName, cardNum);
+//                verifyRealName(uID, realName, cardNum);
                 Intent authentication = new Intent(IdentityAuthentication.this, AuthenticationOkActivity.class);
                 startActivity(authentication);
                 finish();

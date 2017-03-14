@@ -161,9 +161,7 @@ public class RechargeActivity extends BaseActivity {
                                 Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(RechargeActivity.this, IdentityAuthentication.class);
-
                         startActivity(intent);
-
                         finish();
 
                     } else {
@@ -195,7 +193,7 @@ public class RechargeActivity extends BaseActivity {
             @Override
             public void onResponse(String response, int id) {
                 Log.d("交押金后", response);
-
+                //{"code":"1"}
 
             }
         });

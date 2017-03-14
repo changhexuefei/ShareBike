@@ -4,8 +4,8 @@ package com.dcch.sharebike.http;
 public class Api {
 //    public static final String BASE_URL = "http://192.168.1.159:8080/MavenSSM/mobile/";
 //    public static final String BASE_URL = "http://192.168.1.138:8080/MavenSSM/mobile/";
-//    public static final String BASE_URL = "http://192.168.1.130:8080/MavenSSM/mobile/";
-    public static final String BASE_URL = "http://114.112.86.38:8080/MavenSSM/mobile/";
+    public static final String BASE_URL = "http://192.168.1.130:8080/MavenSSM/mobile/";
+//    public static final String BASE_URL = "http://114.112.86.38:80/MavenSSM/mobile/";
     //获取验证码
     public static final String REGISTER = "register.do?";
     //注册登录
@@ -32,5 +32,9 @@ public class Api {
     public static final String ADDTROUBLEORDER = "addTroubleOrder.do?";
     //支付宝支付
     public static final String ALIPAY = "alipay.do?";
+    //修改用户昵称
+    public static final String EDITUSER = "editUser.do?";
+    //上传用户头像
+    public static final String UPLOADAVATAR = "uploadAvatar.do?";
 
 }
