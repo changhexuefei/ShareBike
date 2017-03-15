@@ -36,5 +36,9 @@ public class Api {
     public static final String EDITUSER = "editUser.do?";
     //上传用户头像
     public static final String UPLOADAVATAR = "uploadAvatar.do?";
+    //查询用户信息
+    public static final String INFOUSER = "infoUser.do?";
+    //用户充车费后改变状态的接口
+    public static final String RECHARGE = "recharge.do?";
 
 }

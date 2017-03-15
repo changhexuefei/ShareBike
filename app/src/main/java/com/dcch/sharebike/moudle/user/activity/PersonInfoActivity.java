@@ -16,6 +16,7 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
+import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
@@ -101,9 +102,8 @@ public class PersonInfoActivity extends BaseActivity {
                     authority.setText("已认证");
                     realName.setText(mUserBundle.getName());
                 }
-                if (mUserBundle.getUserimage() == null) {
-                    userInfoIcon.setImageResource(R.mipmap.avatar_default_login);
-                }
+//                userInfoIcon.setImageResource(R.mipmap.avatar_default_login);
+                Glide.with(App.getContext()).load(mUserBundle.getUserimage()).into(userInfoIcon);
             }
         }
     }
@@ -112,6 +112,7 @@ public class PersonInfoActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
+                startActivity(new Intent(this, PersonalCenterActivity.class));
                 finish();
                 break;
             case R.id.userIcon:
@@ -146,31 +147,31 @@ public class PersonInfoActivity extends BaseActivity {
                                             .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)
                                             .build()
                                             .execute(new StringCallback() {
-                                        @Override
-                                        public void onError(Call call, Exception e, int id) {
-                                            Log.e("错误", e.getMessage());
-                                            ToastUtils.showShort(PersonInfoActivity.this,"服务器暂时不可用，请稍后再试");
-                                        }
-
-                                        @Override
-                                        public void onResponse(String response, int id) {
-                                            //根据返回值判断上传成功或者失败
-                                            Log.d("上传头像",response);
-                                            //{"code":"1"}
-                                            try {
-                                                JSONObject object = new JSONObject(response);
-                                                String code = object.optString("code");
-                                                if(code.equals("1")){
-                                                    ToastUtils.showShort(PersonInfoActivity.this,"头像上传成功!");
-                                                }else if(code.equals("0")){
-                                                    ToastUtils.showShort(PersonInfoActivity.this,"头像上传失败!");
+                                                @Override
+                                                public void onError(Call call, Exception e, int id) {
+                                                    Log.e("错误", e.getMessage());
+                                                    ToastUtils.showShort(PersonInfoActivity.this, "服务器暂时不可用，请稍后再试");
                                                 }
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
 
-                                        }
-                                    });
+                                                @Override
+                                                public void onResponse(String response, int id) {
+                                                    //根据返回值判断上传成功或者失败
+                                                    Log.d("上传头像", response);
+                                                    //{"code":"1"}
+                                                    try {
+                                                        JSONObject object = new JSONObject(response);
+                                                        String code = object.optString("code");
+                                                        if (code.equals("1")) {
+                                                            ToastUtils.showShort(PersonInfoActivity.this, "头像上传成功!");
+                                                        } else if (code.equals("0")) {
+                                                            ToastUtils.showShort(PersonInfoActivity.this, "头像上传失败!");
+                                                        }
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
+                                                    }
+
+                                                }
+                                            });
                                 }
                             }
                         }).openGallery();
@@ -215,8 +216,8 @@ public class PersonInfoActivity extends BaseActivity {
                             OkHttpUtils.post().url(Api.BASE_URL + Api.EDITUSER).params(map).build().execute(new StringCallback() {
                                 @Override
                                 public void onError(Call call, Exception e, int id) {
-                                    Log.e("修改昵称的请求失败",e.getMessage());
-                                    ToastUtils.showShort(PersonInfoActivity.this,"服务器暂时不可用，请稍后再试");
+                                    Log.e("修改昵称的请求失败", e.getMessage());
+                                    ToastUtils.showShort(PersonInfoActivity.this, "服务器暂时不可用，请稍后再试");
                                 }
 
                                 @Override
@@ -225,10 +226,10 @@ public class PersonInfoActivity extends BaseActivity {
                                     try {
                                         JSONObject object = new JSONObject(response);
                                         String code = object.optString("code");
-                                        if(code.equals("1")){
-                                            ToastUtils.showShort(PersonInfoActivity.this,"昵称修改成功!");
-                                        }else if(code.equals("0")){
-                                            ToastUtils.showShort(PersonInfoActivity.this,"昵称修改失败!");
+                                        if (code.equals("1")) {
+                                            ToastUtils.showShort(PersonInfoActivity.this, "昵称修改成功!");
+                                        } else if (code.equals("0")) {
+                                            ToastUtils.showShort(PersonInfoActivity.this, "昵称修改失败!");
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -241,6 +242,7 @@ public class PersonInfoActivity extends BaseActivity {
             }
         }
     }
+
     /**
      * 将bitmap转换成base64字符串
      *

@@ -20,12 +20,17 @@ import com.alipay.sdk.app.PayTask;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.alipay.AliPay;
 import com.dcch.sharebike.alipay.PayResult;
+import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,6 +70,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
     @BindView(R.id.btn_rbf_recharge)
     Button btnRbfRecharge;
     String rechargeNumber = "";
+    String uID;
 
     private static final int SDK_PAY_FLAG = 1;
     private static final int SDK_AUTH_FLAG = 2;
@@ -80,6 +86,22 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         rbRg110.setChecked(true);
         String s1 = rbRg110.getText().toString().trim();
         rechargeNumber = s1.substring(1, s1.length());
+        if (SPUtils.isLogin()) {
+
+            String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
+            Log.d("ooooo", userDetail);
+            if (userDetail != null) {
+                try {
+                    JSONObject object = new JSONObject(userDetail);
+                    int userId = object.getInt("id");
+                    uID = String.valueOf(userId);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
     }
 
     @Override
@@ -195,7 +217,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                     // String resultInfo = payResult.getResult();
                     String resultStatus = payResult.getResultStatus();
                     if (TextUtils.equals(resultStatus, "9000")) {
-
+                        updateRechargeInfo(uID, rechargeNumber);
                         Toast.makeText(RechargeBikeFareActivity.this, "支付成功",
                                 Toast.LENGTH_SHORT).show();
 
@@ -215,4 +237,33 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         }
     };
 
+    private void updateRechargeInfo(String uID, final String rechargeNumber) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", uID);
+        map.put("amount", rechargeNumber);
+        OkHttpUtils.post().url(Api.BASE_URL + Api.RECHARGE).params(map).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                Log.e("修改充值信息", e.getMessage());
+                ToastUtils.showShort(RechargeBikeFareActivity.this, "服务器正忙！");
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                Log.d("修改的结果", response);
+                //{"code":"1"}
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String code = object.optString("code");
+                    if (code.equals("1")) {
+                        ToastUtils.showShort(RechargeBikeFareActivity.this, "修改用户资料成功！");
+                    } else if (code.equals("0")) {
+                        ToastUtils.showShort(RechargeBikeFareActivity.this, "服务器正忙！");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 }

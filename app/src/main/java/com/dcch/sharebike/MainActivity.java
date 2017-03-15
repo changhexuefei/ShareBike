@@ -125,7 +125,7 @@ import static com.dcch.sharebike.R.id.seek;
 
 
 @RuntimePermissions
-public class MainActivity extends BaseActivity implements OnGetGeoCoderResultListener {
+public class MainActivity extends BaseActivity implements OnGetGeoCoderResultListener, BaiduMap.OnMapStatusChangeListener {
     @BindView(R.id.mapView)
     MapView mMapView;
     BaiduMap mMap;
@@ -458,8 +458,10 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
     @Override
     protected void initListener() {
+
+
         //地图状态改变相关监听
-//        mMap.setOnMapStatusChangeListener(this);
+        mMap.setOnMapStatusChangeListener(this);
     }
 
     private void initOritationListener() {
@@ -1255,6 +1257,25 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         }
     }
 
+    @Override
+    public void onMapStatusChangeStart(MapStatus mapStatus) {
+
+    }
+
+    @Override
+    public void onMapStatusChange(MapStatus mapStatus) {
+
+    }
+
+    @Override
+    public void onMapStatusChangeFinish(MapStatus mapStatus) {
+//        Intent intent = getIntent();
+//        SuggestionResult.SuggestionInfo suggestionInfo
+//                = (SuggestionResult.SuggestionInfo)intent.getParcelableExtra("clickItem");
+//        LatLng pt = suggestionInfo.pt;
+//        setUserMapCenter(pt);
+    }
+
     /**
      * 实现定位回调监听
      */
@@ -1344,6 +1365,23 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
     //设置中心点
     private void setUserMapCenter() {
+        LatLng cenpt = new LatLng(mCurrentLantitude, mCurrentLongitude);
+        //定义地图状态
+        mMapStatus = new MapStatus.Builder()
+                .target(cenpt)
+                .zoom(18)
+                .build();
+        //定义MapStatusUpdate对象，以便描述地图状态将要发生的变化
+        mMapStatusUpdate = MapStatusUpdateFactory
+                .newMapStatus(mMapStatus);
+        //改变地图状态
+        mMap.animateMapStatus(mMapStatusUpdate);
+
+    }
+
+
+    //设置新的中心点
+    private void setUserMapCenter(LatLng latlng) {
         LatLng cenpt = new LatLng(mCurrentLantitude, mCurrentLongitude);
         //定义地图状态
         mMapStatus = new MapStatus.Builder()
@@ -1545,4 +1583,8 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 //            content.setText(locationMsg);
         }
     }
+
+
+
+
 }

@@ -8,16 +8,15 @@ import java.io.Serializable;
 
 public class UserInfo implements Serializable {
 
-
     /**
-     * id : 119
+     * id : 24
      * name :
-     * nickName : 17701273631
+     * nickName : 123
      * phone : 17701273631
      * idcard : null
      * useraddress : null
      * aggregateAmount : 0
-     * pledgeCash : 0
+     * pledgeCash : 199
      * minaggregate : 0
      * maxaggregate : 0
      * integral : 0
@@ -25,9 +24,9 @@ public class UserInfo implements Serializable {
      * password : null
      * usersex : 0
      * userage : 0
-     * userimage : null
-     * messagecode : 1
-     * cashStatus : 0
+     * userimage : /UserImage/201703141645084002935one.jpg
+     * messagecode : null
+     * cashStatus : 1
      * status : 0
      */
 
@@ -46,8 +45,8 @@ public class UserInfo implements Serializable {
     private Object password;
     private int usersex;
     private int userage;
-    private Object userimage;
-    private String messagecode;
+    private String userimage;
+    private Object messagecode;
     private int cashStatus;
     private int status;
 
@@ -171,19 +170,19 @@ public class UserInfo implements Serializable {
         this.userage = userage;
     }
 
-    public Object getUserimage() {
+    public String getUserimage() {
         return userimage;
     }
 
-    public void setUserimage(Object userimage) {
+    public void setUserimage(String userimage) {
         this.userimage = userimage;
     }
 
-    public String getMessagecode() {
+    public Object getMessagecode() {
         return messagecode;
     }
 
-    public void setMessagecode(String messagecode) {
+    public void setMessagecode(Object messagecode) {
         this.messagecode = messagecode;
     }
 

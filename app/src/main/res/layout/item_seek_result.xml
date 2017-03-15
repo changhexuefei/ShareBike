@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_marginTop="10dp"
     android:layout_width="match_parent"
-    android:layout_height="40dp">
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
 
     <ImageView
         android:id="@+id/icon_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:src="@mipmap/location" />
@@ -19,19 +19,22 @@
         android:layout_toRightOf="@+id/icon_location">
 
         <TextView
-            android:textSize="14sp"
-            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
             android:id="@+id/place_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="地铁14号线" />
+            android:text="地铁14号线"
+            android:textColor="#000000"
+            android:textSize="15sp" />
 
         <TextView
-            android:textSize="12sp"
-            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
             android:id="@+id/address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="地铁14号线" />
+            android:layout_below="@+id/place_name"
+            android:layout_marginTop="5dp"
+            android:text="地铁14号线"
+            android:textSize="12sp" />
     </RelativeLayout>
 </RelativeLayout>

@@ -3,6 +3,7 @@ package com.dcch.sharebike.moudle.login.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,8 +12,10 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
+import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.user.activity.CreditIntegralActivity;
 import com.dcch.sharebike.moudle.user.activity.InviteFriendsActivity;
 import com.dcch.sharebike.moudle.user.activity.MyJourneyActivity;
@@ -24,14 +27,21 @@ import com.dcch.sharebike.moudle.user.activity.WalletInfoActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
+import com.google.gson.Gson;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.Call;
 
 
 public class LoginFragment extends Fragment {
@@ -65,56 +75,75 @@ public class LoginFragment extends Fragment {
     @BindView(R.id.remainSum)
     TextView remainSum;
     private UserInfo mInfo;
+    private String uID;
+
     public LoginFragment() {
 
     }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
-        ButterKnife.bind(this, view);
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         if (SPUtils.isLogin()) {
-            //从服务端拿到客户信息
+
             String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
             Log.d("ooooo", userDetail);
             if (userDetail != null) {
                 try {
                     JSONObject object = new JSONObject(userDetail);
-                    mInfo = new UserInfo();
-                    mInfo.setNickName(object.getString("nickName"));
-                    mInfo.setName(object.getString("name"));
-                    mInfo.setPhone(object.getString("phone"));
-                    mInfo.setStatus(object.getInt("status"));
-                    mInfo.setPledgeCash(object.getInt("pledgeCash"));
-                    mInfo.setCashStatus(object.getInt("cashStatus"));
-                    //用户头像应该为string类型的图像路径
-
-//                        mInfo.setUserimage(object.getString("userimage"));
-
+                    int userId = object.getInt("id");
+                    uID = String.valueOf(userId);
+                    getUserInfo(uID);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                //手机号中间四位数字用*号代替的做法
-                if (mInfo!=null) {
-                    String nn = mInfo.getNickName().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
-                    nickName.setText(nn);
-                    remainSum.setText(String.valueOf(mInfo.getPledgeCash()));
-                    //骑行距离
-//                    person_distance.setText();
-                    //节约碳排放
-//                    discharge.setText();
-                    //运动成就
-//                    sportsAchievement.setText();
-                    //用户头像
-                    if(mInfo.getUserimage()==null){
-                        userIcon.setImageResource(R.mipmap.avatar_default_login);
-                    }else {
-                        //使用用户自定义的头像
-                    }
-                }
             }
         }
+    }
+    //从服务端拿到客户信息
+    private void getUserInfo(String uID) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", uID);
+        OkHttpUtils.post().url(Api.BASE_URL + Api.INFOUSER).params(map).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                Log.d("用户的信息", response);
+                Gson gson = new Gson();
+                mInfo = gson.fromJson(response, UserInfo.class);
+                //手机号中间四位数字用*号代替的做法
+                String nn = mInfo.getNickName().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
+                nickName.setText(nn);
+                remainSum.setText(String.valueOf(mInfo.getAggregateAmount()));
+////                                骑行距离
+//                                person_distance.setText(mInfo.getm);
+////                                节约碳排放
+//                                discharge.setText();
+////                                运动成就
+//                                sportsAchievement.setText();
+                //用户头像
+                String userimage = mInfo.getUserimage();
+                Log.d("用户头像路径", userimage);
+                if (userimage != null) {
+                    //使用用户自定义的头像
+                    Glide.with(App.getContext()).load(userimage).into(userIcon);
+                } else {
+                    userIcon.setImageResource(R.mipmap.avatar_default_login);
+                }
+            }
+        });
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+//        getUserInfo(uID);
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        ButterKnife.bind(this, view);
         return view;
     }
 
@@ -130,9 +159,10 @@ public class LoginFragment extends Fragment {
                 ToastUtils.showLong(getContext(), "用户头像");
                 Intent personInfo = new Intent(App.getContext(), PersonInfoActivity.class);
                 Bundle userBundle = new Bundle();
-                userBundle.putSerializable("userBundle",mInfo);
+                userBundle.putSerializable("userBundle", mInfo);
                 personInfo.putExtras(userBundle);
                 startActivity(personInfo);
+                getActivity().finish();
                 break;
             case R.id.wallet:
                 ToastUtils.showLong(getContext(), "钱包");
@@ -156,7 +186,7 @@ public class LoginFragment extends Fragment {
                 break;
             case R.id.friend:
                 ToastUtils.showLong(getContext(), "邀请好友");
-                startActivity(new Intent(getActivity(),InviteFriendsActivity.class));
+                startActivity(new Intent(getActivity(), InviteFriendsActivity.class));
 
                 break;
             case R.id.guide:
