@@ -170,6 +170,7 @@ public class LoginFragment extends Fragment {
                 Intent walletInfo = new Intent(App.getContext(), WalletInfoActivity.class);
                 walletInfo.putExtra("remainSum", remainsum);
                 startActivity(walletInfo);
+                getActivity().finish();
                 break;
             case R.id.favorable:
                 ToastUtils.showLong(getContext(), "优惠");

@@ -50,6 +50,8 @@ public class UsualAddressActivity extends BaseActivity {
                 break;
             case R.id.addressOne:
                 ToastUtils.showLong(this,"地址1");
+
+//                startActivityForResult();
                 break;
             case R.id.addressTwo:
                 ToastUtils.showLong(this,"地址2");

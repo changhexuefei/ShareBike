@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.dcch.sharebike.view.RefundPopuwindow;
@@ -40,13 +41,13 @@ public class WalletInfoActivity extends BaseActivity {
     private int cashStatus;
     private RefundPopuwindow refundPopuwindow;
     private final String msg = "骑行单车必须支付押金，押金可退还。";
-    private final  String tipOne ="押金199元";
-    private final  String tipTwo ="押金0元";
-    private final String tipThere ="押金退款";
-    private final String tipFour ="充押金";
-    private final String Title ="提示";
-    private final String ToCharge="充押金";
-    private final String goToDeposit="去充值";
+    private final String tipOne = "押金199元";
+    private final String tipTwo = "押金0元";
+    private final String tipThere = "押金退款";
+    private final String tipFour = "充押金";
+    private final String Title = "提示";
+    private final String ToCharge = "充押金";
+    private final String goToDeposit = "去充值";
 
     @Override
     protected int getLayoutId() {
@@ -83,6 +84,7 @@ public class WalletInfoActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
+                startActivity(new Intent(this, PersonalCenterActivity.class));
                 finish();
                 break;
             case R.id.transactionDetail:
@@ -90,7 +92,9 @@ public class WalletInfoActivity extends BaseActivity {
                 break;
             case R.id.recharge:
                 if (cashStatus == 1) {
-                    startActivity(new Intent(WalletInfoActivity.this, RechargeBikeFareActivity.class));
+                    Intent intent = new Intent(WalletInfoActivity.this, RechargeBikeFareActivity.class);
+                    startActivityForResult(intent, 0);
+//                    startActivity();
                 } else if (cashStatus == 0) {
                     popupDialog();
                 }
@@ -103,6 +107,26 @@ public class WalletInfoActivity extends BaseActivity {
                 }
                 break;
         }
+    }
+
+    //充值车费的回调
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        int i = Integer.valueOf(remainingSum.getText().toString()).intValue();
+        if(data!=null){
+            String recherge = data.getStringExtra("recherge");
+            int i1 = Integer.parseInt(recherge.split("\\.")[0]);
+            Log.d("数值",i1+"");
+            String rechergeSum = String.valueOf(i+i1);
+            Log.d("总和",rechergeSum);
+            // 根据上面发送过去的请求码来区别
+            switch (requestCode) {
+                case 0:
+                    remainingSum.setText(rechergeSum);
+            }
+        }
+
     }
 
     private void showRefundPopuwindow() {
