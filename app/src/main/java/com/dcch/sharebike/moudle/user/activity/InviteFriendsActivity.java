@@ -113,7 +113,7 @@ public class InviteFriendsActivity extends BaseActivity {
         //关闭sso授权
         oks.disableSSOWhenAuthorize();
         // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
-        oks.setTitle(getString(R.string.publicity));
+        oks.setTitle("麒麟单车，骑乐无比");
         // titleUrl是标题的网络链接，仅在Linked-in,QQ和QQ空间使用
         oks.setTitleUrl("http://www.70bikes.cn");
         // text是分享文本，所有平台都需要这个字段
