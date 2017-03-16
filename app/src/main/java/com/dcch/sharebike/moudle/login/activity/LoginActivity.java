@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
@@ -183,7 +184,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     } else if (!InPutUtils.isMobilePhone(phone)) {
                         getSecurityCode.setEnabled(false);
                         getSecurityCode.setBackgroundColor(Color.parseColor("#c6bfbf"));
-                    }else if(!TextUtils.isEmpty(phone) && InPutUtils.isMobilePhone(phone)){
+                    } else if (!TextUtils.isEmpty(phone) && InPutUtils.isMobilePhone(phone)) {
                         getSecurityCode.setEnabled(true);
                         getSecurityCode.setBackgroundColor(Color.parseColor("#F8941D"));
                     }
@@ -205,10 +206,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             public void afterTextChanged(Editable s) {
                 if (!s.equals("") && s != null) {
                     seCode = s.toString().trim();
-                    if(TextUtils.isEmpty(seCode)){
+                    if (TextUtils.isEmpty(seCode)) {
                         confirm.setEnabled(false);
                         confirm.setBackgroundColor(Color.parseColor("#c6bfbf"));
-                    }else if(!TextUtils.isEmpty(phone)){
+                    } else if (!TextUtils.isEmpty(phone)) {
                         confirm.setEnabled(true);
                         confirm.setBackgroundColor(Color.parseColor("#F8941D"));
                     }
@@ -306,7 +307,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 UserInfo userInfo = gson.fromJson(response, UserInfo.class);
                 if (userInfo.getMessagecode().equals("1")) {
                     ToastUtils.showLong(LoginActivity.this, "验证码验证成功！");
-                    startActivity(new Intent(LoginActivity.this, RechargeActivity.class));
+                    if (userInfo.getCashStatus() == 1 && userInfo.getStatus() == 0) {
+                        startActivity(new Intent(LoginActivity.this, IdentityAuthentication.class));
+                    } else if (userInfo.getCashStatus() == 0 && userInfo.getStatus() == 0) {
+                        startActivity(new Intent(LoginActivity.this, RechargeActivity.class));
+                    } else if (userInfo.getCashStatus() == 0 && userInfo.getStatus() == 1) {
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    }
+
                     EventBus.getDefault().post(new MessageEvent(), "gone");
                     Log.d("用户信息", userInfo.toString());
                     LoginActivity.this.finish();

@@ -1,5 +1,6 @@
 package com.dcch.sharebike.moudle.user.activity;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -17,11 +18,17 @@ import com.alipay.sdk.app.PayTask;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.alipay.AliPay;
 import com.dcch.sharebike.alipay.PayResult;
+import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.SPUtils;
+import com.dcch.sharebike.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,10 +54,12 @@ public class RechargeDepositActivity extends BaseActivity {
     RelativeLayout rdWeixinArea;
     @BindView(R.id.btn_rd_recharge)
     Button btnRdRecharge;
-    private final static String  orderbody = "交押金";
-    private final  static  String subject ="押金";
+    private final static String orderbody = "交押金";
+    private final static String subject = "押金";
     private static final int SDK_PAY_FLAG = 1;
     private static final int SDK_AUTH_FLAG = 2;
+    private String mMoneySum;
+    private String userID;
 
     @Override
     protected int getLayoutId() {
@@ -60,6 +69,18 @@ public class RechargeDepositActivity extends BaseActivity {
     @Override
     protected void initData() {
         rdAliCheckbox.setChecked(true);
+        String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
+        Log.d("用户明细", userDetail);
+        try {
+            JSONObject object = new JSONObject(userDetail);
+            int id = object.getInt("id");
+            Log.d("手机号", id + "");
+            userID = String.valueOf(id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 
@@ -78,50 +99,51 @@ public class RechargeDepositActivity extends BaseActivity {
                 rdWeixinCheckbox.setChecked(true);
                 break;
             case R.id.btn_rd_recharge:
-                if(rdAliCheckbox.isChecked()){
-                final AliPay aliPay = new AliPay(this);
-                String outTradeNo = aliPay.getOutTradeNo();
-                String moneySum = figure.getText().toString().trim();
-                moneySum=moneySum.substring(0,moneySum.length()-1);
-                Map<String, String> map = new HashMap<>();
-                map.put("outtradeno", outTradeNo);
-                map.put("orderbody", orderbody);
-                map.put("subject", subject);
-                map.put("money", moneySum);
-                OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAY).params(map).build().execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        LogUtils.d(e.getMessage());
-                    }
+                if (rdAliCheckbox.isChecked()) {
+                    final AliPay aliPay = new AliPay(this);
+                    String outTradeNo = aliPay.getOutTradeNo();
+                    mMoneySum = figure.getText().toString().trim();
+                    mMoneySum = mMoneySum.substring(0, mMoneySum.length() - 1);
+                    Map<String, String> map = new HashMap<>();
+                    map.put("outtradeno", outTradeNo);
+                    map.put("orderbody", orderbody);
+                    map.put("subject", subject);
+                    map.put("money", mMoneySum);
+                    OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAY).params(map).build().execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            LogUtils.d(e.getMessage());
+                        }
 
-                    @Override
-                    public void onResponse(final String response, int id) {
+                        @Override
+                        public void onResponse(final String response, int id) {
 //                        LogUtils.d("支付", response);
-                        Runnable payRunnable = new Runnable() {
-                            @Override
-                            public void run() {
-                                EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
-                                PayTask task = new PayTask(RechargeDepositActivity.this);
-                                Map<String, String> stringStringMap = task.payV2(response, true);
-                                Message msg = new Message();
-                                msg.what = SDK_PAY_FLAG;
-                                msg.obj = stringStringMap;
-                                handler.sendMessage(msg);
+                            Runnable payRunnable = new Runnable() {
+                                @Override
+                                public void run() {
+                                    EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
+                                    PayTask task = new PayTask(RechargeDepositActivity.this);
+                                    Map<String, String> stringStringMap = task.payV2(response, true);
+                                    Message msg = new Message();
+                                    msg.what = SDK_PAY_FLAG;
+                                    msg.obj = stringStringMap;
+                                    handler.sendMessage(msg);
 
-                            }
-                        };
-                        // 必须异步调用
-                        Thread payThread = new Thread(payRunnable);
-                        payThread.start();
-                    }
-                });
-                }else if(rdWeixinCheckbox.isChecked()){
+                                }
+                            };
+                            // 必须异步调用
+                            Thread payThread = new Thread(payRunnable);
+                            payThread.start();
+                        }
+                    });
+                } else if (rdWeixinCheckbox.isChecked()) {
                     //微信支付
 
                 }
                 break;
         }
     }
+
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -134,8 +156,14 @@ public class RechargeDepositActivity extends BaseActivity {
                     // String resultInfo = payResult.getResult();
                     String resultStatus = payResult.getResultStatus();
                     if (TextUtils.equals(resultStatus, "9000")) {
+
+
                         Toast.makeText(RechargeDepositActivity.this, "支付成功",
                                 Toast.LENGTH_SHORT).show();
+                        updateUserCashstatus(userID);
+                        returnData(mMoneySum);
+
+
                     } else {
                         // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
                         if (TextUtils.equals(resultStatus, "8000")) {
@@ -151,5 +179,43 @@ public class RechargeDepositActivity extends BaseActivity {
             }
         }
     };
+
+    private void updateUserCashstatus(String userID) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", userID);
+        OkHttpUtils.post().url(Api.BASE_URL + Api.UPDATEUSERCASHSTATUS).params(map).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                Log.e("onError:", e.getMessage());
+                ToastUtils.showShort(RechargeDepositActivity.this, "服务器正忙，请稍后再试！");
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                Log.d("交押金后", response);
+                //{"code":"1"}
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String code = object.optString("code");
+                    if (code.equals("1")) {
+                        ToastUtils.showShort(RechargeDepositActivity.this, "用户资料更新成功！");
+                    } else if (code.equals("0")) {
+                        ToastUtils.showShort(RechargeDepositActivity.this, "用户资料更新失败！");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
+    private void returnData(String moneySum) {
+        Intent mIntent = new Intent();
+        mIntent.putExtra("deposit", moneySum);
+        // 设置结果，并进行传送
+        this.setResult(0, mIntent);
+        this.finish();
+    }
 
 }

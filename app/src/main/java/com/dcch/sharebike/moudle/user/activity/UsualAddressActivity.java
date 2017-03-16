@@ -1,5 +1,6 @@
 package com.dcch.sharebike.moudle.user.activity;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -39,7 +40,7 @@ public class UsualAddressActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
+        //用户改变后的结果，应该存储到服务器端。
     }
 
     @OnClick({R.id.back, R.id.addressOne, R.id.addressTwo})
@@ -50,12 +51,36 @@ public class UsualAddressActivity extends BaseActivity {
                 break;
             case R.id.addressOne:
                 ToastUtils.showLong(this,"地址1");
-
-//                startActivityForResult();
+                Intent intent = new Intent(UsualAddressActivity.this,SetAddressActivity.class);
+                startActivityForResult(intent,0);
                 break;
             case R.id.addressTwo:
                 ToastUtils.showLong(this,"地址2");
+                Intent intent1 = new Intent(UsualAddressActivity.this,SetAddressActivity.class);
+                startActivityForResult(intent1,1);
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(data!=null){
+            String item01 = data.getStringExtra("item01");
+            String item02 = data.getStringExtra("item02");
+            switch (requestCode) {
+                case 0:
+                    mStarTargetOne.setImageResource(R.mipmap.ease_icon_star_select);
+                    mPlaceNameOne.setText(item01);
+                    mAddressNameOne.setText(item02);
+                    break;
+
+                case 1:
+                    mStarTargetTwo.setImageResource(R.mipmap.ease_icon_star_select);
+                    mPlaceNameTwo.setText(item01);
+                    mAddressNameTwo.setText(item02);
+                    break;
+            }
         }
     }
 }

@@ -221,7 +221,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                         updateRechargeInfo(uID, rechargeNumber);
                         Toast.makeText(RechargeBikeFareActivity.this, "支付成功",
                                 Toast.LENGTH_SHORT).show();
-                        returneData(rechargeNumber);
+                        returnData(rechargeNumber);
                     } else {
                         // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
                         if (TextUtils.equals(resultStatus, "8000")) {
@@ -238,7 +238,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         }
     };
 
-    private void returneData(String rechargeNumber) {
+    private void returnData(String rechargeNumber) {
         Intent mIntent = new Intent();
         mIntent.putExtra("recherge", rechargeNumber);
         // 设置结果，并进行传送

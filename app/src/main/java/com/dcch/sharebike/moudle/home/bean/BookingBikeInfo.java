@@ -25,7 +25,6 @@ public class BookingBikeInfo {
      * latitude : null
      * address : null
      */
-
     private String bookingCarId;
     private String bookingCarNo;
     private int userId;

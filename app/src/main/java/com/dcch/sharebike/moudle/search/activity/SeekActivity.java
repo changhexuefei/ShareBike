@@ -38,6 +38,8 @@ public class SeekActivity extends BaseActivity implements TextWatcher {
     SuggestionSearch mSuggestionSearch;
     @BindView(R.id.infoList)
     ListView infoList;
+    @BindView(R.id.seek_no_result)
+    TextView mSeekNoResult;
     private SearchAdapter adapter;
     private List<SuggestionResult.SuggestionInfo> allSuggestions;
 
@@ -96,8 +98,7 @@ public class SeekActivity extends BaseActivity implements TextWatcher {
                     .keyword(inputKeyWords)
                     .city("全国"));
         } else {
-
-
+            infoList.setVisibility(View.GONE);
         }
 
     }
@@ -105,10 +106,14 @@ public class SeekActivity extends BaseActivity implements TextWatcher {
     OnGetSuggestionResultListener listener = new OnGetSuggestionResultListener() {
         public void onGetSuggestionResult(SuggestionResult res) {
             if (res == null || res.getAllSuggestions() == null) {
+                mSeekNoResult.setVisibility(View.VISIBLE);
+                infoList.setVisibility(View.GONE);
                 return;
                 //未找到相关结果
             }
             //获取在线建议检索结果
+            infoList.setVisibility(View.VISIBLE);
+            mSeekNoResult.setVisibility(View.GONE);
             allSuggestions = res.getAllSuggestions();
             adapter.setAllSuggestions(allSuggestions);
             infoList.setAdapter(adapter);
@@ -116,7 +121,7 @@ public class SeekActivity extends BaseActivity implements TextWatcher {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Intent intent = new Intent(App.getContext(), MainActivity.class);
-                    intent.putExtra("clickItem",allSuggestions.get(i));
+                    intent.putExtra("clickItem", allSuggestions.get(i));
                     startActivity(intent);
                     finish();
                 }

@@ -14,7 +14,7 @@ import com.dcch.sharebike.listener.BDGpsServiceListener;
  */
 
 public class GPSService extends Service {
-    private static final int minTime = 60000;
+    private static final int minTime = 30000;
     private LocationClient locationClient;
     private BDGpsServiceListener locationListener;
     private LocationClientOption lco;

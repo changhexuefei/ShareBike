@@ -349,6 +349,10 @@
                     android:padding="10dp"/>
             </RelativeLayout>
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="80dp" />
+
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

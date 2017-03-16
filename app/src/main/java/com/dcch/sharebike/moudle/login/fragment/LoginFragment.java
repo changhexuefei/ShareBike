@@ -77,6 +77,7 @@ public class LoginFragment extends Fragment {
     private UserInfo mInfo;
     private String uID;
 
+
     public LoginFragment() {
 
     }
@@ -87,7 +88,7 @@ public class LoginFragment extends Fragment {
         if (SPUtils.isLogin()) {
 
             String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-            Log.d("ooooo", userDetail);
+//            Log.d("ooooo", userDetail);
             if (userDetail != null) {
                 try {
                     JSONObject object = new JSONObject(userDetail);
@@ -100,6 +101,7 @@ public class LoginFragment extends Fragment {
             }
         }
     }
+
     //从服务端拿到客户信息
     private void getUserInfo(String uID) {
         Map<String, String> map = new HashMap<>();
@@ -107,12 +109,12 @@ public class LoginFragment extends Fragment {
         OkHttpUtils.post().url(Api.BASE_URL + Api.INFOUSER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-
+                Log.e("获取用户信息", e.getMessage());
             }
 
             @Override
             public void onResponse(String response, int id) {
-                Log.d("用户的信息", response);
+//                Log.d("用户的信息", response);
                 Gson gson = new Gson();
                 mInfo = gson.fromJson(response, UserInfo.class);
                 //手机号中间四位数字用*号代替的做法
@@ -127,8 +129,9 @@ public class LoginFragment extends Fragment {
 //                                sportsAchievement.setText();
                 //用户头像
                 String userimage = mInfo.getUserimage();
-                Log.d("用户头像路径", userimage);
+
                 if (userimage != null) {
+                    Log.d("用户头像路径", userimage);
                     //使用用户自定义的头像
                     Glide.with(App.getContext()).load(userimage).into(userIcon);
                 } else {
@@ -151,24 +154,22 @@ public class LoginFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.creditScore:
-                ToastUtils.showLong(getContext(), "信用积分");
                 Intent credit = new Intent(App.getContext(), CreditIntegralActivity.class);
                 startActivity(credit);
                 break;
             case R.id.userIcon:
-                ToastUtils.showLong(getContext(), "用户头像");
                 Intent personInfo = new Intent(App.getContext(), PersonInfoActivity.class);
-                Bundle userBundle = new Bundle();
-                userBundle.putSerializable("userBundle", mInfo);
-                personInfo.putExtras(userBundle);
+                Bundle mUserBundle=new Bundle();
+                mUserBundle.putSerializable("userBundle", mInfo);
+                personInfo.putExtras(mUserBundle);
                 startActivity(personInfo);
                 getActivity().finish();
                 break;
             case R.id.wallet:
-                ToastUtils.showLong(getContext(), "钱包");
-                String remainsum = remainSum.getText().toString().trim();
                 Intent walletInfo = new Intent(App.getContext(), WalletInfoActivity.class);
-                walletInfo.putExtra("remainSum", remainsum);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("bundle", mInfo);
+                walletInfo.putExtras(bundle);
                 startActivity(walletInfo);
                 getActivity().finish();
                 break;

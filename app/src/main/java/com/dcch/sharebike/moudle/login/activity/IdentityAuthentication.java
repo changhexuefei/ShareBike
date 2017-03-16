@@ -18,6 +18,7 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.utils.InPutUtils;
 import com.dcch.sharebike.utils.SPUtils;
+import com.dcch.sharebike.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -81,15 +82,15 @@ public class IdentityAuthentication extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(!editable.toString().trim().equals("") && editable!=null){
-                    cardNum=editable.toString().trim();
-                    if(!InPutUtils.IDCardValidate(cardNum)){
+                if (!editable.toString().trim().equals("") && editable != null) {
+                    cardNum = editable.toString().trim();
+                    if (!InPutUtils.IDCardValidate(cardNum)) {
                         btnAuthentication.setEnabled(false);
                         btnAuthentication.setBackgroundColor(Color.parseColor("#c6bfbf"));
-                    }else if(TextUtils.isEmpty(realName)){
+                    } else if (TextUtils.isEmpty(realName)) {
                         btnAuthentication.setEnabled(false);
                         btnAuthentication.setBackgroundColor(Color.parseColor("#c6bfbf"));
-                    }else if(InPutUtils.IDCardValidate(cardNum)&&!TextUtils.isEmpty(realName) ){
+                    } else if (InPutUtils.IDCardValidate(cardNum) && !TextUtils.isEmpty(realName)) {
                         btnAuthentication.setEnabled(true);
                         btnAuthentication.setBackgroundColor(Color.parseColor("#F8941D"));
                     }
@@ -109,8 +110,8 @@ public class IdentityAuthentication extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(!editable.toString().trim().equals("") && editable!=null){
-                    realName=editable.toString().trim();
+                if (!editable.toString().trim().equals("") && editable != null) {
+                    realName = editable.toString().trim();
                 }
             }
         });
@@ -126,15 +127,12 @@ public class IdentityAuthentication extends BaseActivity {
                 break;
             case R.id.btn_authentication:
                 //实名认证的接口
-//                verifyRealName(uID, realName, cardNum);
-                Intent authentication = new Intent(IdentityAuthentication.this, AuthenticationOkActivity.class);
-                startActivity(authentication);
-                finish();
+                verifyRealName(uID, realName, cardNum);
                 break;
         }
     }
 
-    private void verifyRealName(String uID, String realName, String cardNum) {
+    private void verifyRealName(String uID, final String realName, String cardNum) {
         Map<String, String> map = new HashMap<>();
         map.put("userId", uID);
         map.put("name", realName);
@@ -144,14 +142,26 @@ public class IdentityAuthentication extends BaseActivity {
             @Override
             public void onError(Call call, Exception e, int id) {
                 Log.e("错误", e.getMessage());
+                ToastUtils.showShort(IdentityAuthentication.this,"服务器正忙，请稍后再试！");
             }
 
             @Override
             public void onResponse(String response, int id) {
                 Log.d("实名认证", response);
-                Intent authentication = new Intent(IdentityAuthentication.this, AuthenticationOkActivity.class);
-                startActivity(authentication);
-                finish();
+                //{"code":"1"}
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String code = object.optString("code");
+                    if (code.equals("1")) {
+                        Intent authentication = new Intent(IdentityAuthentication.this, AuthenticationOkActivity.class);
+                        startActivity(authentication);
+                        finish();
+                    }else if(code.equals("0")){
+                        ToastUtils.showShort(IdentityAuthentication.this,"对不起，实名验证失败，请输入正确的信息");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

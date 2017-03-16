@@ -76,24 +76,22 @@ public class PersonInfoActivity extends BaseActivity {
 
         if (SPUtils.isLogin()) {
             String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-            Log.d("用户明细", userDetail);
             try {
                 JSONObject object = new JSONObject(userDetail);
                 int id = object.getInt("id");
                 uID = String.valueOf(id);
-                Log.d("用户ID", uID);
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             Intent intent = getIntent();
             Bundle user = intent.getExtras();
-            if (user != null) {
-                mUserBundle = (UserInfo) user.getSerializable("userBundle");
+            mUserBundle = (UserInfo) user.getSerializable("userBundle");
+            Log.d("你是谁", mUserBundle + "");
+            if (mUserBundle != null) {
                 Log.d("用户", mUserBundle + "");
                 nickName.setText(mUserBundle.getNickName().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
                 telephone.setText(mUserBundle.getPhone().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
-
                 if (mUserBundle.getStatus() == 0) {
                     authority.setText("未认证");
                     realName.setText("未认证");
@@ -102,8 +100,11 @@ public class PersonInfoActivity extends BaseActivity {
                     authority.setText("已认证");
                     realName.setText(mUserBundle.getName());
                 }
-//                userInfoIcon.setImageResource(R.mipmap.avatar_default_login);
-                Glide.with(App.getContext()).load(mUserBundle.getUserimage()).into(userInfoIcon);
+                if(mUserBundle.getUserimage()!=null){
+                    Glide.with(App.getContext()).load(mUserBundle.getUserimage()).into(userInfoIcon);
+                }else {
+                    userInfoIcon.setImageResource(R.mipmap.avatar_default_login);
+                }
             }
         }
     }

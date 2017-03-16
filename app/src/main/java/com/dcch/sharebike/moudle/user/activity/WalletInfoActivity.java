@@ -3,7 +3,7 @@ package com.dcch.sharebike.moudle.user.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
+import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -11,15 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
-import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
-import com.dcch.sharebike.utils.SPUtils;
+import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.dcch.sharebike.view.RefundPopuwindow;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -41,8 +37,6 @@ public class WalletInfoActivity extends BaseActivity {
     private int cashStatus;
     private RefundPopuwindow refundPopuwindow;
     private final String msg = "骑行单车必须支付押金，押金可退还。";
-    private final String tipOne = "押金199元";
-    private final String tipTwo = "押金0元";
     private final String tipThere = "押金退款";
     private final String tipFour = "充押金";
     private final String Title = "提示";
@@ -56,27 +50,19 @@ public class WalletInfoActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-        Log.d("用户明细", userDetail);
-        try {
-            JSONObject object = new JSONObject(userDetail);
-            cashStatus = object.getInt("cashStatus");
-            Log.d("押金的情况", cashStatus + "");
-            if (cashStatus == 1) {
-                showArea.setText(tipOne);
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();//"bundle"
+        UserInfo user = (UserInfo)bundle.getSerializable("bundle");
+        if (user != null && !user.equals("")) {
+            cashStatus = user.getCashStatus();
+            remainingSum.setText(String.valueOf(user.getAggregateAmount()));
+            if(user.getPledgeCash()==199){
+                showArea.setText("押金"+user.getPledgeCash()+"元");
                 chargeDeposit.setText(tipThere);
-            } else if (cashStatus == 0) {
-                showArea.setText(tipTwo);
+            }else if(user.getPledgeCash()==0){
+                showArea.setText("押金"+user.getPledgeCash()+"元");
                 chargeDeposit.setText(tipFour);
             }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Intent intent = getIntent();
-        String remainsum = intent.getStringExtra("remainSum");
-        if (remainsum != null && !remainsum.equals("")) {
-            remainingSum.setText(remainsum);
         }
     }
 
@@ -94,14 +80,14 @@ public class WalletInfoActivity extends BaseActivity {
                 if (cashStatus == 1) {
                     Intent intent = new Intent(WalletInfoActivity.this, RechargeBikeFareActivity.class);
                     startActivityForResult(intent, 0);
-//                    startActivity();
                 } else if (cashStatus == 0) {
                     popupDialog();
                 }
                 break;
             case R.id.chargeDeposit:
                 if (chargeDeposit.getText().equals(tipFour)) {
-                    startActivity(new Intent(WalletInfoActivity.this, RechargeDepositActivity.class));
+                    Intent rechargeDeposit = new Intent(WalletInfoActivity.this, RechargeDepositActivity.class);
+                    startActivityForResult(rechargeDeposit, 1);
                 } else if (chargeDeposit.getText().equals(tipThere)) {
                     showRefundPopuwindow();
                 }
@@ -114,16 +100,20 @@ public class WalletInfoActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         int i = Integer.valueOf(remainingSum.getText().toString()).intValue();
-        if(data!=null){
+        if (data != null) {
             String recherge = data.getStringExtra("recherge");
-            int i1 = Integer.parseInt(recherge.split("\\.")[0]);
-            Log.d("数值",i1+"");
-            String rechergeSum = String.valueOf(i+i1);
-            Log.d("总和",rechergeSum);
+            String deposit = data.getStringExtra("deposit");
             // 根据上面发送过去的请求码来区别
             switch (requestCode) {
                 case 0:
+                    int i1 = Integer.parseInt(recherge.split("\\.")[0]);
+                    String rechergeSum = String.valueOf(i + i1);
                     remainingSum.setText(rechergeSum);
+                    break;
+                case 1:
+                    showArea.setText("押金" + deposit + "元");
+                    chargeDeposit.setText(tipThere);
+                    break;
             }
         }
 
@@ -166,6 +156,7 @@ public class WalletInfoActivity extends BaseActivity {
                     break;
                 case R.id.btn_confirm:
                     ToastUtils.showShort(WalletInfoActivity.this, "您点击的是退押金按钮");
+                    startActivity(new Intent(WalletInfoActivity.this,ShowRefundResultsActivity.class));
                     break;
 
             }

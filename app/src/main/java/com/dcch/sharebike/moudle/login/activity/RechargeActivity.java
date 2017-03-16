@@ -24,6 +24,7 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
+import com.dcch.sharebike.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -156,12 +157,10 @@ public class RechargeActivity extends BaseActivity {
                     // String resultInfo = payResult.getResult();
                     String resultStatus = payResult.getResultStatus();
                     if (TextUtils.equals(resultStatus, "9000")) {
-                        save(userID);
+                        updateUserCashstatus(userID);
                         Toast.makeText(RechargeActivity.this, "支付成功",
                                 Toast.LENGTH_SHORT).show();
-
-                        Intent intent = new Intent(RechargeActivity.this, IdentityAuthentication.class);
-                        startActivity(intent);
+                        startActivity(new Intent(RechargeActivity.this, IdentityAuthentication.class));
                         finish();
 
                     } else {
@@ -180,20 +179,33 @@ public class RechargeActivity extends BaseActivity {
         }
     };
 
-    private void save(String userID) {
+    private void updateUserCashstatus(String userID) {
         Map<String, String> map = new HashMap<>();
         map.put("userId", userID);
         OkHttpUtils.post().url(Api.BASE_URL + Api.UPDATEUSERCASHSTATUS).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
                 Log.e("onError:", e.getMessage());
-
+                ToastUtils.showShort(RechargeActivity.this,"服务器正忙，请稍后再试！");
             }
 
             @Override
             public void onResponse(String response, int id) {
                 Log.d("交押金后", response);
                 //{"code":"1"}
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String code = object.optString("code");
+                    if(code.equals("1")){
+                        ToastUtils.showShort(RechargeActivity.this,"用户资料更新成功！");
+                    }else if(code.equals("0")){
+                        ToastUtils.showShort(RechargeActivity.this,"用户资料更新失败！");
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
         });

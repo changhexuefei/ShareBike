@@ -68,4 +68,11 @@
     <string name="cumulative_cycling">累计骑行(公里)</string>
     <string name="saving_carbon_emissions">节约碳排放(千克)</string>
     <string name="sports_achievement">运动成就(大卡)</string>
+    <string name="set_address">输入常用地址</string>
+    <string name="cancel">取消</string>
+    <string name="no_result">未找到结果</string>
+    <string name="refund_result">退款结果</string>
+    <string name="refund_tip_two">退款将在2-7个工作日内到账</string>
+    <string name="verify">确认</string>
+    <string name="refund_success_tip">申请退款成功</string>
 </resources>
