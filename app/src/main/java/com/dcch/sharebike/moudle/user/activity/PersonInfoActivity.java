@@ -87,9 +87,7 @@ public class PersonInfoActivity extends BaseActivity {
             Intent intent = getIntent();
             Bundle user = intent.getExtras();
             mUserBundle = (UserInfo) user.getSerializable("userBundle");
-            Log.d("你是谁", mUserBundle + "");
             if (mUserBundle != null) {
-                Log.d("用户", mUserBundle + "");
                 nickName.setText(mUserBundle.getNickName().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
                 telephone.setText(mUserBundle.getPhone().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
                 if (mUserBundle.getStatus() == 0) {
@@ -131,10 +129,8 @@ public class PersonInfoActivity extends BaseActivity {
                             protected void onEvent(ImageRadioResultEvent imageRadioResultEvent) throws Exception {
                                 //得到图片的路径
                                 result = imageRadioResultEvent.getResult().getOriginalPath();
-                                Log.d("图片地址", result);
                                 Bitmap bitmap = getimage(result);
                                 String mImageResult = bitmapToBase64(bitmap);
-
                                 if (result != null && !result.equals("")) {
                                     //将图片赋值给图片控件
                                     Glide.with(App.getContext()).load(result).into(userInfoIcon);
@@ -178,7 +174,6 @@ public class PersonInfoActivity extends BaseActivity {
                         }).openGallery();
                 break;
             case R.id.userNickname:
-                ToastUtils.showLong(this, "昵称");
                 Intent changeNickName = new Intent(this, ChangeUserNickNameActivity.class);
                 String trim = nickName.getText().toString().trim();
                 Log.d("trim", trim);
@@ -187,7 +182,6 @@ public class PersonInfoActivity extends BaseActivity {
                 startActivityForResult(changeNickName, 0);
                 break;
             case R.id.phone:
-                ToastUtils.showLong(this, "手机号");
                 Intent mobileNum = new Intent(this, MobileNumActivity.class);
                 mobileNum.putExtra("cashStatus", mUserBundle.getCashStatus());
                 mobileNum.putExtra("phone", mUserBundle.getPhone());
@@ -322,6 +316,4 @@ public class PersonInfoActivity extends BaseActivity {
         bitmap = BitmapFactory.decodeFile(srcPath, newOpts);
         return compressImage(bitmap);//压缩好比例大小后再进行质量压缩
     }
-
-
 }
