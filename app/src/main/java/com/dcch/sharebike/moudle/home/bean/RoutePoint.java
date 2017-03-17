@@ -1,12 +1,26 @@
 package com.dcch.sharebike.moudle.home.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2017/3/9 0009.
  */
 
-public class RoutePoint {
+public class RoutePoint implements Serializable {
+    private int id;
     private double routeLat;
     private double routeLng;
+    private float distance;
+
+    public float getDistance() {
+        return distance;
+    }
+
+    public void setDistance(float distance) {
+        this.distance = distance;
+    }
+
+
     public double getRouteLat() {
         return routeLat;
     }
@@ -23,11 +37,13 @@ public class RoutePoint {
         this.routeLng = routeLng;
     }
 
-    @Override
-    public String toString() {
-        return "RoutePoint{" +
-                "routeLat=" + routeLat +
-                ", routeLng=" + routeLng +
-                '}';
+    public int getId() {
+        return id;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
 }

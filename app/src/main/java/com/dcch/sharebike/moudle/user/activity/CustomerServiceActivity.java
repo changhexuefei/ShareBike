@@ -31,14 +31,13 @@ public class CustomerServiceActivity extends BaseActivity {
         String name = intent.getStringExtra("name");
         if (!name.equals("") && name != null) {
             if (name.equals("0")) {
-                getSupportFragmentManager().beginTransaction().add(R.id.customerService, new UnableUnlockFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.customerService, new UnableUnlockFragment()).commit();
             }
             if (name.equals("1")) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.customerService, new CycleFailureFragment()).commit();
             }
             if (name.equals("2")) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.customerService, new ReportIllegalParkingFragment()).commit();
-
             }
             if (name.equals("3")) {
 

@@ -54,7 +54,7 @@
                 android:layout_height="60dp"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/fuhao"
-                android:src="@drawable/hint_card_1" />
+                android:src="@mipmap/avatar_default_login" />
 
             <TextView
                 android:id="@+id/fuhao"

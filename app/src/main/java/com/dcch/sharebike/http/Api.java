@@ -40,5 +40,8 @@ public class Api {
     public static final String INFOUSER = "infoUser.do?";
     //用户充车费后改变状态的接口
     public static final String RECHARGE = "recharge.do?";
+    //
+    public static final String ORDERCAST = "orderCast.do?";
+
 
 }

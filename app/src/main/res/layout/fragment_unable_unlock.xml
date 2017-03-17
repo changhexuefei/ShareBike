@@ -5,8 +5,7 @@
               android:background="#ffffff"
               android:focusable="true"
               android:focusableInTouchMode="true"
-              tools:context="com.dcch.sharebike.moudle.user.fragment.UnableUnlockFragment"
-    >
+              tools:context="com.dcch.sharebike.moudle.user.fragment.UnableUnlockFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,7 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="30dp"
-                android:text="开不了锁"
+                android:text="@string/unlock"
                 android:textColor="#000000"
                 android:textSize="14sp" />
 
@@ -50,7 +49,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
                     android:layout_toRightOf="@+id/report_issue"
-                    android:hint="扫描二维码或者手动输入编码" />
+                    android:hint="@string/scan_tips" />
 
                 <TextView
                     android:id="@+id/tips"
@@ -59,8 +58,8 @@
                     android:layout_alignLeft="@+id/bike_code"
                     android:layout_below="@+id/bike_code"
                     android:layout_toRightOf="@+id/report_issue"
-                    android:text="重新扫码或输入"
-                    android:textColor="#e71212"
+                    android:text="@string/scan_tip_one"
+                    android:textColor="@color/colorTitle"
                     android:textSize="10sp"
                     android:visibility="invisible" />
 
@@ -130,21 +129,21 @@
                 android:layout_marginTop="10dp"
                 android:padding="5dp"
                 app:contentHeight="100dp"
-                app:hintText="补充问题描述"
+                app:hintText="@string/question_describe"
                 app:maxCount="140" />
 
 
             <TextView
-                android:id="@+id/confirm"
+                android:enabled="false"
+                android:id="@+id/un_confirm"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_margin="15dp"
                 android:layout_marginBottom="20dp"
                 android:background="#c6bfbf"
-                android:enabled="false"
                 android:gravity="center"
-                android:text="提交"
+                android:text="@string/upload"
                 android:textColor="#ffffff"
                 android:textSize="18sp" />
 

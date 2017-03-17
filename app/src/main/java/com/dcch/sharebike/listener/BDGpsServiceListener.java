@@ -6,10 +6,18 @@ import android.util.Log;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
+import com.dcch.sharebike.app.App;
+import com.dcch.sharebike.db.DatabaseHelper;
 import com.dcch.sharebike.http.Api;
+import com.dcch.sharebike.moudle.home.bean.RoutePoint;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import okhttp3.Call;
 
 
 /**
@@ -19,6 +27,12 @@ import java.util.Map;
 public class BDGpsServiceListener implements BDLocationListener {
 
     private Context context;
+    public ArrayList<RoutePoint> routPointList = new ArrayList<RoutePoint>();
+    private RoutePoint mPoint;
+    DatabaseHelper mHelper ;
+    public  int totalDistance = 0;
+    public  float totalPrice = 0;
+    public  long beginTime = 0, totalTime = 0;
 
     public BDGpsServiceListener(){
         super();
@@ -38,9 +52,16 @@ public class BDGpsServiceListener implements BDLocationListener {
     }
     @Override
     public void onReceiveLocation(BDLocation location) {
+        mPoint = new RoutePoint();
+        mHelper= new DatabaseHelper(App.getContext());
         // TODO Auto-generated method stub
         Log.i("Listener", "********BDGpsServiceListener onReceiveLocation*******");
         if(location == null){return;}
+        //过滤百度定位失败
+        if ("4.9E-324".equals(String.valueOf(location.getLatitude())) || "4.9E-324".equals(String.valueOf(location.getLongitude()))) {
+            return;
+        }
+
         StringBuffer sb = new StringBuffer();
         sb.append("经度=").append(location.getLongitude());
         sb.append("\n纬度=").append(location.getLatitude());
@@ -60,16 +81,33 @@ public class BDGpsServiceListener implements BDLocationListener {
             sb.append("\n市=").append(location.getCity());
             sb.append("\n区县=").append(location.getDistrict());
         }
-
+        mPoint.setRouteLng(location.getLongitude());
+        mPoint.setRouteLat(location.getLatitude());
+        mPoint.setDistance(0);
+        Log.d("数据库",mPoint.getRouteLat()+"\n"+mPoint.getId()+"\n"+mPoint.getRouteLng());
+        mHelper.insert(mPoint);
         sendToActivity(sb.toString());
 
         try {
             Map<String,String> map = new HashMap<String, String>();
-            map.put("longi", location.getLongitude()+"");
-            map.put("lati", location.getLatitude()+"");
-            map.put("time", location.getTime());
-            String url = Api.BASE_URL+"coords.do?method=addCoords";
-//            HttpUtil.postRequest(url, map);
+            String url = Api.BASE_URL+Api.ORDERCAST;
+            map.put("carRentalOrderDate","2017-03-17 14:50");
+            map.put("bicycleNo","1000800020");
+            map.put("carRentalOrderId","");
+            map.put("userId","24");
+            map.put("lng",location.getLongitude()+"");
+            map.put("lat", location.getLatitude()+"");
+            OkHttpUtils.post().url(url).params(map).build().execute(new StringCallback() {
+                @Override
+                public void onError(Call call, Exception e, int id) {
+
+                }
+
+                @Override
+                public void onResponse(String response, int id) {
+
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }

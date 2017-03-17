@@ -330,6 +330,9 @@
         <activity android:name=".moudle.user.activity.SetAddressActivity"/>
         <activity android:name=".moudle.user.activity.ShowRefundResultsActivity">
         </activity>
+
+
+
     </application>
 
 </manifest>

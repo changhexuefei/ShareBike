@@ -190,6 +190,7 @@
                 app:maxCount="140" />
 
             <TextView
+                android:enabled="false"
                 android:id="@+id/upload"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"

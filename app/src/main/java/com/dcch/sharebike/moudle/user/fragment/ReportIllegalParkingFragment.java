@@ -47,10 +47,12 @@ import okhttp3.Call;
 
 import static android.app.Activity.RESULT_OK;
 
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ReportIllegalParkingFragment extends Fragment {
+
     @BindView(R.id.bike_code)
     TextView mBikeCode;
     @BindView(R.id.tips)
@@ -61,14 +63,14 @@ public class ReportIllegalParkingFragment extends Fragment {
     ImageView mSelectPhoto;
     @BindView(R.id.questionDesc)
     MultiEditInputView mQuestionDesc;
-    @BindView(R.id.confirm)
-    TextView mConfirm;
-    String uID;
-    String bikeNo;
-    String contentText;
+    @BindView(R.id.mconfirm)
+    TextView mMconfirm;
+    private String uID;
+    private String bikeNo;
+    private String contentText;
     public static final String BOUNDARY = "ZnGpDtePMx0KrHh_G0X99Yef9r8JZsRJSXC";
     private String result;
-    private String mImageResult;
+    private String mImageResult = "";
 
     public ReportIllegalParkingFragment() {
 
@@ -100,7 +102,7 @@ public class ReportIllegalParkingFragment extends Fragment {
         return view;
     }
 
-    @OnClick({R.id.scan_code, R.id.select_photo, R.id.confirm})
+    @OnClick({R.id.scan_code, R.id.select_photo, R.id.mconfirm})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.scan_code:
@@ -121,18 +123,17 @@ public class ReportIllegalParkingFragment extends Fragment {
                                 if (result != null && !result.equals("")) {
                                     //将图片赋值给图片控件
                                     Glide.with(App.getContext()).load(result).into(mSelectPhoto);
-                                    //下一步将选择的图片上传到服务器
+                                    Bitmap bitmap = getimage(result);
+                                    mImageResult = bitmapToBase64(bitmap);
+                                } else {
+                                    mImageResult = "";
                                 }
                             }
                         }).openGallery();
                 break;
-            case R.id.confirm:
+            case R.id.mconfirm:
                 bikeNo = mBikeCode.getText().toString().trim();
-
-                if (!result.equals("") && result != null) {
-                    Bitmap bitmap = getimage(result);
-                    mImageResult = bitmapToBase64(bitmap);
-                }
+                contentText = mQuestionDesc.getContentText().toString().trim();
                 if (!uID.equals("") && uID != null && !bikeNo.equals("") && bikeNo != null) {
                     Map<String, String> map = new HashMap<>();
                     map.put("userId", uID);
@@ -149,11 +150,11 @@ public class ReportIllegalParkingFragment extends Fragment {
                                 @Override
                                 public void onError(Call call, Exception e, int id) {
                                     Log.d("错误", e.getMessage());
+                                    ToastUtils.showLong(getActivity(), "服务器正忙！");
                                 }
 
                                 @Override
                                 public void onResponse(String response, int id) {
-                                    Log.d("上传成功", response);
                                     try {
                                         JSONObject object = new JSONObject(response);
                                         String resultStatus = object.optString("resultStatus");
@@ -167,6 +168,9 @@ public class ReportIllegalParkingFragment extends Fragment {
                                     }
                                 }
                             });
+                }else {
+                    ToastUtils.showShort(getActivity(),"请填写自行车编号！");
+
                 }
                 break;
         }
@@ -181,6 +185,8 @@ public class ReportIllegalParkingFragment extends Fragment {
                 result = bundle.getString("result");
                 mBikeCode.setText(result);
                 mTips.setVisibility(View.VISIBLE);
+                mMconfirm.setEnabled(true);
+                mMconfirm.setBackgroundColor(getResources().getColor(R.color.colorTitle));
             }
         }
     }

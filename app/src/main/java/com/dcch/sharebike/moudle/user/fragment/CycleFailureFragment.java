@@ -95,14 +95,12 @@ public class CycleFailureFragment extends Fragment {
     private String uID;
     private String result;
     List<CheckBox> checkBoxes = new ArrayList<>();
-
-
     public static final String BOUNDARY = "ZnGpDtePMx0KrHh_G0X99Yef9r8JZsRJSXC";
-    private String postion;
-    private String bikeNo;
-    private String contentText;
-    private String mImageResult;
-    private String selectResult;
+    private String bikeNo = "";
+    private String contentText = "";
+    private String mImageResult = "";
+    private String selectResult = "";
+    String content = "";
 
     public CycleFailureFragment() {
         // Required empty public constructor
@@ -113,17 +111,14 @@ public class CycleFailureFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (SPUtils.isLogin()) {
             String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-            Log.d("用户明细", userDetail);
             try {
                 JSONObject object = new JSONObject(userDetail);
                 int id = object.getInt("id");
                 uID = String.valueOf(id);
-                Log.d("用户ID", uID);
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
@@ -133,7 +128,6 @@ public class CycleFailureFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_cycle_failure, container, false);
         ButterKnife.bind(this, view);
-
         checkBoxes.add(questionOne);
         checkBoxes.add(questionTwo);
         checkBoxes.add(questionThere);
@@ -141,11 +135,11 @@ public class CycleFailureFragment extends Fragment {
         checkBoxes.add(questionFive);
         checkBoxes.add(questionSix);
         checkBoxes.add(questionSeven);
+
         return view;
     }
 
     public String getTag(List<CheckBox> checkBoxes) {
-        String content = "";
         for (CheckBox cbx : checkBoxes) {
             if (cbx.isChecked()) {
                 content += String.valueOf(cbx.getTag()) + ";";
@@ -154,9 +148,10 @@ public class CycleFailureFragment extends Fragment {
         return content;
     }
 
-
     @OnClick({R.id.scan_code, R.id.cycle_photo, R.id.upload})
     public void onClick(View view) {
+
+
         switch (view.getId()) {
             case R.id.scan_code:
                 Intent i4 = new Intent(getActivity(), CaptureActivity.class);
@@ -174,10 +169,13 @@ public class CycleFailureFragment extends Fragment {
                             protected void onEvent(ImageRadioResultEvent imageRadioResultEvent) throws Exception {
                                 //得到图片的完整路径
                                 result = imageRadioResultEvent.getResult().getOriginalPath();
-                                Log.d("图片", result);
                                 if (result != null && !result.equals("")) {
                                     //将图片赋值给图片控件
                                     Glide.with(App.getContext()).load(result).into(mCyclePhoto);
+                                    Bitmap bitmap = getimage(result);
+                                    mImageResult = bitmapToBase64(bitmap);
+                                } else {
+                                    mImageResult = "";
                                 }
                             }
                         }).openGallery();
@@ -188,17 +186,11 @@ public class CycleFailureFragment extends Fragment {
                 String tag = getTag(checkBoxes);
                 if (!tag.equals("") && tag != null) {
                     selectResult = tag.substring(0, tag.length() - 1);
-                }else {
-                    selectResult="";
-                }
-
-                Log.d("多选", selectResult);
-                if (!result.equals("") && result != null) {
-                    Bitmap bitmap = getimage(result);
-                    mImageResult = bitmapToBase64(bitmap);
                 } else {
-                    mImageResult = "";
+                    selectResult = "";
                 }
+                Log.d("多选", selectResult);
+
                 if (!uID.equals("") && uID != null && !bikeNo.equals("") && bikeNo != null) {
                     Map<String, String> map = new HashMap<>();
                     map.put("userId", uID);
@@ -215,11 +207,12 @@ public class CycleFailureFragment extends Fragment {
                                 @Override
                                 public void onError(Call call, Exception e, int id) {
                                     Log.d("错误", e.getMessage());
+                                    ToastUtils.showLong(getActivity(), "服务器正忙！");
                                 }
 
                                 @Override
                                 public void onResponse(String response, int id) {
-                                    Log.d("上传成功", response);
+
                                     //{"resultStatus":"1"}
                                     try {
                                         JSONObject object = new JSONObject(response);
@@ -234,6 +227,9 @@ public class CycleFailureFragment extends Fragment {
                                     }
                                 }
                             });
+                } else {
+                    ToastUtils.showShort(getActivity(), "请输入车辆编号！");
+                    return;
                 }
                 break;
         }
@@ -248,6 +244,8 @@ public class CycleFailureFragment extends Fragment {
                 result = bundle.getString("result");
                 mBikeCode.setText(result);
                 mTips.setVisibility(View.VISIBLE);
+                upload.setEnabled(true);
+                upload.setBackgroundColor(getResources().getColor(R.color.colorTitle));
             }
         }
     }
@@ -330,5 +328,16 @@ public class CycleFailureFragment extends Fragment {
         bitmap = BitmapFactory.decodeFile(srcPath, newOpts);
         return compressImage(bitmap);//压缩好比例大小后再进行质量压缩
     }
+
+    public boolean isEnable(String bikeNo){
+        if(!bikeNo.equals("")&& bikeNo!=null){
+            upload.setEnabled(true);
+            upload.setBackgroundColor(getResources().getColor(R.color.colorTitle));
+            return true;
+        }
+
+        return false;
+    }
+
 
 }

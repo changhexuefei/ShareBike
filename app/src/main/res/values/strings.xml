@@ -75,4 +75,6 @@
     <string name="refund_tip_two">退款将在2-7个工作日内到账</string>
     <string name="verify">确认</string>
     <string name="refund_success_tip">申请退款成功</string>
+    <string name="question_describe">补充问题描述</string>
+    <string name="unlock">开不了锁</string>
 </resources>

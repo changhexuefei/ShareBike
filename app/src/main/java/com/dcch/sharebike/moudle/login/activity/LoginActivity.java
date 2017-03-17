@@ -51,7 +51,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     EditText securityCode;
     @BindView(R.id.getSecurityCode)
     TextView getSecurityCode;
-    @BindView(R.id.confirm)
+    @BindView(R.id.login_confirm)
     TextView confirm;
     @BindView(R.id.rules)
     TextView rules;
@@ -219,7 +219,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         });
     }
 
-    @OnClick({R.id.getSecurityCode, R.id.confirm, R.id.rules, R.id.back})
+    @OnClick({R.id.getSecurityCode, R.id.login_confirm, R.id.rules, R.id.back})
     public void onClick(View view) {
         switch (view.getId()) {
 
@@ -228,7 +228,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 getseCode(phone);
 
                 break;
-            case R.id.confirm:
+            case R.id.login_confirm:
                 //将收到的验证码和手机号提交再次核对
 //                SMSSDK.submitVerificationCode("86", phone, securityCode.getText().toString());
 //                compareVerificationCode("86", phone, securityCode.getText().toString());

@@ -277,10 +277,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             int id = object.getInt("id");
             uID = String.valueOf(id);
             queryUserInfo(uID);
-//            cashStatus = object.getInt("cashStatus");
-//            status = object.getInt("status");
-//            phone = object.getString("phone");
-//            Log.d("手机号", phone);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -317,15 +313,17 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     private void queryUserInfo(String uID) {
         Map<String, String> map = new HashMap<>();
         map.put("userId", uID);
+
         OkHttpUtils.post().url(Api.BASE_URL + Api.INFOUSER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
                 LogUtils.e(e.getMessage());
-                ToastUtils.showShort(MainActivity.this, "服务器忙，请重试");
+//                ToastUtils.showShort(MainActivity.this, "服务器忙，请重试");
             }
 
             @Override
             public void onResponse(String response, int id) {
+                Log.d("wowow",response);
                 Gson gson = new Gson();
                 UserInfo userInfo = gson.fromJson(response, UserInfo.class);
                 status = userInfo.getStatus();
@@ -574,6 +572,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 break;
             case R.id.scan:
                 ToastUtils.showLong(this, "我是扫描");
+                startService(new Intent(MainActivity.this, GPSService.class));
                 // && cashStatus == 1 && status == 1
                 if (SPUtils.isLogin()) {
                     MainActivityPermissionsDispatcher.showCameraWithCheck(this);
@@ -1009,7 +1008,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                     try {
                         JSONObject object = new JSONObject(response);
                         String message = object.optString("message");
-                        startService(new Intent(MainActivity.this, GPSService.class));
+
                         //测试GPS
                         Intent intent = new Intent(LOCSTART);
                         pi = PendingIntent.getService(getApplicationContext(), 0, intent,
@@ -1338,7 +1337,13 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 }
             }
             //根据手机定位的不同得到定位点信息，将这个信息传递给搜索页面
-            address1 = location.getAddrStr();
+            String locationDescribe = location.getLocationDescribe();
+            String addrStr = location.getAddrStr();
+            if(locationDescribe!=null && addrStr!=null){
+                String substring1 = addrStr.substring(2, addrStr.length());
+                String substring = locationDescribe.substring(1, locationDescribe.length());
+                address1 = substring1+ substring;
+            }
         }
     }
 
@@ -1559,12 +1564,12 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
     //摄像机页面发来的消息，将mBtnMyHelp控件显示
 
-    @Subscriber(tag = "allShow", mode = ThreadMode.ASYNC)
-    private void receiveFromClickCameraPopuActivity(MessageEvent info) {
-//        mBtnMyHelp.setVisibility(View.VISIBLE);
-//        mBtnMyLocation.setVisibility(View.VISIBLE);
-//        mScan.setVisibility(View.VISIBLE);
-    }
+//    @Subscriber(tag = "allShow", mode = ThreadMode.ASYNC)
+//    private void receiveFromClickCameraPopuActivity(MessageEvent info) {
+////        mBtnMyHelp.setVisibility(View.VISIBLE);
+////        mBtnMyLocation.setVisibility(View.VISIBLE);
+////        mScan.setVisibility(View.VISIBLE);
+//    }
 
     /*
     * 获取系统的北京时间
@@ -1598,7 +1603,6 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
     class LocationReceiver extends BroadcastReceiver {
         String locationMsg = "";
-
         @Override
         public void onReceive(Context context, Intent intent) {
             // TODO Auto-generated method stub
