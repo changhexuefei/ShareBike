@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@android:color/transparent"
                 android:orientation="vertical">
 
     <FrameLayout
@@ -41,22 +42,16 @@
 
 
     <SurfaceView
+        android:layout_below="@+id/scan_area"
         android:id="@+id/capture_preview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/scan_area"
-        android:background="@android:color/transparent"/>
+        android:layout_height="match_parent"/>
 
     <RelativeLayout
+        android:layout_below="@+id/scan_area"
         android:id="@+id/capture_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/scan_area"
-        android:background="@drawable/shadow">
-
-
+        android:layout_height="match_parent">
         <ImageView
             android:id="@+id/capture_mask_top"
             android:layout_width="150dp"
@@ -66,13 +61,19 @@
             android:layout_marginTop="40dp"
             android:src="@drawable/scan_qrcode_bike_img"/>
 
+        <!--<ImageView-->
+            <!--android:id="@+id/capture_mask_top"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="120dp"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:background="@drawable/shadow"/>-->
+
         <RelativeLayout
             android:id="@+id/capture_crop_view"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_below="@id/capture_mask_top"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
             android:background="@drawable/qr_code_bg">
 
             <ImageView
@@ -83,9 +84,11 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
                 android:src="@drawable/scan_line"/>
+
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/tips_one"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/capture_crop_view"
@@ -94,12 +97,13 @@
             android:text="对准车上的二维码"
             android:textColor="#ffffff"/>
 
+
         <RadioGroup
             android:id="@+id/capture_mask_bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_below="@id/capture_crop_view"
+            android:layout_below="@+id/tips_one"
             android:background="@drawable/shadow"
             android:gravity="center"
             android:orientation="horizontal">
@@ -110,8 +114,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:button="@null"
-                android:drawablePadding="4dp"
-                android:drawableTop="@drawable/manual_input"
+                android:drawableTop="@drawable/manual_input_selector"
                 android:gravity="center"
                 android:text="输入单车编号"
                 android:textColor="#ffffff"
@@ -124,30 +127,27 @@
                 android:layout_marginLeft="60dp"
                 android:layout_weight="1"
                 android:button="@null"
-                android:drawablePadding="4dp"
-                android:drawableTop="@drawable/open_flashlight"
+                android:drawableTop="@drawable/flash_light_selector"
                 android:gravity="center"
                 android:text="打开手电筒"
                 android:textColor="#ffffff"
                 android:textSize="14sp"/>
         </RadioGroup>
 
-
         <ImageView
             android:id="@+id/capture_mask_left"
             android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:layout_above="@+id/capture_mask_bottom"
+            android:layout_height="match_parent"
+            android:layout_above="@id/capture_mask_bottom"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/capture_mask_top"
             android:layout_toLeftOf="@id/capture_crop_view"
             android:background="@drawable/shadow"/>
 
-
         <ImageView
             android:id="@+id/capture_mask_right"
             android:layout_width="wrap_content"
-            android:layout_height="200dp"
+            android:layout_height="match_parent"
             android:layout_above="@id/capture_mask_bottom"
             android:layout_alignParentRight="true"
             android:layout_below="@id/capture_mask_top"

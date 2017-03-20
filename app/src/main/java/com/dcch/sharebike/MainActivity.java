@@ -64,6 +64,7 @@ import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.http.Api;
+import com.dcch.sharebike.libzxing.zxing.activity.CaptureActivity;
 import com.dcch.sharebike.listener.MyOrientationListener;
 import com.dcch.sharebike.moudle.home.bean.BikeInfo;
 import com.dcch.sharebike.moudle.home.bean.BikeRentalOrderInfo;
@@ -95,7 +96,6 @@ import com.google.gson.Gson;
 import com.hss01248.dialog.StyledDialog;
 import com.hss01248.dialog.bottomsheet.BottomSheetBean;
 import com.hss01248.dialog.interfaces.MyItemDialogListener;
-import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 

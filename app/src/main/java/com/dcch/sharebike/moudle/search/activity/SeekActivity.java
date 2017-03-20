@@ -40,6 +40,7 @@ public class SeekActivity extends BaseActivity implements TextWatcher {
     ListView infoList;
     @BindView(R.id.seek_no_result)
     TextView mSeekNoResult;
+
     private SearchAdapter adapter;
     private List<SuggestionResult.SuggestionInfo> allSuggestions;
 
@@ -54,12 +55,11 @@ public class SeekActivity extends BaseActivity implements TextWatcher {
         mSuggestionSearch = SuggestionSearch.newInstance();
         mSuggestionSearch.setOnGetSuggestionResultListener(listener);
         Intent intent = getIntent();
-        if(intent!=null){
+        if (intent != null) {
             String address = intent.getStringExtra("address");
             myAddress.setText(address);
-
-        }else {
-            myAddress.setText("未知地址，请稍后再试");
+        } else {
+            myAddress.setText("定位失败，请稍后再试");
         }
 
     }

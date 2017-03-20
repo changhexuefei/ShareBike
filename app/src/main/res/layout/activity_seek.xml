@@ -102,7 +102,7 @@
         android:background="#ccc5c5" />
 
     <TextView
-        android:visibility="gone"
+       android:visibility="gone"
         android:id="@+id/seek_no_result"
         android:gravity="bottom|center_horizontal"
         android:layout_below="@+id/view"

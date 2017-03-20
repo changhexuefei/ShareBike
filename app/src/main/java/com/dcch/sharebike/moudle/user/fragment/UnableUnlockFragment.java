@@ -15,10 +15,10 @@ import android.widget.TextView;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.http.Api;
+import com.dcch.sharebike.libzxing.zxing.activity.CaptureActivity;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.louisgeek.multiedittextviewlib.MultiEditInputView;
-import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 

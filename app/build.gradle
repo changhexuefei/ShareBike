@@ -56,15 +56,13 @@ dependencies {
     compile files('libs/baidumapapi_search_v4_2_0.jar')
     compile files('libs/baidumapapi_util_v4_2_0.jar')
     compile files('libs/locSDK_6.13.jar')
-
     compile files('libs/gson-2.2.1.jar')
-    //    compile 'com.google.code.gson:gson:2.8.0'
     compile files('libs/jcore-android_v1.1.0.jar')
     compile files('libs/jpush-android_v3.0.1.jar')
     compile files('libs/androideventbus-1.0.5.jar')
     //rxgalleryfinal依赖appcompat-v7和recyclerview-v7扩展卡库
     compile files('libs/alipaySdk-20161222.jar')
-    compile project(':libzxing')
+
     compile files('libs/MobCommons-2017.0216.1054.jar')
     compile files('libs/MobTools-2017.0216.1054.jar')
     compile files('libs/ShareSDK-Core-2.8.1.jar')
@@ -99,4 +97,5 @@ dependencies {
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.0'
     //stepsview
     compile 'com.anton46:stepsview:0.0.2'
+    compile files('libs/zxing.jar')
 }
