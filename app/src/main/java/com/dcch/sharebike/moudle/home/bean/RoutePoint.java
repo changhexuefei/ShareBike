@@ -10,15 +10,6 @@ public class RoutePoint implements Serializable {
     private int id;
     private double routeLat;
     private double routeLng;
-    private float distance;
-
-    public float getDistance() {
-        return distance;
-    }
-
-    public void setDistance(float distance) {
-        this.distance = distance;
-    }
 
 
     public double getRouteLat() {

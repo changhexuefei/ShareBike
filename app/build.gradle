@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.dcch.sharebike"
-        minSdkVersion 21
+        minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -97,4 +97,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.0'
+    //stepsview
+    compile 'com.anton46:stepsview:0.0.2'
 }

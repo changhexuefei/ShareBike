@@ -54,12 +54,14 @@ public class SeekActivity extends BaseActivity implements TextWatcher {
         mSuggestionSearch = SuggestionSearch.newInstance();
         mSuggestionSearch.setOnGetSuggestionResultListener(listener);
         Intent intent = getIntent();
-        String address = intent.getStringExtra("address");
-        if (address.equals("") && address == null) {
-            myAddress.setText("定位失败，请稍后再试");
-        } else {
+        if(intent!=null){
+            String address = intent.getStringExtra("address");
             myAddress.setText(address);
+
+        }else {
+            myAddress.setText("未知地址，请稍后再试");
         }
+
     }
 
     @Override

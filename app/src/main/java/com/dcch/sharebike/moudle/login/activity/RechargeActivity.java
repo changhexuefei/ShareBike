@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.alipay.sdk.app.EnvUtils;
 import com.alipay.sdk.app.PayTask;
+import com.anton46.stepsview.StepsView;
 import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.alipay.AliPay;
@@ -22,6 +23,7 @@ import com.dcch.sharebike.alipay.PayResult;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
+import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
@@ -55,8 +57,12 @@ public class RechargeActivity extends BaseActivity {
     @BindView(R.id.money)
     TextView money;
 
+
+
     private static final int SDK_PAY_FLAG = 1;
     private static final int SDK_AUTH_FLAG = 2;
+    @BindView(R.id.stepsView)
+    StepsView mStepsView;
     private String userID;
 
 
@@ -79,6 +85,14 @@ public class RechargeActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        mStepsView.setLabels(MyContent.steps)
+                .setBarColorIndicator(getResources().getColor(R.color.colorHeading))
+                .setProgressColorIndicator(getResources().getColor(R.color.colorTitle))
+                .setLabelColorIndicator(getResources().getColor(R.color.colorTitle))
+                .setCompletedPosition(1)
+                .drawView();
+
     }
 
     @OnClick({R.id.back, R.id.btn_recharge, R.id.aliArea, R.id.weixinArea})
@@ -137,7 +151,7 @@ public class RechargeActivity extends BaseActivity {
                             payThread.start();
                         }
                     });
-                }else if(weixinCheckbox.isChecked()){
+                } else if (weixinCheckbox.isChecked()) {
                     //微信支付
 
                 }
@@ -186,7 +200,7 @@ public class RechargeActivity extends BaseActivity {
             @Override
             public void onError(Call call, Exception e, int id) {
                 Log.e("onError:", e.getMessage());
-                ToastUtils.showShort(RechargeActivity.this,"服务器正忙，请稍后再试！");
+                ToastUtils.showShort(RechargeActivity.this, "服务器正忙，请稍后再试！");
             }
 
             @Override
@@ -196,10 +210,10 @@ public class RechargeActivity extends BaseActivity {
                 try {
                     JSONObject object = new JSONObject(response);
                     String code = object.optString("code");
-                    if(code.equals("1")){
-                        ToastUtils.showShort(RechargeActivity.this,"用户资料更新成功！");
-                    }else if(code.equals("0")){
-                        ToastUtils.showShort(RechargeActivity.this,"用户资料更新失败！");
+                    if (code.equals("1")) {
+                        ToastUtils.showShort(RechargeActivity.this, "用户资料更新成功！");
+                    } else if (code.equals("0")) {
+                        ToastUtils.showShort(RechargeActivity.this, "用户资料更新失败！");
                     }
 
 
@@ -218,4 +232,5 @@ public class RechargeActivity extends BaseActivity {
         startActivity(backToLoginMain);
         finish();
     }
+
 }

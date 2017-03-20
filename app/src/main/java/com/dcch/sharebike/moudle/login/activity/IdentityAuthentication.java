@@ -11,11 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.anton46.stepsview.StepsView;
 import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
+import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.utils.InPutUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
@@ -46,6 +48,8 @@ public class IdentityAuthentication extends BaseActivity {
     Button btnAuthentication;
     @BindView(R.id.userRealName)
     EditText userRealName;
+    @BindView(R.id.iden_stepsView)
+    StepsView mIdenStepsView;
     private String realName;
     private String cardNum;
     private String uID;
@@ -65,6 +69,14 @@ public class IdentityAuthentication extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        mIdenStepsView.setLabels(MyContent.steps)
+                .setBarColorIndicator(getResources().getColor(R.color.colorHeading))
+                .setProgressColorIndicator(getResources().getColor(R.color.colorTitle))
+                .setLabelColorIndicator(getResources().getColor(R.color.colorTitle))
+                .setCompletedPosition(2)
+                .drawView();
+
+
     }
 
     @Override
@@ -142,7 +154,7 @@ public class IdentityAuthentication extends BaseActivity {
             @Override
             public void onError(Call call, Exception e, int id) {
                 Log.e("错误", e.getMessage());
-                ToastUtils.showShort(IdentityAuthentication.this,"服务器正忙，请稍后再试！");
+                ToastUtils.showShort(IdentityAuthentication.this, "服务器正忙，请稍后再试！");
             }
 
             @Override
@@ -156,8 +168,8 @@ public class IdentityAuthentication extends BaseActivity {
                         Intent authentication = new Intent(IdentityAuthentication.this, AuthenticationOkActivity.class);
                         startActivity(authentication);
                         finish();
-                    }else if(code.equals("0")){
-                        ToastUtils.showShort(IdentityAuthentication.this,"对不起，实名验证失败，请输入正确的信息");
+                    } else if (code.equals("0")) {
+                        ToastUtils.showShort(IdentityAuthentication.this, "对不起，实名验证失败，请输入正确的信息");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -173,4 +185,5 @@ public class IdentityAuthentication extends BaseActivity {
         startActivity(backToLoginMain);
         finish();
     }
+
 }

@@ -313,10 +313,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         startActivity(new Intent(LoginActivity.this, RechargeActivity.class));
                     } else if (userInfo.getCashStatus() == 0 && userInfo.getStatus() == 1) {
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    }else if(userInfo.getCashStatus() == 1 && userInfo.getStatus() == 1){
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     }
 
                     EventBus.getDefault().post(new MessageEvent(), "gone");
-                    Log.d("用户信息", userInfo.toString());
                     LoginActivity.this.finish();
                     //储存用户信息(登录储存一次)
                     SPUtils.put(App.getContext(), "userDetail", response);
