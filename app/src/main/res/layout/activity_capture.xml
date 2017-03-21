@@ -42,18 +42,19 @@
 
 
     <SurfaceView
-        android:layout_below="@+id/scan_area"
         android:id="@+id/capture_preview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/scan_area"/>
 
     <RelativeLayout
         android:id="@+id/capture_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/scan_area"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/scan_area"
         android:layout_marginTop="12dp">
+
         <ImageView
             android:id="@+id/capture_mask_top"
             android:layout_width="150dp"
@@ -64,11 +65,11 @@
             android:src="@drawable/scan_qrcode_bike_img"/>
 
         <!--<ImageView-->
-            <!--android:id="@+id/capture_mask_top"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="120dp"-->
-            <!--android:layout_alignParentTop="true"-->
-            <!--android:background="@drawable/shadow"/>-->
+        <!--android:id="@+id/capture_mask_top"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="120dp"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:background="@drawable/shadow"/>-->
 
         <RelativeLayout
             android:id="@+id/capture_crop_view"
@@ -93,10 +94,11 @@
             android:id="@+id/tips_one"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="对准车上的二维码"
-            android:textColor="#ffffff"
             android:layout_below="@+id/capture_crop_view"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/shadow"
+            android:text="对准车上的二维码"
+            android:textColor="#ffffff"/>
 
 
         <RelativeLayout
@@ -108,49 +110,49 @@
             android:background="@drawable/shadow">
 
             <TextView
-                android:drawablePadding="10dp"
-                android:layout_marginLeft="30dp"
-                android:layout_alignParentLeft="true"
                 android:id="@+id/manualInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:drawablePadding="10dp"
                 android:drawableTop="@drawable/manual_input_selector"
                 android:gravity="center"
                 android:text="输入单车编号"
                 android:textColor="#ffffff"
-                android:textSize="12sp"/>
+                android:textSize="12sp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="27dp"/>
 
             <ToggleButton
-                android:drawablePadding="10dp"
                 android:id="@+id/openFlashLight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
                 android:background="@null"
                 android:drawableTop="@drawable/flash_light_selector"
-                android:textColor="#ffffff"
                 android:checked="false"
+                android:textColor="#ffffff"
                 android:textOff="@string/open"
                 android:textOn="@string/close"
-                android:textSize="14sp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="30dp"/>
-            </RelativeLayout>
+                android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
 
         <ImageView
-            android:layout_above="@+id/capture_mask_bottom"
             android:id="@+id/capture_mask_left"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_above="@+id/capture_mask_bottom"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/capture_mask_top"
             android:layout_toLeftOf="@id/capture_crop_view"
             android:background="@drawable/shadow"/>
 
         <ImageView
-            android:layout_above="@+id/capture_mask_bottom"
             android:id="@+id/capture_mask_right"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_above="@+id/capture_mask_bottom"
             android:layout_alignParentRight="true"
             android:layout_below="@id/capture_mask_top"
             android:layout_toRightOf="@id/capture_crop_view"

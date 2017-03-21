@@ -86,15 +86,16 @@ public class LoginFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (SPUtils.isLogin()) {
-
             String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-//            Log.d("ooooo", userDetail);
             if (userDetail != null) {
                 try {
                     JSONObject object = new JSONObject(userDetail);
                     int userId = object.getInt("id");
                     uID = String.valueOf(userId);
-                    getUserInfo(uID);
+                    if(uID!=null){
+                        Log.d("我",uID);
+                        getUserInfo(uID);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -110,11 +111,12 @@ public class LoginFragment extends Fragment {
             @Override
             public void onError(Call call, Exception e, int id) {
                 Log.e("获取用户信息", e.getMessage());
+                ToastUtils.showShort(App.getContext(),"服务器正忙");
             }
 
             @Override
             public void onResponse(String response, int id) {
-//                Log.d("用户的信息", response);
+                Log.d("用户的信息", response);
                 Gson gson = new Gson();
                 mInfo = gson.fromJson(response, UserInfo.class);
                 //手机号中间四位数字用*号代替的做法
@@ -158,20 +160,25 @@ public class LoginFragment extends Fragment {
                 startActivity(credit);
                 break;
             case R.id.userIcon:
-                Intent personInfo = new Intent(App.getContext(), PersonInfoActivity.class);
-                Bundle mUserBundle=new Bundle();
-                mUserBundle.putSerializable("userBundle", mInfo);
-                personInfo.putExtras(mUserBundle);
-                startActivity(personInfo);
-                getActivity().finish();
+                if(mInfo!=null){
+                    Intent personInfo = new Intent(App.getContext(), PersonInfoActivity.class);
+                    Bundle mUserBundle=new Bundle();
+                    mUserBundle.putSerializable("userBundle", mInfo);
+                    personInfo.putExtras(mUserBundle);
+                    startActivity(personInfo);
+                    getActivity().finish();
+                }
+
                 break;
             case R.id.wallet:
-                Intent walletInfo = new Intent(App.getContext(), WalletInfoActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("bundle", mInfo);
-                walletInfo.putExtras(bundle);
-                startActivity(walletInfo);
-                getActivity().finish();
+                if(mInfo!=null){
+                    Intent walletInfo = new Intent(App.getContext(), WalletInfoActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("bundle", mInfo);
+                    walletInfo.putExtras(bundle);
+                    startActivity(walletInfo);
+                    getActivity().finish();
+                }
                 break;
             case R.id.favorable:
                 ToastUtils.showLong(getContext(), "优惠");

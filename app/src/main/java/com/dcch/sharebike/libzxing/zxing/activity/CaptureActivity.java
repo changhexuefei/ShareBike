@@ -46,6 +46,7 @@ import com.dcch.sharebike.libzxing.zxing.decode.DecodeThread;
 import com.dcch.sharebike.libzxing.zxing.utils.BeepManager;
 import com.dcch.sharebike.libzxing.zxing.utils.CaptureActivityHandler;
 import com.dcch.sharebike.libzxing.zxing.utils.InactivityTimer;
+import com.dcch.sharebike.moudle.user.activity.ManualInputActivity;
 import com.dcch.sharebike.utils.DensityUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.google.zxing.Result;
@@ -138,6 +139,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             @Override
             public void onClick(View view) {
                 ToastUtils.showShort(CaptureActivity.this,"你点击了输入");
+                startActivity(new Intent(CaptureActivity.this,ManualInputActivity.class));
             }
         });
 

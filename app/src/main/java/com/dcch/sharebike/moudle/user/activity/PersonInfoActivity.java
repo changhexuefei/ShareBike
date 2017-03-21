@@ -86,8 +86,8 @@ public class PersonInfoActivity extends BaseActivity {
             }
             Intent intent = getIntent();
             Bundle user = intent.getExtras();
-            mUserBundle = (UserInfo) user.getSerializable("userBundle");
-            if (mUserBundle != null) {
+            if (user != null) {
+                mUserBundle = (UserInfo) user.getSerializable("userBundle");
                 nickName.setText(mUserBundle.getNickName().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
                 telephone.setText(mUserBundle.getPhone().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
                 if (mUserBundle.getStatus() == 0) {
@@ -98,12 +98,13 @@ public class PersonInfoActivity extends BaseActivity {
                     authority.setText("已认证");
                     realName.setText(mUserBundle.getName());
                 }
-                if(mUserBundle.getUserimage()!=null){
+                if (mUserBundle.getUserimage() != null) {
                     Glide.with(App.getContext()).load(mUserBundle.getUserimage()).into(userInfoIcon);
-                }else {
+                } else {
                     userInfoIcon.setImageResource(R.mipmap.avatar_default_login);
                 }
             }
+
         }
     }
 
@@ -182,10 +183,12 @@ public class PersonInfoActivity extends BaseActivity {
                 startActivityForResult(changeNickName, 0);
                 break;
             case R.id.phone:
-                Intent mobileNum = new Intent(this, MobileNumActivity.class);
-                mobileNum.putExtra("cashStatus", mUserBundle.getCashStatus());
-                mobileNum.putExtra("phone", mUserBundle.getPhone());
-                startActivity(mobileNum);
+                if(mUserBundle!=null){
+                    Intent mobileNum = new Intent(this, MobileNumActivity.class);
+                    mobileNum.putExtra("cashStatus", mUserBundle.getCashStatus());
+                    mobileNum.putExtra("phone", mUserBundle.getPhone());
+                    startActivity(mobileNum);
+                }
                 break;
         }
     }
