@@ -20,10 +20,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.IdRes;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -32,12 +32,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.libzxing.zxing.camera.CameraManager;
@@ -45,6 +46,7 @@ import com.dcch.sharebike.libzxing.zxing.decode.DecodeThread;
 import com.dcch.sharebike.libzxing.zxing.utils.BeepManager;
 import com.dcch.sharebike.libzxing.zxing.utils.CaptureActivityHandler;
 import com.dcch.sharebike.libzxing.zxing.utils.InactivityTimer;
+import com.dcch.sharebike.utils.DensityUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.google.zxing.Result;
 
@@ -76,13 +78,10 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     @BindView(R.id.help_tip)
     TextView mHelpTip;
     @BindView(R.id.manualInput)
-    RadioButton mManualInput;
+    TextView mManualInput;
     @BindView(R.id.openFlashLight)
-    RadioButton mOpenFlashLight;
-    @BindView(R.id.capture_mask_bottom)
-    RadioGroup mCaptureMaskBottom;
+    ToggleButton mOpenFlashLight;
 
-    private boolean isopent = false;
 
     private CameraManager cameraManager;
     private CaptureActivityHandler handler;
@@ -93,12 +92,13 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     private RelativeLayout scanContainer;
     private RelativeLayout scanCropView;
     private ImageView scanLine;
-
+    //ToggleButton
 
     private Rect mCropRect = null;
     private boolean isHasSurface = false;
-    private Camera camera =Camera.open();
-    private Camera.Parameters mParams =camera.getParameters();
+    private Camera camera = null;
+    private Camera.Parameters parameters = null;
+    public static boolean kaiguan = true; // 定义开关状态，状态为false，打开状态，状态为true，关闭状态
 
     public Handler getHandler() {
         return handler;
@@ -111,7 +111,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-//        controlIconSize();
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_capture);
@@ -121,7 +120,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         scanContainer = (RelativeLayout) findViewById(R.id.capture_container);
         scanCropView = (RelativeLayout) findViewById(R.id.capture_crop_view);
         scanLine = (ImageView) findViewById(R.id.capture_scan_line);
-
         inactivityTimer = new InactivityTimer(this);
         beepManager = new BeepManager(this);
 
@@ -135,46 +133,36 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     }
 
     private void init() {
-        mCaptureMaskBottom.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+        mManualInput.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                switch (checkedId){
-                    case R.id.manualInput:
-
-                        break;
-                    case R.id.openFlashLight:
-                        // TODO Auto-generated method stub
-                        if (!isopent) {
-
-                            mParams.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-                            camera.setParameters(mParams);
-                            camera.startPreview(); // 开始亮灯
-                            isopent = true;
-                        } else {
-
-                            mParams.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-                            camera.setParameters(mParams);
-                            camera.stopPreview(); // 关掉亮灯
-                            camera.release(); // 关掉照相机
-                            isopent = false;
-                        }
-
-
-                        break;
-
-
-                }
+            public void onClick(View view) {
+                ToastUtils.showShort(CaptureActivity.this,"你点击了输入");
             }
         });
 
+        mOpenFlashLight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                    //低于6.0系统的手电筒
+                    if (isChecked){
+                        camera = Camera.open();
+                        parameters = camera.getParameters();
+                        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);// 开启
+                        camera.setParameters(parameters);
+                        camera.startPreview();
+                    }else{
+                        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);// 关闭
+                        camera.setParameters(parameters);
+                        camera.stopPreview();
+                        camera.release();
+                    }
+
+                }
+        });
 
     }
 
-//    private void controlIconSize() {
-//        initDrawable(mManualInput);
-//        initDrawable(mOpenFlashLight);
-//
-//    }
 
 
     @Override
@@ -378,22 +366,22 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         return 0;
     }
 
-//    //将RadioButton中的图片转化为规定大小的方法
-//    public void initDrawable(RadioButton v) {
-//
-//        Drawable drawable = v.getCompoundDrawables()[1];
-//        drawable.setBounds(0, 0, DensityUtils.dp2px(CaptureActivity.this,24), DensityUtils.dp2px(CaptureActivity.this,24));
-//        v.setCompoundDrawables(null, drawable, null, null);
-//    }
+    //将RadioButton中的图片转化为规定大小的方法
+    public void initDrawable(RadioButton v) {
+
+        Drawable drawable = v.getCompoundDrawables()[1];
+        drawable.setBounds(0, 0, DensityUtils.dp2px(CaptureActivity.this,24), DensityUtils.dp2px(CaptureActivity.this,24));
+        v.setCompoundDrawables(null, drawable, null, null);
+    }
 
 
-    @OnClick({R.id.back, R.id.tips_one})
+    @OnClick({R.id.back, R.id.help_tip})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
                 finish();
                 break;
-            case R.id.tips_one:
+            case R.id.help_tip:
                 ToastUtils.showShort(CaptureActivity.this,"我是帮助");
                 break;
 

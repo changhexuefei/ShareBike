@@ -279,7 +279,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         if (SPUtils.isLogin()) {
             mInstructions.setVisibility(View.GONE);
             userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-            Log.d("用户明细", userDetail);
             object = null;
             try {
                 object = new JSONObject(userDetail);
@@ -583,7 +582,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 break;
             case R.id.scan:
                 ToastUtils.showLong(this, "我是扫描");
-                startService(new Intent(MainActivity.this, GPSService.class));
+
                 // && cashStatus == 1 && status == 1
                 if (SPUtils.isLogin()) {
                     MainActivityPermissionsDispatcher.showCameraWithCheck(this);
@@ -1040,7 +1039,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             if (bundle != null) {
                 result = bundle.getString("result");
                 openScan(phone, result);
-                Log.d("aaaaa", phone + "\n" + result);
                 ToastUtils.showLong(this, result);
             }
         }
@@ -1050,8 +1048,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private void openScan(String phone, final String result) {
         if (phone != null && !phone.equals("") && result != null && !result.equals("")) {
             Map<String, String> map = new HashMap<>();
+            map.put("userId", uID);
             map.put("phone", phone);
-            map.put("bicycleid", result);
+            map.put("bicycleNo", result);
             OkHttpUtils.post().url(Api.BASE_URL + Api.OPENSCAN).params(map).build().execute(new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
@@ -1064,13 +1063,12 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     try {
                         JSONObject object = new JSONObject(response);
                         String message = object.optString("message");
-
-                        //测试GPS
-                        Intent intent = new Intent(LOCSTART);
-                        pi = PendingIntent.getService(getApplicationContext(), 0, intent,
-                                PendingIntent.FLAG_UPDATE_CURRENT);
-                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10000, pi);
-                        Toast.makeText(getApplicationContext(), "GPS测试开始", Toast.LENGTH_SHORT).show();
+//                        //测试GPS
+//                        Intent intent = new Intent(LOCSTART);
+//                        pi = PendingIntent.getService(getApplicationContext(), 0, intent,
+//                                PendingIntent.FLAG_UPDATE_CURRENT);
+//                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10000, pi);
+//                        Toast.makeText(getApplicationContext(), "GPS测试开始", Toast.LENGTH_SHORT).show();
 
                         /**
                          * alarmManager.cancel(pi);
@@ -1093,18 +1091,40 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
                                 @Override
                                 public void onResponse(String response, int id) {
-                                    isShowRideOrder = true;
-                                    isClick = false;
-                                    mScan.setVisibility(View.INVISIBLE);
-                                    Gson gson = new Gson();
-                                    bikeRentalOrderInfo = gson.fromJson(response, BikeRentalOrderInfo.class);
-                                    String bicycleNo = bikeRentalOrderInfo.getBicycleNo();
-                                    ToastUtils.showShort(MainActivity.this, bicycleNo);
-                                    orderPopupWindow = new BikeRentalOrderPopupWindow(MainActivity.this, bikeRentalOrderInfo);
-                                    mMap.clear();
-                                    orderPopupWindow.showAsDropDown(findViewById(R.id.top));
-                                    orderPopupWindow.setOutsideTouchable(false);
-                                    orderPopupWindow.setFocusable(false);
+                                    Log.d("hehehehe",response);
+                                    try {
+                                        JSONObject res = new JSONObject(response);
+                                        String resultStatus = res.optString("resultStatus");
+                                        if(resultStatus.equals("1")){
+                                            isShowRideOrder = true;
+                                            isClick = false;
+                                            String carRentalOrderId = res.optString("carRentalOrderId");
+                                            String carRentalOrderDate = res.optString("carRentalOrderDate");
+                                            Intent serviceIntent= new Intent(MainActivity.this, GPSService.class);
+                                            serviceIntent.putExtra("userId",uID);
+                                            serviceIntent.putExtra("bicycleNo",result);
+                                            serviceIntent.putExtra("carRentalOrderDate",carRentalOrderDate);
+                                            serviceIntent.putExtra("carRentalOrderId",carRentalOrderId);
+                                            startService(serviceIntent);
+                                            mScan.setVisibility(View.INVISIBLE);
+                                            Gson gson = new Gson();
+                                            bikeRentalOrderInfo = gson.fromJson(response, BikeRentalOrderInfo.class);
+                                            String bicycleNo = bikeRentalOrderInfo.getBicycleNo();
+                                            ToastUtils.showShort(MainActivity.this, bicycleNo);
+                                            orderPopupWindow = new BikeRentalOrderPopupWindow(MainActivity.this, bikeRentalOrderInfo);
+                                            mMap.clear();
+                                            orderPopupWindow.showAsDropDown(findViewById(R.id.top));
+                                            orderPopupWindow.setOutsideTouchable(false);
+                                            orderPopupWindow.setFocusable(false);
+
+                                        }else if(resultStatus.equals("0")){
+                                            ToastUtils.showShort(MainActivity.this,"请求异常");
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+
                                 }
                             });
                         } else {
@@ -1361,6 +1381,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         //反注册EventBus
         EventBus.getDefault().unregister(this);
         unregisterReceiver(lr);
+        Log.d("实验", "onDestroy");
         mMapView.onDestroy();
         mMapView = null;
         //释放资源
@@ -1374,9 +1395,11 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     protected void onResume() {
         super.onResume();
         mMapView.onResume();
-        initData();
+        if (uID != null) {
+            queryUserInfo(uID);
+        }
         setUserMapCenter();
-        Log.d("kAKA", "onResume");
+        Log.d("实验", "onResume");
     }
 
     @Override
@@ -1387,13 +1410,14 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         // 关闭方向传感器
         myOrientationListener.stop();
         super.onStop();
+        Log.d("实验", "onStop");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         mMapView.onPause();
-        Log.d("kAKA", "pause");
+        Log.d("实验", "onPause");
     }
 
 
@@ -1407,6 +1431,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         // 开启方向传感器
         myOrientationListener.start();
         super.onStart();
+        Log.d("实验", "onStart");
     }
 
     @Override
@@ -1419,6 +1444,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("NEW LOCATION SENT");
         registerReceiver(lr, intentFilter);
+        Log.d("实验", "onCreate");
     }
 
     /**

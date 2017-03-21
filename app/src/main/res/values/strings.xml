@@ -77,4 +77,6 @@
     <string name="refund_success_tip">申请退款成功</string>
     <string name="question_describe">补充问题描述</string>
     <string name="unlock">开不了锁</string>
+    <string name="open">打开手电筒</string>
+    <string name="close">关闭手电筒</string>
 </resources>

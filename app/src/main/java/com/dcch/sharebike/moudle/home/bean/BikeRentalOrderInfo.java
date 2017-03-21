@@ -5,8 +5,6 @@ package com.dcch.sharebike.moudle.home.bean;
  */
 
 public class BikeRentalOrderInfo {
-
-
     /**
      * carRentalOrderId : 4d33a39bceb740e0a51b392f037ba07f
      * carRentalOrderNo : carrental201703021038301383839
