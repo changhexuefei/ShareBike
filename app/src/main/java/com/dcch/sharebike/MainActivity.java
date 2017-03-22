@@ -9,8 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.AnimationDrawable;
-import android.icu.text.SimpleDateFormat;
-import android.icu.util.TimeZone;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -69,6 +67,7 @@ import com.dcch.sharebike.listener.MyOrientationListener;
 import com.dcch.sharebike.moudle.home.bean.BikeInfo;
 import com.dcch.sharebike.moudle.home.bean.BikeRentalOrderInfo;
 import com.dcch.sharebike.moudle.home.bean.BookingBikeInfo;
+import com.dcch.sharebike.moudle.home.bean.RidingInfo;
 import com.dcch.sharebike.moudle.home.bean.UserBookingBikeInfo;
 import com.dcch.sharebike.moudle.login.activity.ClickCameraPopupActivity;
 import com.dcch.sharebike.moudle.login.activity.ClickMyHelpActivity;
@@ -83,6 +82,7 @@ import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.overlayutil.OverlayManager;
 import com.dcch.sharebike.overlayutil.WalkingRouteOverlay;
 import com.dcch.sharebike.service.GPSService;
+import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.MapUtil;
 import com.dcch.sharebike.utils.SPUtils;
@@ -106,13 +106,17 @@ import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 import org.simple.eventbus.ThreadMode;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -262,6 +266,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     int nodeIndex = -1;
     private double mLat1;
     private double mLng1;
+    private Intent mServiceIntent;
 
 
     @Override
@@ -332,11 +337,13 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             @Override
             public void onResponse(String response, int id) {
                 Log.d("wowow", response);
-                Gson gson = new Gson();
-                UserInfo userInfo = gson.fromJson(response, UserInfo.class);
-                status = userInfo.getStatus();
-                cashStatus = userInfo.getCashStatus();
-                phone = userInfo.getPhone();
+                if (JsonUtils.isSuccess(response)) {
+                    Gson gson = new Gson();
+                    UserInfo userInfo = gson.fromJson(response, UserInfo.class);
+                    status = userInfo.getStatus();
+                    cashStatus = userInfo.getCashStatus();
+                    phone = userInfo.getPhone();
+                }
             }
         });
 
@@ -567,6 +574,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                         .longitude(mCurrentLongitude).build();
                 mMap.setMyLocationData(data);
                 setUserMapCenter();
+                if (mServiceIntent != null) {
+                    stopService(mServiceIntent);
+                }
                 break;
             case R.id.instructions:
                 Intent i2 = new Intent(this, PersonalCenterActivity.class);
@@ -582,7 +592,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 break;
             case R.id.scan:
                 ToastUtils.showLong(this, "我是扫描");
-
+                result = "1101000001";
+                openScan(phone, result);
                 // && cashStatus == 1 && status == 1
                 if (SPUtils.isLogin()) {
                     MainActivityPermissionsDispatcher.showCameraWithCheck(this);
@@ -1038,7 +1049,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             Bundle bundle = data.getExtras();
             if (bundle != null) {
                 result = bundle.getString("result");
-                openScan(phone, result);
+                LogUtils.d("是时候死还是", phone);
+//                openScan(phone, result);
                 ToastUtils.showLong(this, result);
             }
         }
@@ -1091,40 +1103,30 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
                                 @Override
                                 public void onResponse(String response, int id) {
-                                    Log.d("hehehehe",response);
-                                    try {
-                                        JSONObject res = new JSONObject(response);
-                                        String resultStatus = res.optString("resultStatus");
-                                        if(resultStatus.equals("1")){
-                                            isShowRideOrder = true;
-                                            isClick = false;
-                                            String carRentalOrderId = res.optString("carRentalOrderId");
-                                            String carRentalOrderDate = res.optString("carRentalOrderDate");
-                                            Intent serviceIntent= new Intent(MainActivity.this, GPSService.class);
-                                            serviceIntent.putExtra("userId",uID);
-                                            serviceIntent.putExtra("bicycleNo",result);
-                                            serviceIntent.putExtra("carRentalOrderDate",carRentalOrderDate);
-                                            serviceIntent.putExtra("carRentalOrderId",carRentalOrderId);
-                                            startService(serviceIntent);
-                                            mScan.setVisibility(View.INVISIBLE);
-                                            Gson gson = new Gson();
-                                            bikeRentalOrderInfo = gson.fromJson(response, BikeRentalOrderInfo.class);
-                                            String bicycleNo = bikeRentalOrderInfo.getBicycleNo();
-                                            ToastUtils.showShort(MainActivity.this, bicycleNo);
-                                            orderPopupWindow = new BikeRentalOrderPopupWindow(MainActivity.this, bikeRentalOrderInfo);
-                                            mMap.clear();
-                                            orderPopupWindow.showAsDropDown(findViewById(R.id.top));
-                                            orderPopupWindow.setOutsideTouchable(false);
-                                            orderPopupWindow.setFocusable(false);
+                                    Log.d("hehehehe", response);
+                                    if (JsonUtils.isSuccess(response)) {
+                                        isShowRideOrder = true;
+                                        isClick = false;
+                                        Gson gson = new Gson();
+                                        bikeRentalOrderInfo = gson.fromJson(response, BikeRentalOrderInfo.class);
+                                        mServiceIntent = new Intent(MainActivity.this, GPSService.class);
+                                        mServiceIntent.putExtra("userId", uID);
+                                        mServiceIntent.putExtra("bicycleNo", result);
+                                        mServiceIntent.putExtra("carRentalOrderDate", bikeRentalOrderInfo.getCarRentalOrderDate());
+                                        mServiceIntent.putExtra("carRentalOrderId", bikeRentalOrderInfo.getCarRentalOrderId());
+                                        startService(mServiceIntent);
+                                        mScan.setVisibility(View.INVISIBLE);
+                                        String bicycleNo = bikeRentalOrderInfo.getBicycleNo();
+                                        ToastUtils.showShort(MainActivity.this, bicycleNo);
+                                        orderPopupWindow = new BikeRentalOrderPopupWindow(MainActivity.this, bikeRentalOrderInfo);
+                                        mMap.clear();
+                                        orderPopupWindow.showAsDropDown(findViewById(R.id.top));
+                                        orderPopupWindow.setOutsideTouchable(false);
+                                        orderPopupWindow.setFocusable(false);
 
-                                        }else if(resultStatus.equals("0")){
-                                            ToastUtils.showShort(MainActivity.this,"请求异常");
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
+                                    } else {
+                                        ToastUtils.showShort(MainActivity.this, "请求异常");
                                     }
-
-
                                 }
                             });
                         } else {
@@ -1548,13 +1550,27 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     }
 
     class LocationReceiver extends BroadcastReceiver {
-        String locationMsg = "";
-
         @Override
         public void onReceive(Context context, Intent intent) {
-            locationMsg = intent.getStringExtra("newLoca");
-            Log.d("广播", locationMsg);
-//            content.setText(locationMsg);
+//            locationMsg = intent.getStringExtra("newLoca");
+            RidingInfo ridingInfo = (RidingInfo) intent.getSerializableExtra("ridingInfo");
+            if (ridingInfo != null) {
+                double tripDist = changeDouble(ridingInfo.getTripDist());
+                double calorie = changeDouble(ridingInfo.getCalorie());
+                orderPopupWindow.rideDistance.setText(String.valueOf(tripDist) + "公里");
+                orderPopupWindow.rideTime.setText(String.valueOf(ridingInfo.getTripTime()) + "分钟");
+                orderPopupWindow.consumeEnergy.setText(String.valueOf(calorie) + "大卡");
+                orderPopupWindow.costCycling.setText(String.valueOf(ridingInfo.getRideCost()));
+            }
         }
+
+        //double 类型保留一位小数
+        public double changeDouble(Double dou) {
+            NumberFormat nf = new DecimalFormat("0.0");
+            dou = Double.parseDouble(nf.format(dou));
+            return dou;
+        }
+
+
     }
 }

@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -18,7 +19,10 @@ import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.db.DatabaseHelper;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.listener.MyOrientationListener;
+import com.dcch.sharebike.moudle.home.bean.RidingInfo;
 import com.dcch.sharebike.moudle.home.bean.RoutePoint;
+import com.dcch.sharebike.utils.JsonUtils;
+import com.dcch.sharebike.utils.ToastUtils;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -42,11 +46,13 @@ public class GPSService extends Service {
     private Context context;
     public ArrayList<RoutePoint> routPointList = new ArrayList<RoutePoint>();
     DatabaseHelper mHelper;
-    public int totalDistance = 0;
+    public double totalDistance = 0;
     private String mUserId;
     private String mBicycleNo;
     private String mCarRentalOrderDate;
     private String mCarRentalOrderId;
+    private double mRouteLat;
+    private double mRouteLng;
 
     @Override
     public void onCreate() {
@@ -69,34 +75,40 @@ public class GPSService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
             mUserId = intent.getStringExtra("userId");
-            Log.d("我是",mUserId);
-
+            Log.d("我是", mUserId);
             mBicycleNo = intent.getStringExtra("bicycleNo");
-            Log.d("我是",mBicycleNo);
+            Log.d("我是", mBicycleNo);
             mCarRentalOrderDate = intent.getStringExtra("carRentalOrderDate");
-            Log.d("我是",mCarRentalOrderDate);
+            Log.d("我是", mCarRentalOrderDate);
             mCarRentalOrderId = intent.getStringExtra("carRentalOrderId");
-            Log.d("我是",mCarRentalOrderId);
+            Log.d("我是", mCarRentalOrderId);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                }
+            }).start();
         }
-        Log.i("BDGpsService", "********BDGpsService onStartCommand*******");
+        Log.d("BDGpsService", "********BDGpsService onStartCommand*******");
         if (locationClient != null && !locationClient.isStarted()) {
             locationClient.start();
         }
-        return super.onStartCommand(intent, flags, startId);
+        return START_REDELIVER_INTENT;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i("BDGpsService", "********BDGpsService onDestroy*******");
+        Log.d("BDGpsService", "********BDGpsService onDestroy*******");
         if (locationClient != null && locationClient.isStarted()) {
             locationClient.stop();
             Gson gson = new Gson();
             String routeListStr = gson.toJson(routPointList);
             Log.d("gao", "RouteService----routeListStr-------------" + routeListStr);
-            if (routPointList.size() > 2) {
+//            if (routPointList.size() > 2) {
                 insertData(routeListStr);
-            }
+//            }
+
         }
         locationClient.unRegisterLocationListener(locationListener);
     }
@@ -108,10 +120,11 @@ public class GPSService extends Service {
 
     public class BDGpsServiceListener implements BDLocationListener {
         //发送广播，提示更新界面
-        private void sendToActivity(String str) {
-            Log.d("hhhh", str);
+        private void sendToActivity(Bundle bundle) {
+            Log.d("hhhh", bundle+"");
             Intent intent = new Intent();
-            intent.putExtra("newLoca", str);
+//            intent.putExtra("newLoca", str);
+            intent.putExtras(bundle);
             intent.setAction("NEW LOCATION SENT");
             sendBroadcast(intent);
         }
@@ -128,51 +141,53 @@ public class GPSService extends Service {
                 return;
             }
 
-            double routeLat = location.getLatitude();
-            double routeLng = location.getLongitude();
+            mRouteLat = location.getLatitude();
+            mRouteLng = location.getLongitude();
             RoutePoint routePoint = new RoutePoint();
-            routePoint.setRouteLat(routeLat);
-            routePoint.setRouteLng(routeLng);
-            if (routPointList.size() == 0)
+            routePoint.setRouteLat(mRouteLat);
+            routePoint.setRouteLng(mRouteLng);
+            if (routPointList.size() == 0) {
                 routPointList.add(routePoint);
-            else {
+                Log.d("看看", routPointList.size() + "");
+            } else {
                 RoutePoint lastPoint = routPointList.get(routPointList.size() - 1);
-                if (routeLat == lastPoint.getRouteLat() && routeLng == lastPoint.getRouteLng()) {
+                if (mRouteLat == lastPoint.getRouteLat() && mRouteLng == lastPoint.getRouteLng()) {
 
                 } else {
                     LatLng lastLatLng = new LatLng(lastPoint.getRouteLat(),
                             lastPoint.getRouteLng());
-                    LatLng currentLatLng = new LatLng(routeLat, routeLng);
-                    if (routeLat > 0 && routeLng > 0) {
+                    LatLng currentLatLng = new LatLng(mRouteLat, mRouteLng);
+                    if (mRouteLat > 0 && mRouteLng > 0) {
                         double distantce = DistanceUtil.getDistance(lastLatLng, currentLatLng);
                         Log.d("gao", "distantce--------------" + distantce);
                         if (distantce > 5) {
                             routPointList.add(routePoint);
                             totalDistance += distantce;
+
                         }
                     }
                 }
-                StringBuffer sb = new StringBuffer();
-                sb.append("经度=").append(location.getLongitude());
-                sb.append("\n纬度=").append(location.getLatitude());
-                sb.append("\n时间=").append(location.getTime());
-                sb.append("\nERR Code=").append(location.getLocType());
-                if (location.hasRadius()) {
-                    sb.append("\n定位精度=").append(location.getRadius());
-                }
-                if (location.getLocType() == BDLocation.TypeGpsLocation) {
-                    sb.append("\n速度=");
-                    sb.append(location.getSpeed());
-                    sb.append("\n卫星=");
-                    sb.append(location.getSatelliteNumber());
-                } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {
-                    sb.append("\n位置=").append(location.getAddrStr());
-                    sb.append("\n省=").append(location.getProvince());
-                    sb.append("\n市=").append(location.getCity());
-                    sb.append("\n区县=").append(location.getDistrict());
-                }
+//                StringBuffer sb = new StringBuffer();
+//                sb.append("经度=").append(location.getLongitude());
+//                sb.append("\n纬度=").append(location.getLatitude());
+//                sb.append("\n时间=").append(location.getTime());
+//                sb.append("\nERR Code=").append(location.getLocType());
+//                if (location.hasRadius()) {
+//                    sb.append("\n定位精度=").append(location.getRadius());
+//                }
+//                if (location.getLocType() == BDLocation.TypeGpsLocation) {
+//                    sb.append("\n速度=");
+//                    sb.append(location.getSpeed());
+//                    sb.append("\n卫星=");
+//                    sb.append(location.getSatelliteNumber());
+//                } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {
+//                    sb.append("\n位置=").append(location.getAddrStr());
+//                    sb.append("\n省=").append(location.getProvince());
+//                    sb.append("\n市=").append(location.getCity());
+//                    sb.append("\n区县=").append(location.getDistrict());
+//                }
 
-                sendToActivity(sb.toString());
+//                sendToActivity(sb.toString());
 
                 try {
                     Map<String, String> map = new HashMap<String, String>();
@@ -183,17 +198,27 @@ public class GPSService extends Service {
                     map.put("userId", mUserId);
                     map.put("lng", location.getLongitude() + "");
                     map.put("lat", location.getLatitude() + "");
-                    map.put("mile", totalDistance + "");
-                    Log.d("历程", totalDistance + "");
+                    map.put("mile", totalDistance/1000 + "");
+                    Log.d("历程",totalDistance/1000+"");
+
                     OkHttpUtils.post().url(url).params(map).build().execute(new StringCallback() {
                         @Override
                         public void onError(Call call, Exception e, int id) {
-
+                            ToastUtils.showShort(App.getContext(),"服务正忙！");
                         }
 
                         @Override
                         public void onResponse(String response, int id) {
                             Log.d("给后台", response);
+                            if(JsonUtils.isSuccess(response)){
+                                Gson gson = new Gson();
+                                RidingInfo ridingInfo = gson.fromJson(response, RidingInfo.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("ridingInfo",ridingInfo);
+                                if(bundle!=null){
+                                    sendToActivity(bundle);
+                                }
+                            }
 
                         }
                     });
@@ -203,6 +228,7 @@ public class GPSService extends Service {
             }
         }
     }
+
     public void insertData(String routeListStr) {
         ContentValues values = new ContentValues();
         // 向该对象中插入键值对，其中键是列名，值是希望插入到这一列的值，值必须和数据当中的数据类型一致

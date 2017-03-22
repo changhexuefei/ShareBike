@@ -16,13 +16,14 @@ import com.dcch.sharebike.moudle.home.bean.BikeRentalOrderInfo;
 
 public class BikeRentalOrderPopupWindow extends PopupWindow {
     private BikeRentalOrderInfo bikeRentalOrderInfo;
-    TextView rideTime;
-    TextView rideDistance;
-    TextView consumeEnergy;
-    TextView bikeNo;
-    TextView costCycling;
+    public TextView rideTime;
+    public TextView rideDistance;
+    public TextView consumeEnergy;
+    public TextView bikeNo;
+    public TextView costCycling;
     private View mBikeRentalOrderView;
-    public BikeRentalOrderPopupWindow(Context context,BikeRentalOrderInfo bikeRentalOrderInfo) {
+
+    public BikeRentalOrderPopupWindow(Context context, BikeRentalOrderInfo bikeRentalOrderInfo) {
         super(context);
         this.bikeRentalOrderInfo = bikeRentalOrderInfo;
 
@@ -42,9 +43,9 @@ public class BikeRentalOrderPopupWindow extends PopupWindow {
 //        // 设置按钮监听
 //        mOrder.setOnClickListener(itemsOnClick);
 //          为控件赋值
-        if(bikeRentalOrderInfo!=null && !bikeRentalOrderInfo.equals("")){
-            rideTime.setText(String.valueOf(bikeRentalOrderInfo.getTripTime())+"分钟");
-            rideDistance.setText(String.valueOf(bikeRentalOrderInfo.getTripDist())+"米");
+        if (bikeRentalOrderInfo != null && !bikeRentalOrderInfo.equals("")) {
+            rideTime.setText(String.valueOf(bikeRentalOrderInfo.getTripTime()) + "分钟");
+            rideDistance.setText(String.valueOf(bikeRentalOrderInfo.getTripDist()) + "公里");
 //            consumeEnergy.setText(bikeRentalOrderInfo.get);
             bikeNo.setText(bikeRentalOrderInfo.getBicycleNo());
             costCycling.setText(String.valueOf(bikeRentalOrderInfo.getRideCost()));

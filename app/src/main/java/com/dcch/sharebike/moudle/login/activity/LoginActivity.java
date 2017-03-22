@@ -25,6 +25,7 @@ import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.utils.InPutUtils;
+import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
@@ -303,9 +304,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onResponse(String response, int id) {
                 Log.d("测试", response);
-                Gson gson = new Gson();
-                UserInfo userInfo = gson.fromJson(response, UserInfo.class);
-                if (userInfo.getMessagecode().equals("1")) {
+                if(JsonUtils.isSuccess(response)){
+                    Gson gson = new Gson();
+                    UserInfo userInfo = gson.fromJson(response, UserInfo.class);
                     ToastUtils.showLong(LoginActivity.this, "验证码验证成功！");
                     if (userInfo.getCashStatus() == 1 && userInfo.getStatus() == 0) {
                         startActivity(new Intent(LoginActivity.this, IdentityAuthentication.class));
@@ -322,9 +323,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     //储存用户信息(登录储存一次)
                     SPUtils.put(App.getContext(), "userDetail", response);
                     SPUtils.put(App.getContext(), "islogin", true);
-                } else if (userInfo.getMessagecode().equals("0")) {
-                    ToastUtils.showShort(LoginActivity.this, "登录失败！");
-                } else {
+
+                }else {
                     ToastUtils.showShort(LoginActivity.this, "未知错误！请重试。");
                 }
             }

@@ -13,9 +13,9 @@ public class JsonUtils {
 	public static boolean isSuccess(String result) {
 		try {
 			JSONObject jsonObject = new JSONObject(result);
-//			int messagecode = jsonObject.optInt("messagecode",0);
-			String messagecode = jsonObject.optString("messagecode");
-			if (messagecode.equals("1") ){
+
+			String resultStatus = jsonObject.optString("resultStatus");
+			if (resultStatus.equals("1") ){
 				return true;
 			} else {
 				return false;

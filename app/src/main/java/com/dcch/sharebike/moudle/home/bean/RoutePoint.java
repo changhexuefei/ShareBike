@@ -1,12 +1,13 @@
 package com.dcch.sharebike.moudle.home.bean;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by Administrator on 2017/3/9 0009.
  */
 
-public class RoutePoint implements Serializable {
+public class RoutePoint implements Parcelable {
     private int id;
     private double routeLat;
     private double routeLng;
@@ -35,6 +36,35 @@ public class RoutePoint implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeDouble(routeLat);
+        parcel.writeDouble(routeLng);
+        parcel.writeInt(id);
+    }
+
+    public static final Parcelable.Creator<RoutePoint> CREATOR = new Creator<RoutePoint>() {
+        @Override
+        public RoutePoint createFromParcel(Parcel source) {
+            RoutePoint routePoint = new RoutePoint();
+            routePoint.id = source.readInt();
+            routePoint.routeLat = source.readDouble();
+            routePoint.routeLng = source.readDouble();
+            return routePoint;
+        }
+
+        @Override
+        public RoutePoint[] newArray(int size) {
+            return new RoutePoint[size];
+        }
+    };
 
 
 }

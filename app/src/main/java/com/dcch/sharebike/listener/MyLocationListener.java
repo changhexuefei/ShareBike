@@ -25,7 +25,7 @@ public class MyLocationListener implements BDLocationListener {
 
     @Override
     public void onReceiveLocation(BDLocation bdLocation) {
-        // map view 销毁后不在处理新接收的位置
+        // mapView 销毁后不在处理新接收的位置
         if (bdLocation == null || mMapView == null) {
             return;
         }
