@@ -138,7 +138,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         mManualInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastUtils.showShort(CaptureActivity.this,"你点击了输入");
                 startActivity(new Intent(CaptureActivity.this,ManualInputActivity.class));
             }
         });

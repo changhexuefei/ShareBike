@@ -28,6 +28,13 @@
             android:textSize="16sp" />
     </FrameLayout>
 
+    <io.netopen.hotbitmapgg.view.NewCreditSesameView
+        android:id="@+id/new_credit"
+        android:layout_below="@+id/personCredit"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 
 
 </RelativeLayout>

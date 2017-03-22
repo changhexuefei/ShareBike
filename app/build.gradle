@@ -98,4 +98,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.0'
+    compile 'com.github.HotBitmapGG:CreditSesameRingView:V1.0.4'
 }
