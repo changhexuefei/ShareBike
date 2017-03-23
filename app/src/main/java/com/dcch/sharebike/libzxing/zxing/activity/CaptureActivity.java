@@ -34,7 +34,6 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -116,7 +115,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_capture);
         ButterKnife.bind(this);
-        init();
+        controlIconSize();
+
         scanPreview = (SurfaceView) findViewById(R.id.capture_preview);
         scanContainer = (RelativeLayout) findViewById(R.id.capture_container);
         scanCropView = (RelativeLayout) findViewById(R.id.capture_crop_view);
@@ -133,42 +133,47 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         scanLine.startAnimation(animation);
     }
 
-    private void init() {
+    private void controlIconSize() {
+        initDrawable(mOpenFlashLight);
+        initDrawable(mManualInput);
+    }
 
+
+    private void init() {
         mManualInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(CaptureActivity.this,ManualInputActivity.class));
+                startActivity(new Intent(CaptureActivity.this, ManualInputActivity.class));
             }
         });
 
         mOpenFlashLight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                    //低于6.0系统的手电筒
-                    if (isChecked){
-                        camera = Camera.open();
-                        parameters = camera.getParameters();
-                        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);// 开启
-                        camera.setParameters(parameters);
-                        camera.startPreview();
-                    }else{
-                        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);// 关闭
-                        camera.setParameters(parameters);
-                        camera.stopPreview();
-                        camera.release();
-                    }
-
+                //低于6.0系统的手电筒
+                if (isChecked) {
+                    camera = Camera.open();
+                    parameters = camera.getParameters();
+                    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);// 开启
+                    camera.setParameters(parameters);
+                    camera.startPreview();
+                } else {
+                    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);// 关闭
+                    camera.setParameters(parameters);
+                    camera.stopPreview();
+                    camera.release();
                 }
+
+            }
         });
 
     }
 
 
-
     @Override
     protected void onResume() {
         super.onResume();
+        init();
 
         // CameraManager must be initialized here, not in onCreate(). This is
         // necessary because we don't
@@ -178,7 +183,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         // wrong size and partially
         // off screen.
         cameraManager = new CameraManager(getApplication());
-
         handler = null;
 
         if (isHasSurface) {
@@ -367,11 +371,10 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         return 0;
     }
 
-    //将RadioButton中的图片转化为规定大小的方法
-    public void initDrawable(RadioButton v) {
-
+    //将TextView中的图片转化为规定大小的方法
+    public void initDrawable(TextView v) {
         Drawable drawable = v.getCompoundDrawables()[1];
-        drawable.setBounds(0, 0, DensityUtils.dp2px(CaptureActivity.this,24), DensityUtils.dp2px(CaptureActivity.this,24));
+        drawable.setBounds(0, 0, DensityUtils.dp2px(CaptureActivity.this, 50), DensityUtils.dp2px(CaptureActivity.this, 50));
         v.setCompoundDrawables(null, drawable, null, null);
     }
 
@@ -383,7 +386,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                 finish();
                 break;
             case R.id.help_tip:
-                ToastUtils.showShort(CaptureActivity.this,"我是帮助");
+                ToastUtils.showShort(CaptureActivity.this, "我是帮助");
                 break;
 
         }
@@ -391,6 +394,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
     /**
      * 是否开启了闪光灯
+     *
      * @return
      */
     public boolean isFlashlightOn() {

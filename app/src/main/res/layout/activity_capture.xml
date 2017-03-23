@@ -48,20 +48,22 @@
         android:layout_below="@+id/scan_area"/>
 
     <RelativeLayout
+
         android:id="@+id/capture_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/scan_area"
-        android:layout_marginTop="12dp">
+        android:layout_below="@+id/scan_area">
 
         <ImageView
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:background="@drawable/shadow"
             android:id="@+id/capture_mask_top"
-            android:layout_width="150dp"
-            android:layout_height="80dp"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
             android:src="@drawable/scan_qrcode_bike_img"/>
 
         <!--<ImageView-->
@@ -73,8 +75,8 @@
 
         <RelativeLayout
             android:id="@+id/capture_crop_view"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
             android:layout_below="@id/capture_mask_top"
             android:layout_centerHorizontal="true"
             android:background="@drawable/qr_code_bg">
@@ -87,12 +89,14 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
                 android:src="@drawable/scan_line"/>
-
         </RelativeLayout>
 
+
         <TextView
+            android:paddingTop="10dp"
+            android:gravity="center_horizontal"
             android:id="@+id/tips_one"
-            android:layout_width="wrap_content"
+            android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/capture_crop_view"
             android:layout_centerHorizontal="true"
@@ -110,25 +114,26 @@
             android:background="@drawable/shadow">
 
             <TextView
+                android:layout_centerVertical="true"
                 android:id="@+id/manualInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="60dp"
                 android:drawablePadding="10dp"
                 android:drawableTop="@drawable/manual_input_selector"
                 android:gravity="center"
                 android:text="输入单车编号"
                 android:textColor="#ffffff"
-                android:textSize="12sp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="27dp"/>
+                android:textSize="12sp"/>
 
             <ToggleButton
+                android:layout_centerVertical="true"
+                android:textSize="12sp"
+                android:drawablePadding="10dp"
                 android:id="@+id/openFlashLight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="30dp"
+                android:layout_marginEnd="60dp"
                 android:background="@null"
                 android:drawableTop="@drawable/flash_light_selector"
                 android:checked="false"

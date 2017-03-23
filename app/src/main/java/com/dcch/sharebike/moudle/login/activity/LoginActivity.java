@@ -23,13 +23,10 @@ import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.http.Api;
-import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.utils.InPutUtils;
-import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
-import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -304,19 +301,32 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onResponse(String response, int id) {
                 Log.d("测试", response);
-                if(JsonUtils.isSuccess(response)){
-                    Gson gson = new Gson();
-                    UserInfo userInfo = gson.fromJson(response, UserInfo.class);
-                    ToastUtils.showLong(LoginActivity.this, "验证码验证成功！");
-                    if (userInfo.getCashStatus() == 1 && userInfo.getStatus() == 0) {
-                        startActivity(new Intent(LoginActivity.this, IdentityAuthentication.class));
-                    } else if (userInfo.getCashStatus() == 0 && userInfo.getStatus() == 0) {
-                        startActivity(new Intent(LoginActivity.this, RechargeActivity.class));
-                    } else if (userInfo.getCashStatus() == 0 && userInfo.getStatus() == 1) {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String messagecode = object.optString("messagecode");
+                    if(messagecode.equals("1")){
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    }else if(userInfo.getCashStatus() == 1 && userInfo.getStatus() == 1){
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+
+                    }else{
+                        ToastUtils.showShort(LoginActivity.this,"登录失败！");
+
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+//                if(JsonUtils.isSuccess(response)){
+//                    Gson gson = new Gson();
+//                    UserInfo userInfo = gson.fromJson(response, UserInfo.class);
+//                    ToastUtils.showLong(LoginActivity.this, "验证码验证成功！");
+//                    if (userInfo.getCashStatus() == 1 && userInfo.getStatus() == 0) {
+//                        startActivity(new Intent(LoginActivity.this, IdentityAuthentication.class));
+//                    } else if (userInfo.getCashStatus() == 0 && userInfo.getStatus() == 0) {
+//                        startActivity(new Intent(LoginActivity.this, RechargeActivity.class));
+//                    } else if (userInfo.getCashStatus() == 0 && userInfo.getStatus() == 1) {
+//                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//                    }else if(userInfo.getCashStatus() == 1 && userInfo.getStatus() == 1){
+//                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//                    }
 
                     EventBus.getDefault().post(new MessageEvent(), "gone");
                     LoginActivity.this.finish();
@@ -326,9 +336,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     LogUtils.d("userDetail",response);
                     SPUtils.put(App.getContext(), "islogin", true);
 
-                }else {
-                    ToastUtils.showShort(LoginActivity.this, "未知错误！请重试。");
-                }
+//                }else {
+//                    ToastUtils.showShort(LoginActivity.this, "未知错误！请重试。");
+//                }
             }
         });
     }

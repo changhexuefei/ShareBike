@@ -80,136 +80,29 @@
                 android:layout_marginTop="5dp"
                 android:layout_toRightOf="@+id/pointing"
                 android:padding="6dp"
-                android:src="@mipmap/input_qrcode_zoom_img"
-                />
+                android:src="@mipmap/input_qrcode_zoom_img"/>
 
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="50dp"
+            <ToggleButton
+                android:id="@+id/openFlashLight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/scan_qrcode_flash_light_off"/>
+                android:background="@null"
+                android:checked="false"
+                android:drawableTop="@drawable/flash_light_selector"
+                android:textOff=""
+                android:textOn=""/>
 
         </RelativeLayout>
 
-        <LinearLayout
+        <com.dcch.sharebike.view.CodeInputEditText
             android:id="@+id/manualInputArea"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
             android:layout_below="@+id/input_icon"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp">
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"/>
 
-            <com.dcch.sharebike.view.MyBorderEditText
-                android:layout_width="25dp"
-                android:layout_height="30dp"
-                android:background="@null"
-                android:digits="0123456789"
-                android:gravity="center"
-                android:inputType="number"
-                android:maxLength="1"
-                android:textCursorDrawable="@null"/>
-
-            <com.dcch.sharebike.view.MyBorderEditText
-                android:layout_width="25dp"
-                android:layout_height="30dp"
-                android:background="@null"
-                android:digits="0123456789"
-                android:gravity="center"
-                android:inputType="number"
-                android:maxLength="1"
-                android:textCursorDrawable="@null"/>
-
-            <com.dcch.sharebike.view.MyBorderEditText
-                android:layout_width="25dp"
-                android:layout_height="30dp"
-                android:background="@null"
-                android:digits="0123456789"
-                android:gravity="center"
-                android:inputType="number"
-                android:maxLength="1"
-                android:textCursorDrawable="@null"/>
-
-            <com.dcch.sharebike.view.MyBorderEditText
-                android:layout_width="25dp"
-                android:layout_height="30dp"
-                android:background="@null"
-                android:digits="0123456789"
-                android:gravity="center"
-                android:inputType="number"
-                android:maxLength="1"
-                android:textCursorDrawable="@null"/>
-
-            <com.dcch.sharebike.view.MyBorderEditText
-                android:layout_width="25dp"
-                android:layout_height="30dp"
-                android:background="@null"
-                android:digits="0123456789"
-                android:gravity="center"
-                android:inputType="number"
-                android:maxLength="1"
-                android:textCursorDrawable="@null"/>
-
-            <com.dcch.sharebike.view.MyBorderEditText
-                android:layout_width="25dp"
-                android:layout_height="30dp"
-                android:background="@null"
-                android:digits="0123456789"
-                android:gravity="center"
-                android:inputType="number"
-                android:maxLength="1"
-                android:textCursorDrawable="@null"/>
-
-            <com.dcch.sharebike.view.MyBorderEditText
-                android:layout_width="25dp"
-                android:layout_height="30dp"
-                android:background="@null"
-                android:digits="0123456789"
-                android:gravity="center"
-                android:inputType="number"
-                android:maxLength="1"
-                android:textCursorDrawable="@null"/>
-
-            <com.dcch.sharebike.view.MyBorderEditText
-                android:layout_width="25dp"
-                android:layout_height="30dp"
-                android:background="@null"
-                android:digits="0123456789"
-                android:gravity="center"
-                android:inputType="number"
-                android:maxLength="1"
-                android:textCursorDrawable="@null"/>
-
-            <com.dcch.sharebike.view.MyBorderEditText
-                android:layout_width="25dp"
-                android:layout_height="30dp"
-                android:background="@null"
-                android:digits="0123456789"
-                android:gravity="center"
-                android:inputType="number"
-                android:maxLength="1"
-                android:textCursorDrawable="@null"/>
-
-            <com.dcch.sharebike.view.MyBorderEditText
-                android:layout_width="25dp"
-                android:layout_height="30dp"
-                android:background="@null"
-                android:digits="0123456789"
-                android:gravity="center"
-                android:inputType="number"
-                android:maxLength="1"
-                android:textCursorDrawable="@null"/>
-
-            <com.dcch.sharebike.view.MyBorderEditText
-                android:layout_width="25dp"
-                android:layout_height="30dp"
-                android:background="@null"
-                android:digits="0123456789"
-                android:gravity="center"
-                android:inputType="number"
-                android:maxLength="1"
-                android:textCursorDrawable="@null"/>
-
-        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
@@ -223,6 +116,7 @@
     </RelativeLayout>
 
     <Button
+        android:id="@+id/ensure"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/icon_input_area"
