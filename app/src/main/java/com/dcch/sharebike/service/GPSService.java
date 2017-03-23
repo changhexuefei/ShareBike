@@ -69,6 +69,7 @@ public class GPSService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        initNotification();
         beginTime = System.currentTimeMillis();
         totalTime = 0;
         totalDistance = 0;
@@ -97,12 +98,12 @@ public class GPSService extends Service {
     }
 
 
-//    private void startNotifi(String time, String distance, String price) {
-//        startForeground(1, notification);
-//        contentView.setTextViewText(R.id.ride_time, time);
-//        contentView.setTextViewText(R.id.ride_distance, distance);
-//        contentView.setTextViewText(R.id.cost_cycling, price);
-//    }
+    private void startNotifi(String time, String distance, String price) {
+        startForeground(1, notification);
+        contentView.setTextViewText(R.id.ride_time, time);
+        contentView.setTextViewText(R.id.ride_distance, distance);
+        contentView.setTextViewText(R.id.cost_cycling, price);
+    }
 
 
     @Override
@@ -116,48 +117,43 @@ public class GPSService extends Service {
             Log.d("我是", mCarRentalOrderDate);
             mCarRentalOrderId = intent.getStringExtra("carRentalOrderId");
             Log.d("我是", mCarRentalOrderId);
-            initNotification();
+
             //开启子线程和后台进行通信
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    try {
-                        Map<String, String> map = new HashMap<String, String>();
-                        String url = Api.BASE_URL + Api.ORDERCAST;
-                        map.put("carRentalOrderDate", mCarRentalOrderDate);
-                        map.put("bicycleNo", mBicycleNo);
-                        map.put("carRentalOrderId", mCarRentalOrderId);
-                        map.put("userId", mUserId);
-                        map.put("lng", mRouteLng + "");
-                        map.put("lat", mRouteLat + "");
-                        map.put("mile", totalDistance / 1000 + "");
+                    Map<String, String> map = new HashMap<String, String>();
+                    String url = Api.BASE_URL + Api.ORDERCAST;
+                    map.put("carRentalOrderDate", mCarRentalOrderDate);
+                    map.put("bicycleNo", mBicycleNo);
+                    map.put("carRentalOrderId", mCarRentalOrderId);
+                    map.put("userId", mUserId);
+                    map.put("lng", mRouteLng + "");
+                    map.put("lat", mRouteLat + "");
+                    map.put("mile", totalDistance / 1000 + "");
 
-                        OkHttpUtils.post().url(url).params(map).build().execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                ToastUtils.showShort(App.getContext(), "服务正忙！");
-                            }
+                    OkHttpUtils.post().url(url).params(map).build().execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            ToastUtils.showShort(App.getContext(), "服务正忙！");
+                        }
 
-                            @Override
-                            public void onResponse(String response, int id) {
-                                Log.d("给后台", response);
-                                if (JsonUtils.isSuccess(response)) {
-                                    Gson gson = new Gson();
-                                    RidingInfo ridingInfo = gson.fromJson(response, RidingInfo.class);
-                                    Bundle bundle = new Bundle();
-                                    bundle.putSerializable("ridingInfo", ridingInfo);
-                                    if (bundle != null) {
+                        @Override
+                        public void onResponse(String response, int id) {
+                            Log.d("给后台", response);
+                            if (JsonUtils.isSuccess(response)) {
+                                Gson gson = new Gson();
+                                RidingInfo ridingInfo = gson.fromJson(response, RidingInfo.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("ridingInfo", ridingInfo);
+                                if (bundle != null) {
 //                                    sendToActivity(bundle);
-                                    }
                                 }
-
                             }
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
 
-
+                        }
+                    });
                 }
             }).start();
         }
@@ -211,7 +207,6 @@ public class GPSService extends Service {
             if ("4.9E-324".equals(String.valueOf(location.getLatitude())) || "4.9E-324".equals(String.valueOf(location.getLongitude()))) {
                 return;
             }
-
             mRouteLat = location.getLatitude();
             mRouteLng = location.getLongitude();
             RoutePoint routePoint = new RoutePoint();
@@ -239,14 +234,14 @@ public class GPSService extends Service {
                 }
                 totalTime = (int) (System.currentTimeMillis() - beginTime) / 1000 / 60;
                 totalPrice = (float) (Math.floor(totalTime / 30) * 0.5 + 0.5);
-//                startNotifi(totalTime + "分钟", totalDistance + "米", totalPrice + "元");
+                startNotifi(totalTime + "分钟", totalDistance + "米", totalPrice + "元");
 
                 Bundle bundle = new Bundle();
-                bundle.putLong("totalTime",totalTime);
+                bundle.putLong("totalTime", totalTime);
                 bundle.putDouble("totalDistance", totalDistance);
                 bundle.putFloat("totalPrice", totalPrice);
-                bundle.putDouble("calorie",(totalDistance/1000)*29);
-                LogUtils.d("距离",totalDistance+"");
+                bundle.putDouble("calorie", (totalDistance / 1000) * 29);
+                LogUtils.d("距离", totalDistance + "");
                 sendToActivity(bundle);
 
 //                StringBuffer sb = new StringBuffer();
