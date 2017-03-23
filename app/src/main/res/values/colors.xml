@@ -8,4 +8,5 @@
     <color name="common">#262262</color>
     <color name="lineColor">#f4f0f0</color>
     <color name="translucent_background">#80000000</color>
+    <color name="creditColor">#FF7997</color>
 </resources>

@@ -1,5 +1,7 @@
 package com.dcch.sharebike.service;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,7 +9,9 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -15,6 +19,8 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
+import com.dcch.sharebike.MainActivity;
+import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.db.DatabaseHelper;
 import com.dcch.sharebike.http.Api;
@@ -22,6 +28,8 @@ import com.dcch.sharebike.listener.MyOrientationListener;
 import com.dcch.sharebike.moudle.home.bean.RidingInfo;
 import com.dcch.sharebike.moudle.home.bean.RoutePoint;
 import com.dcch.sharebike.utils.JsonUtils;
+import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.MapUtil;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -53,10 +61,18 @@ public class GPSService extends Service {
     private String mCarRentalOrderId;
     private double mRouteLat;
     private double mRouteLng;
+    Notification notification;
+    RemoteViews contentView;
+    public float totalPrice = 0;
+    public long beginTime = 0, totalTime = 0;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        beginTime = System.currentTimeMillis();
+        totalTime = 0;
+        totalDistance = 0;
+        totalPrice = 0;
         routPointList.clear();
         Log.i("BDGpsService", "********BDGpsService onCreate*******");
         lco = new LocationClientOption();
@@ -71,6 +87,24 @@ public class GPSService extends Service {
         locationClient.registerLocationListener(locationListener);
     }
 
+    private void initNotification() {
+        int icon = R.mipmap.bike_info_board_location;
+        contentView = new RemoteViews(getPackageName(), R.layout.item_riding_order);
+        notification = new NotificationCompat.Builder(this).setContent(contentView).setSmallIcon(icon).build();
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        notificationIntent.putExtra("flag", "notification");
+        notification.contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+    }
+
+
+//    private void startNotifi(String time, String distance, String price) {
+//        startForeground(1, notification);
+//        contentView.setTextViewText(R.id.ride_time, time);
+//        contentView.setTextViewText(R.id.ride_distance, distance);
+//        contentView.setTextViewText(R.id.cost_cycling, price);
+//    }
+
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
@@ -82,9 +116,47 @@ public class GPSService extends Service {
             Log.d("我是", mCarRentalOrderDate);
             mCarRentalOrderId = intent.getStringExtra("carRentalOrderId");
             Log.d("我是", mCarRentalOrderId);
+            initNotification();
+            //开启子线程和后台进行通信
             new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    try {
+                        Map<String, String> map = new HashMap<String, String>();
+                        String url = Api.BASE_URL + Api.ORDERCAST;
+                        map.put("carRentalOrderDate", mCarRentalOrderDate);
+                        map.put("bicycleNo", mBicycleNo);
+                        map.put("carRentalOrderId", mCarRentalOrderId);
+                        map.put("userId", mUserId);
+                        map.put("lng", mRouteLng + "");
+                        map.put("lat", mRouteLat + "");
+                        map.put("mile", totalDistance / 1000 + "");
+
+                        OkHttpUtils.post().url(url).params(map).build().execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                ToastUtils.showShort(App.getContext(), "服务正忙！");
+                            }
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                Log.d("给后台", response);
+                                if (JsonUtils.isSuccess(response)) {
+                                    Gson gson = new Gson();
+                                    RidingInfo ridingInfo = gson.fromJson(response, RidingInfo.class);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("ridingInfo", ridingInfo);
+                                    if (bundle != null) {
+//                                    sendToActivity(bundle);
+                                    }
+                                }
+
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
 
                 }
             }).start();
@@ -105,11 +177,11 @@ public class GPSService extends Service {
             Gson gson = new Gson();
             String routeListStr = gson.toJson(routPointList);
             Log.d("gao", "RouteService----routeListStr-------------" + routeListStr);
-//            if (routPointList.size() > 2) {
+            if (routPointList.size() > 2) {
                 insertData(routeListStr);
-//            }
-
+            }
         }
+        stopForeground(true);
         locationClient.unRegisterLocationListener(locationListener);
     }
 
@@ -121,9 +193,8 @@ public class GPSService extends Service {
     public class BDGpsServiceListener implements BDLocationListener {
         //发送广播，提示更新界面
         private void sendToActivity(Bundle bundle) {
-            Log.d("hhhh", bundle+"");
+            Log.d("hhhh", bundle + "");
             Intent intent = new Intent();
-//            intent.putExtra("newLoca", str);
             intent.putExtras(bundle);
             intent.setAction("NEW LOCATION SENT");
             sendBroadcast(intent);
@@ -163,10 +234,21 @@ public class GPSService extends Service {
                         if (distantce > 5) {
                             routPointList.add(routePoint);
                             totalDistance += distantce;
-
                         }
                     }
                 }
+                totalTime = (int) (System.currentTimeMillis() - beginTime) / 1000 / 60;
+                totalPrice = (float) (Math.floor(totalTime / 30) * 0.5 + 0.5);
+//                startNotifi(totalTime + "分钟", totalDistance + "米", totalPrice + "元");
+
+                Bundle bundle = new Bundle();
+                bundle.putLong("totalTime",totalTime);
+                bundle.putDouble("totalDistance", totalDistance);
+                bundle.putFloat("totalPrice", totalPrice);
+                bundle.putDouble("calorie",(totalDistance/1000)*29);
+                LogUtils.d("距离",totalDistance+"");
+                sendToActivity(bundle);
+
 //                StringBuffer sb = new StringBuffer();
 //                sb.append("经度=").append(location.getLongitude());
 //                sb.append("\n纬度=").append(location.getLatitude());
@@ -189,42 +271,7 @@ public class GPSService extends Service {
 
 //                sendToActivity(sb.toString());
 
-                try {
-                    Map<String, String> map = new HashMap<String, String>();
-                    String url = Api.BASE_URL + Api.ORDERCAST;
-                    map.put("carRentalOrderDate", mCarRentalOrderDate);
-                    map.put("bicycleNo", mBicycleNo);
-                    map.put("carRentalOrderId", mCarRentalOrderId);
-                    map.put("userId", mUserId);
-                    map.put("lng", location.getLongitude() + "");
-                    map.put("lat", location.getLatitude() + "");
-                    map.put("mile", totalDistance/1000 + "");
-                    Log.d("历程",totalDistance/1000+"");
 
-                    OkHttpUtils.post().url(url).params(map).build().execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            ToastUtils.showShort(App.getContext(),"服务正忙！");
-                        }
-
-                        @Override
-                        public void onResponse(String response, int id) {
-                            Log.d("给后台", response);
-                            if(JsonUtils.isSuccess(response)){
-                                Gson gson = new Gson();
-                                RidingInfo ridingInfo = gson.fromJson(response, RidingInfo.class);
-                                Bundle bundle = new Bundle();
-                                bundle.putSerializable("ridingInfo",ridingInfo);
-                                if(bundle!=null){
-                                    sendToActivity(bundle);
-                                }
-                            }
-
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
         }
     }
@@ -232,8 +279,11 @@ public class GPSService extends Service {
     public void insertData(String routeListStr) {
         ContentValues values = new ContentValues();
         // 向该对象中插入键值对，其中键是列名，值是希望插入到这一列的值，值必须和数据当中的数据类型一致
-        values.put("cycle_points", routeListStr);
+        values.put("cycle_date", MapUtil.getDateFromMillisecond(beginTime));
+        values.put("cycle_time", totalTime);
         values.put("cycle_distance", totalDistance);
+        values.put("cycle_price", totalPrice);
+        values.put("cycle_points", routeListStr);
         // 创建DatabaseHelper对象
         DatabaseHelper dbHelper = new DatabaseHelper(App.getContext());
         // 得到一个可写的SQLiteDatabase对象
@@ -245,5 +295,4 @@ public class GPSService extends Service {
         sqliteDatabase.insert("routePoint", null, values);
         sqliteDatabase.close();
     }
-
 }

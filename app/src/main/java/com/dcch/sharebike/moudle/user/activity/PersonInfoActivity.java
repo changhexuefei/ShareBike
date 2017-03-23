@@ -18,6 +18,7 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
+import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -73,7 +74,31 @@ public class PersonInfoActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        Intent intent = getIntent();
+        Bundle user = intent.getExtras();
+        if (user != null) {
+            mUserBundle = (UserInfo) user.getSerializable("userBundle");
+            nickName.setText(mUserBundle.getNickName().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
+            telephone.setText(mUserBundle.getPhone().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
+            if (mUserBundle.getStatus() == 0) {
+                authority.setText("未认证");
+                realName.setText("未认证");
+            }
+            if (mUserBundle.getStatus() == 1) {
+                authority.setText("已认证");
+                realName.setText(mUserBundle.getName());
+            }
+            if (mUserBundle.getUserimage() != null) {
+                Glide.with(App.getContext()).load(mUserBundle.getUserimage()).into(userInfoIcon);
+            } else {
+                userInfoIcon.setImageResource(R.mipmap.avatar_default_login);
+            }
+        }
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         if (SPUtils.isLogin()) {
             String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
             try {
@@ -84,27 +109,6 @@ public class PersonInfoActivity extends BaseActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Intent intent = getIntent();
-            Bundle user = intent.getExtras();
-            if (user != null) {
-                mUserBundle = (UserInfo) user.getSerializable("userBundle");
-                nickName.setText(mUserBundle.getNickName().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
-                telephone.setText(mUserBundle.getPhone().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
-                if (mUserBundle.getStatus() == 0) {
-                    authority.setText("未认证");
-                    realName.setText("未认证");
-                }
-                if (mUserBundle.getStatus() == 1) {
-                    authority.setText("已认证");
-                    realName.setText(mUserBundle.getName());
-                }
-                if (mUserBundle.getUserimage() != null) {
-                    Glide.with(App.getContext()).load(mUserBundle.getUserimage()).into(userInfoIcon);
-                } else {
-                    userInfoIcon.setImageResource(R.mipmap.avatar_default_login);
-                }
-            }
-
         }
     }
 
@@ -156,18 +160,11 @@ public class PersonInfoActivity extends BaseActivity {
                                                     //根据返回值判断上传成功或者失败
                                                     Log.d("上传头像", response);
                                                     //{"code":"1"}
-                                                    try {
-                                                        JSONObject object = new JSONObject(response);
-                                                        String code = object.optString("code");
-                                                        if (code.equals("1")) {
-                                                            ToastUtils.showShort(PersonInfoActivity.this, "头像上传成功!");
-                                                        } else if (code.equals("0")) {
-                                                            ToastUtils.showShort(PersonInfoActivity.this, "头像上传失败!");
-                                                        }
-                                                    } catch (JSONException e) {
-                                                        e.printStackTrace();
+                                                    if (JsonUtils.isSuccess(response)) {
+                                                        ToastUtils.showShort(PersonInfoActivity.this, "头像上传成功!");
+                                                    } else {
+                                                        ToastUtils.showShort(PersonInfoActivity.this, "头像上传失败!");
                                                     }
-
                                                 }
                                             });
                                 }
@@ -183,7 +180,7 @@ public class PersonInfoActivity extends BaseActivity {
                 startActivityForResult(changeNickName, 0);
                 break;
             case R.id.phone:
-                if(mUserBundle!=null){
+                if (mUserBundle != null) {
                     Intent mobileNum = new Intent(this, MobileNumActivity.class);
                     mobileNum.putExtra("cashStatus", mUserBundle.getCashStatus());
                     mobileNum.putExtra("phone", mUserBundle.getPhone());
@@ -209,9 +206,15 @@ public class PersonInfoActivity extends BaseActivity {
                             map.put("nickName", userNickName);
                             /**
                              * 上传用户昵称的方法
-                             *
+                             *.addHeader("Content-Type", "text/html");    //这行很重要
+                             httpPost.addHeader("charset", HTTP.UTF_8);
                              */
-                            OkHttpUtils.post().url(Api.BASE_URL + Api.EDITUSER).params(map).build().execute(new StringCallback() {
+
+                            OkHttpUtils.post()
+                                    .url(Api.BASE_URL + Api.EDITUSER)
+                                    .addHeader("Content-Type", "text/html;charset=utf-8")
+                                    .params(map).build()
+                                    .execute(new StringCallback() {
                                 @Override
                                 public void onError(Call call, Exception e, int id) {
                                     Log.e("修改昵称的请求失败", e.getMessage());
@@ -221,17 +224,13 @@ public class PersonInfoActivity extends BaseActivity {
                                 @Override
                                 public void onResponse(String response, int id) {
                                     //根据返回值成功和失败的判断
-                                    try {
-                                        JSONObject object = new JSONObject(response);
-                                        String code = object.optString("code");
-                                        if (code.equals("1")) {
-                                            ToastUtils.showShort(PersonInfoActivity.this, "昵称修改成功!");
-                                        } else if (code.equals("0")) {
-                                            ToastUtils.showShort(PersonInfoActivity.this, "昵称修改失败!");
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
+                                    if (JsonUtils.isSuccess(response)) {
+                                        ToastUtils.showShort(PersonInfoActivity.this, "昵称修改成功!");
+
+                                    } else {
+                                        ToastUtils.showShort(PersonInfoActivity.this, "昵称修改失败!");
                                     }
+
                                 }
                             });
                         }

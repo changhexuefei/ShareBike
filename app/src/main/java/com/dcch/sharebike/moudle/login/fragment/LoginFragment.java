@@ -103,6 +103,11 @@ public class LoginFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     //从服务端拿到客户信息
     private void getUserInfo(String uID) {
         Map<String, String> map = new HashMap<>();
@@ -156,8 +161,14 @@ public class LoginFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.creditScore:
-                Intent credit = new Intent(App.getContext(), CreditIntegralActivity.class);
-                startActivity(credit);
+                String mCreditScore = creditScore.getText().toString().trim();
+                mCreditScore = mCreditScore.substring(4, mCreditScore.length()-2);
+                if(mCreditScore!=null){
+                    Intent credit = new Intent(App.getContext(), CreditIntegralActivity.class);
+                    credit.putExtra("score",mCreditScore);
+                    startActivity(credit);
+                }
+
                 break;
             case R.id.userIcon:
                 if(mInfo!=null){

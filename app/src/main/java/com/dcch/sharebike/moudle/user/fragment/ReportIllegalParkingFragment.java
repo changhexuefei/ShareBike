@@ -111,6 +111,8 @@ public class ReportIllegalParkingFragment extends Fragment {
                 break;
             case R.id.select_photo:
                 RxGalleryFinal.with(getActivity())
+                        .cropHideBottomControls(true)
+                        .cropFreeStyleCropEnabled(false)
                         .image()
                         .radio()
                         .crop()

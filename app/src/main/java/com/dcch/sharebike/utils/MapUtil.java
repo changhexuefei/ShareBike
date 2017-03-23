@@ -1,6 +1,8 @@
 package com.dcch.sharebike.utils;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by gao on 2017/3/4.
@@ -36,5 +38,13 @@ public class MapUtil {
             return total + "公里";
         }
     }
+    public static String getDateFromMillisecond(Long millisecond) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date(millisecond);
+        String dateStr = simpleDateFormat.format(date);
+        return dateStr;
+    }
+
+
 
 }

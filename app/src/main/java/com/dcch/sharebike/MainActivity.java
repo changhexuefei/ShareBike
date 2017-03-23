@@ -67,7 +67,6 @@ import com.dcch.sharebike.listener.MyOrientationListener;
 import com.dcch.sharebike.moudle.home.bean.BikeInfo;
 import com.dcch.sharebike.moudle.home.bean.BikeRentalOrderInfo;
 import com.dcch.sharebike.moudle.home.bean.BookingBikeInfo;
-import com.dcch.sharebike.moudle.home.bean.RidingInfo;
 import com.dcch.sharebike.moudle.home.bean.UserBookingBikeInfo;
 import com.dcch.sharebike.moudle.login.activity.ClickCameraPopupActivity;
 import com.dcch.sharebike.moudle.login.activity.ClickMyHelpActivity;
@@ -281,24 +280,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         MainActivityPermissionsDispatcher.initPermissionWithCheck(this);
         showCamera();
         initPermission();
-        if (SPUtils.isLogin()) {
-            mInstructions.setVisibility(View.GONE);
-            userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-            object = null;
-            try {
-                object = new JSONObject(userDetail);
-                int id = object.getInt("id");
-                uID = String.valueOf(id);
-                if (uID != null) {
-                    queryUserInfo(uID);
-                }
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else {
-            mInstructions.setVisibility(View.VISIBLE);
-        }
         bikeInfos = new ArrayList<BikeInfo>();
         // 初始化GeoCoder模块，注册事件监听
 //        mSearch = GeoCoder.newInstance();
@@ -324,6 +306,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     }
 
     private void queryUserInfo(String uID) {
+
         Map<String, String> map = new HashMap<>();
         map.put("userId", uID);
 
@@ -1396,12 +1379,28 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("实验", "onResume");
         mMapView.onResume();
-        if (uID != null) {
-            queryUserInfo(uID);
+        if (SPUtils.isLogin()) {
+            mInstructions.setVisibility(View.GONE);
+            userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
+            object = null;
+            try {
+                object = new JSONObject(userDetail);
+                int id = object.getInt("id");
+                uID = String.valueOf(id);
+                if (uID != null) {
+                    queryUserInfo(uID);
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            mInstructions.setVisibility(View.VISIBLE);
         }
         setUserMapCenter();
-        Log.d("实验", "onResume");
+
     }
 
     @Override
@@ -1439,6 +1438,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         //注册EventBus
         EventBus.getDefault().register(this);
         alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
@@ -1552,16 +1552,31 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     class LocationReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-//            locationMsg = intent.getStringExtra("newLoca");
-            RidingInfo ridingInfo = (RidingInfo) intent.getSerializableExtra("ridingInfo");
-            if (ridingInfo != null) {
-                double tripDist = changeDouble(ridingInfo.getTripDist());
-                double calorie = changeDouble(ridingInfo.getCalorie());
-                orderPopupWindow.rideDistance.setText(String.valueOf(tripDist) + "公里");
-                orderPopupWindow.rideTime.setText(String.valueOf(ridingInfo.getTripTime()) + "分钟");
-                orderPopupWindow.consumeEnergy.setText(String.valueOf(calorie) + "大卡");
-                orderPopupWindow.costCycling.setText(String.valueOf(ridingInfo.getRideCost()));
+            Bundle bundle = intent.getExtras();
+            if(bundle!=null){
+
+                double totalDistance = bundle.getDouble("totalDistance");
+                double changeDouble = changeDouble(totalDistance);
+                String s = String.valueOf(changeDouble);
+                int i = stringToInt(s);
+                orderPopupWindow.rideDistance.setText(MapUtil.distanceFormatter(i));
+                orderPopupWindow.rideTime.setText(String.valueOf(bundle.getLong("totalTime")) + "分钟");
+                orderPopupWindow.consumeEnergy.setText(changeDouble(bundle.getDouble("calorie"))+ "大卡");
+                orderPopupWindow.costCycling.setText(String.valueOf(bundle.getFloat("totalPrice")));
             }
+//            locationMsg = intent.getStringExtra("newLoca");
+//            RidingInfo ridingInfo = (RidingInfo) intent.getSerializableExtra("ridingInfo");
+//            if (ridingInfo != null) {
+//                double tripDist = changeDouble(ridingInfo.getTripDist());
+//                double calorie = changeDouble(ridingInfo.getCalorie());
+//                String dist = String.valueOf(tripDist*1000);
+//                int i = stringToInt(dist);
+//                String s = MapUtil.distanceFormatter(i);
+//                orderPopupWindow.rideDistance.setText(s);
+//                orderPopupWindow.rideTime.setText(String.valueOf(ridingInfo.getTripTime()) + "分钟");
+//                orderPopupWindow.consumeEnergy.setText(String.valueOf(calorie) + "大卡");
+//                orderPopupWindow.costCycling.setText(String.valueOf(ridingInfo.getRideCost()));
+//            }
         }
 
         //double 类型保留一位小数
@@ -1570,7 +1585,11 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             dou = Double.parseDouble(nf.format(dou));
             return dou;
         }
-
+        public int stringToInt(String string){
+            String str = string.substring(0, string.indexOf("."));
+            int intgeo = Integer.parseInt(str);
+            return intgeo;
+        }
 
     }
 }

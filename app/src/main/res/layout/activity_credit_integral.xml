@@ -10,7 +10,7 @@
         android:id="@+id/personCredit"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/colorHeading">
+        android:background="@color/creditColor">
 
         <ImageView
             android:id="@+id/back"
@@ -28,13 +28,13 @@
             android:textSize="16sp" />
     </FrameLayout>
 
-    <io.netopen.hotbitmapgg.view.NewCreditSesameView
+
+
+    <com.dcch.sharebike.view.CreditSesameView
         android:id="@+id/new_credit"
-        android:layout_below="@+id/personCredit"
-        android:layout_centerHorizontal="true"
-        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-
-
 
 </RelativeLayout>

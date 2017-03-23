@@ -2,17 +2,18 @@ package com.dcch.sharebike.moudle.user.activity;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
+import android.graphics.Color;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
-
-import java.util.Random;
+import com.dcch.sharebike.view.CreditSesameView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.netopen.hotbitmapgg.view.NewCreditSesameView;
 
 public class CreditIntegralActivity extends BaseActivity {
 
@@ -26,10 +27,12 @@ public class CreditIntegralActivity extends BaseActivity {
             0xFFFF7997
     };
     @BindView(R.id.new_credit)
-    NewCreditSesameView mNewCredit;
+    CreditSesameView mNewCredit;
     @BindView(R.id.activity_credit_integral)
-    RelativeLayout mActivityCreditIntegral;
-    private Random random = new Random();
+    RelativeLayout mCreditArea;
+    //    private Random random = new Random();
+//    int i = random.nextInt(Integer.valueOf(mScore).intValue());
+    private String mScore;
 
     @Override
     protected int getLayoutId() {
@@ -38,24 +41,30 @@ public class CreditIntegralActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        mActivityCreditIntegral.setBackgroundColor(mColors[0]);
-        int i = random.nextInt(950);
-        mNewCredit.setSesameValues(i);
-        startColorChangeAnim();
-
+        Intent intent = getIntent();
+        if (intent != null) {
+            mScore = intent.getStringExtra("score");
+        }
+        mCreditArea.setBackgroundColor(mColors[0]);
+        getWindow().setStatusBarColor(Color.parseColor("#FF7997"));
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mNewCredit.setSesameValues(Integer.valueOf(mScore).intValue());
+        startColorChangeAnim();
+    }
 
     @OnClick(R.id.back)
-    public void onClick() {
+    public void onClick(View view) {
         finish();
     }
-    public void startColorChangeAnim() {
 
-        ObjectAnimator animator = ObjectAnimator.ofInt(mActivityCreditIntegral, "backgroundColor", mColors);
+    public void startColorChangeAnim() {
+        ObjectAnimator animator = ObjectAnimator.ofInt(mCreditArea, "backgroundColor", mColors);
         animator.setDuration(3000);
         animator.setEvaluator(new ArgbEvaluator());
         animator.start();
     }
-
 }

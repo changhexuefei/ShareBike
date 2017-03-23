@@ -160,6 +160,8 @@ public class CycleFailureFragment extends Fragment {
 
             case R.id.cycle_photo:
                 RxGalleryFinal.with(getActivity())
+                        .cropHideBottomControls(true)
+                        .cropFreeStyleCropEnabled(false)
                         .image()
                         .radio()
                         .crop()
@@ -189,7 +191,6 @@ public class CycleFailureFragment extends Fragment {
                 } else {
                     selectResult = "";
                 }
-                Log.d("多选", selectResult);
 
                 if (!uID.equals("") && uID != null && !bikeNo.equals("") && bikeNo != null) {
                     Map<String, String> map = new HashMap<>();

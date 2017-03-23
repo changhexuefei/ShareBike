@@ -23,10 +23,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase mDatabase) {
 ////        创建一个数据库
+        //创建一个数据库
         mDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (route_id integer primary key autoincrement ," +
-                "cycle_points text not null ," +
-                "cycle_distance text not null ) ");
-        LogUtils.d("数据库","创建成功");
+                "cycle_date text not null ," +
+                "cycle_time text not null ," +
+                "cycle_distance text not null ," +
+                "cycle_price text not null ," +
+                "cycle_points text not null )");
+        LogUtils.d("数据库", "创建成功");
     }
 
     @Override

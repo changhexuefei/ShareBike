@@ -321,7 +321,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     EventBus.getDefault().post(new MessageEvent(), "gone");
                     LoginActivity.this.finish();
                     //储存用户信息(登录储存一次)
+                    SPUtils.clear(App.getContext());
                     SPUtils.put(App.getContext(), "userDetail", response);
+                    LogUtils.d("userDetail",response);
                     SPUtils.put(App.getContext(), "islogin", true);
 
                 }else {
