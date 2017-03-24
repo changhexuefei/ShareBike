@@ -1590,6 +1590,5 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             int intgeo = Integer.parseInt(str);
             return intgeo;
         }
-
     }
 }
