@@ -1,10 +1,12 @@
 package com.dcch.sharebike.moudle.user.fragment;
 
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
@@ -49,6 +51,8 @@ import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
 import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultSubscriber;
 import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
 import okhttp3.Call;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 
 import static android.app.Activity.RESULT_OK;
 import static com.dcch.sharebike.R.id.tips;
@@ -57,6 +61,8 @@ import static com.dcch.sharebike.R.id.tips;
 /**
  * A simple {@link Fragment} subclass.
  */
+
+@RuntimePermissions
 public class CycleFailureFragment extends Fragment {
 
     @BindView(R.id.cf_bike_code)
@@ -110,6 +116,9 @@ public class CycleFailureFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        CycleFailureFragmentPermissionsDispatcher.initPermissionWithCheck(this);
+        showCamera();
+
         if (SPUtils.isLogin()) {
             String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
             try {
@@ -155,11 +164,13 @@ public class CycleFailureFragment extends Fragment {
 
         switch (view.getId()) {
             case R.id.scan_code:
+               CycleFailureFragmentPermissionsDispatcher.showCameraWithCheck(this);
                 Intent i4 = new Intent(getActivity(), CaptureActivity.class);
                 startActivityForResult(i4, 0);
                 break;
 
             case R.id.cycle_photo:
+
                 RxGalleryFinal.with(getActivity())
                         .cropHideBottomControls(true)
                         .cropFreeStyleCropEnabled(false)
@@ -238,6 +249,15 @@ public class CycleFailureFragment extends Fragment {
                 }
                 break;
         }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        CycleFailureFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @NeedsPermission(Manifest.permission.CAMERA)
+    void showCamera() {
     }
 
     @Override

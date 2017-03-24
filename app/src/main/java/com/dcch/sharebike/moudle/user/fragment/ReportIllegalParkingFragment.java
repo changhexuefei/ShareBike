@@ -1,10 +1,11 @@
 package com.dcch.sharebike.moudle.user.fragment;
 
-
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
@@ -46,6 +47,8 @@ import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
 import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultSubscriber;
 import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
 import okhttp3.Call;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -53,6 +56,8 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  */
+
+@RuntimePermissions
 public class ReportIllegalParkingFragment extends Fragment {
 
     @BindView(R.id.bike_code)
@@ -81,6 +86,7 @@ public class ReportIllegalParkingFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        showCamera();
         if (SPUtils.isLogin()) {
             String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
             Log.d("用户明细", userDetail);
@@ -108,6 +114,7 @@ public class ReportIllegalParkingFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.scan_code:
+                ReportIllegalParkingFragmentPermissionsDispatcher.showCameraWithCheck(this);
                 Intent i4 = new Intent(App.getContext(), CaptureActivity.class);
                 startActivityForResult(i4, 0);
                 break;
@@ -175,6 +182,18 @@ public class ReportIllegalParkingFragment extends Fragment {
                 break;
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        ReportIllegalParkingFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+
+    @NeedsPermission(Manifest.permission.CAMERA)
+    void showCamera() {
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

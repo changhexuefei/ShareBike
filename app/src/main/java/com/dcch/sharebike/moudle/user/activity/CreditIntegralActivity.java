@@ -21,10 +21,10 @@ public class CreditIntegralActivity extends BaseActivity {
     ImageView back;
 
     private final int[] mColors = new int[]{
-            0xFFFF00AB,
-            0xFFFF0081,
-            0xFFFF0077,
-            0xFFFF0097
+            0xFFFF80AB,
+            0xFFFF4081,
+            0xFFFF5177,
+            0xFFFF7997
     };
     @BindView(R.id.new_credit)
     CreditSesameView mNewCredit;

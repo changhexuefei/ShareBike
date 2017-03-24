@@ -1,6 +1,6 @@
 package com.dcch.sharebike.moudle.user.activity;
 
-import android.os.Bundle;
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -9,7 +9,6 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ShowRefundResultsActivity extends BaseActivity {
@@ -30,19 +29,16 @@ public class ShowRefundResultsActivity extends BaseActivity {
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 
     @OnClick({R.id.back, R.id.verify})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
+                finish();
                 break;
             case R.id.verify:
+                startActivity(new Intent(ShowRefundResultsActivity.this,WalletInfoActivity.class));
+                finish();
                 break;
         }
     }

@@ -85,6 +85,7 @@
                 android:src="@mipmap/input_qrcode_zoom_img"/>
 
             <ToggleButton
+                android:visibility="gone"
                 android:layout_centerVertical="true"
                 android:id="@+id/openFlashLight"
                 android:layout_width="wrap_content"

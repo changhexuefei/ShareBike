@@ -157,6 +157,7 @@ public class WalletInfoActivity extends BaseActivity {
                 case R.id.btn_confirm:
                     ToastUtils.showShort(WalletInfoActivity.this, "您点击的是退押金按钮");
                     startActivity(new Intent(WalletInfoActivity.this,ShowRefundResultsActivity.class));
+                    refundPopuwindow.dismiss();
                     break;
 
             }

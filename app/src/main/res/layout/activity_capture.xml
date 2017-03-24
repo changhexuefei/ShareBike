@@ -127,6 +127,7 @@
                 android:textSize="12sp"/>
 
             <ToggleButton
+                android:visibility="gone"
                 android:layout_centerVertical="true"
                 android:textSize="12sp"
                 android:drawablePadding="10dp"

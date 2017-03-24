@@ -93,7 +93,6 @@ public class LoginFragment extends Fragment {
                     int userId = object.getInt("id");
                     uID = String.valueOf(userId);
                     if(uID!=null){
-                        Log.d("我",uID);
                         getUserInfo(uID);
                     }
                 } catch (JSONException e) {

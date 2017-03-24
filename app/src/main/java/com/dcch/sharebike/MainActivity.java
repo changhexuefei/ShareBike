@@ -561,8 +561,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                         .longitude(mCurrentLongitude).build();
                 mMap.setMyLocationData(data);
                 setUserMapCenter();
-
-                startActivity(new Intent(MainActivity.this, RidingResultActivity.class));
                 break;
             case R.id.instructions:
                 Intent i2 = new Intent(this, PersonalCenterActivity.class);
@@ -1079,7 +1077,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                                     bikeRentalOrderInfo = gson.fromJson(response, BikeRentalOrderInfo.class);
                                     mServiceIntent = new Intent(MainActivity.this, GPSService.class);
                                     mServiceIntent.putExtra("userId", uID);
-                                    mServiceIntent.putExtra("bicycleNo", result);
+                                    mServiceIntent.putExtra("bicycleNo", bikeRentalOrderInfo.getBicycleNo());
                                     mServiceIntent.putExtra("carRentalOrderDate", bikeRentalOrderInfo.getCarRentalOrderDate());
                                     mServiceIntent.putExtra("carRentalOrderId", bikeRentalOrderInfo.getCarRentalOrderId());
                                     startService(mServiceIntent);
@@ -1098,7 +1096,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                         });
                     }else{
                         ToastUtils.showShort(MainActivity.this, "开锁失败，请重试！！！");
-
                     }
                 }
             });
@@ -1608,6 +1605,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     mMap.clear();
                     addOverlay(bikeInfos);
                     mScan.setVisibility(View.VISIBLE);
+                    isClick = true;
                 }
             }
 

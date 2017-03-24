@@ -39,8 +39,8 @@ public class GuideActivity extends BaseActivity {
         //设置全屏显示
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        int[] ids = {R.drawable.hint_card_1, R.drawable.hint_card_2, R.drawable.hint_card_3,
-                R.drawable.hint_card_4, R.drawable.hint_card_5};
+        int[] ids = {R.drawable.spring, R.drawable.summer, R.drawable.autumn,
+                R.drawable.winter};
         imageViews = new ArrayList();
         for (int i = 0; i < ids.length; i++) {
             ImageView imageView = new ImageView(this);
