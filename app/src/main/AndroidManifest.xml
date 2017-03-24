@@ -119,7 +119,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.SplashActivity">
-
         </activity>
         <activity android:name=".activity.GuideActivity"/>
         <activity
@@ -336,6 +335,8 @@
         <activity android:name=".moudle.user.activity.ShowRefundResultsActivity">
         </activity>
         <activity android:name=".moudle.user.activity.ManualInputActivity">
+        </activity>
+        <activity android:name=".moudle.user.activity.RidingResultActivity">
         </activity>
     </application>
 

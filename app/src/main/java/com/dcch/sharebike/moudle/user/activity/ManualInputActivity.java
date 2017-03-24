@@ -1,5 +1,7 @@
 package com.dcch.sharebike.moudle.user.activity;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,11 +12,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.base.CodeEvent;
 import com.dcch.sharebike.utils.DensityUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.dcch.sharebike.view.CodeInputEditText;
+
+import org.simple.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -29,6 +35,8 @@ public class ManualInputActivity extends BaseActivity {
     CodeInputEditText mManualInputArea;
     @BindView(R.id.ensure)
     Button mEnsure;
+    private String bikeNo="";
+
 
     @Override
     protected int getLayoutId() {
@@ -50,12 +58,22 @@ public class ManualInputActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         initDrawable(mOpenFlashLight);
-        mManualInputArea.initStyle(0,11,0.2f,R.color.colorTitle,R.color.lineColor,15);
+        mManualInputArea.initStyle(R.drawable.edit_num_bg, 10, 0.2f, R.color.colorTitle, R.color.lineColor, 15);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         mManualInputArea.setOnTextFinishListener(new CodeInputEditText.OnTextFinishListener() {
             @Override
             public void onFinish(String str) {
                 Toast.makeText(ManualInputActivity.this, str, Toast.LENGTH_SHORT).show();
+                bikeNo=str;
+                mEnsure.setEnabled(true);
+                mEnsure.setBackgroundColor(Color.parseColor("#F8941D"));
             }
         });
 
@@ -68,8 +86,19 @@ public class ManualInputActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.ensure:
-                ToastUtils.showShort(this,"您点击的是确认按钮");
+                ToastUtils.showShort(this, "您点击的是确认按钮");
+                Intent bikeNoIntent = new Intent(this, MainActivity.class);
+                EventBus.getDefault().post(new CodeEvent(bikeNo), "bikeNo");
+                startActivity(bikeNoIntent);
+                finish();
                 break;
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
 }

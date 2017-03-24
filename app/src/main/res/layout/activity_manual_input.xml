@@ -58,6 +58,7 @@
             android:layout_marginTop="30dp">
 
             <ImageView
+                android:layout_centerVertical="true"
                 android:id="@+id/icon_bike"
                 android:layout_width="120dp"
                 android:layout_height="80dp"
@@ -75,14 +76,16 @@
                 android:src="@mipmap/input_qrcode_arrow_img"/>
 
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:layout_marginTop="5dp"
+                android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/pointing"
-                android:padding="6dp"
+                android:layout_marginLeft="5dp"
                 android:src="@mipmap/input_qrcode_zoom_img"/>
 
             <ToggleButton
+                android:layout_centerVertical="true"
                 android:id="@+id/openFlashLight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -99,9 +102,10 @@
             android:id="@+id/manualInputArea"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_marginTop="20dp"
             android:layout_below="@+id/input_icon"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"/>
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"/>
 
 
         <TextView
@@ -109,19 +113,20 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/manualInputArea"
             android:layout_centerInParent="true"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="30dp"
             android:text="请确认您输入了正确的自行车编号"
             android:textColor="#ffffff"/>
 
     </RelativeLayout>
 
     <Button
+        android:enabled="false"
         android:id="@+id/ensure"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/icon_input_area"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:layout_marginTop="30dp"
         android:background="#6b6b6b"
         android:text="@string/verify"

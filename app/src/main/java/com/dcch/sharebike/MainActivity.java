@@ -60,6 +60,7 @@ import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.base.CodeEvent;
 import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.libzxing.zxing.activity.CaptureActivity;
@@ -77,6 +78,7 @@ import com.dcch.sharebike.moudle.login.activity.RechargeActivity;
 import com.dcch.sharebike.moudle.search.activity.SeekActivity;
 import com.dcch.sharebike.moudle.user.activity.CustomerServiceActivity;
 import com.dcch.sharebike.moudle.user.activity.RechargeDepositActivity;
+import com.dcch.sharebike.moudle.user.activity.RidingResultActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.overlayutil.OverlayManager;
 import com.dcch.sharebike.overlayutil.WalkingRouteOverlay;
@@ -560,11 +562,11 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (mServiceIntent != null) {
                     stopService(mServiceIntent);
                 }
+                startActivity(new Intent(MainActivity.this, RidingResultActivity.class));
                 break;
             case R.id.instructions:
                 Intent i2 = new Intent(this, PersonalCenterActivity.class);
                 startActivity(i2);
-
                 break;
             case R.id.btn_my_help:
                 if (SPUtils.isLogin()) {
@@ -575,19 +577,21 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 break;
             case R.id.scan:
                 ToastUtils.showLong(this, "我是扫描");
-                result = "1101000001";
-                openScan(phone, result);
+//                result = "1101000001";
+//                openScan(phone, result);
                 // && cashStatus == 1 && status == 1
                 if (SPUtils.isLogin()) {
-                    MainActivityPermissionsDispatcher.showCameraWithCheck(this);
-                    startActivityForResult(new Intent(this, CaptureActivity.class), 0);
-                } else if (SPUtils.isLogin() && cashStatus == 0) {
-                    Intent i4 = new Intent(this, RechargeActivity.class);
-                    startActivity(i4);
-                } else if (SPUtils.isLogin() && cashStatus == 1 && status == 0) {
-                    startActivity(new Intent(this, IdentityAuthentication.class));
-                } else if (SPUtils.isLogin() && cashStatus == 0 && status == 1) {
-                    startActivity(new Intent(this, RechargeDepositActivity.class));
+                    if (cashStatus == 1 && status == 1) {
+                        MainActivityPermissionsDispatcher.showCameraWithCheck(this);
+                        startActivityForResult(new Intent(this, CaptureActivity.class), 0);
+                    } else if (cashStatus == 0 && status == 1) {
+                        Intent i4 = new Intent(this, RechargeActivity.class);
+                        startActivity(i4);
+                    } else if (cashStatus == 1 && status == 0) {
+                        startActivity(new Intent(this, IdentityAuthentication.class));
+                    } else if (cashStatus == 0 && status == 1) {
+                        startActivity(new Intent(this, RechargeDepositActivity.class));
+                    }
                 } else {
 ////                    没有登录的情况设置Activity
 //                    mBtnMyHelp.setVisibility(View.INVISIBLE);
@@ -1033,7 +1037,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             if (bundle != null) {
                 result = bundle.getString("result");
                 LogUtils.d("是时候死还是", phone);
-//                openScan(phone, result);
+                openScan(phone, result);
                 ToastUtils.showLong(this, result);
             }
         }
@@ -1518,6 +1522,13 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         mInstructions.setVisibility(View.GONE);
     }
 
+    //手工输入页面发来的消息
+    @Subscriber(tag = "bikeNo", mode = ThreadMode.ASYNC)
+    private void receiveFromManual(CodeEvent info) {
+        LogUtils.d("自行车", info.getBikeNo());
+        result = info.getBikeNo();
+        openScan(phone, result);
+    }
 
     /*
     * 获取系统的北京时间
@@ -1553,15 +1564,14 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
-            if(bundle!=null){
-
+            if (bundle != null) {
                 double totalDistance = bundle.getDouble("totalDistance");
                 double changeDouble = changeDouble(totalDistance);
                 String s = String.valueOf(changeDouble);
                 int i = stringToInt(s);
                 orderPopupWindow.rideDistance.setText(MapUtil.distanceFormatter(i));
                 orderPopupWindow.rideTime.setText(String.valueOf(bundle.getLong("totalTime")) + "分钟");
-                orderPopupWindow.consumeEnergy.setText(changeDouble(bundle.getDouble("calorie"))+ "大卡");
+                orderPopupWindow.consumeEnergy.setText(changeDouble(bundle.getDouble("calorie")) + "大卡");
                 orderPopupWindow.costCycling.setText(String.valueOf(bundle.getFloat("totalPrice")));
             }
 //            locationMsg = intent.getStringExtra("newLoca");
@@ -1585,7 +1595,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             dou = Double.parseDouble(nf.format(dou));
             return dou;
         }
-        public int stringToInt(String string){
+
+        public int stringToInt(String string) {
             String str = string.substring(0, string.indexOf("."));
             int intgeo = Integer.parseInt(str);
             return intgeo;

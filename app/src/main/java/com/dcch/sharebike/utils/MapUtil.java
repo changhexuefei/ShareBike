@@ -1,5 +1,10 @@
 package com.dcch.sharebike.utils;
 
+import android.graphics.drawable.Drawable;
+import android.widget.TextView;
+
+import com.dcch.sharebike.app.App;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -45,6 +50,11 @@ public class MapUtil {
         return dateStr;
     }
 
-
+    //将TextView中的图片转化为规定大小的方法
+    public static void initDrawable(TextView v) {
+        Drawable drawable = v.getCompoundDrawables()[1];
+        drawable.setBounds(0, 0, DensityUtils.dp2px(App.getContext(), 50), DensityUtils.dp2px(App.getContext(), 50));
+        v.setCompoundDrawables(null, drawable, null, null);
+    }
 
 }

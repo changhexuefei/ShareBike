@@ -45,8 +45,7 @@ public class BikeRentalOrderPopupWindow extends PopupWindow {
 //          为控件赋值
         if (bikeRentalOrderInfo != null && !bikeRentalOrderInfo.equals("")) {
             rideTime.setText(String.valueOf(bikeRentalOrderInfo.getTripTime()) + "分钟");
-            rideDistance.setText(String.valueOf(bikeRentalOrderInfo.getTripDist()) + "公里");
-//            consumeEnergy.setText(bikeRentalOrderInfo.get);
+            rideDistance.setText(String.valueOf(bikeRentalOrderInfo.getTripDist()) + "米");
             bikeNo.setText(bikeRentalOrderInfo.getBicycleNo());
             costCycling.setText(String.valueOf(bikeRentalOrderInfo.getRideCost()));
         }

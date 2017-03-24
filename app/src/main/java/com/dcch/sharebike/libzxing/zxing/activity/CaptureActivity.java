@@ -36,7 +36,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.dcch.sharebike.R;
@@ -56,8 +55,6 @@ import java.lang.reflect.Field;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.hss01248.dialog.StyledDialog.context;
 
 
 /**
@@ -111,6 +108,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_capture);
@@ -392,78 +390,78 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         }
     }
 
-    /**
-     * 是否开启了闪光灯
-     *
-     * @return
-     */
-    public boolean isFlashlightOn() {
-        if (camera == null) {
-            camera = Camera.open();
-        }
-
-        Camera.Parameters parameters = camera.getParameters();
-        String flashMode = parameters.getFlashMode();
-
-        if (flashMode.equals(Camera.Parameters.FLASH_MODE_TORCH)) {
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * 闪光灯开关
-     */
-    public void flashlightUtils() {
-        if (camera == null) {
-            camera = Camera.open();
-        }
-
-        Camera.Parameters parameters = camera.getParameters();
-        // String flashMode = parameters.getFlashMode();
-
-        if (isFlashlightOn()) {
-
-            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);// 关闭
-            camera.setParameters(parameters);
-            camera.release();
-            camera = null;
-            Toast.makeText(context, "关闭手电筒", Toast.LENGTH_SHORT).show();
-        } else {
-            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);// 开启
-            camera.setParameters(parameters);
-            Toast.makeText(context, "开启手电筒", Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    /**
-     * 闪光灯开关2
-     */
-    public void flashUtils() {
-
-        Camera camera = Camera.open();
-
-        Camera.Parameters parameters = camera.getParameters();
-        String flashMode = parameters.getFlashMode();
-        if (flashMode.equals(Camera.Parameters.FLASH_MODE_TORCH)) {
-            camera.stopPreview();
-            camera.release();
-            camera = null;
-
-        } else {
-
-            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-            camera.setParameters(parameters);
-            camera.autoFocus(new Camera.AutoFocusCallback() {
-                public void onAutoFocus(boolean success, Camera camera) {
-                }
-            });
-            camera.startPreview();
-        }
-    }
+//    /**
+//     * 是否开启了闪光灯
+//     *
+//     * @return
+//     */
+//    public boolean isFlashlightOn() {
+//        if (camera == null) {
+//            camera = Camera.open();
+//        }
+//
+//        Camera.Parameters parameters = camera.getParameters();
+//        String flashMode = parameters.getFlashMode();
+//
+//        if (flashMode.equals(Camera.Parameters.FLASH_MODE_TORCH)) {
+//
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
+//
+//    /**
+//     * 闪光灯开关
+//     */
+//    public void flashlightUtils() {
+//        if (camera == null) {
+//            camera = Camera.open();
+//        }
+//
+//        Camera.Parameters parameters = camera.getParameters();
+//        // String flashMode = parameters.getFlashMode();
+//
+//        if (isFlashlightOn()) {
+//
+//            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);// 关闭
+//            camera.setParameters(parameters);
+//            camera.release();
+//            camera = null;
+//            Toast.makeText(context, "关闭手电筒", Toast.LENGTH_SHORT).show();
+//        } else {
+//            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);// 开启
+//            camera.setParameters(parameters);
+//            Toast.makeText(context, "开启手电筒", Toast.LENGTH_SHORT).show();
+//        }
+//
+//    }
+//
+//    /**
+//     * 闪光灯开关2
+//     */
+//    public void flashUtils() {
+//
+//        Camera camera = Camera.open();
+//
+//        Camera.Parameters parameters = camera.getParameters();
+//        String flashMode = parameters.getFlashMode();
+//        if (flashMode.equals(Camera.Parameters.FLASH_MODE_TORCH)) {
+//            camera.stopPreview();
+//            camera.release();
+//            camera = null;
+//
+//        } else {
+//
+//            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+//            camera.setParameters(parameters);
+//            camera.autoFocus(new Camera.AutoFocusCallback() {
+//                public void onAutoFocus(boolean success, Camera camera) {
+//                }
+//            });
+//            camera.startPreview();
+//        }
+//    }
 
 
 }
