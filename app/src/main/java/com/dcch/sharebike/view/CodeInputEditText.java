@@ -30,7 +30,7 @@ public class CodeInputEditText extends RelativeLayout {
     private LinearLayout linearLayout; //文本密码的文本
     private TextView[] textViews; //文本数组
 
-    private int codelength =10; //自行车编码长度， 默认11
+    private int codelength =11; //自行车编码长度， 默认11
 
     private OnTextFinishListener onTextFinishListener;
 

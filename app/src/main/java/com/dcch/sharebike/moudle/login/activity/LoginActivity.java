@@ -141,7 +141,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     public void init() {
 
-
     }
 
 //    private void initSDK() {
@@ -309,10 +308,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 //                    String messagecode = object.optString("messagecode");
 //                    if(messagecode.equals("1")){
 //                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//
 //                    }else{
 //                        ToastUtils.showShort(LoginActivity.this,"登录失败！");
-//
 //                    }
 //                } catch (JSONException e) {
 //                    e.printStackTrace();
@@ -338,7 +335,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     SPUtils.put(App.getContext(), "userDetail", response);
                     LogUtils.d("userDetail",response);
                     SPUtils.put(App.getContext(), "islogin", true);
-
                 }else {
                     ToastUtils.showShort(LoginActivity.this, "未知错误！请重试。");
                 }

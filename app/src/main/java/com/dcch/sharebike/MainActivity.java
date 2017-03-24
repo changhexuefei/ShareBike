@@ -68,6 +68,7 @@ import com.dcch.sharebike.listener.MyOrientationListener;
 import com.dcch.sharebike.moudle.home.bean.BikeInfo;
 import com.dcch.sharebike.moudle.home.bean.BikeRentalOrderInfo;
 import com.dcch.sharebike.moudle.home.bean.BookingBikeInfo;
+import com.dcch.sharebike.moudle.home.bean.RidingInfo;
 import com.dcch.sharebike.moudle.home.bean.UserBookingBikeInfo;
 import com.dcch.sharebike.moudle.login.activity.ClickCameraPopupActivity;
 import com.dcch.sharebike.moudle.login.activity.ClickMyHelpActivity;
@@ -251,7 +252,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private String count;
     private BookingBikeInfo bookingBikeInfo = null;
     private BikeRentalOrderInfo bikeRentalOrderInfo = null;
-    private BikeRentalOrderPopupWindow orderPopupWindow = null;
+    private static BikeRentalOrderPopupWindow orderPopupWindow = null;
     private String mCastTime;
     private String mDistance;
     private LatLng latLng;
@@ -268,6 +269,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private double mLat1;
     private double mLng1;
     private Intent mServiceIntent;
+    ResultReceiver mResultReceiver;
 
 
     @Override
@@ -559,9 +561,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                         .longitude(mCurrentLongitude).build();
                 mMap.setMyLocationData(data);
                 setUserMapCenter();
-                if (mServiceIntent != null) {
-                    stopService(mServiceIntent);
-                }
+
                 startActivity(new Intent(MainActivity.this, RidingResultActivity.class));
                 break;
             case R.id.instructions:
@@ -1059,69 +1059,46 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 @Override
                 public void onResponse(String response, int id) {
                     Log.d("开锁", response);
-                    try {
-                        JSONObject object = new JSONObject(response);
-                        String message = object.optString("message");
-//                        //测试GPS
-//                        Intent intent = new Intent(LOCSTART);
-//                        pi = PendingIntent.getService(getApplicationContext(), 0, intent,
-//                                PendingIntent.FLAG_UPDATE_CURRENT);
-//                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10000, pi);
-//                        Toast.makeText(getApplicationContext(), "GPS测试开始", Toast.LENGTH_SHORT).show();
+                    if (JsonUtils.isSuccess(response)) {
+                        Map<String, String> map = new HashMap<String, String>();
+                        map.put("userId", uID);
+                        map.put("bicycleNo", result);
+                        OkHttpUtils.post().url(Api.BASE_URL + Api.RENTALORDER).params(map).build().execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                LogUtils.e(e.getMessage());
+                            }
 
-                        /**
-                         * alarmManager.cancel(pi);
-                         Intent intent = new Intent(LOCSTART);
-                         stopService(intent);
-                         Toast.makeText(getApplicationContext(), "GPS测试结束", Toast.LENGTH_SHORT).show();
-                         *
-                         */
-
-                        if (message.equals("开锁成功")) {
-                            ToastUtils.showLong(MainActivity.this, message);
-                            Map<String, String> map = new HashMap<String, String>();
-                            map.put("userId", uID);
-                            map.put("bicycleNo", result);
-                            OkHttpUtils.post().url(Api.BASE_URL + Api.RENTALORDER).params(map).build().execute(new StringCallback() {
-                                @Override
-                                public void onError(Call call, Exception e, int id) {
-                                    LogUtils.e(e.getMessage());
+                            @Override
+                            public void onResponse(String response, int id) {
+                                Log.d("开锁", response);
+                                if (JsonUtils.isSuccess(response)) {
+                                    isShowRideOrder = true;
+                                    isClick = false;
+                                    Gson gson = new Gson();
+                                    bikeRentalOrderInfo = gson.fromJson(response, BikeRentalOrderInfo.class);
+                                    mServiceIntent = new Intent(MainActivity.this, GPSService.class);
+                                    mServiceIntent.putExtra("userId", uID);
+                                    mServiceIntent.putExtra("bicycleNo", result);
+                                    mServiceIntent.putExtra("carRentalOrderDate", bikeRentalOrderInfo.getCarRentalOrderDate());
+                                    mServiceIntent.putExtra("carRentalOrderId", bikeRentalOrderInfo.getCarRentalOrderId());
+                                    startService(mServiceIntent);
+                                    mScan.setVisibility(View.INVISIBLE);
+                                    String bicycleNo = bikeRentalOrderInfo.getBicycleNo();
+                                    ToastUtils.showShort(MainActivity.this, bicycleNo);
+                                    orderPopupWindow = new BikeRentalOrderPopupWindow(MainActivity.this, bikeRentalOrderInfo);
+                                    mMap.clear();
+                                    orderPopupWindow.showAsDropDown(findViewById(R.id.top));
+                                    orderPopupWindow.setOutsideTouchable(false);
+                                    orderPopupWindow.setFocusable(false);
+                                } else {
+                                    ToastUtils.showShort(MainActivity.this, "服务器忙！！！");
                                 }
+                            }
+                        });
+                    }else{
+                        ToastUtils.showShort(MainActivity.this, "开锁失败，请重试！！！");
 
-                                @Override
-                                public void onResponse(String response, int id) {
-                                    Log.d("hehehehe", response);
-                                    if (JsonUtils.isSuccess(response)) {
-                                        isShowRideOrder = true;
-                                        isClick = false;
-                                        Gson gson = new Gson();
-                                        bikeRentalOrderInfo = gson.fromJson(response, BikeRentalOrderInfo.class);
-                                        mServiceIntent = new Intent(MainActivity.this, GPSService.class);
-                                        mServiceIntent.putExtra("userId", uID);
-                                        mServiceIntent.putExtra("bicycleNo", result);
-                                        mServiceIntent.putExtra("carRentalOrderDate", bikeRentalOrderInfo.getCarRentalOrderDate());
-                                        mServiceIntent.putExtra("carRentalOrderId", bikeRentalOrderInfo.getCarRentalOrderId());
-                                        startService(mServiceIntent);
-                                        mScan.setVisibility(View.INVISIBLE);
-                                        String bicycleNo = bikeRentalOrderInfo.getBicycleNo();
-                                        ToastUtils.showShort(MainActivity.this, bicycleNo);
-                                        orderPopupWindow = new BikeRentalOrderPopupWindow(MainActivity.this, bikeRentalOrderInfo);
-                                        mMap.clear();
-                                        orderPopupWindow.showAsDropDown(findViewById(R.id.top));
-                                        orderPopupWindow.setOutsideTouchable(false);
-                                        orderPopupWindow.setFocusable(false);
-
-                                    } else {
-                                        ToastUtils.showShort(MainActivity.this, "请求异常");
-                                    }
-                                }
-                            });
-                        } else {
-                            ToastUtils.showShort(MainActivity.this, "开锁失败，请重试！！！");
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
                 }
             });
@@ -1370,6 +1347,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         //反注册EventBus
         EventBus.getDefault().unregister(this);
         unregisterReceiver(lr);
+        unregisterReceiver(mResultReceiver);
         Log.d("实验", "onDestroy");
         mMapView.onDestroy();
         mMapView = null;
@@ -1442,7 +1420,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         //注册EventBus
         EventBus.getDefault().register(this);
         alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
@@ -1450,6 +1427,12 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("NEW LOCATION SENT");
         registerReceiver(lr, intentFilter);
+        mResultReceiver=new ResultReceiver();
+        intentFilter = new IntentFilter();
+        intentFilter.addAction("RESULT SENT");
+        registerReceiver(mResultReceiver, intentFilter);
+
+
         Log.d("实验", "onCreate");
     }
 
@@ -1560,33 +1543,35 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         return diff;
     }
 
-    class LocationReceiver extends BroadcastReceiver {
+     class LocationReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Bundle bundle = intent.getExtras();
-            if (bundle != null) {
-                double totalDistance = bundle.getDouble("totalDistance");
-                double changeDouble = changeDouble(totalDistance);
-                String s = String.valueOf(changeDouble);
-                int i = stringToInt(s);
-                orderPopupWindow.rideDistance.setText(MapUtil.distanceFormatter(i));
-                orderPopupWindow.rideTime.setText(String.valueOf(bundle.getLong("totalTime")) + "分钟");
-                orderPopupWindow.consumeEnergy.setText(changeDouble(bundle.getDouble("calorie")) + "大卡");
-                orderPopupWindow.costCycling.setText(String.valueOf(bundle.getFloat("totalPrice")));
-            }
-//            locationMsg = intent.getStringExtra("newLoca");
-//            RidingInfo ridingInfo = (RidingInfo) intent.getSerializableExtra("ridingInfo");
-//            if (ridingInfo != null) {
-//                double tripDist = changeDouble(ridingInfo.getTripDist());
-//                double calorie = changeDouble(ridingInfo.getCalorie());
-//                String dist = String.valueOf(tripDist*1000);
-//                int i = stringToInt(dist);
-//                String s = MapUtil.distanceFormatter(i);
-//                orderPopupWindow.rideDistance.setText(s);
-//                orderPopupWindow.rideTime.setText(String.valueOf(ridingInfo.getTripTime()) + "分钟");
-//                orderPopupWindow.consumeEnergy.setText(String.valueOf(calorie) + "大卡");
-//                orderPopupWindow.costCycling.setText(String.valueOf(ridingInfo.getRideCost()));
+//            Intent start = new Intent(context, GPSService.class);
+//            context.startService(start);
+//            Bundle bundle = intent.getExtras();
+//            if (bundle != null) {
+//                double totalDistance = bundle.getDouble("totalDistance");
+//                double changeDouble = changeDouble(totalDistance);
+//                String s = String.valueOf(changeDouble);
+//                int i = stringToInt(s);
+//                orderPopupWindow.rideDistance.setText(MapUtil.distanceFormatter(i));
+//                orderPopupWindow.rideTime.setText(String.valueOf(bundle.getLong("totalTime")) + "分钟");
+//                orderPopupWindow.consumeEnergy.setText(changeDouble(bundle.getDouble("calorie")) + "大卡");
+//                orderPopupWindow.costCycling.setText(String.valueOf(bundle.getFloat("totalPrice")));
 //            }
+//            locationMsg = intent.getStringExtra("newLoca");
+            RidingInfo ridingInfo = (RidingInfo) intent.getSerializableExtra("ridingInfo");
+            if (ridingInfo != null) {
+                double tripDist = changeDouble(ridingInfo.getTripDist());
+                double calorie = changeDouble(ridingInfo.getCalorie());
+                String dist = String.valueOf(tripDist*1000);
+                int i = stringToInt(dist);
+                String s = MapUtil.distanceFormatter(i);
+                orderPopupWindow.rideDistance.setText(s);
+                orderPopupWindow.rideTime.setText(String.valueOf(ridingInfo.getTripTime()) + "分钟");
+                orderPopupWindow.consumeEnergy.setText(String.valueOf(calorie) + "大卡");
+                orderPopupWindow.costCycling.setText(String.valueOf(ridingInfo.getRideCost()));
+            }
         }
 
         //double 类型保留一位小数
@@ -1602,4 +1587,32 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             return intgeo;
         }
     }
+    class ResultReceiver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            RidingInfo ridingInfo = (RidingInfo) intent.getSerializableExtra("ridingInfo");
+            Log.d("bbbb",ridingInfo+"");
+            if (ridingInfo != null) {
+                if(orderPopupWindow!=null){
+                    orderPopupWindow.dismiss();
+                }
+                if (mServiceIntent != null) {
+                    stopService(mServiceIntent);
+                    Intent ridingResult = new Intent(MainActivity.this,RidingResultActivity.class);
+                    ridingResult.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("result",ridingInfo);
+                    ridingResult.putExtras(bundle);
+                    startActivity(ridingResult);
+                    mMap.clear();
+                    addOverlay(bikeInfos);
+                    mScan.setVisibility(View.VISIBLE);
+                }
+            }
+
+        }
+    }
+
+
 }

@@ -1,7 +1,6 @@
 package com.dcch.sharebike.service;
 
 import android.app.Notification;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,7 +8,6 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -19,8 +17,6 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
-import com.dcch.sharebike.MainActivity;
-import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.db.DatabaseHelper;
 import com.dcch.sharebike.http.Api;
@@ -28,7 +24,6 @@ import com.dcch.sharebike.listener.MyOrientationListener;
 import com.dcch.sharebike.moudle.home.bean.RidingInfo;
 import com.dcch.sharebike.moudle.home.bean.RoutePoint;
 import com.dcch.sharebike.utils.JsonUtils;
-import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.MapUtil;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.google.gson.Gson;
@@ -46,7 +41,7 @@ import okhttp3.Call;
  */
 
 public class GPSService extends Service {
-    private static final int minTime = 30000;
+    private static final int minTime = 5000;
     private LocationClient locationClient;
     private BDGpsServiceListener locationListener;
     private LocationClientOption lco;
@@ -69,7 +64,7 @@ public class GPSService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        initNotification();
+//        initNotification();
         beginTime = System.currentTimeMillis();
         totalTime = 0;
         totalDistance = 0;
@@ -88,22 +83,22 @@ public class GPSService extends Service {
         locationClient.registerLocationListener(locationListener);
     }
 
-    private void initNotification() {
-        int icon = R.mipmap.bike_info_board_location;
-        contentView = new RemoteViews(getPackageName(), R.layout.item_riding_order);
-        notification = new NotificationCompat.Builder(this).setContent(contentView).setSmallIcon(icon).build();
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        notificationIntent.putExtra("flag", "notification");
-        notification.contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-    }
+//    private void initNotification() {
+//        int icon = R.mipmap.bike_info_board_location;
+//        contentView = new RemoteViews(getPackageName(), R.layout.item_riding_order);
+//        notification = new NotificationCompat.Builder(this).setContent(contentView).setSmallIcon(icon).build();
+//        Intent notificationIntent = new Intent(this, MainActivity.class);
+//        notificationIntent.putExtra("flag", "notification");
+//        notification.contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+//    }
 
 
-    private void startNotifi(String time, String distance, String price) {
-        startForeground(1, notification);
-        contentView.setTextViewText(R.id.ride_time, time);
-        contentView.setTextViewText(R.id.ride_distance, distance);
-        contentView.setTextViewText(R.id.cost_cycling, price);
-    }
+//    private void startNotifi(String time, String distance, String price) {
+//        startForeground(1, notification);
+//        contentView.setTextViewText(R.id.ride_time, time);
+//        contentView.setTextViewText(R.id.ride_distance, distance);
+//        contentView.setTextViewText(R.id.cost_cycling, price);
+//    }
 
 
     @Override
@@ -117,45 +112,51 @@ public class GPSService extends Service {
             Log.d("我是", mCarRentalOrderDate);
             mCarRentalOrderId = intent.getStringExtra("carRentalOrderId");
             Log.d("我是", mCarRentalOrderId);
-
             //开启子线程和后台进行通信
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Map<String, String> map = new HashMap<String, String>();
-                    String url = Api.BASE_URL + Api.ORDERCAST;
-                    map.put("carRentalOrderDate", mCarRentalOrderDate);
-                    map.put("bicycleNo", mBicycleNo);
-                    map.put("carRentalOrderId", mCarRentalOrderId);
-                    map.put("userId", mUserId);
-                    map.put("lng", mRouteLng + "");
-                    map.put("lat", mRouteLat + "");
-                    map.put("mile", totalDistance / 1000 + "");
-
-                    OkHttpUtils.post().url(url).params(map).build().execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            ToastUtils.showShort(App.getContext(), "服务正忙！");
-                        }
-
-                        @Override
-                        public void onResponse(String response, int id) {
-                            Log.d("给后台", response);
-                            if (JsonUtils.isSuccess(response)) {
-                                Gson gson = new Gson();
-                                RidingInfo ridingInfo = gson.fromJson(response, RidingInfo.class);
-                                Bundle bundle = new Bundle();
-                                bundle.putSerializable("ridingInfo", ridingInfo);
-                                if (bundle != null) {
-//                                    sendToActivity(bundle);
-                                }
-                            }
-
-                        }
-                    });
-                }
-            }).start();
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    LogUtils.d("进行中","记录经纬度");
+//                    Map<String, String> map = new HashMap<String, String>();
+//                    String url = Api.BASE_URL + Api.ORDERCAST;
+//                    map.put("carRentalOrderDate", mCarRentalOrderDate);
+//                    map.put("bicycleNo", mBicycleNo);
+//                    map.put("carRentalOrderId", mCarRentalOrderId);
+//                    map.put("userId", mUserId);
+//                    map.put("lng", mRouteLng + "");
+//                    map.put("lat", mRouteLat + "");
+//                    map.put("mile", totalDistance / 1000 + "");
+//
+//                    OkHttpUtils.post().url(url).params(map).build().execute(new StringCallback() {
+//                        @Override
+//                        public void onError(Call call, Exception e, int id) {
+//                            ToastUtils.showShort(App.getContext(), "服务正忙！");
+//                        }
+//
+//                        @Override
+//                        public void onResponse(String response, int id) {
+//                            Log.d("给后台", response);
+//                            if (JsonUtils.isSuccess(response)) {
+//                                Gson gson = new Gson();
+//                                RidingInfo ridingInfo = gson.fromJson(response, RidingInfo.class);
+//                                Bundle bundle = new Bundle();
+//                                bundle.putSerializable("ridingInfo", ridingInfo);
+//                                if (bundle != null) {
+////                                    sendToActivity(bundle);
+//                                }
+//                            }
+//
+//                        }
+//                    });
+//                }
+//            }).start();
+//            AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+//            int second = 30*1000;
+//            long triggerAtTime = SystemClock.elapsedRealtime()+second;
+//            Intent i = new Intent(this,MainActivity.class);
+//            PendingIntent pi = PendingIntent.getBroadcast(this,0,i,0);
+//            manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,triggerAtTime,pi);
         }
         Log.d("BDGpsService", "********BDGpsService onStartCommand*******");
         if (locationClient != null && !locationClient.isStarted()) {
@@ -177,7 +178,7 @@ public class GPSService extends Service {
                 insertData(routeListStr);
             }
         }
-        stopForeground(true);
+//        stopForeground(true);
         locationClient.unRegisterLocationListener(locationListener);
     }
 
@@ -193,6 +194,15 @@ public class GPSService extends Service {
             Intent intent = new Intent();
             intent.putExtras(bundle);
             intent.setAction("NEW LOCATION SENT");
+            sendBroadcast(intent);
+        }
+
+        //发送广播，提示跳转到结束界面
+        private void sendToRidingResult(Bundle bundle) {
+            Log.d("AAAAA", bundle + "");
+            Intent intent = new Intent();
+            intent.putExtras(bundle);
+            intent.setAction("RESULT SENT");
             sendBroadcast(intent);
         }
 
@@ -232,17 +242,17 @@ public class GPSService extends Service {
                         }
                     }
                 }
-                totalTime = (int) (System.currentTimeMillis() - beginTime) / 1000 / 60;
-                totalPrice = (float) (Math.floor(totalTime / 30) * 0.5 + 0.5);
-                startNotifi(totalTime + "分钟", totalDistance + "米", totalPrice + "元");
+//                totalTime = (int) (System.currentTimeMillis() - beginTime) / 1000 / 60;
+//                totalPrice = (float) (Math.floor(totalTime / 30) * 0.5 + 0.5);
+//                startNotifi(totalTime + "分钟", totalDistance + "米", totalPrice + "元");
 
-                Bundle bundle = new Bundle();
-                bundle.putLong("totalTime", totalTime);
-                bundle.putDouble("totalDistance", totalDistance);
-                bundle.putFloat("totalPrice", totalPrice);
-                bundle.putDouble("calorie", (totalDistance / 1000) * 29);
-                LogUtils.d("距离", totalDistance + "");
-                sendToActivity(bundle);
+//                Bundle bundle = new Bundle();
+//                bundle.putLong("totalTime", totalTime);
+//                bundle.putDouble("totalDistance", totalDistance);
+//                bundle.putFloat("totalPrice", totalPrice);
+//                bundle.putDouble("calorie", (totalDistance / 1000) * 29);
+//                LogUtils.d("距离", totalDistance + "");
+//                sendToActivity(bundle);
 
 //                StringBuffer sb = new StringBuffer();
 //                sb.append("经度=").append(location.getLongitude());
@@ -263,10 +273,44 @@ public class GPSService extends Service {
 //                    sb.append("\n市=").append(location.getCity());
 //                    sb.append("\n区县=").append(location.getDistrict());
 //                }
-
 //                sendToActivity(sb.toString());
 
+                Map<String, String> map = new HashMap<String, String>();
+                String url = Api.BASE_URL + Api.ORDERCAST;
+                map.put("carRentalOrderDate", mCarRentalOrderDate);
+                map.put("bicycleNo", mBicycleNo);
+                map.put("carRentalOrderId", mCarRentalOrderId);
+                map.put("userId", mUserId);
+                map.put("lng", mRouteLng + "");
+                map.put("lat", mRouteLat + "");
+                map.put("mile", totalDistance / 1000 + "");
 
+                OkHttpUtils.post().url(url).params(map).build().execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        ToastUtils.showShort(App.getContext(), "服务正忙！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.d("给后台", response);
+                        if (JsonUtils.isSuccess(response)) {
+                                    Gson gson = new Gson();
+                                    RidingInfo ridingInfo = gson.fromJson(response, RidingInfo.class);
+                                    if(ridingInfo.getStatus()==0){
+                                        Bundle bundle = new Bundle();
+                                        bundle.putSerializable("ridingInfo", ridingInfo);
+                                        if (bundle != null) {
+                                            sendToActivity(bundle);
+                                        }
+                                    } else if(ridingInfo.getStatus()==1){
+                                        Bundle bundle = new Bundle();
+                                        bundle.putSerializable("ridingInfo", ridingInfo);
+                                        sendToRidingResult(bundle);
+                                }
+                        }
+                    }
+                });
             }
         }
     }

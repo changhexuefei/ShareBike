@@ -60,7 +60,7 @@ public class ManualInputActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         initDrawable(mOpenFlashLight);
-        mManualInputArea.initStyle(R.drawable.edit_num_bg, 10, 0.2f, R.color.colorTitle, R.color.lineColor, 15);
+        mManualInputArea.initStyle(R.drawable.edit_num_bg, 11, 0.2f, R.color.colorTitle, R.color.lineColor, 15);
 
     }
 

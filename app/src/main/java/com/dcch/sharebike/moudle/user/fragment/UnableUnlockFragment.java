@@ -16,6 +16,8 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.libzxing.zxing.activity.CaptureActivity;
+import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
+import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.louisgeek.multiedittextviewlib.MultiEditInputView;
@@ -116,16 +118,12 @@ public class UnableUnlockFragment extends Fragment {
                                 @Override
                                 public void onResponse(String response, int id) {
                                     Log.d("上传成功", response);
-                                    try {
-                                        JSONObject object = new JSONObject(response);
-                                        String resultStatus = object.optString("resultStatus");
-                                        if (resultStatus.equals("1")) {
-                                            ToastUtils.showLong(getActivity(), "上传成功！");
-                                        } else if (resultStatus.equals("0")) {
-                                            ToastUtils.showLong(getActivity(), "上传失败！");
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
+                                    if(JsonUtils.isSuccess(response)){
+                                        ToastUtils.showLong(getActivity(), "上传成功！");
+                                        startActivity(new Intent(getActivity(), UserGuideActivity.class));
+                                        getActivity().finish();
+                                    }else{
+                                        ToastUtils.showLong(getActivity(), "上传失败！");
                                     }
                                 }
                             });

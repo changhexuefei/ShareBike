@@ -1,5 +1,8 @@
 package com.dcch.sharebike.moudle.user.activity;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.ImageView;
@@ -7,6 +10,7 @@ import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.moudle.home.bean.RidingInfo;
 import com.dcch.sharebike.utils.MapUtil;
 import com.dcch.sharebike.utils.ToastUtils;
 
@@ -32,6 +36,7 @@ public class RidingResultActivity extends BaseActivity {
     @BindView(R.id.share_journey)
     TextView mShareJourney;
 
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_riding_result;
@@ -39,6 +44,8 @@ public class RidingResultActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+
+
         MapUtil.initDrawable(mTakePhone);
         MapUtil.initDrawable(mShareJourney);
     }
@@ -65,4 +72,26 @@ public class RidingResultActivity extends BaseActivity {
                 break;
         }
     }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if(extras!=null){
+            RidingInfo ridingInfo= (RidingInfo) extras.getSerializable("result");
+            mMoneyResultShow.setText(String.valueOf(ridingInfo.getRideCost()));
+            mRideCost.setText(String.valueOf(ridingInfo.getRideCost())+"元");
+            mRideTime.setText(String.valueOf(ridingInfo.getTripTime())+"分钟");
+            mBalance.setText(String.valueOf(ridingInfo.getAmount())+"元");
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
+
+
 }
