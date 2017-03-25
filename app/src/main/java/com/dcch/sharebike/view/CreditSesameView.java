@@ -180,7 +180,7 @@ public class CreditSesameView extends View {
 
     private void drawCenterText(Canvas canvas) {
         this.mTextPaint.setTextSize(30.0F);
-        canvas.drawText("qiLin", (float) this.radius, (float) (this.radius - 130), this.mTextPaint);
+        canvas.drawText("麒麟单车", (float) this.radius, (float) (this.radius - 130), this.mTextPaint);
         this.mTextPaint.setTextSize(200.0F);
         this.mTextPaint.setStyle(Style.STROKE);
         canvas.drawText(String.valueOf(this.mMinNum), (float) this.radius, (float) (this.radius + 70), this.mTextPaint);

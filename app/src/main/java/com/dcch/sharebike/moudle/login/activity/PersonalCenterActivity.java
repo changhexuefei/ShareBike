@@ -1,6 +1,7 @@
 package com.dcch.sharebike.moudle.login.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.FrameLayout;
@@ -25,6 +26,8 @@ public class PersonalCenterActivity extends BaseActivity {
     FragmentManager supportFragmentManager;
     LoginFragment lf;
     UnLoginFragment uf;
+    //记录Fragment的位置
+    private int position = 0;
 
     @Override
     protected int getLayoutId() {
@@ -34,7 +37,6 @@ public class PersonalCenterActivity extends BaseActivity {
     @Override
     protected void initData() {
         showFragment();
-
     }
 
     @OnClick(R.id.back)
@@ -86,4 +88,19 @@ public class PersonalCenterActivity extends BaseActivity {
         finish();
 
     }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        position = savedInstanceState.getInt("position");
+        showFragment();
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //记录当前的position
+        outState.putInt("position", position);
+    }
+
+
 }

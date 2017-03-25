@@ -22,8 +22,8 @@ public class SplashActivity extends BaseActivity {
     @BindView(R.id.rl_splash_root)
     RelativeLayout mRlSplashRoot;
     // 判断应用是否初次加载，读取SharedPreferences中的guide_activity字段
-    private static final String SHAREDPREFERENCES_NAME = "my_pref";
-    private static final String KEY_GUIDE_ACTIVITY = "guide_activity";
+//    private static final String SHAREDPREFERENCES_NAME = "my_pref";
+//    private static final String KEY_GUIDE_ACTIVITY = "guide_activity";
     private final static int SWITCH_MAINACTIVITY = 1000;
     private final static int SWITCH_GUIDACTIVITY = 1001;
 
@@ -60,8 +60,7 @@ public class SplashActivity extends BaseActivity {
         animation.setDuration(1000);
         animation.setFillAfter(true);
         mRlSplashRoot.startAnimation(animation);
-        boolean isFirst = SPUtils.isFirst();
-        if (isFirst)
+        if (SPUtils.isFirst())
             handler.sendEmptyMessageDelayed(SWITCH_GUIDACTIVITY, 5000);
         else
             handler.sendEmptyMessageDelayed(SWITCH_MAINACTIVITY, 5000);

@@ -212,8 +212,10 @@ public class PersonInfoActivity extends BaseActivity {
 
                             OkHttpUtils.post()
                                     .url(Api.BASE_URL + Api.EDITUSER)
-                                    .addHeader("Content-Type", "text/html;charset=utf-8")
-                                    .params(map).build()
+                                    .addHeader("Content-Type", "text/html")
+                                    .addHeader("Charset", "utf-8")
+                                    .params(map)
+                                    .build()
                                     .execute(new StringCallback() {
                                 @Override
                                 public void onError(Call call, Exception e, int id) {
@@ -239,6 +241,7 @@ public class PersonInfoActivity extends BaseActivity {
             }
         }
     }
+
 
     /**
      * 将bitmap转换成base64字符串

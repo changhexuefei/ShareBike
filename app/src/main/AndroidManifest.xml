@@ -177,7 +177,9 @@
         <activity android:name=".moudle.login.activity.IdentityAuthentication"/>
         <activity android:name=".moudle.user.activity.PersonInfoActivity"/>
         <activity android:name=".moudle.user.activity.CreditIntegralActivity"/>
-        <activity android:name=".moudle.user.activity.WalletInfoActivity"/>
+        <activity
+            android:name=".moudle.user.activity.WalletInfoActivity"
+            android:launchMode="singleTask"/>
         <activity android:name=".moudle.user.activity.TransactionDetailActivity"/>
         <activity android:name=".moudle.user.activity.SettingActivity"/>
         <activity android:name=".moudle.user.activity.UsualAddressActivity"/>
