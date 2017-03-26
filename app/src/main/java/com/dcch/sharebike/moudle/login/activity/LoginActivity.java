@@ -224,7 +224,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         switch (view.getId()) {
 
             case R.id.getSecurityCode:
-
                 getseCode(phone);
 
                 break;
@@ -354,15 +353,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
             @Override
             public void onResponse(String response, int id) {
-                Log.d("测试", response);
+                Log.d("123456789", response);
                 ToastUtils.showLong(LoginActivity.this, "验证码已发送");
-                try {
-                    JSONObject object = new JSONObject(response);
-                    verificationCode = object.getString("code");
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        verificationCode = object.getString("code");
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
             }
         });
     }

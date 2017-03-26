@@ -593,9 +593,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     }
                 } else {
 ////                    没有登录的情况设置Activity
-//                    mBtnMyHelp.setVisibility(View.INVISIBLE);
-//                    mBtnMyLocation.setVisibility(View.INVISIBLE);
-//                    mScan.setVisibility(View.INVISIBLE);
+                    mBtnMyHelp.setVisibility(View.GONE);
+                    mBtnMyLocation.setVisibility(View.GONE);
+                    mScan.setVisibility(View.GONE);
                     startActivity(new Intent(MainActivity.this, ClickCameraPopupActivity.class));
                 }
                 break;
@@ -1490,17 +1490,26 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     }
 
     //退出登录页面后，设置页面发来的消息，将mInstructions控件显示
-    @Subscriber(tag = "visible", mode = ThreadMode.ASYNC)
+    @Subscriber(tag = "visible", mode = ThreadMode.MAIN)
     private void receiveFromSetting(MessageEvent info) {
         LogUtils.e(info.toString());
         mInstructions.setVisibility(View.VISIBLE);
     }
 
     //登录成功页面发来的消息，将mInstructions控件隐藏
-    @Subscriber(tag = "gone", mode = ThreadMode.ASYNC)
+    @Subscriber(tag = "gone", mode = ThreadMode.MAIN)
     private void receiveFromLogin(MessageEvent info) {
         LogUtils.e(info.toString());
         mInstructions.setVisibility(View.GONE);
+    }
+
+    //登录成功页面发来的消息，将mInstructions控件隐藏
+    @Subscriber(tag = "allShow", mode = ThreadMode.MAIN)
+    private void receiveFromClickCamera(MessageEvent info) {
+        LogUtils.e(info.toString());
+        mBtnMyHelp.setVisibility(View.VISIBLE);
+        mBtnMyLocation.setVisibility(View.VISIBLE);
+        mScan.setVisibility(View.VISIBLE);
     }
 
     //手工输入页面发来的消息
@@ -1613,6 +1622,5 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
         }
     }
-
 
 }

@@ -44,19 +44,26 @@ public class ClickCameraPopupActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.close:
-                EventBus.getDefault().post(new MessageEvent(),"allShow");
+                EventBus.getDefault().post(new MessageEvent(), "allShow");
                 finish();
                 break;
             case R.id.toLoginActivity:
-                startActivity(new Intent(this,LoginActivity.class));
+                startActivity(new Intent(this, LoginActivity.class));
                 finish();
+                EventBus.getDefault().post(new MessageEvent(), "allShow");
                 break;
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        EventBus.getDefault().post(new MessageEvent(), "allShow");
+    }
 }
