@@ -20,10 +20,12 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
+import com.dcch.sharebike.base.CodeEvent;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.libzxing.zxing.activity.CaptureActivity;
 import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
 import com.dcch.sharebike.utils.JsonUtils;
+import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.louisgeek.multiedittextviewlib.MultiEditInputView;
@@ -32,6 +34,9 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.simple.eventbus.EventBus;
+import org.simple.eventbus.Subscriber;
+import org.simple.eventbus.ThreadMode;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -51,6 +56,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 import static android.app.Activity.RESULT_OK;
+import static com.dcch.sharebike.R.id.tips;
 
 
 /**
@@ -62,7 +68,7 @@ public class ReportIllegalParkingFragment extends Fragment {
 
     @BindView(R.id.bike_code)
     TextView mBikeCode;
-    @BindView(R.id.tips)
+    @BindView(tips)
     TextView mTips;
     @BindView(R.id.scan_code)
     RelativeLayout mScanCode;
@@ -86,6 +92,7 @@ public class ReportIllegalParkingFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         showCamera();
         if (SPUtils.isLogin()) {
             String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
@@ -116,6 +123,7 @@ public class ReportIllegalParkingFragment extends Fragment {
             case R.id.scan_code:
                 ReportIllegalParkingFragmentPermissionsDispatcher.showCameraWithCheck(this);
                 Intent i4 = new Intent(App.getContext(), CaptureActivity.class);
+                i4.putExtra("msg", "reports");
                 startActivityForResult(i4, 0);
                 break;
             case R.id.select_photo:
@@ -166,18 +174,18 @@ public class ReportIllegalParkingFragment extends Fragment {
 
                                 @Override
                                 public void onResponse(String response, int id) {
-                                    if(JsonUtils.isSuccess(response)){
+                                    if (JsonUtils.isSuccess(response)) {
                                         ToastUtils.showLong(getActivity(), "上传成功！");
                                         startActivity(new Intent(getActivity(), UserGuideActivity.class));
                                         getActivity().finish();
-                                    }else{
+                                    } else {
                                         ToastUtils.showLong(getActivity(), "上传失败！");
                                     }
 
                                 }
                             });
-                }else {
-                    ToastUtils.showShort(getActivity(),"请填写自行车编号！");
+                } else {
+                    ToastUtils.showShort(getActivity(), "请填写自行车编号！");
                 }
                 break;
         }
@@ -203,11 +211,37 @@ public class ReportIllegalParkingFragment extends Fragment {
             if (bundle != null) {
                 result = bundle.getString("result");
                 mBikeCode.setText(result);
-                mTips.setVisibility(View.VISIBLE);
-                mMconfirm.setEnabled(true);
-                mMconfirm.setBackgroundColor(getResources().getColor(R.color.colorTitle));
+                changeStatus();
             }
         }
+    }
+
+    //手工输入页面发来的消息
+    @Subscriber(tag = "report_bikeNo", mode = ThreadMode.MAIN)
+    private void receiveFromManual(CodeEvent info) {
+        LogUtils.d("自行车", info.getBikeNo());
+        if (info != null) {
+            result = info.getBikeNo();
+            mBikeCode.setText(result);
+            changeStatus();
+
+        }
+
+    }
+
+    private void changeStatus() {
+        mTips.setVisibility(View.VISIBLE);
+        mMconfirm.setEnabled(true);
+        mMconfirm.setBackgroundColor(getResources().getColor(R.color.colorTitle));
+
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //反注册EventBus
+        EventBus.getDefault().unregister(this);
     }
 
     /**

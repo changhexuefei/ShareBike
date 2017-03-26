@@ -581,10 +581,11 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (SPUtils.isLogin()) {
                     if (cashStatus == 1 && status == 1) {
                         MainActivityPermissionsDispatcher.showCameraWithCheck(this);
-                        startActivityForResult(new Intent(this, CaptureActivity.class), 0);
+                        Intent i4 = new Intent(this, CaptureActivity.class);
+                        i4.putExtra("msg", "main");
+                        startActivityForResult(i4, 0);
                     } else if (cashStatus == 0 && status == 1) {
-                        Intent i4 = new Intent(this, RechargeActivity.class);
-                        startActivity(i4);
+                        startActivity(new Intent(this, RechargeActivity.class));
                     } else if (cashStatus == 1 && status == 0) {
                         startActivity(new Intent(this, IdentityAuthentication.class));
                     } else if (cashStatus == 0 && status == 1) {
@@ -1094,7 +1095,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                                 }
                             }
                         });
-                    }else{
+                    } else {
                         ToastUtils.showShort(MainActivity.this, "开锁失败，请重试！！！");
                     }
                 }
@@ -1424,7 +1425,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("NEW LOCATION SENT");
         registerReceiver(lr, intentFilter);
-        mResultReceiver=new ResultReceiver();
+        mResultReceiver = new ResultReceiver();
         intentFilter = new IntentFilter();
         intentFilter.addAction("RESULT SENT");
         registerReceiver(mResultReceiver, intentFilter);
@@ -1540,7 +1541,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         return diff;
     }
 
-     class LocationReceiver extends BroadcastReceiver {
+    class LocationReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
 //            Intent start = new Intent(context, GPSService.class);
@@ -1561,7 +1562,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             if (ridingInfo != null) {
                 double tripDist = changeDouble(ridingInfo.getTripDist());
                 double calorie = changeDouble(ridingInfo.getCalorie());
-                String dist = String.valueOf(tripDist*1000);
+                String dist = String.valueOf(tripDist * 1000);
                 int i = stringToInt(dist);
                 String s = MapUtil.distanceFormatter(i);
                 orderPopupWindow.rideDistance.setText(s);
@@ -1584,22 +1585,23 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             return intgeo;
         }
     }
-    class ResultReceiver extends BroadcastReceiver{
+
+    class ResultReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             RidingInfo ridingInfo = (RidingInfo) intent.getSerializableExtra("ridingInfo");
-            Log.d("bbbb",ridingInfo+"");
+            Log.d("bbbb", ridingInfo + "");
             if (ridingInfo != null) {
-                if(orderPopupWindow!=null){
+                if (orderPopupWindow != null) {
                     orderPopupWindow.dismiss();
                 }
                 if (mServiceIntent != null) {
                     stopService(mServiceIntent);
-                    Intent ridingResult = new Intent(MainActivity.this,RidingResultActivity.class);
+                    Intent ridingResult = new Intent(MainActivity.this, RidingResultActivity.class);
                     ridingResult.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("result",ridingInfo);
+                    bundle.putSerializable("result", ridingInfo);
                     ridingResult.putExtras(bundle);
                     startActivity(ridingResult);
                     mMap.clear();

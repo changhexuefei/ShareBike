@@ -46,6 +46,7 @@ import com.dcch.sharebike.libzxing.zxing.utils.CaptureActivityHandler;
 import com.dcch.sharebike.libzxing.zxing.utils.InactivityTimer;
 import com.dcch.sharebike.moudle.user.activity.ManualInputActivity;
 import com.dcch.sharebike.utils.DensityUtils;
+import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.google.zxing.Result;
 
@@ -96,6 +97,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     private Camera camera = null;
     private Camera.Parameters parameters = null;
     public static boolean kaiguan = true; // 定义开关状态，状态为false，打开状态，状态为true，关闭状态
+    private String mMsg;
 
     public Handler getHandler() {
         return handler;
@@ -138,10 +140,20 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
 
     private void init() {
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            mMsg = intent.getStringExtra("msg");
+            LogUtils.d("標記",mMsg);
+        }
+
+
         mManualInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(CaptureActivity.this, ManualInputActivity.class));
+                Intent manual = new Intent(CaptureActivity.this, ManualInputActivity.class);
+                manual.putExtra("tag",mMsg);
+                startActivity(manual);
             }
         });
 

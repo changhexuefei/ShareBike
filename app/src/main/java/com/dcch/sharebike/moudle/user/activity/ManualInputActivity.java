@@ -17,6 +17,7 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.CodeEvent;
 import com.dcch.sharebike.utils.DensityUtils;
+import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.dcch.sharebike.view.CodeInputEditText;
 
@@ -35,7 +36,8 @@ public class ManualInputActivity extends BaseActivity {
     CodeInputEditText mManualInputArea;
     @BindView(R.id.ensure)
     Button mEnsure;
-    private String bikeNo="";
+    private String bikeNo = "";
+    private String mTag;
 
 
     @Override
@@ -45,6 +47,11 @@ public class ManualInputActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            mTag = intent.getStringExtra("tag");
+            LogUtils.d("標記",mTag);
+        }
 
     }
 
@@ -71,7 +78,7 @@ public class ManualInputActivity extends BaseActivity {
             @Override
             public void onFinish(String str) {
                 Toast.makeText(ManualInputActivity.this, str, Toast.LENGTH_SHORT).show();
-                bikeNo=str;
+                bikeNo = str;
                 mEnsure.setEnabled(true);
                 mEnsure.setBackgroundColor(Color.parseColor("#F8941D"));
             }
@@ -87,9 +94,26 @@ public class ManualInputActivity extends BaseActivity {
                 break;
             case R.id.ensure:
                 ToastUtils.showShort(this, "您点击的是确认按钮");
-                Intent bikeNoIntent = new Intent(this, MainActivity.class);
-                EventBus.getDefault().post(new CodeEvent(bikeNo), "bikeNo");
-                startActivity(bikeNoIntent);
+                if(mTag.equals("main")){
+                    Intent bikeNoIntent = new Intent(this, MainActivity.class);
+                    EventBus.getDefault().post(new CodeEvent(bikeNo), "bikeNo");
+                    startActivity(bikeNoIntent);
+                }else if(mTag.equals("unable")){
+                    Intent bikeNoIntent = new Intent(this, CustomerServiceActivity.class);
+                    EventBus.getDefault().post(new CodeEvent(bikeNo), "unable_bikeNo");
+                    startActivity(bikeNoIntent);
+
+                }else if(mTag.equals("reports")){
+                    Intent bikeNoIntent = new Intent(this, CustomerServiceActivity.class);
+                    EventBus.getDefault().post(new CodeEvent(bikeNo), "report_bikeNo");
+                    startActivity(bikeNoIntent);
+
+                }else if(mTag.equals("fail")){
+                    Intent bikeNoIntent = new Intent(this, CustomerServiceActivity.class);
+                    EventBus.getDefault().post(new CodeEvent(bikeNo), "fail_bikeNo");
+                    startActivity(bikeNoIntent);
+                }
+
                 finish();
                 break;
         }

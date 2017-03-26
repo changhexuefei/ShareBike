@@ -14,10 +14,12 @@ import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
+import com.dcch.sharebike.base.CodeEvent;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.libzxing.zxing.activity.CaptureActivity;
 import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
 import com.dcch.sharebike.utils.JsonUtils;
+import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.louisgeek.multiedittextviewlib.MultiEditInputView;
@@ -26,6 +28,9 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.simple.eventbus.EventBus;
+import org.simple.eventbus.Subscriber;
+import org.simple.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,6 +59,7 @@ public class UnableUnlockFragment extends Fragment {
     String bikeNo;
     String contentText;
     public static final String BOUNDARY = "ZnGpDtePMx0KrHh_G0X99Yef9r8JZsRJSXC";
+    private String result;
 
     public UnableUnlockFragment() {
         // Required empty public constructor
@@ -62,6 +68,7 @@ public class UnableUnlockFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         if (SPUtils.isLogin()) {
             String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
             Log.d("用户明细", userDetail);
@@ -81,9 +88,26 @@ public class UnableUnlockFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_unable_unlock, container, false);
         ButterKnife.bind(this, view);
-
-
         return view;
+    }
+
+    //手工输入页面发来的消息
+    @Subscriber(tag = "unable_bikeNo", mode = ThreadMode.MAIN)
+    private void receiveFromManual(CodeEvent info) {
+        LogUtils.d("自行车", info.getBikeNo());
+        if (info != null) {
+            result = info.getBikeNo();
+            bikeCode.setText(result);
+            changeStatus();
+        }
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //反注册EventBus
+        EventBus.getDefault().unregister(this);
     }
 
     @OnClick({R.id.scan_code, R.id.un_confirm})
@@ -91,6 +115,7 @@ public class UnableUnlockFragment extends Fragment {
         switch (view.getId()) {
             case R.id.scan_code:
                 Intent i4 = new Intent(App.getContext(), CaptureActivity.class);
+                i4.putExtra("msg", "unable");
                 startActivityForResult(i4, 0);
                 break;
             case R.id.un_confirm:
@@ -118,17 +143,17 @@ public class UnableUnlockFragment extends Fragment {
                                 @Override
                                 public void onResponse(String response, int id) {
                                     Log.d("上传成功", response);
-                                    if(JsonUtils.isSuccess(response)){
+                                    if (JsonUtils.isSuccess(response)) {
                                         ToastUtils.showLong(getActivity(), "上传成功！");
                                         startActivity(new Intent(getActivity(), UserGuideActivity.class));
                                         getActivity().finish();
-                                    }else{
+                                    } else {
                                         ToastUtils.showLong(getActivity(), "上传失败！");
                                     }
                                 }
                             });
-                }else {
-                    ToastUtils.showShort(getActivity(),"请输入车辆编号！");
+                } else {
+                    ToastUtils.showShort(getActivity(), "请输入车辆编号！");
                 }
                 break;
         }
@@ -139,12 +164,20 @@ public class UnableUnlockFragment extends Fragment {
         if (resultCode == -1 && requestCode == 0) {
             Bundle bundle = data.getExtras();
             if (bundle != null) {
-                String result = bundle.getString("result");
+                result = bundle.getString("result");
                 bikeCode.setText(result);
-                tips.setVisibility(View.VISIBLE);
-                confirm.setEnabled(true);
-                confirm.setBackgroundColor(getResources().getColor(R.color.colorTitle));
+                changeStatus();
+
             }
         }
     }
+
+    private void changeStatus() {
+        tips.setVisibility(View.VISIBLE);
+        confirm.setEnabled(true);
+        confirm.setBackgroundColor(getResources().getColor(R.color.colorTitle));
+
+    }
+
+
 }

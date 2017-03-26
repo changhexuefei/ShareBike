@@ -23,9 +23,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
+import com.dcch.sharebike.base.CodeEvent;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.libzxing.zxing.activity.CaptureActivity;
 import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
+import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.louisgeek.multiedittextviewlib.MultiEditInputView;
@@ -34,6 +36,9 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.simple.eventbus.EventBus;
+import org.simple.eventbus.Subscriber;
+import org.simple.eventbus.ThreadMode;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -118,7 +123,7 @@ public class CycleFailureFragment extends Fragment {
         super.onCreate(savedInstanceState);
 //        CycleFailureFragmentPermissionsDispatcher.initPermissionWithCheck(this);
         showCamera();
-
+        EventBus.getDefault().register(this);
         if (SPUtils.isLogin()) {
             String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
             try {
@@ -130,6 +135,13 @@ public class CycleFailureFragment extends Fragment {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //反注册EventBus
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -166,6 +178,7 @@ public class CycleFailureFragment extends Fragment {
             case R.id.scan_code:
                CycleFailureFragmentPermissionsDispatcher.showCameraWithCheck(this);
                 Intent i4 = new Intent(getActivity(), CaptureActivity.class);
+                i4.putExtra("msg","fail");
                 startActivityForResult(i4, 0);
                 break;
 
@@ -268,12 +281,29 @@ public class CycleFailureFragment extends Fragment {
             if (bundle != null) {
                 result = bundle.getString("result");
                 mBikeCode.setText(result);
-                mTips.setVisibility(View.VISIBLE);
-                upload.setEnabled(true);
-                upload.setBackgroundColor(getResources().getColor(R.color.colorTitle));
+                changeStatus();
             }
         }
     }
+
+    //手工输入页面发来的消息
+    @Subscriber(tag = "fail_bikeNo", mode = ThreadMode.MAIN)
+    private void receiveFromManual(CodeEvent info) {
+        if(info!=null){
+            LogUtils.d("自行车", info.getBikeNo());
+            result = info.getBikeNo();
+            mBikeCode.setText(result);
+            changeStatus();
+        }
+
+    }
+    private void changeStatus() {
+        mTips.setVisibility(View.VISIBLE);
+        upload.setEnabled(true);
+        upload.setBackgroundColor(getResources().getColor(R.color.colorTitle));
+
+    }
+
 
     /**
      * 将bitmap转换成base64字符串
