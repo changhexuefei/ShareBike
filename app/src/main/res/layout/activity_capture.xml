@@ -56,15 +56,13 @@
         android:layout_below="@+id/scan_area">
 
         <ImageView
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
             android:background="@drawable/shadow"
             android:id="@+id/capture_mask_top"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/scan_qrcode_bike_img"/>
+            android:src="@mipmap/unlock_qr_tip"/>
 
         <!--<ImageView-->
         <!--android:id="@+id/capture_mask_top"-->

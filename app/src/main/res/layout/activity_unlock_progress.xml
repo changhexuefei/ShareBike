@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cb="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorHeading"
+    tools:context="com.dcch.sharebike.moudle.user.activity.UnlockProgressActivity">
+
+    <FrameLayout
+        android:id="@+id/verification"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp"
+            android:src="@mipmap/back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="编码开锁"
+            android:textColor="#ffffff"
+            android:textSize="16sp"/>
+
+    </FrameLayout>
+
+
+    <ImageView
+        android:id="@+id/unlockIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="150dp"
+        android:src="@drawable/unlock_o"/>
+
+
+    <com.dcch.sharebike.view.MyProgressBar
+        android:id="@+id/myProgressBar"
+        cb:isHorizonStroke="true"
+        cb:orientation="horizontal"
+        cb:percent_text_color="@color/colorTitle"
+        cb:percent_text_size="@dimen/percent_text_size_large"
+        cb:progressBarBgColor="@color/colorTitle"
+        cb:progressColor="@color/percent_text_color_2"
+        cb:rect_round="@dimen/horizontal_corner"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/unlockIcon"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"/>
+
+
+</RelativeLayout>

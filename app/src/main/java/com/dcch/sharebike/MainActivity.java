@@ -336,7 +336,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     }
 
-
     //进入主页面检查客户是否有预约订单的方法
     private void checkBookingBikeInfoByUserID(String uID) {
         final Map<String, String> map = new HashMap<>();
@@ -1553,8 +1552,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     class LocationReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-//            Intent start = new Intent(context, GPSService.class);
-//            context.startService(start);
+            Intent start = new Intent(context, GPSService.class);
+            context.startService(start);
 //            Bundle bundle = intent.getExtras();
 //            if (bundle != null) {
 //                double totalDistance = bundle.getDouble("totalDistance");

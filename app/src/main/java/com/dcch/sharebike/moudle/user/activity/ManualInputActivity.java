@@ -18,7 +18,6 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.CodeEvent;
 import com.dcch.sharebike.utils.DensityUtils;
 import com.dcch.sharebike.utils.LogUtils;
-import com.dcch.sharebike.utils.ToastUtils;
 import com.dcch.sharebike.view.CodeInputEditText;
 
 import org.simple.eventbus.EventBus;
@@ -93,7 +92,6 @@ public class ManualInputActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.ensure:
-                ToastUtils.showShort(this, "您点击的是确认按钮");
                 if(mTag.equals("main")){
                     Intent bikeNoIntent = new Intent(this, MainActivity.class);
                     EventBus.getDefault().post(new CodeEvent(bikeNo), "bikeNo");

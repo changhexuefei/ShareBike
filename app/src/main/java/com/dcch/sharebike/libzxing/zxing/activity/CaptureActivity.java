@@ -45,6 +45,7 @@ import com.dcch.sharebike.libzxing.zxing.utils.BeepManager;
 import com.dcch.sharebike.libzxing.zxing.utils.CaptureActivityHandler;
 import com.dcch.sharebike.libzxing.zxing.utils.InactivityTimer;
 import com.dcch.sharebike.moudle.user.activity.ManualInputActivity;
+import com.dcch.sharebike.moudle.user.activity.UnlockProgressActivity;
 import com.dcch.sharebike.utils.DensityUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.ToastUtils;
@@ -140,7 +141,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
 
     private void init() {
-
         Intent intent = getIntent();
         if (intent != null) {
             mMsg = intent.getStringExtra("msg");
@@ -173,7 +173,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                     camera.stopPreview();
                     camera.release();
                 }
-
             }
         });
 
@@ -262,7 +261,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     public void handleDecode(Result rawResult, Bundle bundle) {
         inactivityTimer.onActivity();
         beepManager.playBeepSoundAndVibrate();
-
+        startActivity(new Intent(CaptureActivity.this, UnlockProgressActivity.class));
         Intent resultIntent = new Intent();
         bundle.putInt("width", mCropRect.width());
         bundle.putInt("height", mCropRect.height());

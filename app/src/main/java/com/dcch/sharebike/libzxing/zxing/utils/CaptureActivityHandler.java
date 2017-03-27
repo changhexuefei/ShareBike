@@ -62,7 +62,6 @@ public class CaptureActivityHandler extends Handler {
         } else if (message.what == R.id.decode_succeeded) {
             state = State.SUCCESS;
             Bundle bundle = message.getData();
-
             activity.handleDecode((Result) message.obj, bundle);
 
         } else if (message.what == R.id.decode_failed) {// We're decoding as fast as possible, so when one

@@ -85,9 +85,10 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/hint_card_1"/>
+                android:layout_height="200dp"
+                android:layout_margin="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/small_spring"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -126,11 +127,11 @@
             </LinearLayout>
 
             <ImageView
-
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/hint_card_2"/>
+                android:layout_height="200dp"
+                android:layout_margin="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/small_summer"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -170,9 +171,10 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/hint_card_3"/>
+                android:layout_height="200dp"
+                android:layout_margin="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/small_autumn"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -212,9 +214,10 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/hint_card_4"/>
+                android:layout_height="200dp"
+                android:layout_margin="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/small_winter"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -253,9 +256,10 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/hint_card_5"/>
+                android:layout_height="200dp"
+                android:layout_margin="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/other"/>
 
             <TextView
                 android:layout_width="wrap_content"
