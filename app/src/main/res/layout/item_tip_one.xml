@@ -25,7 +25,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="80dp"
-                android:src="@drawable/hint_card_1"/>
+                android:src="@drawable/small_spring"/>
 
             <TextView
                 android:id="@+id/title_click_camera"

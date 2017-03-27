@@ -26,10 +26,10 @@ public class ClickMyHelpActivity extends BaseActivity {
     protected void initData() {
 
         mViewList = new ArrayList<>();
-        mViewList.add(R.drawable.spring);
-        mViewList.add(R.drawable.summer);
-        mViewList.add(R.drawable.autumn);
-        mViewList.add(R.drawable.winter);
+        mViewList.add(R.layout.item_tip_one);
+        mViewList.add(R.layout.item_tip_two);
+        mViewList.add(R.layout.item_tip_there);
+        mViewList.add(R.layout.item_tip_four);
         mExplainPage.setImages(mViewList);
     }
 

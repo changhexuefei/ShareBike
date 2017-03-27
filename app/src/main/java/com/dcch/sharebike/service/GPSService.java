@@ -105,13 +105,10 @@ public class GPSService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
             mUserId = intent.getStringExtra("userId");
-            Log.d("我是", mUserId);
             mBicycleNo = intent.getStringExtra("bicycleNo");
-            Log.d("我是", mBicycleNo);
             mCarRentalOrderDate = intent.getStringExtra("carRentalOrderDate");
-            Log.d("我是", mCarRentalOrderDate);
             mCarRentalOrderId = intent.getStringExtra("carRentalOrderId");
-            Log.d("我是", mCarRentalOrderId);
+            Log.d("大神",mUserId+"\n"+mBicycleNo+"\n"+mCarRentalOrderDate+"\n"+mCarRentalOrderId);
             //开启子线程和后台进行通信
 
 //            new Thread(new Runnable() {
@@ -278,11 +275,17 @@ public class GPSService extends Service {
                 Map<String, String> map = new HashMap<String, String>();
                 String url = Api.BASE_URL + Api.ORDERCAST;
                 map.put("carRentalOrderDate", mCarRentalOrderDate);
+
                 map.put("bicycleNo", mBicycleNo);
+
                 map.put("carRentalOrderId", mCarRentalOrderId);
+
                 map.put("userId", mUserId);
+
                 map.put("lng", mRouteLng + "");
+
                 map.put("lat", mRouteLat + "");
+
                 map.put("mile", totalDistance / 1000 + "");
 
                 OkHttpUtils.post().url(url).params(map).build().execute(new StringCallback() {

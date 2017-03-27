@@ -12,12 +12,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.CodeEvent;
 import com.dcch.sharebike.utils.DensityUtils;
-import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.view.CodeInputEditText;
 
 import org.simple.eventbus.EventBus;
@@ -49,7 +47,6 @@ public class ManualInputActivity extends BaseActivity {
         Intent intent = getIntent();
         if (intent != null) {
             mTag = intent.getStringExtra("tag");
-            LogUtils.d("標記",mTag);
         }
 
     }
@@ -93,9 +90,9 @@ public class ManualInputActivity extends BaseActivity {
                 break;
             case R.id.ensure:
                 if(mTag.equals("main")){
-                    Intent bikeNoIntent = new Intent(this, MainActivity.class);
-                    EventBus.getDefault().post(new CodeEvent(bikeNo), "bikeNo");
+                    Intent bikeNoIntent = new Intent(this, UnlockProgressActivity.class);
                     startActivity(bikeNoIntent);
+                    EventBus.getDefault().post(new CodeEvent(bikeNo), "bikeNo");
                 }else if(mTag.equals("unable")){
                     Intent bikeNoIntent = new Intent(this, CustomerServiceActivity.class);
                     EventBus.getDefault().post(new CodeEvent(bikeNo), "unable_bikeNo");

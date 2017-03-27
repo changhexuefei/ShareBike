@@ -3,6 +3,7 @@ package com.dcch.sharebike.activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.widget.RelativeLayout;
@@ -60,10 +61,13 @@ public class SplashActivity extends BaseActivity {
         animation.setDuration(1000);
         animation.setFillAfter(true);
         mRlSplashRoot.startAnimation(animation);
-        if (SPUtils.isFirst())
+        if (SPUtils.isFirst()) {
             handler.sendEmptyMessageDelayed(SWITCH_GUIDACTIVITY, 5000);
-        else
+        }
+        else {
             handler.sendEmptyMessageDelayed(SWITCH_MAINACTIVITY, 5000);
+        }
+        SPUtils.put(App.getContext(),"isfirst",false);
     }
 
 
@@ -76,7 +80,8 @@ public class SplashActivity extends BaseActivity {
         } else {
             LogUtils.e("没有登录...");
             boolean isStartGuide = (boolean) SPUtils.get(App.getContext(), "isStartGuide", false);
-			if (isStartGuide) {
+            Log.d("知道也",isStartGuide+"");
+            if (isStartGuide) {
 				startActivity(new Intent(this, MainActivity.class));
 				finish();
 			} else {

@@ -158,7 +158,7 @@
         <!-- 百度地图相关配置 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="TtIrDwFCwHcYPlf9xMNfRjPPMyY8yGfj"/>
+            android:value="aqaOzVrcuwN7NG70ojtmKBSvx57KTTj1"/>
 
         <service
             android:name="com.baidu.location.f"

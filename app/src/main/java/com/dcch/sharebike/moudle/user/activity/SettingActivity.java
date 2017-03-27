@@ -13,7 +13,6 @@ import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
-import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 
@@ -90,15 +89,14 @@ public class SettingActivity extends BaseActivity {
                                 EventBus.getDefault().post(new MessageEvent(), "visible");
                                 startActivity(i1);
                                 SPUtils.clear(App.getContext());
-                                String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
 
                                 SPUtils.put(App.getContext(), "islogin", false);
-                                LogUtils.d("islogin",SPUtils.isLogin()+"");
+                                SPUtils.put(App.getContext(),"isfirst",false);
+                                SPUtils.put(App.getContext(), "isStartGuide", true);
                                 finish();
                             }
                         }).create()
                         .show();
-
                 break;
         }
     }

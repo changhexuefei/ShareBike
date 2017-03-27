@@ -1034,9 +1034,14 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             Bundle bundle = data.getExtras();
             if (bundle != null) {
                 result = bundle.getString("result");
-                LogUtils.d("是时候死还是", phone);
-                openScan(phone, result);
-                ToastUtils.showLong(this, result);
+                if(result.length()==11){
+                    openScan(phone, result);
+                    ToastUtils.showLong(this, result);
+                }else{
+                    ToastUtils.showShort(this,"自行车编号错误，请重新扫码！");
+
+                }
+
             }
         }
     }
@@ -1080,6 +1085,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                                     mServiceIntent.putExtra("bicycleNo", bikeRentalOrderInfo.getBicycleNo());
                                     mServiceIntent.putExtra("carRentalOrderDate", bikeRentalOrderInfo.getCarRentalOrderDate());
                                     mServiceIntent.putExtra("carRentalOrderId", bikeRentalOrderInfo.getCarRentalOrderId());
+                                    LogUtils.d("神圣",uID+"\n"+bikeRentalOrderInfo.getBicycleNo()+"\n"+bikeRentalOrderInfo.getCarRentalOrderDate()+"\n"+bikeRentalOrderInfo.getCarRentalOrderId());
                                     startService(mServiceIntent);
                                     mScan.setVisibility(View.INVISIBLE);
                                     String bicycleNo = bikeRentalOrderInfo.getBicycleNo();
@@ -1106,7 +1112,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         if (menuWindow != null && !menuWindow.equals("")) {
             menuWindow.dismiss();
         }
-        Log.d("距离", "距离" + distance + "时间" + mWalkTime);
         menuWindow = new SelectPicPopupWindow(MainActivity.this, bikeInfo, itemsOnClick);
         menuWindow.showAsDropDown(findViewById(R.id.top));
         if (distance != 0 && mWalkTime != 0) {
@@ -1552,8 +1557,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     class LocationReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Intent start = new Intent(context, GPSService.class);
-            context.startService(start);
+//            Intent start = new Intent(context, GPSService.class);
+//            context.startService(start);
 //            Bundle bundle = intent.getExtras();
 //            if (bundle != null) {
 //                double totalDistance = bundle.getDouble("totalDistance");
