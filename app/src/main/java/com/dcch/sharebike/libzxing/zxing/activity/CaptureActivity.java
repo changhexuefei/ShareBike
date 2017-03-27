@@ -172,6 +172,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                     camera.setParameters(parameters);
                     camera.stopPreview();
                     camera.release();
+                    camera=null;
                 }
             }
         });

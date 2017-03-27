@@ -56,12 +56,12 @@
         android:layout_below="@+id/scan_area">
 
         <ImageView
-            android:background="@drawable/shadow"
             android:id="@+id/capture_mask_top"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
+            android:background="@drawable/shadow"
             android:src="@mipmap/unlock_qr_tip"/>
 
         <!--<ImageView-->
@@ -91,14 +91,14 @@
 
 
         <TextView
-            android:paddingTop="10dp"
-            android:gravity="center_horizontal"
             android:id="@+id/tips_one"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/capture_crop_view"
             android:layout_centerHorizontal="true"
             android:background="@drawable/shadow"
+            android:gravity="center_horizontal"
+            android:paddingTop="10dp"
             android:text="对准车上的二维码"
             android:textColor="#ffffff"/>
 
@@ -112,10 +112,10 @@
             android:background="@drawable/shadow">
 
             <TextView
-                android:layout_centerVertical="true"
                 android:id="@+id/manualInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="60dp"
                 android:drawablePadding="10dp"
                 android:drawableTop="@drawable/manual_input_selector"
@@ -125,21 +125,21 @@
                 android:textSize="12sp"/>
 
             <ToggleButton
-                android:visibility="gone"
-                android:layout_centerVertical="true"
-                android:textSize="12sp"
-                android:drawablePadding="10dp"
                 android:id="@+id/openFlashLight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:layout_marginEnd="60dp"
                 android:background="@null"
-                android:drawableTop="@drawable/flash_light_selector"
                 android:checked="false"
+                android:drawablePadding="10dp"
+                android:drawableTop="@drawable/flash_light_selector"
                 android:textColor="#ffffff"
                 android:textOff="@string/open"
                 android:textOn="@string/close"
-                android:layout_alignParentEnd="true"/>
+                android:textSize="12sp"
+                android:visibility="gone"/>
         </RelativeLayout>
 
         <ImageView

@@ -127,8 +127,6 @@ import okhttp3.Call;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
-import static com.dcch.sharebike.R.id.seek;
-
 
 @RuntimePermissions
 public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusChangeListener, OnGetRoutePlanResultListener {
@@ -143,7 +141,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     @BindView(R.id.MyCenter)
     ImageView mMyCenter;
-    @BindView(seek)
+    @BindView(R.id.seek)
     ImageView mSeek;
     @BindView(R.id.btn_my_location)
     ImageButton mBtnMyLocation;
@@ -536,14 +534,14 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     }
 
 
-    @OnClick({R.id.MyCenter, seek, R.id.btn_my_location, R.id.instructions, R.id.btn_my_help, R.id.scan})
+    @OnClick({R.id.MyCenter, R.id.seek, R.id.btn_my_location, R.id.instructions, R.id.btn_my_help, R.id.scan})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.MyCenter:
                 Intent personal = new Intent(this, PersonalCenterActivity.class);
                 startActivity(personal);
                 break;
-            case seek:
+            case R.id.seek:
                 if (isClick) {
                     Intent seek = new Intent(this, SeekActivity.class);
                     seek.putExtra("address", address1);
@@ -573,9 +571,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 }
                 break;
             case R.id.scan:
-                ToastUtils.showLong(this, "我是扫描");
-//                result = "1101000001";
-//                openScan(phone, result);
+
                 // && cashStatus == 1 && status == 1
                 if (SPUtils.isLogin()) {
                     if (cashStatus == 1 && status == 1) {
@@ -583,7 +579,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                         Intent i4 = new Intent(this, CaptureActivity.class);
                         i4.putExtra("msg", "main");
                         startActivityForResult(i4, 0);
-                    } else if (cashStatus == 0 && status == 1) {
+                    } else if (cashStatus == 0 && status == 0) {
                         startActivity(new Intent(this, RechargeActivity.class));
                     } else if (cashStatus == 1 && status == 0) {
                         startActivity(new Intent(this, IdentityAuthentication.class));
@@ -1034,14 +1030,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             Bundle bundle = data.getExtras();
             if (bundle != null) {
                 result = bundle.getString("result");
-                if(result.length()==11){
-                    openScan(phone, result);
-                    ToastUtils.showLong(this, result);
-                }else{
-                    ToastUtils.showShort(this,"自行车编号错误，请重新扫码！");
-
-                }
-
+                openScan(phone, result);
+                ToastUtils.showLong(this, result);
             }
         }
     }
@@ -1085,7 +1075,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                                     mServiceIntent.putExtra("bicycleNo", bikeRentalOrderInfo.getBicycleNo());
                                     mServiceIntent.putExtra("carRentalOrderDate", bikeRentalOrderInfo.getCarRentalOrderDate());
                                     mServiceIntent.putExtra("carRentalOrderId", bikeRentalOrderInfo.getCarRentalOrderId());
-                                    LogUtils.d("神圣",uID+"\n"+bikeRentalOrderInfo.getBicycleNo()+"\n"+bikeRentalOrderInfo.getCarRentalOrderDate()+"\n"+bikeRentalOrderInfo.getCarRentalOrderId());
+                                    LogUtils.d("神圣", uID + "\n" + bikeRentalOrderInfo.getBicycleNo() + "\n" + bikeRentalOrderInfo.getCarRentalOrderDate() + "\n" + bikeRentalOrderInfo.getCarRentalOrderId());
                                     startService(mServiceIntent);
                                     mScan.setVisibility(View.INVISIBLE);
                                     String bicycleNo = bikeRentalOrderInfo.getBicycleNo();

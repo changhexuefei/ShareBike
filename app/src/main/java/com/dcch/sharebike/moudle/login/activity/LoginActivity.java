@@ -349,7 +349,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onError(Call call, Exception e, int id) {
                 ToastUtils.showLong(App.getContext(), "网络错误，请重试");
-                LogUtils.d("hehheheh","网络错误，请重试");
                 LogUtils.e(e.getMessage());
             }
 
@@ -357,7 +356,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             public void onResponse(String response, int id) {
                 Log.d("测试", response);
                 ToastUtils.showLong(LoginActivity.this, "验证码已发送");
-
                     try {
                         JSONObject object = new JSONObject(response);
                         verificationCode = object.getString("code");
