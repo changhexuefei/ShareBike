@@ -1,7 +1,11 @@
 package com.dcch.sharebike.base;
 
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
@@ -14,6 +18,20 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2017/2/7 0007.
  */
 public abstract class BaseActivity extends AppCompatActivity {
+    public static Boolean IS = false;
+    private ServiceAndroidContact serviceAndroidContact = new ServiceAndroidContact();
+
+    ServiceConnection coon = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            serviceAndroidContact.Log();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+        }
+    };
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -22,6 +40,20 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getLayoutId());
         ButterKnife.bind(this);
         App.getInstance().addActivity(this);
+        Intent intent = new Intent();
+        //intent.setAction("com.hejingzhou.startService");
+        intent.setPackage(getPackageName());
+        bindService(intent,coon,BIND_AUTO_CREATE);
+        if (IS == true) {
+            /*String path = Environment.getExternalStorageDirectory() + "/DateApp.apk";
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(Uri.fromFile(new File(path)), "application/vnd.android.package-archive");
+            startActivity(intent);*/
+            IS = false;
+        }
+
+
+
         initData();
         initListener();
     }

@@ -47,7 +47,6 @@ import com.dcch.sharebike.libzxing.zxing.utils.InactivityTimer;
 import com.dcch.sharebike.moudle.user.activity.ManualInputActivity;
 import com.dcch.sharebike.moudle.user.activity.UnlockProgressActivity;
 import com.dcch.sharebike.utils.DensityUtils;
-import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.google.zxing.Result;
 
@@ -144,7 +143,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         Intent intent = getIntent();
         if (intent != null) {
             mMsg = intent.getStringExtra("msg");
-            LogUtils.d("標記",mMsg);
         }
 
 
@@ -152,7 +150,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             @Override
             public void onClick(View view) {
                 Intent manual = new Intent(CaptureActivity.this, ManualInputActivity.class);
-                manual.putExtra("tag",mMsg);
+                manual.putExtra("tag", mMsg);
                 startActivity(manual);
             }
         });
@@ -162,17 +160,14 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 //低于6.0系统的手电筒
                 if (isChecked) {
-                    camera = Camera.open();
+                    //camera和手电筒共同使用的是camera的单例模式
+                    camera = CameraManager.getCamera();
                     parameters = camera.getParameters();
                     parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);// 开启
                     camera.setParameters(parameters);
-                    camera.startPreview();
                 } else {
                     parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);// 关闭
                     camera.setParameters(parameters);
-                    camera.stopPreview();
-                    camera.release();
-                    camera=null;
                 }
             }
         });
@@ -244,6 +239,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         isHasSurface = false;
+        cameraManager.stopPreview();
     }
 
     @Override

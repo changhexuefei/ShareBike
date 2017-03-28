@@ -65,9 +65,8 @@
                 android:src="@mipmap/input_top_icon"/>
 
             <ToggleButton
-                android:visibility="gone"
                 android:layout_centerVertical="true"
-                android:id="@+id/openFlashLight"
+                android:id="@+id/inputFlashLight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

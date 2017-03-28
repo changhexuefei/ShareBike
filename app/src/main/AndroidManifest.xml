@@ -112,13 +112,15 @@
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask">
-        </activity>
-        <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
+
+        </activity>
+        <activity android:name=".activity.SplashActivity">
 
         </activity>
         <activity android:name=".activity.GuideActivity"/>
@@ -342,9 +344,8 @@
         <activity android:name=".moudle.user.activity.RidingResultActivity">
         </activity>
         <activity android:name=".moudle.user.activity.UnlockProgressActivity">
-
-
         </activity>
+        <service android:name=".service.DownService"/>
     </application>
 
 </manifest>

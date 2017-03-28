@@ -44,26 +44,17 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/top" />
 
-
-    <!--<ImageView-->
-
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_centerInParent="true"-->
-    <!--android:src="@mipmap/search_center_ic"/>-->
-
-
     <Button
         android:id="@+id/instructions"
-        android:layout_width="330dp"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_below="@+id/top"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:background="@color/colorTitle"
         android:gravity="center"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:text="@string/instructions"
         android:textColor="#ffffff"
         android:textSize="16sp" />
@@ -107,39 +98,6 @@
         android:layout_marginLeft="8dp"
         android:background="@drawable/selector_map" />
 
-    <!--<RadioGroup-->
-        <!--android:id="@+id/classify"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="48dp"-->
-        <!--android:layout_below="@+id/top"-->
-        <!--android:background="@color/colorHeading"-->
-        <!--android:gravity="center_vertical"-->
-        <!--android:orientation="horizontal">-->
 
-        <!--<RadioButton-->
-            <!--android:id="@+id/allBike"-->
-            <!--style="@style/titleStyle"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="30dp"-->
-            <!--android:layout_marginLeft="30dp"-->
-            <!--android:text="@string/all" />-->
-
-        <!--<RadioButton-->
-            <!--android:id="@+id/one"-->
-            <!--style="@style/titleStyle"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="30dp"-->
-            <!--android:layout_marginLeft="10dp"-->
-            <!--android:layout_marginRight="10dp"-->
-            <!--android:text="@string/one" />-->
-
-        <!--<RadioButton-->
-            <!--android:id="@+id/two"-->
-            <!--style="@style/titleStyle"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="30dp"-->
-            <!--android:layout_marginRight="30dp"-->
-            <!--android:text="@string/two" />-->
-    <!--</RadioGroup>-->
 
 </RelativeLayout>

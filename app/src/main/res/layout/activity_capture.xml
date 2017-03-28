@@ -138,8 +138,7 @@
                 android:textColor="#ffffff"
                 android:textOff="@string/open"
                 android:textOn="@string/close"
-                android:textSize="12sp"
-                android:visibility="gone"/>
+                android:textSize="12sp"/>
         </RelativeLayout>
 
         <ImageView

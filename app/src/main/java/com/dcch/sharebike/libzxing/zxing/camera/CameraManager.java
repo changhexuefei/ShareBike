@@ -47,7 +47,7 @@ public class CameraManager {
      * message.
      */
     private final PreviewCallback previewCallback;
-    private Camera camera;
+    private static Camera camera;
     private AutoFocusManager autoFocusManager;
     private boolean initialized;
     private boolean previewing;
@@ -58,6 +58,9 @@ public class CameraManager {
         this.configManager = new CameraConfigurationManager(context);
         previewCallback = new PreviewCallback(configManager);
     }
+
+
+
 
     /**
      * Opens the camera driver and initializes the hardware parameters.
@@ -113,6 +116,16 @@ public class CameraManager {
         }
 
     }
+
+    /**
+     * 获取相机的方法
+     * @return camera
+     */
+    public static Camera getCamera(){
+        return camera;
+    }
+
+
 
     public synchronized boolean isOpen() {
         return camera != null;

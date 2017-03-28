@@ -1,22 +1,28 @@
 package com.dcch.sharebike.receiver;
 
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.dcch.sharebike.activity.SplashActivity;
+import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.service.DownService;
+
+import org.json.JSONObject;
 
 import cn.jpush.android.api.JPushInterface;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by gao on 2017/2/20.
  */
 
 public class MyReceiver extends BroadcastReceiver {
+    private String TAG = "Debug";
+    private NotificationManager manager;
+
+
     @Override
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
@@ -34,12 +40,41 @@ public class MyReceiver extends BroadcastReceiver {
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             Log.d(TAG, "用户点击打开了通知");
             // 在这里可以自己写代码去定义用户点击后的行为
-            Intent i = new Intent(context, SplashActivity.class);  //自定义打开的界面
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(i);
+            openNotification(context,bundle);
+//            Intent i = new Intent(context, SplashActivity.class);  //自定义打开的界面
+//            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            context.startActivity(i);
         } else {
             Log.d(TAG, "Unhandled intent - " + intent.getAction());
         }
 
     }
+
+    /***
+     * 打开通知要处理的方法
+     * @param context
+     * @param bundle
+     */
+    private void openNotification(Context context, Bundle bundle){
+        String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
+        String versionsUrl = "";
+        try {
+            JSONObject extrasJson = new JSONObject(extras);
+            versionsUrl = extrasJson.optString("DownloadDate");
+            Log.i(TAG,"收到key为 one的数据    "+versionsUrl);
+            if(!versionsUrl.equals("")){
+                BaseActivity.IS = true;
+                Log.i(TAG,"有更新数据");
+                Intent intent = new Intent(context,DownService.class);
+                intent.putExtra("DateUrl",versionsUrl);
+                context.startService(intent);
+            }
+        } catch (Exception e) {
+            Log.i(TAG, "Unexpected: extras is not a valid json", e);
+            return;
+        }
+
+    }
+
+
 }

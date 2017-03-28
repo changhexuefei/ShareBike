@@ -3,10 +3,12 @@ package com.dcch.sharebike.moudle.user.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,7 +29,7 @@ public class ManualInputActivity extends BaseActivity {
 
     @BindView(R.id.back)
     ImageView mBack;
-    @BindView(R.id.openFlashLight)
+    @BindView(R.id.inputFlashLight)
     ToggleButton mOpenFlashLight;
     @BindView(R.id.manualInputArea)
     CodeInputEditText mManualInputArea;
@@ -35,6 +37,8 @@ public class ManualInputActivity extends BaseActivity {
     Button mEnsure;
     private String bikeNo = "";
     private String mTag;
+    private Camera camera = null;
+    private Camera.Parameters parameters = null;
 
 
     @Override
@@ -64,6 +68,25 @@ public class ManualInputActivity extends BaseActivity {
         EventBus.getDefault().register(this);
         initDrawable(mOpenFlashLight);
         mManualInputArea.initStyle(R.drawable.edit_num_bg, 11, 0.2f, R.color.colorTitle, R.color.lineColor, 15);
+        mOpenFlashLight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    camera = Camera.open();
+                    parameters = camera.getParameters();
+                    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);// 开启
+                    camera.setParameters(parameters);
+                    camera.startPreview();
+                } else {
+                    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);// 关闭
+                    camera.setParameters(parameters);
+                    camera.stopPreview();
+                    camera.release();
+                    camera = null;
+                }
+
+            }
+        });
 
     }
 
@@ -89,21 +112,21 @@ public class ManualInputActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.ensure:
-                if(mTag.equals("main")){
+                if (mTag.equals("main")) {
                     Intent bikeNoIntent = new Intent(this, UnlockProgressActivity.class);
                     startActivity(bikeNoIntent);
                     EventBus.getDefault().post(new CodeEvent(bikeNo), "bikeNo");
-                }else if(mTag.equals("unable")){
+                } else if (mTag.equals("unable")) {
                     Intent bikeNoIntent = new Intent(this, CustomerServiceActivity.class);
                     EventBus.getDefault().post(new CodeEvent(bikeNo), "unable_bikeNo");
                     startActivity(bikeNoIntent);
 
-                }else if(mTag.equals("reports")){
+                } else if (mTag.equals("reports")) {
                     Intent bikeNoIntent = new Intent(this, CustomerServiceActivity.class);
                     EventBus.getDefault().post(new CodeEvent(bikeNo), "report_bikeNo");
                     startActivity(bikeNoIntent);
 
-                }else if(mTag.equals("fail")){
+                } else if (mTag.equals("fail")) {
                     Intent bikeNoIntent = new Intent(this, CustomerServiceActivity.class);
                     EventBus.getDefault().post(new CodeEvent(bikeNo), "fail_bikeNo");
                     startActivity(bikeNoIntent);
