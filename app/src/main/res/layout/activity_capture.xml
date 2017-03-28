@@ -64,12 +64,6 @@
             android:background="@drawable/shadow"
             android:src="@mipmap/unlock_qr_tip"/>
 
-        <!--<ImageView-->
-        <!--android:id="@+id/capture_mask_top"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="120dp"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:background="@drawable/shadow"/>-->
 
         <RelativeLayout
             android:id="@+id/capture_crop_view"
@@ -99,11 +93,12 @@
             android:background="@drawable/shadow"
             android:gravity="center_horizontal"
             android:paddingTop="10dp"
-            android:text="对准车上的二维码"
+            android:text="@string/capture_tips"
             android:textColor="#ffffff"/>
 
 
         <RelativeLayout
+            android:gravity="center"
             android:id="@+id/capture_mask_bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -115,22 +110,20 @@
                 android:id="@+id/manualInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="60dp"
                 android:drawablePadding="10dp"
                 android:drawableTop="@drawable/manual_input_selector"
                 android:gravity="center"
-                android:text="输入单车编号"
+                android:text="@string/manual_input"
                 android:textColor="#ffffff"
                 android:textSize="12sp"/>
 
             <ToggleButton
+                android:gravity="center"
+                android:layout_marginLeft="30dp"
+                android:layout_toRightOf="@+id/manualInput"
                 android:id="@+id/openFlashLight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="60dp"
                 android:background="@null"
                 android:checked="false"
                 android:drawablePadding="10dp"
