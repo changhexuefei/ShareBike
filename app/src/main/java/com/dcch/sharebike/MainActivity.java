@@ -575,10 +575,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 // && cashStatus == 1 && status == 1
                 if (SPUtils.isLogin()) {
                     if (cashStatus == 1 && status == 1) {
-                        MainActivityPermissionsDispatcher.showCameraWithCheck(this);
-                        Intent i4 = new Intent(this, CaptureActivity.class);
-                        i4.putExtra("msg", "main");
-                        startActivityForResult(i4, 0);
+                        checkAggregate(uID);
+
                     } else if (cashStatus == 0 && status == 0) {
                         startActivity(new Intent(this, RechargeActivity.class));
                     } else if (cashStatus == 1 && status == 0) {
@@ -1080,8 +1078,17 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                                     mScan.setVisibility(View.INVISIBLE);
                                     String bicycleNo = bikeRentalOrderInfo.getBicycleNo();
                                     ToastUtils.showShort(MainActivity.this, bicycleNo);
-                                    orderPopupWindow = new BikeRentalOrderPopupWindow(MainActivity.this, bikeRentalOrderInfo);
+                                    if(menuWindow!=null){
+                                        menuWindow.dismiss();
+                                    }
+                                    if(bookBikePopupWindow!=null){
+                                        bookBikePopupWindow.dismiss();
+                                    }
+                                    if(userBookingBikePopupWindow!=null){
+                                        userBookingBikePopupWindow.dismiss();
+                                    }
                                     mMap.clear();
+                                    orderPopupWindow = new BikeRentalOrderPopupWindow(MainActivity.this, bikeRentalOrderInfo);
                                     orderPopupWindow.showAsDropDown(findViewById(R.id.top));
                                     orderPopupWindow.setOutsideTouchable(false);
                                     orderPopupWindow.setFocusable(false);
@@ -1331,6 +1338,33 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         //改变地图状态
         mMap.animateMapStatus(mMapStatusUpdate);
 
+    }
+
+
+    private void checkAggregate(String uID){
+        Map<String,String> map = new HashMap<>();
+        map.put("userId",uID);
+        OkHttpUtils.post().url(Api.BASE_URL+Api.CHECKAGGREGATE).params(map).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                LogUtils.d("余额情况",response);
+                //{"resultStatus":"1"}
+                    if(JsonUtils.isSuccess(response)){
+                        MainActivityPermissionsDispatcher.showCameraWithCheck(MainActivity.this);
+                        Intent i4 = new Intent(MainActivity.this, CaptureActivity.class);
+                        i4.putExtra("msg", "main");
+                        startActivityForResult(i4, 0);
+
+                    }else{
+                        ToastUtils.showShort(MainActivity.this,"余额不足，请充值后骑行！");
+                    }
+            }
+        });
     }
 
     @Override
@@ -1616,5 +1650,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
         }
     }
+
+
+
 
 }

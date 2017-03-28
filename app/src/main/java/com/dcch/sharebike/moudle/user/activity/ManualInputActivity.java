@@ -11,19 +11,28 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.CodeEvent;
+import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.utils.DensityUtils;
+import com.dcch.sharebike.utils.JsonUtils;
+import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.ToastUtils;
 import com.dcch.sharebike.view.CodeInputEditText;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.simple.eventbus.EventBus;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 public class ManualInputActivity extends BaseActivity {
 
@@ -96,7 +105,7 @@ public class ManualInputActivity extends BaseActivity {
         mManualInputArea.setOnTextFinishListener(new CodeInputEditText.OnTextFinishListener() {
             @Override
             public void onFinish(String str) {
-                Toast.makeText(ManualInputActivity.this, str, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ManualInputActivity.this, str, Toast.LENGTH_SHORT).show();
                 bikeNo = str;
                 mEnsure.setEnabled(true);
                 mEnsure.setBackgroundColor(Color.parseColor("#F8941D"));
@@ -112,27 +121,47 @@ public class ManualInputActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.ensure:
-                if (mTag.equals("main")) {
-                    Intent bikeNoIntent = new Intent(this, UnlockProgressActivity.class);
-                    startActivity(bikeNoIntent);
-                    EventBus.getDefault().post(new CodeEvent(bikeNo), "bikeNo");
-                } else if (mTag.equals("unable")) {
-                    Intent bikeNoIntent = new Intent(this, CustomerServiceActivity.class);
-                    EventBus.getDefault().post(new CodeEvent(bikeNo), "unable_bikeNo");
-                    startActivity(bikeNoIntent);
+                Map<String, String> map = new HashMap<>();
+                map.put("lockremark", bikeNo);
+                OkHttpUtils.post().url(Api.BASE_URL + Api.CHECKBICYCLENO).params(map).build().execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        ToastUtils.showShort(ManualInputActivity.this, "服务器正忙，请稍后再试！");
+                    }
 
-                } else if (mTag.equals("reports")) {
-                    Intent bikeNoIntent = new Intent(this, CustomerServiceActivity.class);
-                    EventBus.getDefault().post(new CodeEvent(bikeNo), "report_bikeNo");
-                    startActivity(bikeNoIntent);
+                    @Override
+                    public void onResponse(String response, int id) {
+                        LogUtils.d("锁号", response);
+                        //{"resultStatus":"0"}
+                        if (JsonUtils.isSuccess(response)) {
+                            if (mTag.equals("main")) {
+                                Intent bikeNoIntent = new Intent(ManualInputActivity.this, UnlockProgressActivity.class);
+                                startActivity(bikeNoIntent);
+                                EventBus.getDefault().post(new CodeEvent(bikeNo), "bikeNo");
+                            } else if (mTag.equals("unable")) {
+                                Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
+                                EventBus.getDefault().post(new CodeEvent(bikeNo), "unable_bikeNo");
+                                startActivity(bikeNoIntent);
 
-                } else if (mTag.equals("fail")) {
-                    Intent bikeNoIntent = new Intent(this, CustomerServiceActivity.class);
-                    EventBus.getDefault().post(new CodeEvent(bikeNo), "fail_bikeNo");
-                    startActivity(bikeNoIntent);
-                }
+                            } else if (mTag.equals("reports")) {
+                                Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
+                                EventBus.getDefault().post(new CodeEvent(bikeNo), "report_bikeNo");
+                                startActivity(bikeNoIntent);
 
-                finish();
+                            } else if (mTag.equals("fail")) {
+                                Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
+                                EventBus.getDefault().post(new CodeEvent(bikeNo), "fail_bikeNo");
+                                startActivity(bikeNoIntent);
+                            }
+                            finish();
+                        } else {
+                            mManualInputArea.clearText();
+                            mEnsure.setEnabled(false);
+                            mEnsure.setBackgroundColor(Color.parseColor("#6b6b6b"));
+                            ToastUtils.showShort(ManualInputActivity.this, "该车辆编号不存在，请重新输入！");
+                        }
+                    }
+                });
                 break;
         }
     }

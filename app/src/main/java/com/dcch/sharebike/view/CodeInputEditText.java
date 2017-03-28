@@ -228,7 +228,7 @@ public class CodeInputEditText extends RelativeLayout {
         }
     }
 
-    public String getPwdText()
+    public String getInputText()
     {
         if(editText != null)
             return editText.getText().toString().trim();

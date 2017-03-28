@@ -39,6 +39,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.dcch.sharebike.R;
+import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.libzxing.zxing.camera.CameraManager;
 import com.dcch.sharebike.libzxing.zxing.decode.DecodeThread;
 import com.dcch.sharebike.libzxing.zxing.utils.BeepManager;
@@ -47,15 +48,22 @@ import com.dcch.sharebike.libzxing.zxing.utils.InactivityTimer;
 import com.dcch.sharebike.moudle.user.activity.ManualInputActivity;
 import com.dcch.sharebike.moudle.user.activity.UnlockProgressActivity;
 import com.dcch.sharebike.utils.DensityUtils;
+import com.dcch.sharebike.utils.JsonUtils;
+import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.google.zxing.Result;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 
 /**
@@ -144,8 +152,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         if (intent != null) {
             mMsg = intent.getStringExtra("msg");
         }
-
-
         mManualInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -255,17 +261,39 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
      * @param rawResult The contents of the barcode.
      * @param bundle    The extras
      */
-    public void handleDecode(Result rawResult, Bundle bundle) {
+    public void handleDecode(Result rawResult, final Bundle bundle) {
         inactivityTimer.onActivity();
         beepManager.playBeepSoundAndVibrate();
-        startActivity(new Intent(CaptureActivity.this, UnlockProgressActivity.class));
-        Intent resultIntent = new Intent();
-        bundle.putInt("width", mCropRect.width());
-        bundle.putInt("height", mCropRect.height());
-        bundle.putString("result", rawResult.getText());
-        resultIntent.putExtras(bundle);
-        this.setResult(RESULT_OK, resultIntent);
-        CaptureActivity.this.finish();
+        final String rawResultText = rawResult.getText();
+        Map<String,String> map = new HashMap<>();
+        map.put("lockremark",rawResultText);
+        OkHttpUtils.post().url(Api.BASE_URL+Api.CHECKBICYCLENO).params(map).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                ToastUtils.showShort(CaptureActivity.this,"服务器正忙，请稍后再试！");
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                LogUtils.d("锁号",response);
+               //{"resultStatus":"0"}
+                if(JsonUtils.isSuccess(response)){
+                    startActivity(new Intent(CaptureActivity.this, UnlockProgressActivity.class));
+                    Intent resultIntent = new Intent();
+                    bundle.putInt("width", mCropRect.width());
+                    bundle.putInt("height", mCropRect.height());
+                    bundle.putString("result", rawResultText);
+                    resultIntent.putExtras(bundle);
+                    CaptureActivity.this.setResult(RESULT_OK, resultIntent);
+                    CaptureActivity.this.finish();
+                }else{
+                    ToastUtils.showShort(CaptureActivity.this,"二维码格式有误");
+                }
+            }
+        });
+
+
+
     }
 
     private void initCamera(SurfaceHolder surfaceHolder) {

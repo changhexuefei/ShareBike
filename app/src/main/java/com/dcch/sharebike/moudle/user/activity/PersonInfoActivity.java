@@ -19,6 +19,7 @@ import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.utils.JsonUtils;
+import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -30,6 +31,8 @@ import org.json.JSONObject;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -200,43 +203,52 @@ public class PersonInfoActivity extends BaseActivity {
                     if (newName != null && !newName.equals("")) {
                         nickName.setText(newName);
                         String userNickName = nickName.getText().toString().trim();
-                        if (!userNickName.equals("") && userNickName != null) {
-                            Map<String, String> map = new HashMap<>();
-                            map.put("userId", uID);
-                            map.put("nickName", userNickName);
-                            /**
-                             * 上传用户昵称的方法
-                             *.addHeader("Content-Type", "text/html");    //这行很重要
-                             httpPost.addHeader("charset", HTTP.UTF_8);
-                             */
+                        try {
+                            String encode = URLEncoder.encode(userNickName, "utf-8");//"UTF-8"
+                            LogUtils.d("昵称",encode);
+                            if (!userNickName.equals("") && userNickName != null) {
+                                Map<String, String> map = new HashMap<>();
+                                map.put("userId", uID);
+                                map.put("nickName", encode);
+                                /**
+                                 * 上传用户昵称的方法
+                                 *.addHeader("Content-Type", "text/html");    //这行很重要
+                                 httpPost.addHeader("charset", HTTP.UTF_8);
+                                 FORM_CONTENT_TYPE
+                                 = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");
+                                 */
 
-                            OkHttpUtils.post()
-                                    .url(Api.BASE_URL + Api.EDITUSER)
-                                    .addHeader("Content-Type", "text/html")
-                                    .addHeader("Charset", "utf-8")
-                                    .params(map)
-                                    .build()
-                                    .execute(new StringCallback() {
-                                @Override
-                                public void onError(Call call, Exception e, int id) {
-                                    Log.e("修改昵称的请求失败", e.getMessage());
-                                    ToastUtils.showShort(PersonInfoActivity.this, "服务器暂时不可用，请稍后再试");
-                                }
+                                OkHttpUtils.post()
+                                        .url(Api.BASE_URL + Api.EDITUSER)
+//                                        .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)
+//                                    .addHeader("Charset", "utf-8")
+                                        .params(map)
+                                        .build()
+                                        .execute(new StringCallback() {
+                                            @Override
+                                            public void onError(Call call, Exception e, int id) {
+                                                Log.e("修改昵称的请求失败", e.getMessage());
+                                                ToastUtils.showShort(PersonInfoActivity.this, "服务器暂时不可用，请稍后再试");
+                                            }
 
-                                @Override
-                                public void onResponse(String response, int id) {
-                                    //根据返回值成功和失败的判断
-                                    if (JsonUtils.isSuccess(response)) {
-                                        ToastUtils.showShort(PersonInfoActivity.this, "昵称修改成功!");
+                                            @Override
+                                            public void onResponse(String response, int id) {
+                                                //根据返回值成功和失败的判断
+                                                if (JsonUtils.isSuccess(response)) {
+                                                    ToastUtils.showShort(PersonInfoActivity.this, "昵称修改成功!");
 
-                                    } else {
-                                        ToastUtils.showShort(PersonInfoActivity.this, "昵称修改失败!");
-                                    }
+                                                } else {
+                                                    ToastUtils.showShort(PersonInfoActivity.this, "昵称修改失败!");
+                                                }
 
-                                }
-                            });
+                                            }
+                                        });
+                            }
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
                         }
                     }
+
                     break;
             }
         }
