@@ -25,6 +25,7 @@ import com.dcch.sharebike.moudle.user.activity.SettingActivity;
 import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
 import com.dcch.sharebike.moudle.user.activity.WalletInfoActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
+import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.google.gson.Gson;
@@ -126,16 +127,16 @@ public class LoginFragment extends Fragment {
                 //手机号中间四位数字用*号代替的做法
                 String nn = mInfo.getNickName().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
                 nickName.setText(nn);
+                creditScore.setText("信用积分 "+String.valueOf(mInfo.getIntegral()));
                 remainSum.setText(String.valueOf(mInfo.getAggregateAmount()));
-////                                骑行距离
-//                                person_distance.setText(mInfo.getm);
+//              骑行距离
+                person_distance.setText(String.valueOf(mInfo.getMileage()));
 ////                                节约碳排放
 //                                discharge.setText();
 ////                                运动成就
 //                                sportsAchievement.setText();
                 //用户头像
                 String userimage = mInfo.getUserimage();
-
                 if (userimage != null) {
                     Log.d("用户头像路径", userimage);
                     //使用用户自定义的头像
@@ -161,7 +162,8 @@ public class LoginFragment extends Fragment {
         switch (view.getId()) {
             case R.id.creditScore:
                 String mCreditScore = creditScore.getText().toString().trim();
-                mCreditScore = mCreditScore.substring(4, mCreditScore.length()-2);
+                mCreditScore = mCreditScore.substring(5, mCreditScore.length());
+                LogUtils.d("积分",mCreditScore);
                 if(mCreditScore!=null){
                     Intent credit = new Intent(App.getContext(), CreditIntegralActivity.class);
                     credit.putExtra("score",mCreditScore);
@@ -178,7 +180,6 @@ public class LoginFragment extends Fragment {
                     startActivity(personInfo);
                     getActivity().finish();
                 }
-
                 break;
             case R.id.wallet:
                 if(mInfo!=null){

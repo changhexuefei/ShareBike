@@ -8,26 +8,28 @@ import java.io.Serializable;
 
 public class UserInfo implements Serializable {
 
+
     /**
      * id : 24
-     * name :
-     * nickName : 123
+     * name : 111
+     * nickName : 中国
      * phone : 17701273631
      * idcard : null
      * useraddress : null
-     * aggregateAmount : 0
+     * aggregateAmount : 3
      * pledgeCash : 199
      * minaggregate : 0
      * maxaggregate : 0
-     * integral : 0
-     * mileage : null
+     * integral : 7
+     * mileage : 0.07
      * password : null
      * usersex : 0
      * userage : 0
-     * userimage : /UserImage/201703141645084002935one.jpg
+     * userimage : http://192.168.1.130:8080/MavenSSM/UserImage/201703231357486113345one.jpg
      * messagecode : null
      * cashStatus : 1
-     * status : 0
+     * status : 1
+     * resultStatus : 1
      */
 
     private int id;
@@ -40,8 +42,8 @@ public class UserInfo implements Serializable {
     private int pledgeCash;
     private int minaggregate;
     private int maxaggregate;
-    private int integral;
-    private Object mileage;
+    private int integral;//积分
+    private double mileage;
     private Object password;
     private int usersex;
     private int userage;
@@ -49,6 +51,7 @@ public class UserInfo implements Serializable {
     private Object messagecode;
     private int cashStatus;
     private int status;
+    private String resultStatus;
 
     public int getId() {
         return id;
@@ -138,11 +141,11 @@ public class UserInfo implements Serializable {
         this.integral = integral;
     }
 
-    public Object getMileage() {
+    public double getMileage() {
         return mileage;
     }
 
-    public void setMileage(Object mileage) {
+    public void setMileage(double mileage) {
         this.mileage = mileage;
     }
 
@@ -200,5 +203,13 @@ public class UserInfo implements Serializable {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getResultStatus() {
+        return resultStatus;
+    }
+
+    public void setResultStatus(String resultStatus) {
+        this.resultStatus = resultStatus;
     }
 }

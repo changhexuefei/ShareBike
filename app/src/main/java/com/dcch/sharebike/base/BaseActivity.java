@@ -41,16 +41,16 @@ public abstract class BaseActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         App.getInstance().addActivity(this);
         Intent intent = new Intent();
-        //intent.setAction("com.hejingzhou.startService");
-//        intent.setPackage(getPackageName());
-//        bindService(intent,coon,BIND_AUTO_CREATE);
-//        if (IS == true) {
-//            /*String path = Environment.getExternalStorageDirectory() + "/DateApp.apk";
-//            Intent intent = new Intent(Intent.ACTION_VIEW);
-//            intent.setDataAndType(Uri.fromFile(new File(path)), "application/vnd.android.package-archive");
-//            startActivity(intent);*/
-//            IS = false;
-//        }
+        intent.setAction("com.gao.startService");
+        intent.setPackage(getPackageName());
+        bindService(intent,coon,BIND_AUTO_CREATE);
+        if (IS == true) {
+            /*String path = Environment.getExternalStorageDirectory() + "/DateApp.apk";
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(Uri.fromFile(new File(path)), "application/vnd.android.package-archive");
+            startActivity(intent);*/
+            IS = false;
+        }
         initData();
         initListener();
     }
