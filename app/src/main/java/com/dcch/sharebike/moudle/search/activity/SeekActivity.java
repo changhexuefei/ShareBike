@@ -15,11 +15,10 @@ import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
 import com.baidu.mapapi.search.sug.SuggestionResult;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.baidu.mapapi.search.sug.SuggestionSearchOption;
-import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
-import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.moudle.search.adapter.SearchAdapter;
+import com.dcch.sharebike.utils.LogUtils;
 
 import java.util.List;
 
@@ -122,9 +121,13 @@ public class SeekActivity extends BaseActivity implements TextWatcher {
             infoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Intent intent = new Intent(App.getContext(), MainActivity.class);
-                    intent.putExtra("clickItem", allSuggestions.get(i));
-                    startActivity(intent);
+                    double latitude = allSuggestions.get(i).pt.latitude;
+                    double longitude = allSuggestions.get(i).pt.longitude;
+                    Intent intent = new Intent();
+                    intent.putExtra("lat", allSuggestions.get(i).pt.latitude);
+                    intent.putExtra("lon", allSuggestions.get(i).pt.longitude);
+                    LogUtils.d("是谁",allSuggestions.get(i).pt.latitude+"\n"+allSuggestions.get(i).pt.longitude);
+                    SeekActivity.this.setResult(0, intent);
                     finish();
                 }
             });

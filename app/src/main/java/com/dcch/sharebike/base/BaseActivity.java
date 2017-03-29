@@ -2,7 +2,6 @@ package com.dcch.sharebike.base;
 
 
 import android.content.ComponentName;
-import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -40,17 +39,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getLayoutId());
         ButterKnife.bind(this);
         App.getInstance().addActivity(this);
-        Intent intent = new Intent();
-        intent.setAction("com.gao.startService");
-        intent.setPackage(getPackageName());
-        bindService(intent,coon,BIND_AUTO_CREATE);
-        if (IS == true) {
-            /*String path = Environment.getExternalStorageDirectory() + "/DateApp.apk";
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(Uri.fromFile(new File(path)), "application/vnd.android.package-archive");
-            startActivity(intent);*/
-            IS = false;
-        }
+//        Intent intent = new Intent();
+//        intent.setAction("com.gao.startService");
+//        intent.setPackage(getPackageName());
+//        bindService(intent,coon,BIND_AUTO_CREATE);
+//        if (IS == true) {
+//            /*String path = Environment.getExternalStorageDirectory() + "/DateApp.apk";
+//            Intent intent = new Intent(Intent.ACTION_VIEW);
+//            intent.setDataAndType(Uri.fromFile(new File(path)), "application/vnd.android.package-archive");
+//            startActivity(intent);*/
+//            IS = false;
+//        }
         initData();
         initListener();
     }
