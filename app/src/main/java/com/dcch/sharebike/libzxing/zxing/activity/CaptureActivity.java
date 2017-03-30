@@ -270,7 +270,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         OkHttpUtils.post().url(Api.BASE_URL+Api.CHECKBICYCLENO).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(CaptureActivity.this,"服务器正忙，请稍后再试！");
+                ToastUtils.showShort(CaptureActivity.this,"来自Capture：服务器正忙，请稍后再试！");
             }
 
             @Override

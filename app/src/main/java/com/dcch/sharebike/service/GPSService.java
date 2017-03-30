@@ -24,6 +24,7 @@ import com.dcch.sharebike.listener.MyOrientationListener;
 import com.dcch.sharebike.moudle.home.bean.RidingInfo;
 import com.dcch.sharebike.moudle.home.bean.RoutePoint;
 import com.dcch.sharebike.utils.JsonUtils;
+import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.MapUtil;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.google.gson.Gson;
@@ -239,8 +240,8 @@ public class GPSService extends Service {
                         }
                     }
                 }
-//                totalTime = (int) (System.currentTimeMillis() - beginTime) / 1000 / 60;
-//                totalPrice = (float) (Math.floor(totalTime / 30) * 0.5 + 0.5);
+                totalTime = (int) (System.currentTimeMillis() - beginTime) / 1000 / 60;
+                totalPrice = (float) (Math.floor(totalTime / 30) * 0.5 + 0.5);
 //                startNotifi(totalTime + "分钟", totalDistance + "米", totalPrice + "元");
 
 //                Bundle bundle = new Bundle();
@@ -283,10 +284,11 @@ public class GPSService extends Service {
                 map.put("userId", mUserId);
 
                 map.put("lng", mRouteLng + "");
-
+                LogUtils.d("距离",mRouteLng + "");
                 map.put("lat", mRouteLat + "");
-
+                LogUtils.d("距离",mRouteLat + "");
                 map.put("mile", totalDistance / 1000 + "");
+                LogUtils.d("距离",totalDistance / 1000 + "");
 
                 OkHttpUtils.post().url(url).params(map).build().execute(new StringCallback() {
                     @Override
@@ -310,6 +312,7 @@ public class GPSService extends Service {
                                         Bundle bundle = new Bundle();
                                         bundle.putSerializable("ridingInfo", ridingInfo);
                                         sendToRidingResult(bundle);
+                                        stopSelf();
                                 }
                         }
                     }

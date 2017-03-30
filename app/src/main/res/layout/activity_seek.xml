@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_seek"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    tools:context="com.dcch.sharebike.moudle.search.activity.SeekActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/activity_seek"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                tools:context="com.dcch.sharebike.moudle.search.activity.SeekActivity">
 
     <RelativeLayout
         android:id="@+id/search_area"
@@ -23,7 +23,7 @@
             android:background="#00000000"
             android:padding="8dp"
             android:text="取消"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"/>
 
         <EditText
             android:id="@+id/search"
@@ -43,7 +43,7 @@
             android:singleLine="true"
             android:textColor="#ffffff"
             android:textColorHint="#c7c2c2"
-            android:textCursorDrawable="@null" />
+            android:textCursorDrawable="@null"/>
 
         <ImageButton
             android:id="@+id/deleteWord"
@@ -53,7 +53,7 @@
             android:background="#000000"
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
-            android:src="@mipmap/delete" />
+            android:src="@mipmap/delete"/>
 
         <View
             android:layout_width="260dp"
@@ -61,7 +61,7 @@
             android:layout_below="@+id/search"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="-4dp"
-            android:background="#838080" />
+            android:background="#838080"/>
 
     </RelativeLayout>
 
@@ -69,6 +69,7 @@
         android:id="@+id/positionDisplay"
         android:layout_width="match_parent"
         android:layout_height="30dp"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/search_area">
 
         <TextView
@@ -77,20 +78,21 @@
             android:layout_marginLeft="4dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="我的位置"
+            android:lines="1"
+            android:text="@string/my_location"
             android:textColor="#000000"
-            android:textSize="13sp" />
+            android:textSize="13sp"/>
 
         <TextView
-            android:lines="1"
-            android:ellipsize="end"
             android:id="@+id/myAddress"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="6dp"
             android:layout_weight="11"
+            android:ellipsize="end"
             android:gravity="center_vertical"
-            android:textSize="12sp" />
+            android:lines="1"
+            android:textSize="12sp"/>
 
     </LinearLayout>
 
@@ -99,16 +101,16 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_below="@+id/positionDisplay"
-        android:background="#ccc5c5" />
+        android:background="#ccc5c5"/>
 
     <TextView
-       android:visibility="gone"
         android:id="@+id/seek_no_result"
-        android:gravity="bottom|center_horizontal"
-        android:layout_below="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="@string/no_result" />
+        android:layout_below="@+id/view"
+        android:gravity="bottom|center_horizontal"
+        android:text="@string/no_result"
+        android:visibility="gone"/>
 
 
     <ListView
