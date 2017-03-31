@@ -1,8 +1,8 @@
 package com.dcch.sharebike.moudle.user.activity;
 
 import android.support.annotation.IdRes;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -23,8 +23,6 @@ import cn.sharesdk.wechat.moments.WechatMoments;
 
 public class InviteFriendsActivity extends BaseActivity {
 
-    @BindView(R.id.back)
-    ImageView mBack;
     @BindView(R.id.tv_tip_four)
     TextView mTvTipFour;
     @BindView(R.id.updateInvitationCode)
@@ -41,6 +39,10 @@ public class InviteFriendsActivity extends BaseActivity {
     RadioButton mShareSina;
     @BindView(R.id.sharePlatform)
     RadioGroup mSharePlatform;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     @Override
     protected int getLayoutId() {
@@ -49,6 +51,15 @@ public class InviteFriendsActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        mToolbar.setTitle("");
+        mTitle.setText(getResources().getString(R.string.inviteFriends));
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
     }
 
@@ -91,15 +102,11 @@ public class InviteFriendsActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.back, R.id.updateInvitationCode})
+    @OnClick( R.id.updateInvitationCode)
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.back:
-                finish();
-                break;
             case R.id.updateInvitationCode:
                 String inviteCode = mUpdateInvitationCode.getText().toString().trim();
-
                 break;
         }
     }
@@ -133,4 +140,5 @@ public class InviteFriendsActivity extends BaseActivity {
         //启动分享
         oks.show(this);
     }
+
 }

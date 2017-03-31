@@ -1,8 +1,10 @@
 package com.dcch.sharebike.moudle.user.activity;
 
 import android.content.Intent;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
@@ -11,14 +13,15 @@ import com.dcch.sharebike.moudle.user.fragment.ReportIllegalParkingFragment;
 import com.dcch.sharebike.moudle.user.fragment.UnableUnlockFragment;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 public class CustomerServiceActivity extends BaseActivity {
 
-    @BindView(R.id.back)
-    ImageView back;
     @BindView(R.id.customerService)
     FrameLayout customerService;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     @Override
     protected int getLayoutId() {
@@ -27,6 +30,16 @@ public class CustomerServiceActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        mToolbar.setTitle("");
+        mTitle.setText(getResources().getString(R.string.about_us));
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
         if (!name.equals("") && name != null) {
@@ -45,9 +58,4 @@ public class CustomerServiceActivity extends BaseActivity {
         }
     }
 
-
-    @OnClick(R.id.back)
-    public void onClick() {
-        finish();
-    }
 }

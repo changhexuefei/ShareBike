@@ -2,6 +2,7 @@ package com.dcch.sharebike.moudle.login.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -9,7 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.anton46.stepsview.StepsView;
 import com.dcch.sharebike.MainActivity;
@@ -40,8 +41,6 @@ import okhttp3.Call;
 
 public class IdentityAuthentication extends BaseActivity {
 
-    @BindView(R.id.back)
-    ImageView back;
     @BindView(R.id.IDCardNo)
     EditText IDCardNo;
     @BindView(R.id.btn_authentication)
@@ -50,6 +49,10 @@ public class IdentityAuthentication extends BaseActivity {
     EditText userRealName;
     @BindView(R.id.iden_stepsView)
     StepsView mIdenStepsView;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
     private String realName;
     private String cardNum;
     private String uID;
@@ -61,6 +64,20 @@ public class IdentityAuthentication extends BaseActivity {
 
     @Override
     protected void initData() {
+        mToolbar.setTitle("");
+        mTitle.setText(getResources().getString(R.string.identity_area));
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent backToLoginMain = new Intent(IdentityAuthentication.this, MainActivity.class);
+                startActivity(backToLoginMain);
+                finish();
+            }
+        });
+
+
+
         String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
         try {
             JSONObject object = new JSONObject(userDetail);
@@ -129,14 +146,9 @@ public class IdentityAuthentication extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.back, R.id.btn_authentication})
+    @OnClick( R.id.btn_authentication)
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.back:
-                Intent backToLoginMain = new Intent(IdentityAuthentication.this, MainActivity.class);
-                startActivity(backToLoginMain);
-                finish();
-                break;
             case R.id.btn_authentication:
                 //实名认证的接口
                 verifyRealName(uID, realName, cardNum);

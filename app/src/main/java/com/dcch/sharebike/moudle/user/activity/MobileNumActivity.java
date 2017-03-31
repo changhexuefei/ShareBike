@@ -3,9 +3,9 @@ package com.dcch.sharebike.moudle.user.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
@@ -16,12 +16,14 @@ import butterknife.OnClick;
 
 public class MobileNumActivity extends BaseActivity {
 
-    @BindView(R.id.back)
-    ImageView mBack;
     @BindView(R.id.phone_show)
     TextView mPhoneShow;
     @BindView(R.id.replace_mobile_num)
     Button mReplaceMobileNum;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
     private int mCashStatus;
 
     @Override
@@ -31,6 +33,15 @@ public class MobileNumActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        mToolbar.setTitle("");
+        mTitle.setText(getResources().getString(R.string.mobile_title));
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         Intent intent = getIntent();
         String phone = intent.getStringExtra("phone");
         mCashStatus = intent.getIntExtra("cashStatus", 0);
@@ -40,12 +51,9 @@ public class MobileNumActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.back, R.id.replace_mobile_num})
+    @OnClick( R.id.replace_mobile_num)
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.back:
-                finish();
-                break;
             case R.id.replace_mobile_num:
                 if (mCashStatus == 1) {
                     new AlertDialog.Builder(this)
@@ -57,11 +65,12 @@ public class MobileNumActivity extends BaseActivity {
                                     startActivity(new Intent(MobileNumActivity.this, WalletInfoActivity.class));
                                 }
                             }).create().show();
-                } else if(mCashStatus==0){
+                } else if (mCashStatus == 0) {
                     Intent changeMobileNum = new Intent(this, ChangeMobileNumActivity.class);
                     startActivity(changeMobileNum);
                 }
                 break;
         }
     }
+
 }

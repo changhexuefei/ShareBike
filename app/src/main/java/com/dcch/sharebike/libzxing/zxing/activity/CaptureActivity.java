@@ -46,7 +46,6 @@ import com.dcch.sharebike.libzxing.zxing.utils.BeepManager;
 import com.dcch.sharebike.libzxing.zxing.utils.CaptureActivityHandler;
 import com.dcch.sharebike.libzxing.zxing.utils.InactivityTimer;
 import com.dcch.sharebike.moudle.user.activity.ManualInputActivity;
-import com.dcch.sharebike.moudle.user.activity.UnlockProgressActivity;
 import com.dcch.sharebike.utils.DensityUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
@@ -265,20 +264,19 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         inactivityTimer.onActivity();
         beepManager.playBeepSoundAndVibrate();
         final String rawResultText = rawResult.getText();
-        Map<String,String> map = new HashMap<>();
-        map.put("lockremark",rawResultText);
-        OkHttpUtils.post().url(Api.BASE_URL+Api.CHECKBICYCLENO).params(map).build().execute(new StringCallback() {
+        Map<String, String> map = new HashMap<>();
+        map.put("lockremark", rawResultText);
+        OkHttpUtils.post().url(Api.BASE_URL + Api.CHECKBICYCLENO).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(CaptureActivity.this,"来自Capture：服务器正忙，请稍后再试！");
+                ToastUtils.showShort(CaptureActivity.this, "来自Capture：服务器正忙，请稍后再试！");
             }
 
             @Override
             public void onResponse(String response, int id) {
-                LogUtils.d("锁号",response);
-               //{"resultStatus":"0"}
-                if(JsonUtils.isSuccess(response)){
-                    startActivity(new Intent(CaptureActivity.this, UnlockProgressActivity.class));
+                LogUtils.d("锁号", response);
+                //{"resultStatus":"0"}
+                if (JsonUtils.isSuccess(response)) {
                     Intent resultIntent = new Intent();
                     bundle.putInt("width", mCropRect.width());
                     bundle.putInt("height", mCropRect.height());
@@ -286,14 +284,12 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                     resultIntent.putExtras(bundle);
                     CaptureActivity.this.setResult(RESULT_OK, resultIntent);
                     CaptureActivity.this.finish();
-                }else{
-                    ToastUtils.showShort(CaptureActivity.this,"二维码格式有误");
+
+                } else {
+                    ToastUtils.showShort(CaptureActivity.this, "二维码格式有误");
                 }
             }
         });
-
-
-
     }
 
     private void initCamera(SurfaceHolder surfaceHolder) {

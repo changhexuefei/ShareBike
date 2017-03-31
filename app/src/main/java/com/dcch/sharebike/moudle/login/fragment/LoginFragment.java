@@ -77,6 +77,7 @@ public class LoginFragment extends Fragment {
     TextView remainSum;
     private UserInfo mInfo;
     private String uID;
+    private String mPhone;
 
 
     public LoginFragment() {
@@ -125,6 +126,7 @@ public class LoginFragment extends Fragment {
                 Gson gson = new Gson();
                 mInfo = gson.fromJson(response, UserInfo.class);
                 //手机号中间四位数字用*号代替的做法
+                mPhone = mInfo.getPhone();
                 String nn = mInfo.getNickName().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
                 nickName.setText(nn);
                 creditScore.setText("信用积分 "+String.valueOf(mInfo.getIntegral()));
@@ -133,8 +135,8 @@ public class LoginFragment extends Fragment {
                 person_distance.setText(String.valueOf(mInfo.getMileage()));
 ////                                节约碳排放
 //                                discharge.setText();
-////                                运动成就
-//                                sportsAchievement.setText();
+//                                运动成就
+//                                sportsAchievement.setText(mInfo.get);
                 //用户头像
                 String userimage = mInfo.getUserimage();
                 if (userimage != null) {
@@ -197,6 +199,7 @@ public class LoginFragment extends Fragment {
             case R.id.journey:
                 ToastUtils.showLong(getContext(), "行程");
                 Intent myJourney = new Intent(App.getContext(), MyJourneyActivity.class);
+                myJourney.putExtra("phone",mPhone);
                 startActivity(myJourney);
                 break;
             case R.id.message:

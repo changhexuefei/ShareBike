@@ -6,31 +6,33 @@
     android:layout_height="match_parent"
     tools:context="com.dcch.sharebike.moudle.login.activity.IdentityAuthentication">
 
-    <FrameLayout
-        android:id="@+id/identity_top"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#41c0dc">
+    <include layout="@layout/toolbar"/>
 
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:padding="12dp"
-            android:src="@mipmap/back" />
+    <!--<FrameLayout-->
+        <!--android:id="@+id/identity_top"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:background="#41c0dc">-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="@string/identity_area"
-            android:textColor="@color/common"
-            android:textSize="16sp" />
-    </FrameLayout>
+        <!--<ImageView-->
+            <!--android:id="@+id/back"-->
+            <!--android:layout_width="48dp"-->
+            <!--android:layout_height="48dp"-->
+            <!--android:padding="12dp"-->
+            <!--android:src="@mipmap/back" />-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/identity_area"-->
+            <!--android:textColor="@color/common"-->
+            <!--android:textSize="16sp" />-->
+    <!--</FrameLayout>-->
 
     <com.anton46.stepsview.StepsView
-        android:layout_below="@+id/identity_top"
+        android:layout_below="@+id/toolbar"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/iden_stepsView"
         android:layout_width="match_parent"

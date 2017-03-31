@@ -62,6 +62,7 @@
     <string name="my_favorable">我的优惠</string>
     <string name="my_journey">我的行程</string>
     <string name="my_message">我的消息</string>
+    <string name="my_credit_intergral">我的信用</string>
     <string name="invite_friends">邀请好友</string>
     <string name="user_guide">用户指南</string>
     <string name="setting">设置</string>
@@ -83,4 +84,5 @@
     <string name="manual_input">输入单车编号</string>
     <string name="my_location">我的位置</string>
     <string name="error_info">抱歉，服务器正忙！</string>
+    <string name="authen_ok">注册完成</string>
 </resources>

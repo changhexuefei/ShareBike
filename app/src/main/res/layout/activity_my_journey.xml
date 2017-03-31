@@ -46,7 +46,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/journey"
-        android:visibility="gone"></ListView>
+        android:visibility="gone">
+
+    </ListView>
 
 
     <RelativeLayout

@@ -6,29 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.dcch.sharebike.moudle.user.activity.CreditIntegralActivity">
 
-    <FrameLayout
-        android:id="@+id/personCredit"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/colorHeading">
-
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:padding="12dp"
-            android:src="@mipmap/back" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="我的信用"
-            android:textColor="@color/common"
-            android:textSize="16sp" />
-    </FrameLayout>
-
-
+    <include layout="@layout/toolbar"/>
 
     <com.dcch.sharebike.view.CreditSesameView
         android:id="@+id/new_credit"

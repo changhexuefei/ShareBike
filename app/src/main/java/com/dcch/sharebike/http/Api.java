@@ -32,6 +32,8 @@ public class Api {
     public static final String ADDTROUBLEORDER = "addTroubleOrder.do?";
     //支付宝支付
     public static final String ALIPAY = "alipay.do?";
+    //微信支付
+    public static final String WEIXINPAY = "weixinpay.do?";
     //修改用户昵称
     public static final String EDITUSER = "editAppUser.do?";
     //上传用户头像
@@ -48,7 +50,7 @@ public class Api {
     public static final String CHECKBICYCLENO = "checkBicycleNo.do?";
     //查询是否有骑行订单
     public static final String SEARCHORDERING = "searchOrdering.do?";
-
-
+    //我的行程
+    public static final String GETCARRENTALORDERBYPHONE = "getCarRentalOrderByPhone.do?";
 
 }

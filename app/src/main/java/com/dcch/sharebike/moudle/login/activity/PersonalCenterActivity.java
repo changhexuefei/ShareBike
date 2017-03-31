@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
@@ -15,17 +17,18 @@ import com.dcch.sharebike.moudle.login.fragment.UnLoginFragment;
 import com.dcch.sharebike.utils.SPUtils;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 public class PersonalCenterActivity extends BaseActivity {
 
-    @BindView(R.id.back)
-    ImageView back;
     @BindView(R.id.showFragment)
     FrameLayout showFragment;
     FragmentManager supportFragmentManager;
     LoginFragment lf;
     UnLoginFragment uf;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
     //记录Fragment的位置
     private int position = 0;
 
@@ -36,16 +39,20 @@ public class PersonalCenterActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        mToolbar.setTitle("");
+        mTitle.setText(getResources().getString(R.string.share_title));
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent backToLoginMain = new Intent(PersonalCenterActivity.this, MainActivity.class);
+                startActivity(backToLoginMain);
+                finish();
+            }
+        });
         showFragment();
     }
 
-    @OnClick(R.id.back)
-    public void onClick() {
-        Intent backToLoginMain = new Intent(PersonalCenterActivity.this, MainActivity.class);
-        startActivity(backToLoginMain);
-        finish();
-
-    }
 
     private void showFragment() {
         hideFragments();
@@ -66,6 +73,7 @@ public class PersonalCenterActivity extends BaseActivity {
         }
         ft.commit();
     }
+
     /**
      * 隐藏所有fragment
      */
@@ -101,6 +109,5 @@ public class PersonalCenterActivity extends BaseActivity {
         //记录当前的position
         outState.putInt("position", position);
     }
-
 
 }

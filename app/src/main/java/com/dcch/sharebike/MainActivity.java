@@ -81,6 +81,7 @@ import com.dcch.sharebike.moudle.search.activity.SeekActivity;
 import com.dcch.sharebike.moudle.user.activity.CustomerServiceActivity;
 import com.dcch.sharebike.moudle.user.activity.RechargeDepositActivity;
 import com.dcch.sharebike.moudle.user.activity.RidingResultActivity;
+import com.dcch.sharebike.moudle.user.activity.UnlockProgressActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.overlayutil.OverlayManager;
 import com.dcch.sharebike.overlayutil.WalkingRouteOverlay;
@@ -665,61 +666,60 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     if (menuWindow != null) {
                         menuWindow.dismiss();
                     }
-//                    final ProgressDialog dialog = new ProgressDialog(MainActivity.this);
-//                    dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);// 设置进度条的形式为圆形转动的进度条
-//                    dialog.setCancelable(false);// 设置是否可以通过点击Back键取消
-//                    dialog.setCanceledOnTouchOutside(false);// 设置在点击Dialog外是否取消Dialog进度条
-//                    // dialog.setIcon(R.mipmap.ic_launcher);//
-//                    // 设置提示的title的图标，默认是没有的，如果没有设置title的话只设置Icon是不会显示图标的
-//                    dialog.setTitle(null);
-//                    // dismiss监听
-//                    dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-//
-//                        @Override
-//                        public void onDismiss(DialogInterface dialog) {
-//
-//                        }
-//                    });
-//                    // 监听Key事件被传递给dialog
-//                    dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-//
-//                        @Override
-//                        public boolean onKey(DialogInterface dialog, int keyCode,
-//                                             KeyEvent event) {
-//                            return false;
-//                        }
-//                    });
-//                    // 监听cancel事件
-//                    dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-//
-//                        @Override
-//                        public void onCancel(DialogInterface dialog) {
-                    Bundle bundle = marker.getExtraInfo();
-                    clickMarkLatlng = marker.getPosition();
+                    final ProgressDialog dialog = new ProgressDialog(MainActivity.this);
+                    dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);// 设置进度条的形式为圆形转动的进度条
+                    dialog.setCancelable(false);// 设置是否可以通过点击Back键取消
+                    dialog.setCanceledOnTouchOutside(false);// 设置在点击Dialog外是否取消Dialog进度条
+                    // dialog.setIcon(R.mipmap.ic_launcher);//
+                    // 设置提示的title的图标，默认是没有的，如果没有设置title的话只设置Icon是不会显示图标的
+                    dialog.setTitle(null);
+                    // dismiss监听
+                    dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
 
-                    bikeInfo = (BikeInfo) bundle.getSerializable("bikeInfo");
-                    bicycleNo = bikeInfo.getBicycleNo() + "";
-                    if (bikeInfo != null) {
-                        updateBikeInfo(bikeInfo);
-                    }
-//                        }
-//                    });
-//                    dialog.setMessage("路线规划中....");
-//                    dialog.show();
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            try {
-//                                Thread.sleep(2000);
-//                                // cancel和dismiss方法本质都是一样的，都是从屏幕中删除Dialog,唯一的区别是
-//                                // 调用cancel方法会回调DialogInterface.OnCancelListener如果注册的话,dismiss方法不会回调
-//                                dialog.cancel();
-//                                // dialog.dismiss();
-//                            } catch (InterruptedException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    }).start();
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+
+                        }
+                    });
+                    // 监听Key事件被传递给dialog
+                    dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+
+                        @Override
+                        public boolean onKey(DialogInterface dialog, int keyCode,
+                                             KeyEvent event) {
+                            return false;
+                        }
+                    });
+                    // 监听cancel事件
+                    dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            Bundle bundle = marker.getExtraInfo();
+                            clickMarkLatlng = marker.getPosition();
+                            bikeInfo = (BikeInfo) bundle.getSerializable("bikeInfo");
+                            bicycleNo = bikeInfo.getBicycleNo() + "";
+                            if (bikeInfo != null) {
+                                updateBikeInfo(bikeInfo);
+                            }
+                        }
+                    });
+                    dialog.setMessage("路线规划中....");
+                    dialog.show();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(2000);
+                                // cancel和dismiss方法本质都是一样的，都是从屏幕中删除Dialog,唯一的区别是
+                                // 调用cancel方法会回调DialogInterface.OnCancelListener如果注册的话,dismiss方法不会回调
+                                dialog.cancel();
+                                // dialog.dismiss();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
 
 //                    reverseGeoCoder(clickMarkLatlng);
                 }
@@ -1119,12 +1119,16 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             Bundle bundle = data.getExtras();
             double lat = data.getDoubleExtra("lat", 0);
             double lon = data.getDoubleExtra("lon", 0);
-            LogUtils.d("攒则", lat + "\n" + lon);
             switch (requestCode) {
                 case 0:
                     if (bundle != null) {
                         result = bundle.getString("result");
                         openScan(phone, result);
+                        Intent intent = new Intent(MainActivity.this, UnlockProgressActivity.class);
+//                        intent.putExtra("bikeNo", result);
+//                        intent.putExtra("userId", uID);
+//                        intent.putExtra("phone", phone);
+                        startActivity(intent);
                         ToastUtils.showLong(this, result);
                     }
                     break;
@@ -1140,6 +1144,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     //扫码开锁的方法
     private void openScan(String phone, final String result) {
+
         if (phone != null && !phone.equals("") && result != null && !result.equals("")) {
             Map<String, String> map = new HashMap<>();
             map.put("userId", uID);
@@ -1166,7 +1171,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
                             @Override
                             public void onResponse(String response, int id) {
-                                Log.d("开锁", response);
+                                Log.d("骑行订单", response);
                                 if (JsonUtils.isSuccess(response)) {
                                     isShowRideOrder = true;
                                     isClick = false;
@@ -1392,12 +1397,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (uID != null && !uID.equals("")) {
                     checkBookingBikeInfoByUserID(uID);
                     checkOrderInfoByUserID(uID);
-
+                } else {
+                    //根据手机定位地点，得到车辆信息的方法
+                    getBikeInfo(mCurrentLantitude, mCurrentLongitude);
                 }
-//                else {
-//                    //根据手机定位地点，得到车辆信息的方法
-//                    getBikeInfo(mCurrentLantitude, mCurrentLongitude);
-//                }
 
             }
 
@@ -1407,6 +1410,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private void checkOrderInfoByUserID(final String uID) {
         Map<String, String> map = new HashMap<>();
         map.put("userId", uID);
+        Log.d("用户的ID", uID);
         OkHttpUtils.post().url(Api.BASE_URL + Api.SEARCHORDERING).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -1439,7 +1443,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     mShowBikeRentalOrderPopupWindow.setOutsideTouchable(false);
                     mShowBikeRentalOrderPopupWindow.setFocusable(false);
 
-                }else{
+                } else {
                     //根据手机定位地点，得到车辆信息的方法
                     getBikeInfo(mCurrentLantitude, mCurrentLongitude);
 
@@ -1747,13 +1751,13 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             RidingInfo ridingInfo = (RidingInfo) intent.getSerializableExtra("ridingInfo");
             if (ridingInfo != null) {
                 double tripDist = changeDouble(ridingInfo.getTripDist());
-                LogUtils.d("距离",tripDist+"");
+                LogUtils.d("距离", tripDist + "");
                 double calorie = changeDouble(ridingInfo.getCalorie());
                 String dist = String.valueOf(tripDist * 1000);
-                LogUtils.d("距离",dist+"");
+                LogUtils.d("距离", dist + "");
                 int i = stringToInt(dist);
                 String s = MapUtil.distanceFormatter(i);
-                LogUtils.d("距离",s+"");
+                LogUtils.d("距离", s + "");
                 if (orderPopupWindow != null) {
                     mMap.clear();
                     orderPopupWindow.rideDistance.setText(s);

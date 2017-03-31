@@ -1,59 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_my_message"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.dcch.sharebike.moudle.user.activity.MyMessageActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/activity_my_message"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.dcch.sharebike.moudle.user.activity.MyMessageActivity">
 
-    <FrameLayout
-        android:id="@+id/myMessageArea"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#41c0dc">
+    <include layout="@layout/toolbar"/>
 
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:padding="12dp"
-            android:src="@mipmap/back" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="@string/myMessage"
-            android:textColor="@color/common"
-            android:textSize="16sp" />
-    </FrameLayout>
     <RelativeLayout
-        android:layout_below="@+id/myMessageArea"
         android:id="@+id/no_message"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar">
 
         <ImageView
             android:id="@+id/iv_noMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/no_message_img" />
+            android:src="@drawable/no_message_img"/>
 
         <TextView
-            android:layout_below="@+id/iv_noMessage"
-            android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="还没有什么大事发生哦" />
+            android:layout_below="@+id/iv_noMessage"
+            android:layout_centerHorizontal="true"
+            android:text="还没有什么大事发生哦"/>
 
     </RelativeLayout>
-
-
-
-
-
 
 
 </RelativeLayout>

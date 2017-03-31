@@ -21,10 +21,12 @@ import com.alipay.sdk.app.PayTask;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.alipay.AliPay;
 import com.dcch.sharebike.alipay.PayResult;
+import com.dcch.sharebike.alipay.WeixinPay;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -72,6 +74,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
     Button btnRbfRecharge;
     String rechargeNumber = "";
     String uID;
+    String ipAddress = "";
 
     private static final int SDK_PAY_FLAG = 1;
     private static final int SDK_AUTH_FLAG = 2;
@@ -133,7 +136,6 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                     //选择支付宝，调取支付宝的支付方法
                     AliPay aliPay = new AliPay(this);
                     String outTradeNo = aliPay.getOutTradeNo();
-
                     Map<String, String> map = new HashMap<>();
                     map.put("outtradeno", outTradeNo);
                     map.put("orderbody", "交车费");
@@ -168,6 +170,48 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                     });
                 } else if (rbfWeixinCheckbox.isChecked()) {
                     //调取微信的支付方式
+//                    final IWXAPI msgApi = WXAPIFactory.createWXAPI(context, null);
+//                    msgApi.registerApp("wxd4b5d5e34b0dd095");
+                    WeixinPay weixinPay = new WeixinPay(this);
+
+                    if (NetUtils.isConnected(App.getContext())) {
+                        if (NetUtils.isWifi(App.getContext())) {
+                            ipAddress = weixinPay.getLocalIpAddress();
+
+                        } else {
+                            ipAddress = weixinPay.getIpAddress();
+                        }
+                        String outTradeNo = weixinPay.getOutTradeNo();
+
+                        Map<String,String> map = new HashMap<>();
+                        map.put("out_trade_no",outTradeNo);
+                        map.put("body","充值");
+                        map.put("total_price","0.01");
+                        map.put("spbill_create_ip",ipAddress);
+
+                        OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINPAY).params(map).build().execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+
+                            }
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                LogUtils.d("微信支付",response);
+                            }
+                        });
+
+
+
+
+                    } else {
+
+
+                    }
+
+
+
+
 
                 }
                 break;
@@ -243,7 +287,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         mIntent.putExtra("recherge", rechargeNumber);
         // 设置结果，并进行传送
         this.setResult(0, mIntent);
-         this.finish();
+        this.finish();
     }
 
 

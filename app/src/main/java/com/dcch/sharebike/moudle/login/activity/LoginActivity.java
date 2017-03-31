@@ -8,13 +8,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dcch.sharebike.MainActivity;
@@ -56,12 +56,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     TextView confirm;
     @BindView(R.id.rules)
     TextView rules;
-    @BindView(R.id.back)
-    ImageView back;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.title)
+    TextView mTitle;
 
     private static final int CODE_ING = 1;   //已发送，倒计时
     private static final int CODE_REPEAT = 2;  //重新发送
     private static final int SMSDDK_HANDLER = 3;  //短信回调
+
+
     private int TIME = 60;//倒计时60s
 
 
@@ -135,13 +139,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     protected void initData() {
-//        initSDK();
-        init();
+        mToolbar.setTitle("");
+        mTitle.setText(getResources().getString(R.string.phone_verification));
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EventBus.getDefault().post(new MessageEvent(), "show");
+                finish();
+            }
+        });
     }
 
-    public void init() {
-
-    }
 
 //    private void initSDK() {
 //        SMSSDK.initSDK(LoginActivity.this, "1b4c24f4f4475", "3ba2116b2a11e2836bc5eb1a00fa84ac");
@@ -162,6 +171,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     protected void initListener() {
+
         userPhone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -219,13 +229,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         });
     }
 
-    @OnClick({R.id.getSecurityCode, R.id.login_confirm, R.id.rules, R.id.back})
+
+    //, R.id.back
+    @OnClick({R.id.getSecurityCode, R.id.login_confirm, R.id.rules})
     public void onClick(View view) {
         switch (view.getId()) {
 
             case R.id.getSecurityCode:
                 getseCode(phone);
-
                 break;
             case R.id.login_confirm:
                 //将收到的验证码和手机号提交再次核对
@@ -242,10 +253,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 Intent intent = new Intent(this, AgreementActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.back:
-                EventBus.getDefault().post(new MessageEvent(), "show");
-                finish();
-                break;
+//            case R.id.back:
+//                EventBus.getDefault().post(new MessageEvent(), "show");
+//                finish();
+//                break;
         }
     }
 
@@ -302,18 +313,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onResponse(String response, int id) {
                 Log.d("测试", response);
-//                try {
-//                    JSONObject object = new JSONObject(response);
-//                    String messagecode = object.optString("messagecode");
-//                    if(messagecode.equals("1")){
-//                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//                    }else{
-//                        ToastUtils.showShort(LoginActivity.this,"登录失败！");
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-                if(JsonUtils.isSuccess(response)){
+                if (JsonUtils.isSuccess(response)) {
                     Gson gson = new Gson();
                     UserInfo userInfo = gson.fromJson(response, UserInfo.class);
                     ToastUtils.showLong(LoginActivity.this, "验证码验证成功！");
@@ -323,7 +323,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         startActivity(new Intent(LoginActivity.this, RechargeActivity.class));
                     } else if (userInfo.getCashStatus() == 0 && userInfo.getStatus() == 1) {
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    }else if(userInfo.getCashStatus() == 1 && userInfo.getStatus() == 1){
+                    } else if (userInfo.getCashStatus() == 1 && userInfo.getStatus() == 1) {
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     }
 
@@ -332,9 +332,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     //储存用户信息(登录储存一次)
                     SPUtils.clear(App.getContext());
                     SPUtils.put(App.getContext(), "userDetail", response);
-                    LogUtils.d("userDetail",response);
+                    LogUtils.d("userDetail", response);
                     SPUtils.put(App.getContext(), "islogin", true);
-                }else {
+                } else {
                     ToastUtils.showShort(LoginActivity.this, "未知错误！请重试。");
                 }
             }
@@ -343,8 +343,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
 
     public void getSecurityCode(String phone) {
-        Map<String,String> map = new HashMap<>();
-        map.put("phone",phone);
+        Map<String, String> map = new HashMap<>();
+        map.put("phone", phone);
         OkHttpUtils.post().url(Api.BASE_URL + Api.REGISTER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -356,13 +356,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             public void onResponse(String response, int id) {
                 Log.d("测试", response);
                 ToastUtils.showLong(LoginActivity.this, "验证码已发送");
-                    try {
-                        JSONObject object = new JSONObject(response);
-                        verificationCode = object.getString("code");
+                try {
+                    JSONObject object = new JSONObject(response);
+                    verificationCode = object.getString("code");
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

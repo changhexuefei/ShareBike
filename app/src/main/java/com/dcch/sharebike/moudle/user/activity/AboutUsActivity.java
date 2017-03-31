@@ -1,17 +1,19 @@
 package com.dcch.sharebike.moudle.user.activity;
 
-import android.widget.ImageView;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 public class AboutUsActivity extends BaseActivity {
-
-    @BindView(R.id.back)
-    ImageView back;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     @Override
     protected int getLayoutId() {
@@ -20,13 +22,14 @@ public class AboutUsActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
-    }
-
-
-    @OnClick(R.id.back)
-    public void onClick() {
-        finish();
-
+        mToolbar.setTitle("");
+        mTitle.setText(getResources().getString(R.string.about_us));
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 }

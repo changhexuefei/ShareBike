@@ -1,22 +1,20 @@
 package com.dcch.sharebike.moudle.user.activity;
 
 import android.content.Intent;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.view.CreditSesameView;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 public class CreditIntegralActivity extends BaseActivity {
 
-    @BindView(R.id.back)
-    ImageView back;
-//    private final int[] mColors = new int[]{
+    //    private final int[] mColors = new int[]{
 //            0xFFFF80AB,
 //            0xFFFF4081,
 //            0xFFFF5177,
@@ -26,6 +24,10 @@ public class CreditIntegralActivity extends BaseActivity {
     CreditSesameView mNewCredit;
     @BindView(R.id.activity_credit_integral)
     RelativeLayout mCreditArea;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
     //    private Random random = new Random();
 //    int i = random.nextInt(Integer.valueOf(mScore).intValue());
     private String mScore;
@@ -37,6 +39,16 @@ public class CreditIntegralActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        mToolbar.setTitle("");
+        mTitle.setText(getResources().getString(R.string.my_credit_intergral));
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         Intent intent = getIntent();
         if (intent != null) {
             mScore = intent.getStringExtra("score");
@@ -52,11 +64,7 @@ public class CreditIntegralActivity extends BaseActivity {
 //        startColorChangeAnim();
     }
 
-    @OnClick(R.id.back)
-    public void onClick(View view) {
-        finish();
-    }
-
+//背景色改变的动画
 //    public void startColorChangeAnim() {
 //        ObjectAnimator animator = ObjectAnimator.ofInt(mCreditArea, "backgroundColor", mColors);
 //        animator.setDuration(3000);

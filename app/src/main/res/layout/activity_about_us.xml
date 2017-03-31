@@ -1,43 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.dcch.sharebike.moudle.user.activity.AboutUsActivity">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.dcch.sharebike.moudle.user.activity.AboutUsActivity">
 
-    <FrameLayout
-        android:id="@+id/au"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/colorHeading">
-
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:padding="12dp"
-            android:src="@mipmap/back" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="@string/about_us"
-            android:textColor="@color/common"
-            android:textSize="16sp" />
-    </FrameLayout>
+    <include layout="@layout/toolbar"/>
 
     <ImageView
-        android:scaleType="fitXY"
         android:id="@+id/app_logo"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_below="@+id/au"
+        android:layout_below="@+id/toolbar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
-        android:src="@drawable/sharebike" />
+        android:scaleType="fitXY"
+        android:src="@drawable/sharebike"/>
 
     <TextView
         android:id="@+id/app_name"
@@ -48,7 +27,7 @@
         android:layout_marginTop="10dp"
         android:text="@string/qilinbikes"
         android:textColor="#000000"
-        android:textSize="16sp" />
+        android:textSize="16sp"/>
 
     <TextView
         android:id="@+id/app_version"
@@ -58,7 +37,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
         android:text="v1.0.0"
-        android:textColor="#000000" />
+        android:textColor="#000000"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -76,30 +55,30 @@
             android:orientation="horizontal">
 
             <TextView
-                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"
                 android:drawableLeft="@mipmap/weixinnumber"
                 android:drawablePadding="4dp"
+                android:gravity="center_vertical"
                 android:text="@string/weixinpublic"
-                android:textColor="#000000" />
+                android:textColor="#000000"/>
 
             <TextView
-                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"
+                android:gravity="center_vertical"
                 android:text="@string/public_name"
-                android:textColor="@color/colorTitle" />
+                android:textColor="@color/colorTitle"/>
         </RelativeLayout>
 
         <View
             android:layout_width="300dp"
             android:layout_height="0.5dp"
             android:layout_gravity="center"
-            android:background="#d7d3d3" />
+            android:background="#d7d3d3"/>
 
         <RelativeLayout
             android:id="@+id/phone"
@@ -109,31 +88,31 @@
             android:orientation="horizontal">
 
             <TextView
-                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"
                 android:drawableLeft="@mipmap/phone"
                 android:drawablePadding="4dp"
+                android:gravity="center_vertical"
                 android:text="@string/phone"
-                android:textColor="#000000" />
+                android:textColor="#000000"/>
 
 
             <TextView
-                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"
+                android:gravity="center_vertical"
                 android:text="@string/company_phone"
-                android:textColor="@color/colorTitle" />
+                android:textColor="@color/colorTitle"/>
         </RelativeLayout>
 
         <View
             android:layout_width="300dp"
             android:layout_height="0.5dp"
             android:layout_gravity="center"
-            android:background="#d7d3d3" />
+            android:background="#d7d3d3"/>
 
         <RelativeLayout
             android:id="@+id/email"
@@ -144,30 +123,30 @@
             android:orientation="horizontal">
 
             <TextView
-                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"
                 android:drawableLeft="@mipmap/email"
                 android:drawablePadding="4dp"
+                android:gravity="center_vertical"
                 android:text="@string/email"
-                android:textColor="#000000" />
+                android:textColor="#000000"/>
 
             <TextView
-                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"
+                android:gravity="center_vertical"
                 android:text="@string/company_mail"
-                android:textColor="@color/colorTitle" />
+                android:textColor="@color/colorTitle"/>
         </RelativeLayout>
 
         <View
             android:layout_width="300dp"
             android:layout_height="0.5dp"
             android:layout_gravity="center"
-            android:background="#d7d3d3" />
+            android:background="#d7d3d3"/>
 
         <RelativeLayout
             android:id="@+id/official_website"
@@ -178,33 +157,33 @@
             android:orientation="horizontal">
 
             <TextView
-                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"
                 android:drawableLeft="@mipmap/official_website"
                 android:drawablePadding="4dp"
+                android:gravity="center_vertical"
                 android:text="官方网站"
-                android:textColor="#000000" />
+                android:textColor="#000000"/>
 
             <TextView
-                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"
+                android:gravity="center_vertical"
                 android:text="70bikes.cn"
-                android:textColor="@color/colorTitle" />
+                android:textColor="@color/colorTitle"/>
         </RelativeLayout>
     </LinearLayout>
 
     <TextView
-        android:textSize="14sp"
-        android:textColor="#000000"
-        android:layout_marginBottom="20dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/company_name" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:text="@string/company_name"
+        android:textColor="#000000"
+        android:textSize="14sp"/>
 </RelativeLayout>
