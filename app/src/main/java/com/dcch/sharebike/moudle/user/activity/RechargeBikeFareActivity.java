@@ -3,17 +3,18 @@ package com.dcch.sharebike.moudle.user.activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alipay.sdk.app.EnvUtils;
@@ -44,8 +45,7 @@ import okhttp3.Call;
 
 public class RechargeBikeFareActivity extends BaseActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
 
-    @BindView(R.id.back)
-    ImageView back;
+
     @BindView(R.id.moneySum)
     EditText moneySum;
     @BindView(R.id.rb_rg1_10)
@@ -78,6 +78,10 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
 
     private static final int SDK_PAY_FLAG = 1;
     private static final int SDK_AUTH_FLAG = 2;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     @Override
     protected int getLayoutId() {
@@ -86,6 +90,17 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
 
     @Override
     protected void initData() {
+
+        mToolbar.setTitle("");
+        mTitle.setText(getResources().getString(R.string.recharge_bike_fare));
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         rbfAliCheckbox.setChecked(true);
         rbRg110.setChecked(true);
         String s1 = rbRg110.getText().toString().trim();
@@ -115,12 +130,10 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
 
     }
 
-    @OnClick({R.id.back, R.id.rbf_aliArea, R.id.rbf_weixinArea, R.id.btn_rbf_recharge})
+    @OnClick({R.id.rbf_aliArea, R.id.rbf_weixinArea, R.id.btn_rbf_recharge})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.back:
-                finish();
-                break;
+
             case R.id.rbf_aliArea:
                 rbfAliCheckbox.setChecked(true);
                 rbfWeixinCheckbox.setChecked(false);
@@ -183,11 +196,11 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                         }
                         String outTradeNo = weixinPay.getOutTradeNo();
 
-                        Map<String,String> map = new HashMap<>();
-                        map.put("out_trade_no",outTradeNo);
-                        map.put("body","充值");
-                        map.put("total_price","0.01");
-                        map.put("spbill_create_ip",ipAddress);
+                        Map<String, String> map = new HashMap<>();
+                        map.put("out_trade_no", outTradeNo);
+                        map.put("body", "充值");
+                        map.put("total_price", "0.01");
+                        map.put("spbill_create_ip", ipAddress);
 
                         OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINPAY).params(map).build().execute(new StringCallback() {
                             @Override
@@ -197,20 +210,15 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
 
                             @Override
                             public void onResponse(String response, int id) {
-                                LogUtils.d("微信支付",response);
+                                LogUtils.d("微信支付", response);
                             }
                         });
-
-
 
 
                     } else {
 
 
                     }
-
-
-
 
 
                 }
@@ -320,4 +328,5 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
             }
         });
     }
+
 }

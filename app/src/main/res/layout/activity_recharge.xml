@@ -1,41 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_recharge"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.dcch.sharebike.moudle.login.activity.RechargeActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/activity_recharge"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.dcch.sharebike.moudle.login.activity.RechargeActivity">
 
-
-    <FrameLayout
-        android:id="@+id/re_top"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#41c0dc">
-
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:padding="12dp"
-            android:src="@mipmap/back" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="@string/title_recharge"
-            android:textColor="@color/common"
-            android:textSize="16sp" />
-    </FrameLayout>
+    <include layout="@layout/toolbar"/>
 
     <com.anton46.stepsview.StepsView
-        android:layout_below="@+id/re_top"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/stepsView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
 
@@ -51,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text2"
-        android:text="@string/tip2" />
+        android:text="@string/tip2"/>
 
 
     <Button
@@ -66,7 +44,7 @@
         android:background="@color/colorTitle"
         android:text="@string/recharge"
         android:textColor="#ffffff"
-        android:textSize="16sp" />
+        android:textSize="16sp"/>
 
     <LinearLayout
         android:id="@+id/pay"
@@ -77,59 +55,59 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:background="#ffffff"
             android:id="@+id/aliArea"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#ffffff">
 
             <TextView
                 android:id="@+id/ali"
                 style="@style/rb_pay_type"
                 android:drawableLeft="@drawable/alipay_ic"
-                android:text="@string/zhifubao" />
+                android:text="@string/zhifubao"/>
 
             <CheckBox
                 android:id="@+id/ali_checkbox"
                 style="@style/checkbox"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="#F9F9F9" />
+            android:background="#F9F9F9"/>
 
         <RelativeLayout
-            android:background="#ffffff"
             android:id="@+id/weixinArea"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#ffffff">
 
             <TextView
                 android:id="@+id/weixin"
                 style="@style/rb_pay_type"
                 android:drawableLeft="@drawable/weixin_ic"
-                android:text="@string/weixin" />
+                android:text="@string/weixin"/>
 
             <CheckBox
                 android:id="@+id/weixin_checkbox"
                 style="@style/checkbox"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
         </RelativeLayout>
     </LinearLayout>
 
     <RelativeLayout
-        android:layout_marginTop="7dp"
         android:id="@+id/depositArea"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/stepsView"
+        android:layout_marginTop="7dp"
         android:background="#ffffff"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:layout_below="@+id/stepsView"
-        android:layout_alignParentStart="true">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/text"
@@ -140,7 +118,7 @@
             android:paddingLeft="8dp"
             android:text="@string/tip"
             android:textColor="#716F76"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
 
         <TextView
@@ -153,7 +131,7 @@
             android:gravity="center"
             android:text="@string/cash_pledge"
             android:textColor="#000000"
-            android:textSize="20sp" />
+            android:textSize="20sp"/>
 
     </RelativeLayout>
 
@@ -162,7 +140,7 @@
         style="@style/recharge_text_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/tip1"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/pay"
-        android:layout_alignParentStart="true" />
+        android:text="@string/tip1"/>
 </RelativeLayout>

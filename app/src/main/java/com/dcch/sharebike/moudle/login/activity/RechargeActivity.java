@@ -3,12 +3,12 @@ package com.dcch.sharebike.moudle.login.activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,8 +41,7 @@ import butterknife.OnClick;
 import okhttp3.Call;
 
 public class RechargeActivity extends BaseActivity {
-    @BindView(R.id.back)
-    ImageView back;
+
 
     @BindView(R.id.btn_recharge)
     Button btnRecharge;
@@ -56,13 +55,16 @@ public class RechargeActivity extends BaseActivity {
     RelativeLayout weixinArea;
     @BindView(R.id.money)
     TextView money;
-
-
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     private static final int SDK_PAY_FLAG = 1;
     private static final int SDK_AUTH_FLAG = 2;
     @BindView(R.id.stepsView)
     StepsView mStepsView;
+
     private String userID;
 
 
@@ -73,6 +75,21 @@ public class RechargeActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        mToolbar.setTitle("");
+        mTitle.setText(getResources().getString(R.string.title_recharge));
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent backToLoginMain = new Intent(RechargeActivity.this, MainActivity.class);
+                startActivity(backToLoginMain);
+                finish();
+            }
+        });
+
+
+
+
         //默认支付宝选中
         aliCheckbox.setChecked(true);
         String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
@@ -95,14 +112,9 @@ public class RechargeActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.back, R.id.btn_recharge, R.id.aliArea, R.id.weixinArea})
+    @OnClick({R.id.btn_recharge, R.id.aliArea, R.id.weixinArea})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.back:
-                Intent backToLoginMain = new Intent(RechargeActivity.this, MainActivity.class);
-                startActivity(backToLoginMain);
-                finish();
-                break;
             case R.id.aliArea:
                 aliCheckbox.setChecked(true);
                 weixinCheckbox.setChecked(false);

@@ -8,27 +8,6 @@
 
     <include layout="@layout/toolbar"/>
 
-    <FrameLayout
-        android:id="@+id/personInfo"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/colorHeading">
-
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:padding="12dp"
-            android:src="@mipmap/back" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="个人信息"
-            android:textColor="@color/common"
-            android:textSize="16sp" />
-    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -85,4 +85,8 @@
     <string name="my_location">我的位置</string>
     <string name="error_info">抱歉，服务器正忙！</string>
     <string name="authen_ok">注册完成</string>
+    <string name="person_info">个人信息</string>
+    <string name="recharge_bike_fare">车费充值</string>
+    <string name="unlock_progress">编码开锁</string>
+    <string name="usual_address">常用地址</string>
 </resources>

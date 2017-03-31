@@ -5,33 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-
     tools:context="com.dcch.sharebike.moudle.user.activity.UserGuideActivity">
 
-    <FrameLayout
-        android:id="@+id/userGuideInfo"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:background="@color/colorHeading">
-
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:padding="12dp"
-            android:src="@mipmap/back" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="用户指南"
-            android:textColor="@color/common"
-            android:textSize="16sp" />
-
-    </FrameLayout>
+    <include layout="@layout/toolbar"/>
 
     <TextView
         android:layout_width="wrap_content"

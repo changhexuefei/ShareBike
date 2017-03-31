@@ -8,33 +8,11 @@
     android:orientation="vertical"
     tools:context="com.dcch.sharebike.moudle.user.activity.RechargeBikeFareActivity">
 
-    <FrameLayout
-        android:id="@+id/top"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#41c0dc">
-
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:padding="12dp"
-            android:src="@mipmap/back"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="车费充值"
-            android:textColor="@color/common"
-            android:textSize="16sp"/>
-    </FrameLayout>
-
+    <include layout="@layout/toolbar"/>
 
     <TextView
         android:id="@+id/tv20"
-        android:layout_below="@+id/top"
+        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="#F9F9F9"

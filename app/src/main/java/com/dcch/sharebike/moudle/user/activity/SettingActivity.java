@@ -3,10 +3,12 @@ package com.dcch.sharebike.moudle.user.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
@@ -19,12 +21,11 @@ import com.dcch.sharebike.utils.ToastUtils;
 import org.simple.eventbus.EventBus;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class SettingActivity extends BaseActivity {
 
-    @BindView(R.id.back)
-    ImageView mBack;
     @BindView(R.id.usualAddress)
     RelativeLayout mUsualAddress;
     @BindView(R.id.checkVersions)
@@ -39,6 +40,10 @@ public class SettingActivity extends BaseActivity {
     RelativeLayout mRechargeAgreement;
     @BindView(R.id.signOut)
     Button mSignOut;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     @Override
     protected int getLayoutId() {
@@ -47,24 +52,29 @@ public class SettingActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
+        mToolbar.setTitle("");
+        mTitle.setText(getResources().getString(R.string.setting));
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
-    @OnClick({R.id.back, R.id.usualAddress, R.id.checkVersions, R.id.aboutUs, R.id.userAgreement, R.id.cashPledgeExplain, R.id.rechargeAgreement, R.id.signOut})
+    @OnClick({R.id.usualAddress, R.id.checkVersions, R.id.aboutUs, R.id.userAgreement, R.id.cashPledgeExplain, R.id.rechargeAgreement, R.id.signOut})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.back:
-                finish();
-                break;
             case R.id.usualAddress:
                 Intent address = new Intent(this, UsualAddressActivity.class);
                 startActivity(address);
                 break;
             case R.id.checkVersions:
-                ToastUtils.showShort(SettingActivity.this,"未发现新版本");
+                ToastUtils.showShort(SettingActivity.this, "未发现新版本");
                 break;
             case R.id.aboutUs:
-                startActivity(new Intent(SettingActivity.this,AboutUsActivity.class));
+                startActivity(new Intent(SettingActivity.this, AboutUsActivity.class));
                 break;
             case R.id.userAgreement:
                 break;
@@ -91,7 +101,7 @@ public class SettingActivity extends BaseActivity {
                                 SPUtils.clear(App.getContext());
 
                                 SPUtils.put(App.getContext(), "islogin", false);
-                                SPUtils.put(App.getContext(),"isfirst",false);
+                                SPUtils.put(App.getContext(), "isfirst", false);
                                 SPUtils.put(App.getContext(), "isStartGuide", true);
                                 finish();
                             }
@@ -99,5 +109,12 @@ public class SettingActivity extends BaseActivity {
                         .show();
                 break;
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

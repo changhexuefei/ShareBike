@@ -1,9 +1,10 @@
 package com.dcch.sharebike.moudle.user.activity;
 
 import android.content.Intent;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
@@ -14,10 +15,12 @@ import butterknife.OnClick;
 public class ShowRefundResultsActivity extends BaseActivity {
 
 
-    @BindView(R.id.back)
-    ImageView mBack;
     @BindView(R.id.verify)
     Button mVerify;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     @Override
     protected int getLayoutId() {
@@ -26,20 +29,28 @@ public class ShowRefundResultsActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        mToolbar.setTitle("");
+        mTitle.setText(getResources().getString(R.string.about_us));
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
 
     }
 
 
-    @OnClick({R.id.back, R.id.verify})
+    @OnClick( R.id.verify)
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.back:
-                finish();
-                break;
             case R.id.verify:
-                startActivity(new Intent(ShowRefundResultsActivity.this,WalletInfoActivity.class));
+                startActivity(new Intent(ShowRefundResultsActivity.this, WalletInfoActivity.class));
                 finish();
                 break;
         }
     }
+
 }

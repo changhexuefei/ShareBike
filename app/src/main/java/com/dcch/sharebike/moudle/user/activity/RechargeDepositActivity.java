@@ -3,12 +3,12 @@ package com.dcch.sharebike.moudle.user.activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,8 +40,6 @@ import okhttp3.Call;
 public class RechargeDepositActivity extends BaseActivity {
 
 
-    @BindView(R.id.back)
-    ImageView back;
     @BindView(R.id.figure)
     TextView figure;
     @BindView(R.id.rd_ali_checkbox)
@@ -58,6 +56,10 @@ public class RechargeDepositActivity extends BaseActivity {
     private final static String subject = "押金";
     private static final int SDK_PAY_FLAG = 1;
     private static final int SDK_AUTH_FLAG = 2;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
     private String mMoneySum;
     private String userID;
 
@@ -68,6 +70,17 @@ public class RechargeDepositActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        mToolbar.setTitle("");
+        mTitle.setText(getResources().getString(R.string.title_recharge));
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+
         rdAliCheckbox.setChecked(true);
         String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
         Log.d("用户明细", userDetail);
@@ -84,12 +97,9 @@ public class RechargeDepositActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.back, R.id.rd_aliArea, R.id.rd_weixinArea, R.id.btn_rd_recharge})
+    @OnClick({R.id.rd_aliArea, R.id.rd_weixinArea, R.id.btn_rd_recharge})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.back:
-                finish();
-                break;
             case R.id.rd_aliArea:
                 rdAliCheckbox.setChecked(true);
                 rdWeixinCheckbox.setChecked(false);

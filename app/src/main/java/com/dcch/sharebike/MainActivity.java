@@ -663,9 +663,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     return false;
                 }
                 if (marker.getExtraInfo() != null && marker != null) {
-                    if (menuWindow != null) {
-                        menuWindow.dismiss();
-                    }
+                   
                     final ProgressDialog dialog = new ProgressDialog(MainActivity.this);
                     dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);// 设置进度条的形式为圆形转动的进度条
                     dialog.setCancelable(false);// 设置是否可以通过点击Back键取消

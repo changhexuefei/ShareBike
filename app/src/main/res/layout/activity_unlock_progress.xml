@@ -7,29 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorHeading"
     tools:context="com.dcch.sharebike.moudle.user.activity.UnlockProgressActivity">
-
-    <FrameLayout
-        android:id="@+id/verification"
-        android:layout_width="match_parent"
-        android:layout_height="48dp">
-
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:padding="12dp"
-            android:src="@mipmap/back"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="编码开锁"
-            android:textColor="#ffffff"
-            android:textSize="16sp"/>
-
-    </FrameLayout>
-
+    <include layout="@layout/toolbar"/>
 
     <ImageView
         android:id="@+id/unlockIcon"

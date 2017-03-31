@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -47,8 +47,8 @@ import okhttp3.Call;
 
 public class PersonInfoActivity extends BaseActivity {
 
-    @BindView(R.id.back)
-    ImageView back;
+    //    @BindView(R.id.back)
+//    ImageView back;
     @BindView(R.id.userInfoIcon)
     CircleImageView userInfoIcon;
     @BindView(R.id.userIcon)
@@ -65,6 +65,10 @@ public class PersonInfoActivity extends BaseActivity {
     TextView telephone;
     @BindView(R.id.phone)
     RelativeLayout phone;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
     private UserInfo mUserBundle;
     private String uID;
     private String result;
@@ -77,6 +81,19 @@ public class PersonInfoActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+
+        mToolbar.setTitle("");
+        mTitle.setText(getResources().getString(R.string.person_info));
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PersonInfoActivity.this, PersonalCenterActivity.class));
+                finish();
+            }
+        });
+
+
         Intent intent = getIntent();
         Bundle user = intent.getExtras();
         if (user != null) {
@@ -115,13 +132,9 @@ public class PersonInfoActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.back, R.id.userIcon, R.id.userNickname, R.id.phone})
+    @OnClick({R.id.userIcon, R.id.userNickname, R.id.phone})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.back:
-                startActivity(new Intent(this, PersonalCenterActivity.class));
-                finish();
-                break;
             case R.id.userIcon:
                 RxGalleryFinal.with(PersonInfoActivity.this)
                         .cropHideBottomControls(true)
@@ -205,7 +218,7 @@ public class PersonInfoActivity extends BaseActivity {
                         String userNickName = nickName.getText().toString().trim();
                         try {
                             String encode = URLEncoder.encode(userNickName, "utf-8");//"UTF-8"
-                            LogUtils.d("昵称",encode);
+                            LogUtils.d("昵称", encode);
                             if (!userNickName.equals("") && userNickName != null) {
                                 Map<String, String> map = new HashMap<>();
                                 map.put("userId", uID);
@@ -333,4 +346,5 @@ public class PersonInfoActivity extends BaseActivity {
         bitmap = BitmapFactory.decodeFile(srcPath, newOpts);
         return compressImage(bitmap);//压缩好比例大小后再进行质量压缩
     }
+
 }

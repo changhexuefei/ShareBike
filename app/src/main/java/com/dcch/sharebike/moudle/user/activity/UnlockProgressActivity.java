@@ -1,11 +1,15 @@
 package com.dcch.sharebike.moudle.user.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
@@ -13,12 +17,10 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.view.MyProgressBar;
 
 import butterknife.BindView;
-import butterknife.OnClick;
+import butterknife.ButterKnife;
 
 public class UnlockProgressActivity extends BaseActivity {
 
-    @BindView(R.id.back)
-    ImageView mBack;
     @BindView(R.id.unlockIcon)
     ImageView mUnlockIcon;
     @BindView(R.id.myProgressBar)
@@ -28,6 +30,10 @@ public class UnlockProgressActivity extends BaseActivity {
     boolean stop;
     private static final int UPDATE_PROGRESS = 0;
     private static final int PAUSE_PROGRESS = 90;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
     Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -49,6 +55,7 @@ public class UnlockProgressActivity extends BaseActivity {
         }
     };
 
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_unlock_progress;
@@ -56,6 +63,17 @@ public class UnlockProgressActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        mToolbar.setTitle("");
+        mTitle.setText(getResources().getString(R.string.unlock_progress));
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+
 //        Intent intent = getIntent();
 //        if (intent != null) {
 //            String bikeNo = intent.getStringExtra("bikeNo");
@@ -95,12 +113,6 @@ public class UnlockProgressActivity extends BaseActivity {
 //    }
 
 
-    @OnClick(R.id.back)
-    public void onViewClicked() {
-        finish();
-
-    }
-
     private void downloading(MyProgressBar myProgress) {
         new Thread(new Runnable() {
             @Override
@@ -130,6 +142,13 @@ public class UnlockProgressActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         downloading(mMyProgressBar);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 
 //    //定义线程
