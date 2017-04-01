@@ -194,7 +194,10 @@
             android:name=".moudle.user.activity.CustomerServiceActivity"
             android:launchMode="singleTask"/>
         <activity android:name=".moudle.user.activity.RechargeDepositActivity"/>
-        <activity android:name=".moudle.user.activity.RechargeBikeFareActivity"/>
+        <activity
+            android:name=".moudle.user.activity.RechargeBikeFareActivity"
+            android:launchMode="singleTask"
+            />
         <!-- Required SDK 核心功能 -->
         <!-- 可配置android:process参数将PushService放在其他进程中 -->
         <service
@@ -345,7 +348,18 @@
         </activity>
         <activity android:name=".moudle.user.activity.UnlockProgressActivity">
         </activity>
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"/>
+
         <service android:name=".service.DownService"/>
+        <receiver android:name=".receiver.AppRegister">
+
+            <intent-filter>
+                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

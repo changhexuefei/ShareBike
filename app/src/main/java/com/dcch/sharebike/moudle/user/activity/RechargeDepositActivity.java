@@ -18,12 +18,21 @@ import com.alipay.sdk.app.PayTask;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.alipay.AliPay;
 import com.dcch.sharebike.alipay.PayResult;
+import com.dcch.sharebike.alipay.WeixinPay;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
+import com.dcch.sharebike.moudle.home.content.MyContent;
+import com.dcch.sharebike.moudle.user.bean.WeixinReturnInfo;
+import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
+import com.google.gson.Gson;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -62,6 +71,7 @@ public class RechargeDepositActivity extends BaseActivity {
     Toolbar mToolbar;
     private String mMoneySum;
     private String userID;
+    String ipAddress = "";
 
     @Override
     protected int getLayoutId() {
@@ -79,8 +89,6 @@ public class RechargeDepositActivity extends BaseActivity {
                 finish();
             }
         });
-
-
         rdAliCheckbox.setChecked(true);
         String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
         Log.d("用户明细", userDetail);
@@ -147,8 +155,54 @@ public class RechargeDepositActivity extends BaseActivity {
                         }
                     });
                 } else if (rdWeixinCheckbox.isChecked()) {
-                    //微信支付
+                    //调取微信的支付方式
+                    final IWXAPI msgApi = WXAPIFactory.createWXAPI(this, MyContent.APP_ID);
+                    WeixinPay weixinPay = new WeixinPay(this);
+                    if (NetUtils.isConnected(App.getContext())) {
+                        if (NetUtils.isWifi(App.getContext())) {
+                            ipAddress = weixinPay.getLocalIpAddress();
 
+                        } else {
+                            ipAddress = weixinPay.getIpAddress();
+                        }
+                        String outTradeNo = weixinPay.getOutTradeNo();
+                        Map<String, String> map = new HashMap<>();
+                        map.put("out_trade_no", outTradeNo);
+                        map.put("body", "充值");
+                        map.put("total_price", "0.01");
+                        map.put("spbill_create_ip", ipAddress);
+                        LogUtils.d("IP地址", ipAddress);
+                        OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINPAY).params(map).build().execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                ToastUtils.showShort(RechargeDepositActivity.this, "服务器正忙请稍后！");
+                            }
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                LogUtils.d("微信支付", response);
+                                if (JsonUtils.isSuccess(response)) {
+                                    PayReq req = new PayReq();
+                                    Gson gson = new Gson();
+                                    WeixinReturnInfo weixinReturnInfo = gson.fromJson(response, WeixinReturnInfo.class);
+                                    req.appId = weixinReturnInfo.getAppid();
+                                    req.partnerId = weixinReturnInfo.getMch_id();
+                                    req.prepayId = weixinReturnInfo.getPrepay_id();
+                                    req.nonceStr = weixinReturnInfo.getNonce_str();
+                                    req.timeStamp = weixinReturnInfo.getTimestamp();
+                                    req.packageValue = weixinReturnInfo.getPackageid();
+                                    req.sign = weixinReturnInfo.getSign();
+                                    req.extData = "app data"; // optional
+                                    msgApi.sendReq(req);
+                                } else {
+                                    ToastUtils.showShort(RechargeDepositActivity.this, "服务器正忙请稍后！");
+                                }
+                            }
+                        });
+
+                    } else {
+                        ToastUtils.showShort(RechargeDepositActivity.this, "网络环境差，请稍后重试");
+                    }
                 }
                 break;
         }

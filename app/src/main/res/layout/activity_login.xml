@@ -9,7 +9,6 @@
 
     <include layout="@layout/toolbar"/>
 
-
     <LinearLayout
         android:id="@+id/userName"
         android:layout_width="330dp"

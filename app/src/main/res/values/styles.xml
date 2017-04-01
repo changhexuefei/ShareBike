@@ -12,6 +12,17 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="NavPage">
+    <item name="android:layout_width">fill_parent</item>
+    <item name="android:layout_height">fill_parent</item>
+    <item name="android:orientation">vertical</item>
+    <item name="android:gravity">center_horizontal</item>
+    <!-- <item name="android:background">@drawable/nav_page</item> -->
+    <item name="android:background">@color/navpage</item>
+
+</style>
+
+
     <style name="titleStyle">
         <item name="android:button">@null</item>
         <item name="android:background">@drawable/selector_title_style</item>

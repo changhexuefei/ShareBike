@@ -26,10 +26,17 @@ import com.dcch.sharebike.alipay.WeixinPay;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
+import com.dcch.sharebike.moudle.home.content.MyContent;
+import com.dcch.sharebike.moudle.user.bean.WeixinReturnInfo;
+import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
+import com.google.gson.Gson;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -106,7 +113,6 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         String s1 = rbRg110.getText().toString().trim();
         rechargeNumber = s1.substring(1, s1.length());
         if (SPUtils.isLogin()) {
-
             String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
             Log.d("ooooo", userDetail);
             if (userDetail != null) {
@@ -114,12 +120,12 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                     JSONObject object = new JSONObject(userDetail);
                     int userId = object.getInt("id");
                     uID = String.valueOf(userId);
+                    Log.d("微信支付", uID);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         }
-
 
     }
 
@@ -127,7 +133,6 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
     protected void initListener() {
         rgRecRg1.setOnCheckedChangeListener(this);
         rgRecRg2.setOnCheckedChangeListener(this);
-
     }
 
     @OnClick({R.id.rbf_aliArea, R.id.rbf_weixinArea, R.id.btn_rbf_recharge})
@@ -183,10 +188,8 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                     });
                 } else if (rbfWeixinCheckbox.isChecked()) {
                     //调取微信的支付方式
-//                    final IWXAPI msgApi = WXAPIFactory.createWXAPI(context, null);
-//                    msgApi.registerApp("wxd4b5d5e34b0dd095");
+                    final IWXAPI msgApi = WXAPIFactory.createWXAPI(this, MyContent.APP_ID);
                     WeixinPay weixinPay = new WeixinPay(this);
-
                     if (NetUtils.isConnected(App.getContext())) {
                         if (NetUtils.isWifi(App.getContext())) {
                             ipAddress = weixinPay.getLocalIpAddress();
@@ -198,6 +201,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
 
                         Map<String, String> map = new HashMap<>();
                         map.put("out_trade_no", outTradeNo);
+                        map.put("attach", uID);
                         map.put("body", "充值");
                         map.put("total_price", "0.01");
                         map.put("spbill_create_ip", ipAddress);
@@ -205,22 +209,34 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                         OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINPAY).params(map).build().execute(new StringCallback() {
                             @Override
                             public void onError(Call call, Exception e, int id) {
-
+                                ToastUtils.showShort(RechargeBikeFareActivity.this, "服务器正忙请稍后！");
                             }
 
                             @Override
                             public void onResponse(String response, int id) {
                                 LogUtils.d("微信支付", response);
+                                if (JsonUtils.isSuccess(response)) {
+                                    PayReq req = new PayReq();
+                                    Gson gson = new Gson();
+                                    WeixinReturnInfo weixinReturnInfo = gson.fromJson(response, WeixinReturnInfo.class);
+                                    req.appId = weixinReturnInfo.getAppid();
+                                    req.partnerId = weixinReturnInfo.getMch_id();
+                                    req.prepayId = weixinReturnInfo.getPrepay_id();
+                                    req.nonceStr = weixinReturnInfo.getNonce_str();
+                                    req.timeStamp = weixinReturnInfo.getTimestamp();
+                                    req.packageValue = weixinReturnInfo.getPackageid();
+                                    req.sign = weixinReturnInfo.getSign();
+                                    req.extData = "app data"; // optional
+                                    msgApi.sendReq(req);
+                                } else {
+                                    ToastUtils.showShort(RechargeBikeFareActivity.this, "服务器正忙请稍后！");
+                                }
                             }
                         });
 
-
                     } else {
-
-
+                        ToastUtils.showShort(RechargeBikeFareActivity.this, "网络环境差，请稍后重试");
                     }
-
-
                 }
                 break;
         }

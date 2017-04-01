@@ -35,6 +35,8 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -135,8 +137,8 @@ public class LoginFragment extends Fragment {
                 person_distance.setText(String.valueOf(mInfo.getMileage()));
 ////                                节约碳排放
 //                                discharge.setText();
-//                                运动成就
-//                                sportsAchievement.setText(mInfo.get);
+//              运动成就
+                sportsAchievement.setText(String.valueOf(changeDouble(mInfo.getCalorie())));
                 //用户头像
                 String userimage = mInfo.getUserimage();
                 if (userimage != null) {
@@ -149,6 +151,13 @@ public class LoginFragment extends Fragment {
             }
         });
     }
+
+    public double changeDouble(Double dou) {
+        NumberFormat nf = new DecimalFormat("0.0");
+        dou = Double.parseDouble(nf.format(dou));
+        return dou;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

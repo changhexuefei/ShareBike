@@ -89,4 +89,8 @@
     <string name="recharge_bike_fare">车费充值</string>
     <string name="unlock_progress">编码开锁</string>
     <string name="usual_address">常用地址</string>
+    <string name="app_tip">提示</string>
+    <string name="pay_result_callback_msg" formatted="false">微信支付结果：%s</string>
+    <!-- WXPayEntryActivity -->
+    <string name="pay_result_tip">这个界面用于显示第三方app通过微信支付的结果</string>
 </resources>

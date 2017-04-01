@@ -150,8 +150,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
         });
     }
-
-
 //    private void initSDK() {
 //        SMSSDK.initSDK(LoginActivity.this, "1b4c24f4f4475", "3ba2116b2a11e2836bc5eb1a00fa84ac");
 //        EventHandler eventHandler = new EventHandler() {
@@ -253,10 +251,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 Intent intent = new Intent(this, AgreementActivity.class);
                 startActivity(intent);
                 break;
-//            case R.id.back:
-//                EventBus.getDefault().post(new MessageEvent(), "show");
-//                finish();
-//                break;
         }
     }
 
@@ -341,7 +335,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         });
     }
 
-
     public void getSecurityCode(String phone) {
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone);
@@ -372,5 +365,4 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
     }
-
 }

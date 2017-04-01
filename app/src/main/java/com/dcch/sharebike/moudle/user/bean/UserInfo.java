@@ -12,20 +12,21 @@ public class UserInfo implements Serializable {
     /**
      * id : 24
      * name : 111
-     * nickName : 中国
+     * nickName : 终归认命
      * phone : 17701273631
      * idcard : null
      * useraddress : null
-     * aggregateAmount : 3
+     * aggregateAmount : 964
      * pledgeCash : 199
      * minaggregate : 0
      * maxaggregate : 0
-     * integral : 7
-     * mileage : 0.07
+     * integral : 82
+     * mileage : 0.28
      * password : null
      * usersex : 0
      * userage : 0
-     * userimage : http://192.168.1.130:8080/MavenSSM/UserImage/201703231357486113345one.jpg
+     * userimage : http://114.112.86.38/MavenSSM/UserImage/201703231357486113345one.jpg
+     * calorie : 190.69913
      * messagecode : null
      * cashStatus : 1
      * status : 1
@@ -42,12 +43,13 @@ public class UserInfo implements Serializable {
     private int pledgeCash;
     private int minaggregate;
     private int maxaggregate;
-    private int integral;//积分
+    private int integral;
     private double mileage;
     private Object password;
     private int usersex;
     private int userage;
     private String userimage;
+    private double calorie;
     private Object messagecode;
     private int cashStatus;
     private int status;
@@ -179,6 +181,14 @@ public class UserInfo implements Serializable {
 
     public void setUserimage(String userimage) {
         this.userimage = userimage;
+    }
+
+    public double getCalorie() {
+        return calorie;
+    }
+
+    public void setCalorie(double calorie) {
+        this.calorie = calorie;
     }
 
     public Object getMessagecode() {

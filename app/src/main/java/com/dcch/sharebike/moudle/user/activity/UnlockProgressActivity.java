@@ -13,11 +13,18 @@ import android.widget.TextView;
 
 import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
+import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.base.MessageEvent;
+import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.ToastUtils;
 import com.dcch.sharebike.view.MyProgressBar;
 
+import org.simple.eventbus.EventBus;
+import org.simple.eventbus.Subscriber;
+import org.simple.eventbus.ThreadMode;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class UnlockProgressActivity extends BaseActivity {
 
@@ -73,7 +80,6 @@ public class UnlockProgressActivity extends BaseActivity {
             }
         });
 
-
 //        Intent intent = getIntent();
 //        if (intent != null) {
 //            String bikeNo = intent.getStringExtra("bikeNo");
@@ -124,7 +130,7 @@ public class UnlockProgressActivity extends BaseActivity {
                     }
                     Message msg = handler.obtainMessage();
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(120);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -141,17 +147,37 @@ public class UnlockProgressActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        downloading(mMyProgressBar);
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
     }
 
-//    //定义线程
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+
+    @Subscriber(tag = "on", mode = ThreadMode.MAIN)
+    private void receiveFromMain(MessageEvent info) {
+        LogUtils.d("消息",info.toString());
+        downloading(mMyProgressBar);
+    }
+    @Subscriber(tag = "off", mode = ThreadMode.MAIN)
+    private void receiveFromMainOther(MessageEvent info) {
+        LogUtils.d("消息",info.toString());
+        ToastUtils.showShort(App.getContext(),"开锁失败！");
+        finish();
+    }
+
+
+
+    //    //定义线程
 //    Runnable runnable=new Runnable() {
 //        @Override
 //        public void run() {

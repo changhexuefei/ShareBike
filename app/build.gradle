@@ -84,7 +84,7 @@ dependencies {
     compile 'com.belerweb:pinyin4j:2.5.1'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.github.hss01248:DialogUtil:1.0.2'
-    compile 'com.android.support:support-v4:24.2.1'
+//    compile 'com.android.support:support-v4:24.2.1'
     compile 'com.zhy:okhttputils:2.6.2'
     compile 'com.github.louisgeek:LouisMultiLineEditText:v1.0.0'
     compile 'com.github.jdsjlzx:LRecyclerView:1.2.9'

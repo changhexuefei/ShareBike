@@ -17,6 +17,6 @@
     <color name="progressbar_bg_color_1">#737373</color>
     <color name="progress_color_1">#3CB371</color>
     <color name="bg">#CDB5CD</color>
-
+    <color name="navpage">#FFE1E8EB</color>
 
 </resources>
