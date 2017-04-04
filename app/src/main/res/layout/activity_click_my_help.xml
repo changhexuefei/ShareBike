@@ -6,22 +6,20 @@
                 android:layout_height="match_parent"
                 tools:context="com.dcch.sharebike.moudle.login.activity.ClickMyHelpActivity">
 
-    <!--<ImageView-->
-        <!--android:id="@+id/close_view_pager"-->
-        <!--android:layout_width="36dp"-->
-        <!--android:layout_height="36dp"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginTop="60dp"-->
-        <!--android:src="@mipmap/hintcard_close"/>-->
-<!--android:layout_below="@+id/close_view_pager"
-android:layout_marginTop="20dp"
--->
+    <ImageView
+        android:id="@+id/close_view_pager"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:src="@mipmap/hintcard_close"/>
 
-    <com.recker.flybanner.FlyBanner
 
+    <android.support.v4.view.ViewPager
         android:id="@+id/explainPage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        android:layout_below="@+id/close_view_pager"
+        android:layout_marginTop="20dp"/>
 
 </RelativeLayout>

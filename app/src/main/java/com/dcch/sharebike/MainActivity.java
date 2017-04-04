@@ -458,6 +458,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (menuWindow != null && menuWindow.isShowing()) {
                     menuWindow.dismiss();
                 }
+                if (routeOverlay != null)
+                    routeOverlay.removeFromMap();
+
+
                 if (SPUtils.isLogin()) {
                     mInstructions.setVisibility(View.GONE);
                 } else {
@@ -633,7 +637,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 OverlayOptions options = new MarkerOptions()
                         .position(latLng)//设置位置
                         .icon(bitmap)//设置图标样式
-                        .zIndex(9) // 设置marker所在层级
+                        .zIndex(i) // 设置marker所在层级
                         .draggable(true); // 设置手势拖拽;
                 //添加marker
                 mMarker = (Marker) mMap.addOverlay(options);
@@ -659,6 +663,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     return false;
                 }
                 if (marker.getExtraInfo() != null && marker != null) {
+                    int zIndex = marker.getZIndex();
+                    LogUtils.d("覆盖物",zIndex+"");
                     Bundle bundle = marker.getExtraInfo();
                     clickMarkLatlng = marker.getPosition();
                     bikeInfo = (BikeInfo) bundle.getSerializable("bikeInfo");
@@ -1211,7 +1217,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     public void onMapStatusChangeFinish(MapStatus mapStatus) {
 //        LatLng target = mapStatus.target;
 //        LogUtils.d("移动", target.latitude + "\n" + target.longitude);
-////        mMap.clear();
+//        mMap.clear();
 //        getBikeInfo(target.latitude, target.longitude);
 //        setUserMapCenter(target.latitude,target.longitude);
     }
@@ -1450,9 +1456,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 //                            ToastUtils.showShort(MainActivity.this, "当前周围没有车辆！！");
 //                        }
 
-                        } else {
-                            ToastUtils.showShort(MainActivity.this, "当前周围没有车辆！！");
                         }
+//                        else {
+//                            ToastUtils.showShort(MainActivity.this, "当前周围没有车辆！！");
+//                        }
 
                     } catch (JSONException e) {
                         e.printStackTrace();

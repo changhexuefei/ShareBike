@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/four"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_marginTop="80dp">
 
         <android.support.v7.widget.CardView
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:contentPadding="10dp"
             android:id="@+id/tipsArea"
-            android:layout_width="330dp"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
             android:layout_gravity="bottom|center"
             app:cardCornerRadius="2dp">
 
             <ImageView
+                android:scaleType="fitXY"
                 android:id="@+id/img"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="200dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="80dp"
@@ -45,5 +46,4 @@
                 android:gravity="center"
                 android:text="共享单车不需要固定的车桩，请将单车停放在路边公共停车区域内，方便他人取用"/>
         </android.support.v7.widget.CardView>
-    </FrameLayout>
 </RelativeLayout>

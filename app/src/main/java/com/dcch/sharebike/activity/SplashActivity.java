@@ -37,10 +37,7 @@ public class SplashActivity extends BaseActivity {
                     break;
 
                 case SWITCH_GUIDACTIVITY:
-                    Intent mIntent = new Intent();
-                    mIntent.setClass(SplashActivity.this, GuideActivity.class);
-                    SplashActivity.this.startActivity(mIntent);
-                    SplashActivity.this.finish();
+                    goGuide();
                     break;
             }
             super.handleMessage(msg);
@@ -62,16 +59,16 @@ public class SplashActivity extends BaseActivity {
         animation.setFillAfter(true);
         mRlSplashRoot.startAnimation(animation);
         if (SPUtils.isFirst()) {
-            handler.sendEmptyMessageDelayed(SWITCH_GUIDACTIVITY, 5000);
+            handler.sendEmptyMessageDelayed(SWITCH_GUIDACTIVITY, 3000);
+        } else {
+            handler.sendEmptyMessageDelayed(SWITCH_MAINACTIVITY, 3000);
         }
-        else {
-            handler.sendEmptyMessageDelayed(SWITCH_MAINACTIVITY, 5000);
-        }
-        SPUtils.put(App.getContext(),"isfirst",false);
     }
 
 
     private void switchPage() {
+        boolean isStartGuide = (boolean) SPUtils.get(App.getContext(), "isStartGuide", false);
+        Log.d("知道也", isStartGuide + "");
         if (SPUtils.isLogin()) {
             LogUtils.e("已经登录...");
             Intent login = new Intent(this, MainActivity.class);
@@ -79,15 +76,13 @@ public class SplashActivity extends BaseActivity {
             SplashActivity.this.finish();
         } else {
             LogUtils.e("没有登录...");
-            boolean isStartGuide = (boolean) SPUtils.get(App.getContext(), "isStartGuide", false);
-            Log.d("知道也",isStartGuide+"");
             if (isStartGuide) {
-				startActivity(new Intent(this, MainActivity.class));
-				finish();
-			} else {
-				startActivity(new Intent(this, GuideActivity.class));
-				finish();
-			}
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+            } else {
+                startActivity(new Intent(this, GuideActivity.class));
+                finish();
+            }
         }
     }
 
@@ -101,5 +96,11 @@ public class SplashActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         JPushInterface.onPause(this);
+    }
+
+    private void goGuide() {
+        Intent intent = new Intent(SplashActivity.this, GuideActivity.class);
+        SplashActivity.this.startActivity(intent);
+        SplashActivity.this.finish();
     }
 }
