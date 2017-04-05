@@ -13,7 +13,6 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -24,7 +23,7 @@ public class ClickMyHelpActivity extends BaseActivity {
     @BindView(R.id.explainPage)
     ViewPager pager;
     //    private List<Integer> mViewList;
-    private List<View> pageViews;
+    private ArrayList<View> pageViews;
     private boolean misScrolled;
 
 
@@ -58,13 +57,13 @@ public class ClickMyHelpActivity extends BaseActivity {
             @Override
             public void destroyItem(ViewGroup container, int position,
                                     Object object) {
-                ((ViewPager) container).removeView(pageViews.get(position));
+                container.removeView(pageViews.get(position));
             }
 
             //每次滑动的时候生成的组件
             @Override
             public Object instantiateItem(ViewGroup container, int position) {
-                ((ViewPager) container).addView(pageViews.get(position));
+                container.addView(pageViews.get(position));
                 return pageViews.get(position);
             }
 

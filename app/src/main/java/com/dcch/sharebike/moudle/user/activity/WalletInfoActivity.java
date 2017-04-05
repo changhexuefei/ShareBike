@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -11,14 +13,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
+import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
+import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.dcch.sharebike.view.RefundPopuwindow;
+import com.google.gson.Gson;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 public class WalletInfoActivity extends BaseActivity {
 
@@ -42,6 +57,8 @@ public class WalletInfoActivity extends BaseActivity {
     private final String Title = "提示";
     private final String ToCharge = "充押金";
     private final String goToDeposit = "去充值";
+    private String uID;
+    private UserInfo mInfo;
 
     @Override
     protected int getLayoutId() {
@@ -52,15 +69,15 @@ public class WalletInfoActivity extends BaseActivity {
     protected void initData() {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();//"bundle"
-        UserInfo user = (UserInfo)bundle.getSerializable("bundle");
+        UserInfo user = (UserInfo) bundle.getSerializable("bundle");
         if (user != null && !user.equals("")) {
             cashStatus = user.getCashStatus();
             remainingSum.setText(String.valueOf(user.getAggregateAmount()));
-            if(user.getPledgeCash()==199){
-                showArea.setText("押金"+user.getPledgeCash()+"元");
+            if (user.getPledgeCash() == 199) {
+                showArea.setText("押金" + user.getPledgeCash() + "元");
                 chargeDeposit.setText(tipThere);
-            }else if(user.getPledgeCash()==0){
-                showArea.setText("押金"+user.getPledgeCash()+"元");
+            } else if (user.getPledgeCash() == 0) {
+                showArea.setText("押金" + user.getPledgeCash() + "元");
                 chargeDeposit.setText(tipFour);
             }
         }
@@ -156,13 +173,64 @@ public class WalletInfoActivity extends BaseActivity {
                     break;
                 case R.id.btn_confirm:
                     ToastUtils.showShort(WalletInfoActivity.this, "您点击的是退押金按钮");
-                    startActivity(new Intent(WalletInfoActivity.this,ShowRefundResultsActivity.class));
+                    startActivity(new Intent(WalletInfoActivity.this, ShowRefundResultsActivity.class));
                     refundPopuwindow.dismiss();
                     break;
 
             }
         }
     };
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (SPUtils.isLogin()) {
+            String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
+            if (userDetail != null) {
+                try {
+                    JSONObject object = new JSONObject(userDetail);
+                    int userId = object.getInt("id");
+                    uID = String.valueOf(userId);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (uID != null) {
+            getUserInfo(uID);
+        }
+    }
+
+    //从服务端拿到客户信息
+    private void getUserInfo(String uID) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", uID);
+        OkHttpUtils.post().url(Api.BASE_URL + Api.INFOUSER).params(map).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+//                Log.e("获取用户信息", e.getMessage());
+                ToastUtils.showShort(App.getContext(), "服务器正忙");
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                Log.d("用户的信息", response);
+                Gson gson = new Gson();
+                mInfo = gson.fromJson(response, UserInfo.class);
+                if (mInfo != null && !mInfo.equals("")) {
+                    remainingSum.setText(String.valueOf(mInfo.getAggregateAmount()));
+                    showArea.setText("押金"+String.valueOf(mInfo.getPledgeCash())+"元");
+                }
+
+            }
+        });
+    }
 
 
 }

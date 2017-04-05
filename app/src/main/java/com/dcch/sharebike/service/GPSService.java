@@ -276,13 +276,9 @@ public class GPSService extends Service {
                 Map<String, String> map = new HashMap<String, String>();
                 String url = Api.BASE_URL + Api.ORDERCAST;
                 map.put("carRentalOrderDate", mCarRentalOrderDate);
-
                 map.put("bicycleNo", mBicycleNo);
-
                 map.put("carRentalOrderId", mCarRentalOrderId);
-
                 map.put("userId", mUserId);
-
                 map.put("lng", mRouteLng + "");
                 LogUtils.d("距离",mRouteLng + "");
                 map.put("lat", mRouteLat + "");

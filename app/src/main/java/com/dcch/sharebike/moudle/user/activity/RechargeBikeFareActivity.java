@@ -193,19 +193,17 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                     if (NetUtils.isConnected(App.getContext())) {
                         if (NetUtils.isWifi(App.getContext())) {
                             ipAddress = weixinPay.getLocalIpAddress();
-
                         } else {
                             ipAddress = weixinPay.getIpAddress();
                         }
                         String outTradeNo = weixinPay.getOutTradeNo();
-
                         Map<String, String> map = new HashMap<>();
                         map.put("out_trade_no", outTradeNo);
                         map.put("attach", uID);
                         map.put("body", "充值");
                         map.put("total_price", "0.01");
                         map.put("spbill_create_ip", ipAddress);
-
+                        LogUtils.d("微信支付",ipAddress);
                         OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINPAY).params(map).build().execute(new StringCallback() {
                             @Override
                             public void onError(Call call, Exception e, int id) {

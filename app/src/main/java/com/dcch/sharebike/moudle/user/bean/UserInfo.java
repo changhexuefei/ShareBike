@@ -8,25 +8,24 @@ import java.io.Serializable;
 
 public class UserInfo implements Serializable {
 
-
     /**
      * id : 24
      * name : 111
-     * nickName : 终归认命
+     * nickName : 测试
      * phone : 17701273631
      * idcard : null
      * useraddress : null
-     * aggregateAmount : 964
+     * aggregateAmount : 953.01
      * pledgeCash : 199
      * minaggregate : 0
      * maxaggregate : 0
-     * integral : 82
-     * mileage : 0.28
+     * integral : 94
+     * mileage : 3.58
      * password : null
      * usersex : 0
      * userage : 0
-     * userimage : http://114.112.86.38/MavenSSM/UserImage/201703231357486113345one.jpg
-     * calorie : 190.69913
+     * userimage : http://114.112.86.38/MavenSSM/UserImage/201704051326067771224one.jpg
+     * calorie : 286.4429
      * messagecode : null
      * cashStatus : 1
      * status : 1
@@ -39,7 +38,7 @@ public class UserInfo implements Serializable {
     private String phone;
     private Object idcard;
     private Object useraddress;
-    private int aggregateAmount;
+    private double aggregateAmount;
     private int pledgeCash;
     private int minaggregate;
     private int maxaggregate;
@@ -103,11 +102,11 @@ public class UserInfo implements Serializable {
         this.useraddress = useraddress;
     }
 
-    public int getAggregateAmount() {
+    public double getAggregateAmount() {
         return aggregateAmount;
     }
 
-    public void setAggregateAmount(int aggregateAmount) {
+    public void setAggregateAmount(double aggregateAmount) {
         this.aggregateAmount = aggregateAmount;
     }
 

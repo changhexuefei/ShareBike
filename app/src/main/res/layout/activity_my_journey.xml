@@ -41,17 +41,18 @@
 
     </FrameLayout>
 
-    <ListView
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
         android:id="@+id/journey_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/journey"
         android:visibility="gone">
 
-    </ListView>
+    </com.github.jdsjlzx.recyclerview.LRecyclerView>
 
 
     <RelativeLayout
+        android:id="@+id/default_show"
         android:layout_centerInParent="true"
         android:layout_below="@+id/journey"
         android:layout_width="wrap_content"

@@ -93,4 +93,6 @@
     <string name="pay_result_callback_msg" formatted="false">微信支付结果：%s</string>
     <!-- WXPayEntryActivity -->
     <string name="pay_result_tip">这个界面用于显示第三方app通过微信支付的结果</string>
+    <string name="cancel_tip">每天可预约5次，确认要取消吗?</string>
+    <string name="cancel_title">取消预约</string>
 </resources>
