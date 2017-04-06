@@ -318,7 +318,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         OkHttpUtils.post().url(Api.BASE_URL + Api.INFOUSER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                LogUtils.e(e.getMessage());
+                if (e != null && !e.equals("")) {
+                    LogUtils.e(e.getMessage());
+                }
                 ToastUtils.showShort(MainActivity.this, "服务器忙，请重试");
             }
 
@@ -1185,6 +1187,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         if (menuWindow == null) {
             menuWindow = new SelectPicPopupWindow(MainActivity.this, bikeInfo, itemsOnClick);
         }
+        menuWindow.setOutsideTouchable(false);
         menuWindow.showAsDropDown(findViewById(R.id.top));
         if (SPUtils.isLogin()) {
             if (cashStatus == 1 && status == 1) {
@@ -1200,16 +1203,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             menuWindow.mOrder.setText("立即登录即可骑单车");
         }
 
-//        if (distance != 0 && mWalkTime != 0) {
-//            mDistance = MapUtil.distanceFormatter(distance);
-//            mCastTime = MapUtil.timeFormatter(mWalkTime);
-//            if (!mDistance.equals("") && mDistance != null) {
-//                menuWindow.mDistance.setText(mDistance);
-//            }
-//            if (!mCastTime.equals("") && mCastTime != null) {
-//                menuWindow.mArrivalTime.setText(mCastTime);
-//            }
-//        }
     }
 
     @Override
@@ -1341,12 +1334,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             //根据手机定位的不同得到定位点信息，将这个信息传递给搜索页面
             String locationDescribe = location.getLocationDescribe();
             String addrStr = location.getAddrStr();
-            if (locationDescribe != null && addrStr != null) {
+            if (locationDescribe != null && locationDescribe.length() > 0 && addrStr != null && addrStr.length() > 0) {
                 String substring1 = addrStr.substring(2, addrStr.length());
                 String substring = locationDescribe.substring(1, locationDescribe.length());
                 address1 = substring1 + substring;
-            } else {
-                ToastUtils.showShort(MainActivity.this, "定位失败，请稍后再试！");
             }
 
             // 第一次定位时，将地图位置移动到当前位置

@@ -22,9 +22,6 @@ public class SplashActivity extends BaseActivity {
 
     @BindView(R.id.rl_splash_root)
     RelativeLayout mRlSplashRoot;
-    // 判断应用是否初次加载，读取SharedPreferences中的guide_activity字段
-//    private static final String SHAREDPREFERENCES_NAME = "my_pref";
-//    private static final String KEY_GUIDE_ACTIVITY = "guide_activity";
     private final static int SWITCH_MAINACTIVITY = 1000;
     private final static int SWITCH_GUIDACTIVITY = 1001;
 
@@ -71,16 +68,16 @@ public class SplashActivity extends BaseActivity {
         Log.d("知道也", isStartGuide + "");
         if (SPUtils.isLogin()) {
             LogUtils.e("已经登录...");
-            Intent login = new Intent(this, MainActivity.class);
+            Intent login = new Intent(App.getContext(), MainActivity.class);
             startActivity(login);
             SplashActivity.this.finish();
         } else {
             LogUtils.e("没有登录...");
             if (isStartGuide) {
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(App.getContext(), MainActivity.class));
                 finish();
             } else {
-                startActivity(new Intent(this, GuideActivity.class));
+                startActivity(new Intent(App.getContext(), GuideActivity.class));
                 finish();
             }
         }

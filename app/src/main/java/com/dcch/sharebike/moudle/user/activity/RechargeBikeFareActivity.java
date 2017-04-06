@@ -1,6 +1,5 @@
 package com.dcch.sharebike.moudle.user.activity;
 
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.Toolbar;
@@ -284,10 +283,10 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                     // String resultInfo = payResult.getResult();
                     String resultStatus = payResult.getResultStatus();
                     if (TextUtils.equals(resultStatus, "9000")) {
-                        updateRechargeInfo(uID, rechargeNumber);
+//                        updateRechargeInfo(uID, rechargeNumber);
                         Toast.makeText(RechargeBikeFareActivity.this, "支付成功",
                                 Toast.LENGTH_SHORT).show();
-                        returnData(rechargeNumber);
+//                        returnData(rechargeNumber);
                     } else {
                         // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
                         if (TextUtils.equals(resultStatus, "8000")) {
@@ -304,43 +303,43 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         }
     };
 
-    private void returnData(String rechargeNumber) {
-        Intent mIntent = new Intent();
-        mIntent.putExtra("recherge", rechargeNumber);
-        // 设置结果，并进行传送
-        this.setResult(0, mIntent);
-        this.finish();
-    }
+//    private void returnData(String rechargeNumber) {
+//        Intent mIntent = new Intent();
+//        mIntent.putExtra("recherge", rechargeNumber);
+//        // 设置结果，并进行传送
+//        this.setResult(0, mIntent);
+//        this.finish();
+//    }
 
 
-    private void updateRechargeInfo(String uID, final String rechargeNumber) {
-        Map<String, String> map = new HashMap<>();
-        map.put("userId", uID);
-        map.put("amount", rechargeNumber);
-        OkHttpUtils.post().url(Api.BASE_URL + Api.RECHARGE).params(map).build().execute(new StringCallback() {
-            @Override
-            public void onError(Call call, Exception e, int id) {
-                Log.e("修改充值信息", e.getMessage());
-                ToastUtils.showShort(RechargeBikeFareActivity.this, "服务器正忙！");
-            }
-
-            @Override
-            public void onResponse(String response, int id) {
-                Log.d("修改的结果", response);
-                //{"code":"1"}
-                try {
-                    JSONObject object = new JSONObject(response);
-                    String code = object.optString("code");
-                    if (code.equals("1")) {
-                        ToastUtils.showShort(RechargeBikeFareActivity.this, "修改用户资料成功！");
-                    } else if (code.equals("0")) {
-                        ToastUtils.showShort(RechargeBikeFareActivity.this, "服务器正忙！");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+//    private void updateRechargeInfo(String uID, final String rechargeNumber) {
+//        Map<String, String> map = new HashMap<>();
+//        map.put("userId", uID);
+//        map.put("amount", rechargeNumber);
+//        OkHttpUtils.post().url(Api.BASE_URL + Api.RECHARGE).params(map).build().execute(new StringCallback() {
+//            @Override
+//            public void onError(Call call, Exception e, int id) {
+//                Log.e("修改充值信息", e.getMessage());
+//                ToastUtils.showShort(RechargeBikeFareActivity.this, "服务器正忙！");
+//            }
+//
+//            @Override
+//            public void onResponse(String response, int id) {
+//                Log.d("修改的结果", response);
+//                //{"code":"1"}
+//                try {
+//                    JSONObject object = new JSONObject(response);
+//                    String code = object.optString("code");
+//                    if (code.equals("1")) {
+//                        ToastUtils.showShort(RechargeBikeFareActivity.this, "修改用户资料成功！");
+//                    } else if (code.equals("0")) {
+//                        ToastUtils.showShort(RechargeBikeFareActivity.this, "服务器正忙！");
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//    }
 
 }

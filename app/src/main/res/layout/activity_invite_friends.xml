@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
         android:scaleType="fitXY"
-        android:src="@drawable/share_mobike_img"/>
+        android:src="@drawable/small_summer"/>
 
     <TextView
         android:id="@+id/tv_tip_one"

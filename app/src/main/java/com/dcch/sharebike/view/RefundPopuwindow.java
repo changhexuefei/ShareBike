@@ -2,6 +2,7 @@ package com.dcch.sharebike.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,7 +24,7 @@ public class RefundPopuwindow extends PopupWindow {
     private Button btn_confirm;
     private View refundView;
 
-    public RefundPopuwindow(Context context ,View.OnClickListener refundViewOnClick) {
+    public RefundPopuwindow(Context context, View.OnClickListener refundViewOnClick) {
         super(context);
         //创建布局反射器
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -48,13 +49,13 @@ public class RefundPopuwindow extends PopupWindow {
         // 设置SelectPicPopupWindow弹出窗体的高
         this.setHeight(800);
         // 设置SelectPicPopupWindow弹出窗体可点击
-            this.setFocusable(true);
+        this.setFocusable(true);
 //             设置SelectPicPopupWindow弹出窗体动画效果
-            this.setAnimationStyle(R.style.PopupAnimation);
+        this.setAnimationStyle(R.style.PopupAnimation);
         // 实例化一个ColorDrawable颜色为半透明
-//        ColorDrawable dw = new ColorDrawable(0x00000000);
+        ColorDrawable dw = new ColorDrawable(0x00000000);
         // 设置SelectPicPopupWindow弹出窗体的背景
-//        this.setBackgroundDrawable(dw);
+        this.setBackgroundDrawable(dw);
         // mMenuView添加OnTouchListener监听判断获取触屏位置如果在选择框外面则销毁弹出框
         refundView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -70,8 +71,6 @@ public class RefundPopuwindow extends PopupWindow {
                 return true;
             }
         });
-
-
 
 
     }

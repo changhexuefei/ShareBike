@@ -6,7 +6,6 @@ import android.content.Context;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.dcch.sharebike.http.HttpUtils;
-import com.squareup.leakcanary.LeakCanary;
 import com.zhy.http.okhttp.log.LoggerInterceptor;
 
 import java.util.LinkedList;
@@ -44,7 +43,7 @@ public class App extends Application {
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         ShareSDK.initSDK(this);
-        LeakCanary.install(this);
+//        LeakCanary.install(this);
         //初始化OkHttp
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(new LoggerInterceptor("HttpUtils"))

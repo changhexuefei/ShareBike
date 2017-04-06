@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.moudle.user.bean.JourneyInfo;
+import com.dcch.sharebike.utils.MapUtil;
 
 /**
  * Created by Administrator on 2017/4/5 0005.
@@ -38,7 +39,7 @@ public class JourneyInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if(holder instanceof JourneyViewHolder){
             ((JourneyViewHolder) holder).journeyTime.setText(mInfos.getCarrOrders().get(position).getCarRentalOrderDate());
             ((JourneyViewHolder) holder).bikeNum.setText(mInfos.getCarrOrders().get(position).getBicycleNo());
-            ((JourneyViewHolder) holder).duration.setText(String.valueOf(mInfos.getCarrOrders().get(position).getTripTime())+"分钟");
+            ((JourneyViewHolder) holder).duration.setText(String.valueOf(MapUtil.timeFormatter(mInfos.getCarrOrders().get(position).getTripTime())));
             ((JourneyViewHolder) holder).money_amount.setText(String.valueOf(mInfos.getCarrOrders().get(position).getRideCost())+"元");
         }
     }

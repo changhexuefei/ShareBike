@@ -81,7 +81,6 @@ public class PersonInfoActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
         mToolbar.setTitle("");
         mTitle.setText(getResources().getString(R.string.person_info));
         setSupportActionBar(mToolbar);

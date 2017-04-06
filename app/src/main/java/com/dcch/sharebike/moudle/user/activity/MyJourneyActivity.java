@@ -1,6 +1,9 @@
 package com.dcch.sharebike.moudle.user.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.view.View;
@@ -17,8 +20,10 @@ import com.dcch.sharebike.moudle.user.bean.JourneyInfo;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.ToastUtils;
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
+import com.github.jdsjlzx.view.CommonFooter;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -72,10 +77,14 @@ public class MyJourneyActivity extends BaseActivity {
         }
     }
 
-
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        LogUtils.d("why", "为什么onCreate");
+        super.onCreate(savedInstanceState);
+        getJourneyInfo(mPhone);
+    }
+
+    private void getJourneyInfo(String phone) {
         Map<String, String> map = new HashMap<>();
         map.put("phone", mPhone);
         OkHttpUtils.post().url(Api.BASE_URL + Api.GETCARRENTALORDERBYPHONE).params(map).build().execute(new StringCallback() {
@@ -95,7 +104,43 @@ public class MyJourneyActivity extends BaseActivity {
                     journeyList.setLayoutManager(new LinearLayoutManager(MyJourneyActivity.this, OrientationHelper.VERTICAL, false));
                     mAdapter.setInfos(journeyInfo);
                     LRecyclerViewAdapter adapter = new LRecyclerViewAdapter(mAdapter);
+                    //添加分割线
+                    journeyList.addItemDecoration(new DividerItemDecoration(MyJourneyActivity.this, DividerItemDecoration.VERTICAL));
                     journeyList.setAdapter(adapter);
+                    CommonFooter footerView = new CommonFooter(MyJourneyActivity.this, R.layout.footer);
+                    adapter.addFooterView(footerView);
+                    //禁用下拉刷新功能
+                    journeyList.setPullRefreshEnabled(false);
+                    //禁用自动加载更多功能
+                    journeyList.setLoadMoreEnabled(false);
+                    adapter.setOnItemClickListener(new OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            ToastUtils.showShort(MyJourneyActivity.this, position + "");
+                        }
+                    });
+                    journeyList.setLScrollListener(new LRecyclerView.LScrollListener() {
+                        @Override
+                        public void onScrollUp() {
+
+                        }
+
+                        @Override
+                        public void onScrollDown() {
+
+                        }
+
+                        @Override
+                        public void onScrolled(int distanceX, int distanceY) {
+
+                        }
+
+                        @Override
+                        public void onScrollStateChanged(int state) {
+
+                        }
+                    });
+
                 } else {
                     mDefaultShow.setVisibility(View.VISIBLE);
                 }
@@ -104,4 +149,9 @@ public class MyJourneyActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LogUtils.d("why", "为什么onResume");
+    }
 }

@@ -96,7 +96,8 @@ public class WalletInfoActivity extends BaseActivity {
             case R.id.recharge:
                 if (cashStatus == 1) {
                     Intent intent = new Intent(WalletInfoActivity.this, RechargeBikeFareActivity.class);
-                    startActivityForResult(intent, 0);
+//                    startActivityForResult(intent, 0);
+                    startActivity(intent);
                 } else if (cashStatus == 0) {
                     popupDialog();
                 }
@@ -104,7 +105,8 @@ public class WalletInfoActivity extends BaseActivity {
             case R.id.chargeDeposit:
                 if (chargeDeposit.getText().equals(tipFour)) {
                     Intent rechargeDeposit = new Intent(WalletInfoActivity.this, RechargeDepositActivity.class);
-                    startActivityForResult(rechargeDeposit, 1);
+//                    startActivityForResult(rechargeDeposit, 1);
+                    startActivity(rechargeDeposit);
                 } else if (chargeDeposit.getText().equals(tipThere)) {
                     showRefundPopuwindow();
                 }
@@ -112,29 +114,28 @@ public class WalletInfoActivity extends BaseActivity {
         }
     }
 
-    //充值车费的回调
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        int i = Integer.valueOf(remainingSum.getText().toString()).intValue();
-        if (data != null) {
-            String recherge = data.getStringExtra("recherge");
-            String deposit = data.getStringExtra("deposit");
-            // 根据上面发送过去的请求码来区别
-            switch (requestCode) {
-                case 0:
-                    int i1 = Integer.parseInt(recherge.split("\\.")[0]);
-                    String rechergeSum = String.valueOf(i + i1);
-                    remainingSum.setText(rechergeSum);
-                    break;
-                case 1:
-                    showArea.setText("押金" + deposit + "元");
-                    chargeDeposit.setText(tipThere);
-                    break;
-            }
-        }
-
-    }
+//    //充值车费的回调
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        int i = Integer.valueOf(remainingSum.getText().toString()).intValue();
+//        if (data != null) {
+//            String recherge = data.getStringExtra("recherge");
+//            String deposit = data.getStringExtra("deposit");
+//            // 根据上面发送过去的请求码来区别
+//            switch (requestCode) {
+//                case 0:
+//                    int i1 = Integer.parseInt(recherge.split("\\.")[0]);
+//                    String rechergeSum = String.valueOf(i + i1);
+//                    remainingSum.setText(rechergeSum);
+//                    break;
+//                case 1:
+//                    showArea.setText("押金" + deposit + "元");
+//                    chargeDeposit.setText(tipThere);
+//                    break;
+//            }
+//        }
+//    }
 
     private void showRefundPopuwindow() {
         if (refundPopuwindow != null && !refundPopuwindow.equals("")) {
@@ -227,7 +228,6 @@ public class WalletInfoActivity extends BaseActivity {
                     remainingSum.setText(String.valueOf(mInfo.getAggregateAmount()));
                     showArea.setText("押金"+String.valueOf(mInfo.getPledgeCash())+"元");
                 }
-
             }
         });
     }
