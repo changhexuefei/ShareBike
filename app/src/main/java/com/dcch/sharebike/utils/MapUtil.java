@@ -6,8 +6,11 @@ import android.widget.TextView;
 import com.dcch.sharebike.app.App;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by gao on 2017/3/4.
@@ -56,5 +59,47 @@ public class MapUtil {
         drawable.setBounds(0, 0, DensityUtils.dp2px(App.getContext(), 50), DensityUtils.dp2px(App.getContext(), 50));
         v.setCompoundDrawables(null, drawable, null, null);
     }
+
+    //double 类型保留3位位小数
+    public static double changeDouble(Double dou) {
+        NumberFormat nf = new DecimalFormat("0.000");
+        dou = Double.parseDouble(nf.format(dou));
+        return dou;
+    }
+
+    public static int stringToInt(String string) {
+        String str = string.substring(0, string.indexOf("."));
+        int intgeo = Integer.parseInt(str);
+        return intgeo;
+    }
+    //获取系统的北京时间
+    public static String getStringDate() {
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT+08"));
+        String dateString = formatter.format(currentTime);
+        return dateString;
+    }
+    //计算系统时间和车辆预定时间的时间差
+    public static long countTime(String stringDate, String bookingCarDate) {
+         long diff = 0;
+        try {
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date1 = df.parse(stringDate);
+            Date date2 = df.parse(bookingCarDate);
+            //这样得到的差值是微秒级别
+            diff = date1.getTime() - date2.getTime();
+            LogUtils.d("时间差", diff + "");
+//            long days = diff / (1000 * 60 * 60 * 24);
+//            long hours = (diff - days * (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
+//            long minutes = (diff - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return diff;
+    }
+
+
+
 
 }

@@ -35,7 +35,6 @@ import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatus;
-import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
@@ -111,16 +110,10 @@ import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 import org.simple.eventbus.ThreadMode;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.TreeSet;
 
 import butterknife.BindView;
@@ -130,18 +123,13 @@ import okhttp3.Call;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+import static com.dcch.sharebike.utils.MapUtil.stringToInt;
+
 
 @RuntimePermissions
 public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusChangeListener, OnGetRoutePlanResultListener {
     @BindView(R.id.mapView)
     MapView mMapView;
-    BaiduMap mMap;
-
-    /**
-     * 定位的监听器
-     */
-    public MyLocationListener mMyLocationListener;
-
     @BindView(R.id.MyCenter)
     ImageView mMyCenter;
     @BindView(R.id.seek)
@@ -156,56 +144,32 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     TextView mScan;
     @BindView(R.id.top)
     FrameLayout top;
-
-    private final int SDK_PERMISSION_REQUEST = 127;
+    BaiduMap mMap;
+    public MyLocationListener mMyLocationListener;//定位的监听器
 
     //显示marker
     private boolean showMarker = false;
-    private String permissionInfo;
     boolean useDefaultIcon = false;
     private long mExitTime; //退出时间
-    long initialTime = 600;
-    /**
-     * 该类提供一个能够显示和管理多个Overlay的基类
-     */
-    OverlayManager routeOverlay = null;
+    OverlayManager routeOverlay = null;//该类提供一个能够显示和管理多个Overlay的基类
 
-    /**
-     * 定位的客户端
-     */
-    private LocationClient mLocationClient;
+    private LocationClient mLocationClient;//定位的客户端
 
-    /**
-     * 当前定位的模式
-     */
-    private MyLocationConfiguration.LocationMode mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
-    /***
-     * 是否是第一次定位
-     */
-    private volatile boolean isFristLocation = true;
-    /**
-     * 最新一次的经纬度
-     */
-    private double mCurrentLantitude;
+    private MyLocationConfiguration.LocationMode mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;//当前定位的模式
+
+    private volatile boolean isFristLocation = true;//是否是第一次定位
+
+    private double mCurrentLantitude;//最新一次的经纬度
     private double mCurrentLongitude;
 
     private double changeLatitude, changeLongitude;
 
-    /**
-     * 当前的精度
-     */
-    private float mCurrentAccracy;
-    /**
-     * 方向传感器的监听器
-     */
-    private MyOrientationListener myOrientationListener;
-    /**
-     * 方向传感器X方向的值
-     */
-    private int mXDirection;
+    private float mCurrentAccracy;//当前的精度
+
+    private MyOrientationListener myOrientationListener;//方向传感器的监听器
+
+    private int mXDirection;//方向传感器X方向的值
     private GeoCoder mSearch = null;
-    private double latitude;
-    private double longitude;
     //    private Address locationDescribe;
     //POI搜索相关
     // public PoiSearch mPoiSearch = null;
@@ -218,30 +182,23 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private String address1;
     private List<BikeInfo> bikeInfos;
     private BikeInfo bikeInfo;
-    //    private int userid;
     private BookBikePopupWindow bookBikePopupWindow = null;
     private UserBookingBikePopupWindow userBookingBikePopupWindow = null;
     private int cashStatus;
     private int status;
-
     private String bookingCarId;
     private String phone;
     private String result;
     private String userDetail;
     private JSONObject object;
     private String uID;
-    private String currentTime;
     private String bookingCarDate;
     private UserBookingBikeInfo userBookingBikeInfo = null;
     private Double locationLongitude;
     private Double locationLatitude;
-    private long diff;
-    private String stringDate;
-    private long time;
     private LatLng clickMarkLatlng;
     private LatLng currentLatLng;
     private boolean isChecked = false;
-
     private boolean isBook = false;
     private boolean isShowRideOrder = false;
     private boolean isShowBookOrder = false;
@@ -266,14 +223,12 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     WalkingRouteResult nowResultwalk = null;
     RouteLine routeLine = null;
     RoutePlanSearch mRPSearch = null;    // 搜索模块，也可去掉地图模块独立使用
-    int nodeIndex = -1;
     private double mLat1;
     private double mLng1;
     private Intent mServiceIntent;
     ResultReceiver mResultReceiver;
     private ShowBikeRentalOrderInfo mShowBikeRentalOrderInfo;
     private ShowBikeRentalOrderPopupWindow mShowBikeRentalOrderPopupWindow;
-
 
     @Override
     protected int getLayoutId() {
@@ -287,7 +242,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         MainActivityPermissionsDispatcher.initPermissionWithCheck(this);
         showCamera();
         initPermission();
-
         bikeInfos = new ArrayList<BikeInfo>();
         // 初始化GeoCoder模块，注册事件监听
 //        mSearch = GeoCoder.newInstance();
@@ -311,16 +265,13 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     }
 
     private void queryUserInfo(String uID) {
-
         Map<String, String> map = new HashMap<>();
         map.put("userId", uID);
 
         OkHttpUtils.post().url(Api.BASE_URL + Api.INFOUSER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                if (e != null && !e.equals("")) {
-                    LogUtils.e(e.getMessage());
-                }
+
                 ToastUtils.showShort(MainActivity.this, "服务器忙，请重试");
             }
 
@@ -365,13 +316,13 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                                  Log.d("查看信息", userBookingBikeInfoLongitude + "\n" + userBookingBikeInfoLatitude);
                                  bookingCarId = userBookingBikeInfo.getBookingCarId();
                                  String bookingCarDate = userBookingBikeInfo.getBookingCarDate();
-                                 String stringDate = getStringDate();
+                                 String stringDate = MapUtil.getStringDate();
                                  if (bicycleNo != null && !bicycleNo.equals("")
                                          && resultAddress != null && !resultAddress.equals("")
                                          && bookingCarId != null && !bookingCarId.equals("")) {
 
                                      if (bookingCarDate != null && !bookingCarDate.equals("") && stringDate != null && !stringDate.equals("")) {
-                                         long countTime = 600000 - countTime(stringDate, bookingCarDate);
+                                         long countTime = 600000 - MapUtil.countTime(stringDate, bookingCarDate);
                                          if (countTime > 0) {
                                              isChecked = true;
                                              isClick = false;
@@ -660,9 +611,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     //百度地图的覆盖物点击方法
     private void clickBaiduMapMark() {
-
         final TreeSet<Integer> integers = new TreeSet<>();
-
         mMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(final Marker marker) {
@@ -956,7 +905,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                                 userBookingBikePopupWindow.dismiss();
                                 timer.cancel();
                             }
-                            LogUtils.d("uuu", bikeInfos + "");
                             isShowBookOrder = false;
                             mMap.clear();
                             //根据手机定位地点，得到手机定位点的周围半径1000米范围内的车辆信息的方法
@@ -982,7 +930,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             OkHttpUtils.post().url(Api.BASE_URL + Api.BOOKBIKE).params(map).build().execute(new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
-                    LogUtils.e(e.getMessage());
                     ToastUtils.showShort(MainActivity.this, "服务器正忙，请稍后再试！");
                 }
 
@@ -1078,8 +1025,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
             Bundle bundle = data.getExtras();
-//            double lat = data.getDoubleExtra("lat", 0);
-//            double lon = data.getDoubleExtra("lon", 0);
+            double lat = data.getDoubleExtra("lat", 0);
+            double lon = data.getDoubleExtra("lon", 0);
             switch (requestCode) {
                 case 0:
                     if (bundle != null) {
@@ -1092,7 +1039,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     break;
 
                 case 1:
-//                    setUserMapCenter(lat, lon);
+                    setUserMapCenter(lat, lon);
                     break;
             }
 
@@ -1187,6 +1134,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         if (menuWindow == null) {
             menuWindow = new SelectPicPopupWindow(MainActivity.this, bikeInfo, itemsOnClick);
         }
+        menuWindow.setFocusable(false);
         menuWindow.setOutsideTouchable(false);
         menuWindow.showAsDropDown(findViewById(R.id.top));
         if (SPUtils.isLogin()) {
@@ -1301,10 +1249,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     }
 
-
-    /**
-     * 实现定位回调监听
-     */
+    //实现定位回调监听
     public class MyLocationListener implements BDLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
@@ -1363,7 +1308,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     //根据手机定位地点，得到车辆信息的方法
                     getBikeInfo(mCurrentLantitude, mCurrentLongitude);
                 }
-
             }
 
         }
@@ -1470,17 +1414,11 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     //设置中心点
     private void setUserMapCenter(Double Lantitude, Double Longitude) {
-        LatLng mCenpt = new LatLng(Lantitude, Longitude);
-        //定义地图状态
-        MapStatus mMapStatus = new MapStatus.Builder()
-                .target(mCenpt)
-                .zoom(18)
-                .build();
-        //定义MapStatusUpdate对象，以便描述地图状态将要发生的变化
-        MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory
-                .newMapStatus(mMapStatus);
-        //改变地图状态
-        mMap.animateMapStatus(mMapStatusUpdate);
+        LatLng ll = new LatLng(Lantitude, Longitude);
+        MapStatus.Builder builder = new MapStatus.Builder();
+        //地图缩放比设置为18
+        builder.target(ll).zoom(18.0f);
+        mMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
     }
 
     private void checkAggregate(String uID) {
@@ -1605,9 +1543,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         Log.d("实验", "onCreate");
     }
 
-    /**
-     * //WalkingRouteOverlay已经实现了BaiduMap.OnMarkerClickListener接口
-     */
+    //WalkingRouteOverlay已经实现了BaiduMap.OnMarkerClickListener接口
     private class MyWalkingRouteOverlay extends WalkingRouteOverlay {
 
         public MyWalkingRouteOverlay(BaiduMap baiduMap) {
@@ -1682,42 +1618,15 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         openScan(uID, phone, result);
     }
 
-    //获取系统的北京时间
-    private String getStringDate() {
-        Date currentTime = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        formatter.setTimeZone(TimeZone.getTimeZone("GMT+08"));
-        String dateString = formatter.format(currentTime);
-        return dateString;
-    }
-
-    //计算系统时间和车辆预定时间的时间差
-    public long countTime(String stringDate, String bookingCarDate) {
-        try {
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date date1 = df.parse(stringDate);
-            Date date2 = df.parse(bookingCarDate);
-            //这样得到的差值是微秒级别
-            diff = date1.getTime() - date2.getTime();
-            LogUtils.d("时间差", diff + "");
-//            long days = diff / (1000 * 60 * 60 * 24);
-//            long hours = (diff - days * (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
-//            long minutes = (diff - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return diff;
-    }
-
     class LocationReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
 
             RidingInfo ridingInfo = (RidingInfo) intent.getSerializableExtra("ridingInfo");
             if (ridingInfo != null) {
-                double tripDist = changeDouble(ridingInfo.getTripDist());
+                double tripDist = MapUtil.changeDouble(ridingInfo.getTripDist());
                 LogUtils.d("距离", tripDist + "");
-                double calorie = changeDouble(ridingInfo.getCalorie());
+                double calorie = MapUtil.changeDouble(ridingInfo.getCalorie());
                 String dist = String.valueOf(tripDist * 1000);
                 LogUtils.d("距离", dist + "");
                 int i = stringToInt(dist);
@@ -1738,19 +1647,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 }
 
             }
-        }
-
-        //double 类型保留3位位小数
-        public double changeDouble(Double dou) {
-            NumberFormat nf = new DecimalFormat("0.000");
-            dou = Double.parseDouble(nf.format(dou));
-            return dou;
-        }
-
-        public int stringToInt(String string) {
-            String str = string.substring(0, string.indexOf("."));
-            int intgeo = Integer.parseInt(str);
-            return intgeo;
         }
     }
 

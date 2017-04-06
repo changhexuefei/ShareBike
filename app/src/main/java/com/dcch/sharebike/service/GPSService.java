@@ -1,15 +1,24 @@
 package com.dcch.sharebike.service;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.Service;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -31,11 +40,17 @@ import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+
 import java.util.Map;
 
 import okhttp3.Call;
+
+import static cn.jiguang.api.utils.ByteBufferUtils.ERROR_CODE;
+import static com.baidu.mapapi.search.route.DrivingRoutePlanOption.DrivingTrafficPolicy.ROUTE_PATH;
 
 /**
  * Created by gao on 2017/3/11.
@@ -57,10 +72,25 @@ public class GPSService extends Service {
     private String mCarRentalOrderId;
     private double mRouteLat;
     private double mRouteLng;
+    private int startId = 1; // 轨迹点初始ID
     Notification notification;
     RemoteViews contentView;
+    private String startTime = "";
+    private String stopTime = "";
+    private double routeLng;
+    private double routeLat;
+//    private RouteAdapter adapter = new RouteAdapter();
     public float totalPrice = 0;
     public long beginTime = 0, totalTime = 0;
+
+    private boolean isEncrypt = false; // true:读取百度加密经纬度 false:读取设备提供经纬度
+    private boolean isDebug = true;
+
+    // 设备定位经纬度
+    private enum DeviceLocType {
+        LATITUDE, LONGITUDE
+    }
+
 
     @Override
     public void onCreate() {
@@ -109,58 +139,172 @@ public class GPSService extends Service {
             mBicycleNo = intent.getStringExtra("bicycleNo");
             mCarRentalOrderDate = intent.getStringExtra("carRentalOrderDate");
             mCarRentalOrderId = intent.getStringExtra("carRentalOrderId");
-            Log.d("大神",mUserId+"\n"+mBicycleNo+"\n"+mCarRentalOrderDate+"\n"+mCarRentalOrderId);
+            Log.d("大神", mUserId + "\n" + mBicycleNo + "\n" + mCarRentalOrderDate + "\n" + mCarRentalOrderId);
             //开启子线程和后台进行通信
-
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    LogUtils.d("进行中","记录经纬度");
-//                    Map<String, String> map = new HashMap<String, String>();
-//                    String url = Api.BASE_URL + Api.ORDERCAST;
-//                    map.put("carRentalOrderDate", mCarRentalOrderDate);
-//                    map.put("bicycleNo", mBicycleNo);
-//                    map.put("carRentalOrderId", mCarRentalOrderId);
-//                    map.put("userId", mUserId);
-//                    map.put("lng", mRouteLng + "");
-//                    map.put("lat", mRouteLat + "");
-//                    map.put("mile", totalDistance / 1000 + "");
-//
-//                    OkHttpUtils.post().url(url).params(map).build().execute(new StringCallback() {
-//                        @Override
-//                        public void onError(Call call, Exception e, int id) {
-//                            ToastUtils.showShort(App.getContext(), "服务正忙！");
-//                        }
-//
-//                        @Override
-//                        public void onResponse(String response, int id) {
-//                            Log.d("给后台", response);
-//                            if (JsonUtils.isSuccess(response)) {
-//                                Gson gson = new Gson();
-//                                RidingInfo ridingInfo = gson.fromJson(response, RidingInfo.class);
-//                                Bundle bundle = new Bundle();
-//                                bundle.putSerializable("ridingInfo", ridingInfo);
-//                                if (bundle != null) {
-////                                    sendToActivity(bundle);
-//                                }
-//                            }
-//
-//                        }
-//                    });
-//                }
-//            }).start();
-//            AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-//            int second = 30*1000;
-//            long triggerAtTime = SystemClock.elapsedRealtime()+second;
-//            Intent i = new Intent(this,MainActivity.class);
-//            PendingIntent pi = PendingIntent.getBroadcast(this,0,i,0);
-//            manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,triggerAtTime,pi);
+            // 开启轨迹记录线程
+            new Thread(new RouteRecordThread()).start();
         }
         Log.d("BDGpsService", "********BDGpsService onStartCommand*******");
         if (locationClient != null && !locationClient.isStarted()) {
             locationClient.start();
         }
         return START_REDELIVER_INTENT;
+    }
+
+    public class RouteRecordThread implements Runnable {
+
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    Thread.sleep(minTime);
+                    Message message = new Message();
+                    message.what = 1;
+                    recordHandler.sendMessage(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    final Handler recordHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    startRecordRoute();
+            }
+            super.handleMessage(msg);
+        }
+    };
+
+    private void startRecordRoute() {
+        // 获取设备经纬度
+        if (!isEncrypt) {
+            routeLat = getDeviceLocation(DeviceLocType.LATITUDE);
+            routeLng = getDeviceLocation(DeviceLocType.LONGITUDE);
+            if (isDebug)
+                Toast.makeText(getApplicationContext(),
+                        "Device Loc:" + routeLat + "," + routeLng,
+                        Toast.LENGTH_SHORT).show();
+        }
+
+        RoutePoint routePoint = new RoutePoint();
+        if (routeLng != 5.55 && routeLat != 5.55) {
+            if (routPointList.size() > 0
+                    && routPointList.get(routPointList.size() - 1).getRouteLat() == routeLat
+                    && (routPointList.get(routPointList.size() - 1).getRouteLng() == routeLng)) {
+                if (isDebug) {
+                    // Toast.makeText(getApplicationContext(),
+                    // "Route not change",
+                    // Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                routePoint.setId(startId++);
+                routePoint.setRouteLng(routeLng);
+                routePoint.setRouteLat(routeLat);
+                routPointList.add(routePoint);
+            }
+        }
+    }
+
+// *获取设备提供的经纬度，Network或GPS
+
+    private double getDeviceLocation(DeviceLocType type) {
+        double deviceLat = ERROR_CODE;
+        double deviceLng = ERROR_CODE;
+
+        LocationManager locationManager = (LocationManager) getSystemService(getApplicationContext().LOCATION_SERVICE);
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+//                return TODO;
+            }
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (location != null) {
+                deviceLat = location.getLatitude();
+                deviceLng = location.getLongitude();
+            } else {
+                locationManager.requestLocationUpdates(
+                        LocationManager.NETWORK_PROVIDER, 1000, 0, new deviceLocationListener());
+                Location location1 = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                if (location1 != null) {
+                    deviceLat = location1.getLatitude(); // 经度
+                    deviceLng = location1.getLongitude(); // 纬度
+                }
+            }
+        } else {
+            locationManager.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER, 1000, 0, new deviceLocationListener());
+
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if (location != null) {
+                deviceLat = location.getLatitude(); // 经度
+                deviceLng = location.getLongitude(); // 纬度
+            }
+        }
+        if (type == DeviceLocType.LATITUDE)
+            return deviceLat;
+        else if (type == DeviceLocType.LONGITUDE)
+            return deviceLng;
+        else
+            return ERROR_CODE;
+    }
+
+
+      //* 设备位置监听器
+    class deviceLocationListener implements LocationListener {
+
+        // Provider的状态在可用、暂时不可用和无服务三个状态直接切换时触发此函数
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
+
+        // Provider被enable时触发此函数，比如GPS被打开
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        // Provider被disable时触发此函数，比如GPS被关闭
+        @Override
+        public void onProviderDisabled(String provider) {
+        }
+
+        // 当坐标改变时触发此函数，如果Provider传进相同的坐标，它就不会被触发
+        @Override
+        public void onLocationChanged(Location location) {
+            // routeLat = location.getLatitude(); // 经度
+            // routeLng = location.getLongitude(); // 纬度
+        }
+    };
+
+    private String getTimeStr() {
+        long nowTime = System.currentTimeMillis();
+        Date date = new Date(nowTime);
+        String strs = "" + ERROR_CODE;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+            strs = sdf.format(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return strs;
+    }
+
+
+     // 初始化轨迹文件路径和名称
+    private String getFilePath() {
+        stopTime = getTimeStr();
+        String format = ".json";
+        if (isDebug)
+            format = ".txt";
+        return ROUTE_PATH + startTime + "-" + stopTime + format;
     }
 
     @Override
@@ -243,34 +387,6 @@ public class GPSService extends Service {
                 totalTime = (int) (System.currentTimeMillis() - beginTime) / 1000 / 60;
                 totalPrice = (float) (Math.floor(totalTime / 30) * 0.5 + 0.5);
 //                startNotifi(totalTime + "分钟", totalDistance + "米", totalPrice + "元");
-
-//                Bundle bundle = new Bundle();
-//                bundle.putLong("totalTime", totalTime);
-//                bundle.putDouble("totalDistance", totalDistance);
-//                bundle.putFloat("totalPrice", totalPrice);
-//                bundle.putDouble("calorie", (totalDistance / 1000) * 29);
-//                LogUtils.d("距离", totalDistance + "");
-//                sendToActivity(bundle);
-
-//                StringBuffer sb = new StringBuffer();
-//                sb.append("经度=").append(location.getLongitude());
-//                sb.append("\n纬度=").append(location.getLatitude());
-//                sb.append("\n时间=").append(location.getTime());
-//                sb.append("\nERR Code=").append(location.getLocType());
-//                if (location.hasRadius()) {
-//                    sb.append("\n定位精度=").append(location.getRadius());
-//                }
-//                if (location.getLocType() == BDLocation.TypeGpsLocation) {
-//                    sb.append("\n速度=");
-//                    sb.append(location.getSpeed());
-//                    sb.append("\n卫星=");
-//                    sb.append(location.getSatelliteNumber());
-//                } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {
-//                    sb.append("\n位置=").append(location.getAddrStr());
-//                    sb.append("\n省=").append(location.getProvince());
-//                    sb.append("\n市=").append(location.getCity());
-//                    sb.append("\n区县=").append(location.getDistrict());
-//                }
 //                sendToActivity(sb.toString());
 
                 Map<String, String> map = new HashMap<String, String>();

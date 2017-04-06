@@ -19,6 +19,7 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.moudle.search.adapter.SearchAdapter;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.ToastUtils;
 
 import java.util.List;
 
@@ -97,7 +98,7 @@ public class SeekActivity extends BaseActivity implements TextWatcher {
             // 使用建议搜索服务获取建议列表，结果在onSuggestionResult()中更新
             mSuggestionSearch.requestSuggestion((new SuggestionSearchOption())
                     .keyword(inputKeyWords)
-                    .city("全国"));
+                    .city("北京"));
         } else {
             infoList.setVisibility(View.GONE);
         }
@@ -123,12 +124,17 @@ public class SeekActivity extends BaseActivity implements TextWatcher {
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     double latitude = allSuggestions.get(i).pt.latitude;
                     double longitude = allSuggestions.get(i).pt.longitude;
-                    Intent intent = new Intent();
-                    intent.putExtra("lat", allSuggestions.get(i).pt.latitude);
-                    intent.putExtra("lon", allSuggestions.get(i).pt.longitude);
-                    LogUtils.d("是谁",allSuggestions.get(i).pt.latitude+"\n"+allSuggestions.get(i).pt.longitude);
-                    SeekActivity.this.setResult(0, intent);
-                    finish();
+                    if (latitude != 0 && longitude != 0) {
+                        Intent intent = new Intent();
+                        intent.putExtra("lat", latitude);
+                        intent.putExtra("lon", longitude);
+                        LogUtils.d("是谁", allSuggestions.get(i).pt.latitude + "\n" + allSuggestions.get(i).pt.longitude);
+                        SeekActivity.this.setResult(0, intent);
+                        finish();
+
+                    }else{
+                        ToastUtils.showShort(SeekActivity.this,"未知的地址");
+                    }
                 }
             });
         }
