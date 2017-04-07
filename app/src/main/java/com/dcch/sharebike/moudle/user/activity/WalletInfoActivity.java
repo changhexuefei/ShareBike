@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -18,6 +17,7 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
+import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.dcch.sharebike.view.RefundPopuwindow;
@@ -49,7 +49,6 @@ public class WalletInfoActivity extends BaseActivity {
     TextView chargeDeposit;
     @BindView(R.id.showArea)
     TextView showArea;
-    private int cashStatus;
     private RefundPopuwindow refundPopuwindow;
     private final String msg = "骑行单车必须支付押金，押金可退还。";
     private final String tipThere = "押金退款";
@@ -59,6 +58,7 @@ public class WalletInfoActivity extends BaseActivity {
     private final String goToDeposit = "去充值";
     private String uID;
     private UserInfo mInfo;
+    private int mCashStatus;
 
     @Override
     protected int getLayoutId() {
@@ -67,18 +67,33 @@ public class WalletInfoActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();//"bundle"
-        UserInfo user = (UserInfo) bundle.getSerializable("bundle");
-        if (user != null && !user.equals("")) {
-            cashStatus = user.getCashStatus();
-            remainingSum.setText(String.valueOf(user.getAggregateAmount()));
-            if (user.getPledgeCash() == 199) {
-                showArea.setText("押金" + user.getPledgeCash() + "元");
-                chargeDeposit.setText(tipThere);
-            } else if (user.getPledgeCash() == 0) {
-                showArea.setText("押金" + user.getPledgeCash() + "元");
-                chargeDeposit.setText(tipFour);
+
+        if (SPUtils.isLogin()) {
+            Intent intent = getIntent();
+            Bundle bundle = intent.getExtras();//"bundle"
+            mInfo = (UserInfo) bundle.getSerializable("bundle");
+            if (mInfo != null && !mInfo.equals("")) {
+                mCashStatus = mInfo.getCashStatus();
+                remainingSum.setText(String.valueOf(mInfo.getAggregateAmount()));
+                if (mInfo.getCashStatus()==1) {
+                    showArea.setText("押金" + mInfo.getPledgeCash() + "元");
+                    chargeDeposit.setText(tipThere);
+                } else if (mInfo.getCashStatus() == 0) {
+                    showArea.setText("押金" + mInfo.getPledgeCash() + "元");
+                    chargeDeposit.setText(tipFour);
+                }
+            }
+
+            String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
+            if (userDetail != null) {
+                try {
+                    JSONObject object = new JSONObject(userDetail);
+                    int userId = object.getInt("id");
+                    uID = String.valueOf(userId);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -91,14 +106,16 @@ public class WalletInfoActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.transactionDetail:
-                startActivity(new Intent(this, TransactionDetailActivity.class));
+                Intent dealDetail = new Intent(this, TransactionDetailActivity.class);
+                dealDetail.putExtra("userId", uID);
+                startActivity(dealDetail);
                 break;
             case R.id.recharge:
-                if (cashStatus == 1) {
+                if (mCashStatus == 1) {
                     Intent intent = new Intent(WalletInfoActivity.this, RechargeBikeFareActivity.class);
 //                    startActivityForResult(intent, 0);
                     startActivity(intent);
-                } else if (cashStatus == 0) {
+                } else if (mCashStatus == 0) {
                     popupDialog();
                 }
                 break;
@@ -182,23 +199,6 @@ public class WalletInfoActivity extends BaseActivity {
         }
     };
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (SPUtils.isLogin()) {
-            String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-            if (userDetail != null) {
-                try {
-                    JSONObject object = new JSONObject(userDetail);
-                    int userId = object.getInt("id");
-                    uID = String.valueOf(userId);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 
     @Override
     protected void onResume() {
@@ -222,15 +222,23 @@ public class WalletInfoActivity extends BaseActivity {
             @Override
             public void onResponse(String response, int id) {
                 Log.d("用户的信息", response);
-                Gson gson = new Gson();
-                mInfo = gson.fromJson(response, UserInfo.class);
-                if (mInfo != null && !mInfo.equals("")) {
-                    remainingSum.setText(String.valueOf(mInfo.getAggregateAmount()));
-                    showArea.setText("押金"+String.valueOf(mInfo.getPledgeCash())+"元");
+                if (JsonUtils.isSuccess(response)) {
+                    Gson gson = new Gson();
+                    mInfo = gson.fromJson(response, UserInfo.class);
+                    mCashStatus = mInfo.getCashStatus();
+                    if (mCashStatus == 0) {
+                        remainingSum.setText(String.valueOf(mInfo.getAggregateAmount()));
+                        showArea.setText("押金" + String.valueOf(mInfo.getPledgeCash()) + "元");
+                        chargeDeposit.setText(tipFour);
+
+                    } else if (mCashStatus == 1) {
+                        remainingSum.setText(String.valueOf(mInfo.getAggregateAmount()));
+                        showArea.setText("押金" + String.valueOf(mInfo.getPledgeCash()) + "元");
+                        chargeDeposit.setText(tipThere);
+                    }
+
                 }
             }
         });
     }
-
-
 }

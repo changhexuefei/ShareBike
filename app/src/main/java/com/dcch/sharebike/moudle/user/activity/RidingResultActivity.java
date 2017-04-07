@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.moudle.home.bean.RidingInfo;
+import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.MapUtil;
 import com.dcch.sharebike.utils.ToastUtils;
 
@@ -44,8 +45,6 @@ public class RidingResultActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
-
         MapUtil.initDrawable(mTakePhone);
         MapUtil.initDrawable(mShareJourney);
     }
@@ -76,6 +75,7 @@ public class RidingResultActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LogUtils.d("周期","onCreate");
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if(extras!=null){
@@ -88,10 +88,15 @@ public class RidingResultActivity extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
+    protected void onPause() {
+        super.onPause();
+        LogUtils.d("周期","onPause");
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LogUtils.d("周期","onDestroy");
+    }
 
 }

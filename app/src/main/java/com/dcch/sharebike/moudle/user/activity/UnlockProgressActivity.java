@@ -130,7 +130,7 @@ public class UnlockProgressActivity extends BaseActivity {
                     }
                     Message msg = handler.obtainMessage();
                     try {
-                        Thread.sleep(120);
+                        Thread.sleep(50);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

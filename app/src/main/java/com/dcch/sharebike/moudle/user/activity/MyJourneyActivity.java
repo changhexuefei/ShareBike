@@ -19,6 +19,7 @@ import com.dcch.sharebike.moudle.user.adapter.JourneyInfoAdapter;
 import com.dcch.sharebike.moudle.user.bean.JourneyInfo;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -27,6 +28,9 @@ import com.github.jdsjlzx.view.CommonFooter;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,8 +43,6 @@ public class MyJourneyActivity extends BaseActivity {
 
     @BindView(R.id.back)
     ImageView back;
-    @BindView(R.id.help)
-    TextView help;
     @BindView(R.id.journey_list)
     LRecyclerView journeyList;
     @BindView(R.id.no_journey)
@@ -49,6 +51,10 @@ public class MyJourneyActivity extends BaseActivity {
     RelativeLayout mDefaultShow;
     private String mPhone;
     private JourneyInfoAdapter mAdapter;
+    private String userDetail;
+    private JSONObject object;
+    private String uID;
+    private JourneyInfo mJourneyInfo;
 
 
     @Override
@@ -58,21 +64,29 @@ public class MyJourneyActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        mAdapter = new JourneyInfoAdapter(this);
+        if (SPUtils.isLogin()) {
+            userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
+            object = null;
+            try {
+                object = new JSONObject(userDetail);
+                int id = object.getInt("id");
+                uID = String.valueOf(id);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
         Intent intent = getIntent();
         if (intent != null) {
             mPhone = intent.getStringExtra("phone");
         }
     }
 
-    @OnClick({R.id.back, R.id.help})
+    @OnClick(R.id.back)
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
                 finish();
-                break;
-            case R.id.help:
-                ToastUtils.showShort(this, "我是帮助");
                 break;
         }
     }
@@ -100,9 +114,10 @@ public class MyJourneyActivity extends BaseActivity {
                     mDefaultShow.setVisibility(View.GONE);
                     journeyList.setVisibility(View.VISIBLE);
                     Gson gson = new Gson();
-                    JourneyInfo journeyInfo = gson.fromJson(response, JourneyInfo.class);
+                    mJourneyInfo = gson.fromJson(response, JourneyInfo.class);
+
+                    mAdapter = new JourneyInfoAdapter(MyJourneyActivity.this, R.layout.item_my_journey, mJourneyInfo.getCarrOrders());
                     journeyList.setLayoutManager(new LinearLayoutManager(MyJourneyActivity.this, OrientationHelper.VERTICAL, false));
-                    mAdapter.setInfos(journeyInfo);
                     LRecyclerViewAdapter adapter = new LRecyclerViewAdapter(mAdapter);
                     //添加分割线
                     journeyList.addItemDecoration(new DividerItemDecoration(MyJourneyActivity.this, DividerItemDecoration.VERTICAL));
@@ -117,6 +132,15 @@ public class MyJourneyActivity extends BaseActivity {
                         @Override
                         public void onItemClick(View view, int position) {
                             ToastUtils.showShort(MyJourneyActivity.this, position + "");
+                            String bicycleNo = mJourneyInfo.getCarrOrders().get(position).getBicycleNo();
+                            String carRentalOrderId = mJourneyInfo.getCarrOrders().get(position).getCarRentalOrderId();
+                            if (bicycleNo != null && !bicycleNo.equals("") && !carRentalOrderId.equals("") && carRentalOrderId != null && uID != null && !uID.equals("")) {
+                                Intent journeyDetail = new Intent(MyJourneyActivity.this, JourneyDetailActivity.class);
+                                journeyDetail.putExtra("bicycleNo", bicycleNo);
+                                journeyDetail.putExtra("carRentalOrderId", carRentalOrderId);
+                                journeyDetail.putExtra("userId", uID);
+                                startActivity(journeyDetail);
+                            }
                         }
                     });
                     journeyList.setLScrollListener(new LRecyclerView.LScrollListener() {
@@ -148,6 +172,8 @@ public class MyJourneyActivity extends BaseActivity {
         });
 
     }
+
+
 
     @Override
     protected void onResume() {

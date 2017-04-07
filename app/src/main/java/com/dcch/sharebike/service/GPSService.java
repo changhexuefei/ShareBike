@@ -1,12 +1,10 @@
 package com.dcch.sharebike.service;
 
-import android.Manifest;
 import android.app.Notification;
 import android.app.Service;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationListener;
@@ -15,7 +13,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
@@ -40,17 +37,16 @@ import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-
 import java.util.Map;
 
 import okhttp3.Call;
 
 import static cn.jiguang.api.utils.ByteBufferUtils.ERROR_CODE;
-import static com.baidu.mapapi.search.route.DrivingRoutePlanOption.DrivingTrafficPolicy.ROUTE_PATH;
 
 /**
  * Created by gao on 2017/3/11.
@@ -64,6 +60,7 @@ public class GPSService extends Service {
     private MyOrientationListener myOrientationListener;
     private Context context;
     public ArrayList<RoutePoint> routPointList = new ArrayList<RoutePoint>();
+    private final String ROUTE_PATH = "/sdcard/Route/"; //"Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Route/""
     DatabaseHelper mHelper;
     public double totalDistance = 0;
     private String mUserId;
@@ -85,6 +82,7 @@ public class GPSService extends Service {
 
     private boolean isEncrypt = false; // true:读取百度加密经纬度 false:读取设备提供经纬度
     private boolean isDebug = true;
+    private LocationManager mLocationManager;
 
     // 设备定位经纬度
     private enum DeviceLocType {
@@ -96,6 +94,19 @@ public class GPSService extends Service {
     public void onCreate() {
         super.onCreate();
 //        initNotification();
+        // 初始化路径
+        File filestoreMusic = new File(ROUTE_PATH);
+        LogUtils.d("路径",ROUTE_PATH);
+        if (!filestoreMusic.exists()) {
+            filestoreMusic.mkdir();
+        }
+        startTime = getTimeStr();
+        if (isDebug) {
+            Toast.makeText(getApplicationContext(), "Start Record Route",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+
         beginTime = System.currentTimeMillis();
         totalTime = 0;
         totalDistance = 0;
@@ -140,7 +151,6 @@ public class GPSService extends Service {
             mCarRentalOrderDate = intent.getStringExtra("carRentalOrderDate");
             mCarRentalOrderId = intent.getStringExtra("carRentalOrderId");
             Log.d("大神", mUserId + "\n" + mBicycleNo + "\n" + mCarRentalOrderDate + "\n" + mCarRentalOrderId);
-            //开启子线程和后台进行通信
             // 开启轨迹记录线程
             new Thread(new RouteRecordThread()).start();
         }
@@ -195,9 +205,9 @@ public class GPSService extends Service {
                     && routPointList.get(routPointList.size() - 1).getRouteLat() == routeLat
                     && (routPointList.get(routPointList.size() - 1).getRouteLng() == routeLng)) {
                 if (isDebug) {
-                    // Toast.makeText(getApplicationContext(),
-                    // "Route not change",
-                    // Toast.LENGTH_SHORT).show();
+//                     Toast.makeText(getApplicationContext(),
+//                            "Route not change",
+//                            Toast.LENGTH_SHORT).show();
                 }
             } else {
                 routePoint.setId(startId++);
@@ -214,36 +224,27 @@ public class GPSService extends Service {
         double deviceLat = ERROR_CODE;
         double deviceLng = ERROR_CODE;
 
-        LocationManager locationManager = (LocationManager) getSystemService(getApplicationContext().LOCATION_SERVICE);
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-//                return TODO;
-            }
-            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        mLocationManager = (LocationManager) getSystemService(getApplicationContext().LOCATION_SERVICE);
+        if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+
+            Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (location != null) {
                 deviceLat = location.getLatitude();
                 deviceLng = location.getLongitude();
             } else {
-                locationManager.requestLocationUpdates(
+                mLocationManager.requestLocationUpdates(
                         LocationManager.NETWORK_PROVIDER, 1000, 0, new deviceLocationListener());
-                Location location1 = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                Location location1 = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 if (location1 != null) {
                     deviceLat = location1.getLatitude(); // 经度
                     deviceLng = location1.getLongitude(); // 纬度
                 }
             }
         } else {
-            locationManager.requestLocationUpdates(
+            mLocationManager.requestLocationUpdates(
                     LocationManager.NETWORK_PROVIDER, 1000, 0, new deviceLocationListener());
 
-            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            Location location = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             if (location != null) {
                 deviceLat = location.getLatitude(); // 经度
                 deviceLng = location.getLongitude(); // 纬度
@@ -282,7 +283,7 @@ public class GPSService extends Service {
             // routeLat = location.getLatitude(); // 经度
             // routeLng = location.getLongitude(); // 纬度
         }
-    };
+    }
 
     private String getTimeStr() {
         long nowTime = System.currentTimeMillis();
@@ -310,7 +311,9 @@ public class GPSService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        String filePath = getFilePath();
         Log.d("BDGpsService", "********BDGpsService onDestroy*******");
+        Log.d("BDGpsService", "filePath");
         if (locationClient != null && locationClient.isStarted()) {
             locationClient.stop();
             Gson gson = new Gson();

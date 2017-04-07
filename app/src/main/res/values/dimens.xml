@@ -10,6 +10,8 @@
     <dimen name="round_width_default">6dp</dimen>
     <dimen name="rect_round_default">1dp</dimen>
     <dimen name="horizontal_corner">10dp</dimen>
+    <dimen name="title_size">18sp</dimen>
+    <dimen name="sub_title_size">14sp</dimen>
 
 
 </resources>

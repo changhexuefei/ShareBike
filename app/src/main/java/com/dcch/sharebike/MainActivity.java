@@ -305,60 +305,50 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                              @Override
                              public void onResponse(String response, int id) {
                                  Log.d("呵呵", response);
-                                 Gson gson = new Gson();
-                                 userBookingBikeInfo = gson.fromJson(response, UserBookingBikeInfo.class);
-                                 LogUtils.d("预约车辆信息", userBookingBikeInfo + "");
-                                 LogUtils.d("用户约车信息", userBookingBikeInfo.getBicycleNo() + "");
-                                 bicycleNo = userBookingBikeInfo.getBicycleNo();
-                                 resultAddress = userBookingBikeInfo.getAddress();
-                                 String userBookingBikeInfoLongitude = userBookingBikeInfo.getLongitude();
-                                 String userBookingBikeInfoLatitude = userBookingBikeInfo.getLatitude();
-                                 Log.d("查看信息", userBookingBikeInfoLongitude + "\n" + userBookingBikeInfoLatitude);
-                                 bookingCarId = userBookingBikeInfo.getBookingCarId();
-                                 String bookingCarDate = userBookingBikeInfo.getBookingCarDate();
-                                 String stringDate = MapUtil.getStringDate();
-                                 if (bicycleNo != null && !bicycleNo.equals("")
-                                         && resultAddress != null && !resultAddress.equals("")
-                                         && bookingCarId != null && !bookingCarId.equals("")) {
-
-                                     if (bookingCarDate != null && !bookingCarDate.equals("") && stringDate != null && !stringDate.equals("")) {
-                                         long countTime = 600000 - MapUtil.countTime(stringDate, bookingCarDate);
-                                         if (countTime > 0) {
-                                             isChecked = true;
-                                             isClick = false;
-                                             if (userBookingBikeInfoLongitude != null && !userBookingBikeInfoLongitude.equals("")
-                                                     && userBookingBikeInfoLatitude != null && !userBookingBikeInfoLatitude.equals("")) {
-                                                 locationLongitude = Double.valueOf(userBookingBikeInfoLongitude);
-                                                 locationLatitude = Double.valueOf(userBookingBikeInfoLatitude);
-                                                 isShowBookOrder = true;
-                                                 mMap.clear();
-                                                 forLocationAddMark(locationLongitude, locationLatitude);
+                                 if (JsonUtils.isSuccess(response)) {
+                                     Gson gson = new Gson();
+                                     userBookingBikeInfo = gson.fromJson(response, UserBookingBikeInfo.class);
+                                     LogUtils.d("预约车辆信息", userBookingBikeInfo + "");
+                                     LogUtils.d("用户约车信息", userBookingBikeInfo.getBicycleNo() + "");
+                                     bicycleNo = userBookingBikeInfo.getBicycleNo();
+                                     resultAddress = userBookingBikeInfo.getAddress();
+                                     bookingCarId = userBookingBikeInfo.getBookingCarId();
+                                     String bookingCarDate = userBookingBikeInfo.getBookingCarDate();
+                                     String stringDate = MapUtil.getStringDate();
+                                     long countTime = 600000 - MapUtil.countTime(stringDate, bookingCarDate);
+                                     if (countTime > 0) {
+                                         locationLongitude = Double.valueOf(userBookingBikeInfo.getLongitude());
+                                         locationLatitude = Double.valueOf(userBookingBikeInfo.getLatitude());
+                                         isShowBookOrder = true;
+                                         isChecked = true;
+                                         isClick = false;
+                                         isBook = true;
+                                         mMap.clear();
+                                         forLocationAddMark(locationLongitude, locationLatitude);
+                                         userBookingBikePopupWindow = new UserBookingBikePopupWindow(MainActivity.this, userBookingBikeInfo, userBookBikeItemsOnClick);
+                                         userBookingBikePopupWindow.showAsDropDown(findViewById(R.id.top));
+                                         timer = (MyCountDownTimer) new MyCountDownTimer(countTime, 1000) {
+                                             @Override
+                                             public void onTick(long millisUntilFinished) {
+                                                 userBookingBikePopupWindow.mHoldTime.setText(toClock(millisUntilFinished));
                                              }
-                                             userBookingBikePopupWindow = new UserBookingBikePopupWindow(MainActivity.this, userBookingBikeInfo, userBookBikeItemsOnClick);
-                                             userBookingBikePopupWindow.showAsDropDown(findViewById(R.id.top));
 
-                                             timer = (MyCountDownTimer) new MyCountDownTimer(countTime, 1000) {
-                                                 @Override
-                                                 public void onTick(long millisUntilFinished) {
-                                                     userBookingBikePopupWindow.mHoldTime.setText(toClock(millisUntilFinished));
-                                                 }
+                                             @Override
+                                             public String toClock(long millis) {
+                                                 return super.toClock(millis);
+                                             }
 
-                                                 @Override
-                                                 public String toClock(long millis) {
-                                                     return super.toClock(millis);
-                                                 }
-
-                                                 @Override
-                                                 public void onFinish() {
-                                                     super.onFinish();
-                                                     cancelBookingBike(bookingCarId, bicycleNo);
-                                                 }
-                                             }.start();
-                                         } else {
-                                             userBookingBikePopupWindow.dismiss();
-                                             timer.cancel();
-                                         }
+                                             @Override
+                                             public void onFinish() {
+                                                 super.onFinish();
+                                                 cancelBookingBike(bookingCarId, bicycleNo);
+                                             }
+                                         }.start();
+                                     } else {
+                                         userBookingBikePopupWindow.dismiss();
+                                         timer.cancel();
                                      }
+
                                  } else {
                                      //根据手机定位地点，得到手机定位点的周围半径1000米范围内的车辆信息的方法
                                      getBikeInfo(mCurrentLantitude, mCurrentLongitude);
@@ -1284,7 +1274,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 String substring = locationDescribe.substring(1, locationDescribe.length());
                 address1 = substring1 + substring;
             }
-
             // 第一次定位时，将地图位置移动到当前位置
             if (isFristLocation) {
                 isFristLocation = false;

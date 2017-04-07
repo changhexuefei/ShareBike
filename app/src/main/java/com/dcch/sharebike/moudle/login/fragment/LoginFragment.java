@@ -96,9 +96,7 @@ public class LoginFragment extends Fragment {
                     JSONObject object = new JSONObject(userDetail);
                     int userId = object.getInt("id");
                     uID = String.valueOf(userId);
-                    if(uID!=null){
-                        getUserInfo(uID);
-                    }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -109,6 +107,9 @@ public class LoginFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (uID != null) {
+            getUserInfo(uID);
+        }
     }
 
     //从服务端拿到客户信息
@@ -119,7 +120,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onError(Call call, Exception e, int id) {
 //                Log.e("获取用户信息", e.getMessage());
-                ToastUtils.showShort(App.getContext(),"服务器正忙");
+                ToastUtils.showShort(App.getContext(), "服务器正忙");
             }
 
             @Override
@@ -131,7 +132,7 @@ public class LoginFragment extends Fragment {
                 mPhone = mInfo.getPhone();
                 String nn = mInfo.getNickName().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
                 nickName.setText(nn);
-                creditScore.setText("信用积分 "+String.valueOf(mInfo.getIntegral()));
+                creditScore.setText("信用积分 " + String.valueOf(mInfo.getIntegral()));
                 remainSum.setText(String.valueOf(mInfo.getAggregateAmount()));
 //              骑行距离
                 person_distance.setText(String.valueOf(mInfo.getMileage()));
@@ -174,32 +175,30 @@ public class LoginFragment extends Fragment {
             case R.id.creditScore:
                 String mCreditScore = creditScore.getText().toString().trim();
                 mCreditScore = mCreditScore.substring(5, mCreditScore.length());
-                LogUtils.d("积分",mCreditScore);
-                if(mCreditScore!=null){
+                LogUtils.d("积分", mCreditScore);
+                if (mCreditScore != null) {
                     Intent credit = new Intent(App.getContext(), CreditIntegralActivity.class);
-                    credit.putExtra("score",mCreditScore);
+                    credit.putExtra("score", mCreditScore);
                     startActivity(credit);
                 }
 
                 break;
             case R.id.userIcon:
-                if(mInfo!=null){
+                if (mInfo != null) {
                     Intent personInfo = new Intent(App.getContext(), PersonInfoActivity.class);
-                    Bundle mUserBundle=new Bundle();
+                    Bundle mUserBundle = new Bundle();
                     mUserBundle.putSerializable("userBundle", mInfo);
                     personInfo.putExtras(mUserBundle);
                     startActivity(personInfo);
-                    getActivity().finish();
                 }
                 break;
             case R.id.wallet:
-                if(mInfo!=null){
+                if (mInfo != null) {
                     Intent walletInfo = new Intent(App.getContext(), WalletInfoActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("bundle", mInfo);
                     walletInfo.putExtras(bundle);
                     startActivity(walletInfo);
-                    getActivity().finish();
                 }
                 break;
             case R.id.favorable:
@@ -208,7 +207,7 @@ public class LoginFragment extends Fragment {
             case R.id.journey:
                 ToastUtils.showLong(getContext(), "行程");
                 Intent myJourney = new Intent(App.getContext(), MyJourneyActivity.class);
-                myJourney.putExtra("phone",mPhone);
+                myJourney.putExtra("phone", mPhone);
                 startActivity(myJourney);
                 break;
             case R.id.message:
@@ -230,7 +229,6 @@ public class LoginFragment extends Fragment {
                 ToastUtils.showLong(getContext(), "设置");
                 Intent setting = new Intent(App.getContext(), SettingActivity.class);
                 startActivity(setting);
-//                getActivity().finish();
                 break;
         }
     }

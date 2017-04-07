@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/dealResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:text="支付成功"
+        android:textColor="#000000"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/dealTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/dealResult"
+        android:layout_below="@+id/dealResult"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:text="2017-02-22  17:00"
+        android:textSize="14sp"/>
+
+
+    <TextView
+        android:id="@+id/dealNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/dealResult"
+        android:layout_marginRight="20dp"
+        android:text="199元"
+        android:textColor="@color/colorTitle"
+        android:textSize="16sp"/>
+
+
+    <TextView
+        android:id="@+id/dealType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/dealTime"
+        android:layout_alignRight="@+id/dealNum"
+        android:layout_below="@+id/dealNum"
+        android:gravity="center"
+        android:text="支付宝支付"
+        android:textSize="13sp"/>
+
+
+</RelativeLayout>

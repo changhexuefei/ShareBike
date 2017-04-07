@@ -4,8 +4,8 @@ package com.dcch.sharebike.http;
 public class Api {
 //    public static final String BASE_URL = "http://192.168.1.159:8080/MavenSSM/mobile/";
 //    public static final String BASE_URL = "http://192.168.1.148:8080/MavenSSM/mobile/";
-//    public static final String BASE_URL = "http://192.168.1.130:8080/MavenSSM/mobile/";
-    public static final String BASE_URL = "http://114.112.86.38/MavenSSM/mobile/";
+    public static final String BASE_URL = "http://192.168.1.130:8080/MavenSSM/mobile/";
+//    public static final String BASE_URL = "http://114.112.86.38/MavenSSM/mobile/";
 //    获取验证码
     public static final String REGISTER = "register.do?";
     //注册登录
@@ -50,7 +50,11 @@ public class Api {
     public static final String CHECKBICYCLENO = "checkBicycleNo.do?";
     //查询是否有骑行订单
     public static final String SEARCHORDERING = "searchOrdering.do?";
-    //我的行程
+    //行程列表
     public static final String GETCARRENTALORDERBYPHONE = "getCarRentalOrderByPhone.do?";
+    //单个行程
+    public static final String TRIPRECORD = "tripRecord.do?";
+    //交易列表
+    public static final String SEARCHPAYLIST = "searchPayList.do?";
 
 }

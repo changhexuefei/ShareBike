@@ -18,5 +18,6 @@
     <color name="progress_color_1">#3CB371</color>
     <color name="bg">#CDB5CD</color>
     <color name="navpage">#FFE1E8EB</color>
+    <color name="sub_title_color">#ffffff</color>
 
 </resources>
