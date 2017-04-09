@@ -13,6 +13,7 @@ import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 
 import java.util.ArrayList;
@@ -48,6 +49,20 @@ public class GuideActivity extends BaseActivity {
             //加入到集合中
             imageViews.add(imageView);
         }
+
+        btn_start_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(App.getContext(), MainActivity.class);
+                startActivity(intent);
+                SPUtils.put(App.getContext(), "isStartGuide", true);
+                SPUtils.put(App.getContext(), "isfirst", false);
+                LogUtils.d("kankan",SPUtils.get(App.getContext(),"isfirst",false)+"");
+                finish();
+            }
+        });
+
+
     }
 
 
@@ -56,16 +71,7 @@ public class GuideActivity extends BaseActivity {
         super.initListener();
         viewpager_guide.setAdapter(new MyPagerAdapter());
         viewpager_guide.addOnPageChangeListener(new MyOnPageChangeListener());
-        btn_start_main.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(App.getContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
-                SPUtils.put(App.getContext(), "isStartGuide", true);
-                SPUtils.put(App.getContext(), "isfirst", false);
-            }
-        });
+
     }
 
     class MyPagerAdapter extends PagerAdapter {

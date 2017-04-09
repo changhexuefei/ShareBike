@@ -56,8 +56,10 @@ public class SplashActivity extends BaseActivity {
         animation.setFillAfter(true);
         mRlSplashRoot.startAnimation(animation);
         if (SPUtils.isFirst()) {
+            LogUtils.d("kankan","isFirst");
             handler.sendEmptyMessageDelayed(SWITCH_GUIDACTIVITY, 3000);
         } else {
+            LogUtils.d("kankan","isnoFirst");
             handler.sendEmptyMessageDelayed(SWITCH_MAINACTIVITY, 3000);
         }
     }

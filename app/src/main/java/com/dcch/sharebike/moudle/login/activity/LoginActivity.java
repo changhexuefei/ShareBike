@@ -328,6 +328,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     SPUtils.put(App.getContext(), "userDetail", response);
                     LogUtils.d("userDetail", response);
                     SPUtils.put(App.getContext(), "islogin", true);
+                    SPUtils.put(App.getContext(), "isfirst", false);
                 } else {
                     ToastUtils.showShort(LoginActivity.this, "未知错误！请重试。");
                 }

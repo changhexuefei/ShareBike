@@ -3,8 +3,9 @@ package com.dcch.sharebike.moudle.user.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
+import android.content.pm.PackageManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -21,7 +22,6 @@ import com.dcch.sharebike.utils.ToastUtils;
 import org.simple.eventbus.EventBus;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class SettingActivity extends BaseActivity {
@@ -71,7 +71,18 @@ public class SettingActivity extends BaseActivity {
                 startActivity(address);
                 break;
             case R.id.checkVersions:
-                ToastUtils.showShort(SettingActivity.this, "未发现新版本");
+                int verCode = getVerCode();
+                Log.d("版本",verCode+"");
+                if (2 > verCode) {
+//                    // 这里来检测版本是否需要更新
+//                    UpdateManager mUpdateManager = new UpdateManager(this);
+//                    mUpdateManager.checkUpdateInfo();
+                    ToastUtils.showShort(SettingActivity.this, "有新版本，记得更新哟");
+                } else {
+                    ToastUtils.showShort(SettingActivity.this, "已经是最新版本了无需更新");
+                }
+
+//
                 break;
             case R.id.aboutUs:
                 startActivity(new Intent(SettingActivity.this, AboutUsActivity.class));
@@ -110,11 +121,14 @@ public class SettingActivity extends BaseActivity {
                 break;
         }
     }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+    // 获取当前应用的版本号
+    public int getVerCode() {
+        int verCode = -1;
+        try {
+            verCode = getPackageManager().getPackageInfo("com.dcch.sharebike", 0).versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+        }
+        return verCode;
     }
+
 }
