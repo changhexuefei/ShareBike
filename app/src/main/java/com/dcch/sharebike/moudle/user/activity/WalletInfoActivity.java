@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -12,12 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
+import com.dcch.sharebike.alipay.WeixinPay;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.utils.JsonUtils;
+import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.dcch.sharebike.view.RefundPopuwindow;
@@ -27,6 +30,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.simple.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,6 +63,10 @@ public class WalletInfoActivity extends BaseActivity {
     private String uID;
     private UserInfo mInfo;
     private int mCashStatus;
+    private String mMOutTradeNo;
+    private String mOutRefundNo;
+    private String mTotal_fee;
+    private String mRefund_fee;
 
     @Override
     protected int getLayoutId() {
@@ -69,6 +77,7 @@ public class WalletInfoActivity extends BaseActivity {
     protected void initData() {
 
         if (SPUtils.isLogin()) {
+            mMOutTradeNo = (String) SPUtils.get(App.getContext(), "mOutTradeNo", "");
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras();//"bundle"
             mInfo = (UserInfo) bundle.getSerializable("bundle");
@@ -190,6 +199,12 @@ public class WalletInfoActivity extends BaseActivity {
                     refundPopuwindow.dismiss();
                     break;
                 case R.id.btn_confirm:
+                    WeixinPay weixinPay = new WeixinPay(WalletInfoActivity.this);
+                    mOutRefundNo = weixinPay.getOutRefundNo();
+                    mTotal_fee = String.valueOf(mInfo.getPledgeCash());
+                    mRefund_fee = String.valueOf(mInfo.getPledgeCash());
+                    refundPledgeCash(mMOutTradeNo, mOutRefundNo, mTotal_fee, mRefund_fee);
+
                     ToastUtils.showShort(WalletInfoActivity.this, "您点击的是退押金按钮");
                     startActivity(new Intent(WalletInfoActivity.this, ShowRefundResultsActivity.class));
                     refundPopuwindow.dismiss();
@@ -198,6 +213,27 @@ public class WalletInfoActivity extends BaseActivity {
             }
         }
     };
+
+    private void refundPledgeCash(String mOutTradeNo, String outRefundNo, String total_fee, String refund_fee) {
+
+        Map<String,String> map = new HashMap<>();
+        map.put("out_trade_no",mOutTradeNo);
+        map.put("out_refund_no",outRefundNo);
+        map.put("total_fee",total_fee);
+        map.put("refund_fee",refund_fee);
+        OkHttpUtils.post().url(Api.BASE_URL+Api.REFUNDWXPAY).params(map).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                LogUtils.d("推推",response);
+            }
+        });
+
+    }
 
 
     @Override
@@ -241,4 +277,22 @@ public class WalletInfoActivity extends BaseActivity {
             }
         });
     }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+//    //退出登录页面后，设置页面发来的消息，将mInstructions控件显示
+//    @Subscriber(tag = "mOutTradeNo", mode = ThreadMode.MAIN)
+//    private void receiveFromRechargeBikeFare(MessageEvent info) {
+//       LogUtils.d("订单号",info.toString());
+//    }
+
 }

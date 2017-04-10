@@ -25,8 +25,8 @@ public class LogUtils {
 	}
 
 	public static void e(String msg) {
-		if (isDebug)
-			Log.e(TAG, msg);
+//		if (isDebug)
+//			Log.e(TAG, msg);
 	}
 
 	public static void v(String msg) {

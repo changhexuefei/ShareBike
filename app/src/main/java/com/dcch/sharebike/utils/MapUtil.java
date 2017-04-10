@@ -67,6 +67,13 @@ public class MapUtil {
         return dou;
     }
 
+    public static double changeOneDouble(Double dou) {
+        NumberFormat nf = new DecimalFormat("0.0");
+        dou = Double.parseDouble(nf.format(dou));
+        return dou;
+    }
+
+
     public static int stringToInt(String string) {
         String str = string.substring(0, string.indexOf("."));
         int intgeo = Integer.parseInt(str);

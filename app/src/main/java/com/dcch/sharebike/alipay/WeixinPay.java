@@ -44,6 +44,19 @@ public class WeixinPay {
         return key;
     }
 
+    public String getOutRefundNo() {
+        SimpleDateFormat format = new SimpleDateFormat("MMddHHmmss",
+                Locale.getDefault());
+        Date date = new Date();
+        String key = format.format(date);
+
+        Random r = new Random();
+        key = key + r.nextInt();
+        key = key.substring(0, 15);
+        return key;
+    }
+
+
     //ipv4的获取方式：
 
     /**

@@ -3,7 +3,7 @@ package com.dcch.sharebike.utils;
 import android.os.Environment;
 import android.util.Log;
 
-import com.dcch.sharebike.MainActivity;
+import com.dcch.sharebike.moudle.user.activity.SettingActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,7 +42,7 @@ public class FileUtils {
     }
 
     public File writeToSdFromInput(String path, String fileName, InputStream inputStream) throws IOException {
-        MainActivity.IS = true;
+        SettingActivity.IS = true;
         File file;
         OutputStream outputStream;
         createSdDir(path);

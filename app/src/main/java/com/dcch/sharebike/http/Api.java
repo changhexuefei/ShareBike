@@ -56,5 +56,7 @@ public class Api {
     public static final String TRIPRECORD = "tripRecord.do?";
     //交易列表
     public static final String SEARCHPAYLIST = "searchPayList.do?";
+    //微信退款
+    public static final String REFUNDWXPAY = "refundWXPay.do?";
 
 }

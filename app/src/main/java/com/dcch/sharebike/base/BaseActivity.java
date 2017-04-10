@@ -17,19 +17,7 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2017/2/7 0007.
  */
 public abstract class BaseActivity extends AppCompatActivity {
-    public static Boolean IS = false;
-    private ServiceAndroidContact serviceAndroidContact = new ServiceAndroidContact();
 
-    ServiceConnection coon = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            serviceAndroidContact.Log();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-        }
-    };
 
 
     @Override
@@ -39,17 +27,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getLayoutId());
         ButterKnife.bind(this);
         App.getInstance().addActivity(this);
-//        Intent intent = new Intent();
-//        intent.setAction("com.gao.startService");
-//        intent.setPackage(getPackageName());
-//        bindService(intent,coon,BIND_AUTO_CREATE);
-//        if (IS == true) {
-//            /*String path = Environment.getExternalStorageDirectory() + "/DateApp.apk";
-//            Intent intent = new Intent(Intent.ACTION_VIEW);
-//            intent.setDataAndType(Uri.fromFile(new File(path)), "application/vnd.android.package-archive");
-//            startActivity(intent);*/
-//            IS = false;
-//        }
+
+//
         initData();
         initListener();
     }
@@ -65,5 +44,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 //        App.getInstance().exit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 }

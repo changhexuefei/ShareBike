@@ -26,6 +26,7 @@ import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
 import com.dcch.sharebike.moudle.user.activity.WalletInfoActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.MapUtil;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.google.gson.Gson;
@@ -35,8 +36,6 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -139,7 +138,7 @@ public class LoginFragment extends Fragment {
 ////                                节约碳排放
 //                                discharge.setText();
 //              运动成就
-                sportsAchievement.setText(String.valueOf(changeDouble(mInfo.getCalorie())));
+                sportsAchievement.setText(String.valueOf(MapUtil.changeDouble(mInfo.getCalorie())));
                 //用户头像
                 String userimage = mInfo.getUserimage();
                 if (userimage != null) {
@@ -152,13 +151,6 @@ public class LoginFragment extends Fragment {
             }
         });
     }
-
-    public double changeDouble(Double dou) {
-        NumberFormat nf = new DecimalFormat("0.0");
-        dou = Double.parseDouble(nf.format(dou));
-        return dou;
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

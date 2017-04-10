@@ -27,9 +27,23 @@ android {
     }
     buildTypes {
         release {
+            //启用混淆配置
             minifyEnabled false
+            //Zip代码压缩优化
+            zipAlignEnabled true
+            //移除无用资源
+//            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+        debug {
+            //Zip代码压缩优化
+            zipAlignEnabled true
+            //移除无用资源
+//            shrinkResources true
+            //debugs使用release签名
+        }
+
     }
     lintOptions {
         checkReleaseBuilds false

@@ -50,8 +50,6 @@ import butterknife.OnClick;
 import okhttp3.Call;
 
 public class RechargeBikeFareActivity extends BaseActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
-
-
     @BindView(R.id.moneySum)
     EditText moneySum;
     @BindView(R.id.rb_rg1_10)
@@ -88,6 +86,8 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
     TextView mTitle;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    private String mOutTradeNo;
+    private IWXAPI mMsgApi;
 
     @Override
     protected int getLayoutId() {
@@ -187,7 +187,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                     });
                 } else if (rbfWeixinCheckbox.isChecked()) {
                     //调取微信的支付方式
-                    final IWXAPI msgApi = WXAPIFactory.createWXAPI(this, MyContent.APP_ID);
+                    mMsgApi = WXAPIFactory.createWXAPI(this, MyContent.APP_ID);
                     WeixinPay weixinPay = new WeixinPay(this);
                     if (NetUtils.isConnected(App.getContext())) {
                         if (NetUtils.isWifi(App.getContext())) {
@@ -195,14 +195,14 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                         } else {
                             ipAddress = weixinPay.getIpAddress();
                         }
-                        String outTradeNo = weixinPay.getOutTradeNo();
+                       String mOutTradeNo = weixinPay.getOutTradeNo();
                         Map<String, String> map = new HashMap<>();
-                        map.put("out_trade_no", outTradeNo);
+                        map.put("out_trade_no", mOutTradeNo);
                         map.put("attach", uID);
                         map.put("body", "充值");
                         map.put("total_price", "0.01");
                         map.put("spbill_create_ip", ipAddress);
-                        LogUtils.d("微信支付",ipAddress);
+                        LogUtils.d("微信支付", ipAddress+"\n"+uID+"\n"+mOutTradeNo);
                         OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINPAY).params(map).build().execute(new StringCallback() {
                             @Override
                             public void onError(Call call, Exception e, int id) {
@@ -219,12 +219,14 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                                     req.appId = weixinReturnInfo.getAppid();
                                     req.partnerId = weixinReturnInfo.getMch_id();
                                     req.prepayId = weixinReturnInfo.getPrepay_id();
+                                    req.packageValue = weixinReturnInfo.getPackageid();
                                     req.nonceStr = weixinReturnInfo.getNonce_str();
                                     req.timeStamp = weixinReturnInfo.getTimestamp();
-                                    req.packageValue = weixinReturnInfo.getPackageid();
                                     req.sign = weixinReturnInfo.getSign();
                                     req.extData = "app data"; // optional
-                                    msgApi.sendReq(req);
+                                    Toast.makeText(RechargeBikeFareActivity.this, "正常调起支付", Toast.LENGTH_SHORT).show();
+                                    LogUtils.d("微信支付",req.appId+"\n"+req.partnerId+"\n"+req.prepayId+"\n"+req.nonceStr+"\n"+req.timeStamp+"\n"+req.packageValue+"\n"+req.sign+"\n"+req.extData);
+                                    mMsgApi.sendReq(req);
                                 } else {
                                     ToastUtils.showShort(RechargeBikeFareActivity.this, "服务器正忙请稍后！");
                                 }

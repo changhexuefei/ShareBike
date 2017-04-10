@@ -29,7 +29,7 @@ public class DownService extends Service {
             public void run() {
                 DownloadFile downloadFile = new DownloadFile();
                 try {
-                    downloadFile.downloadFile(downUrl,"","DateApp.apk");
+                    downloadFile.downloadFile(downUrl,"","app-release.apk");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

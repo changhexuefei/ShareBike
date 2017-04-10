@@ -72,6 +72,7 @@ public class RechargeDepositActivity extends BaseActivity {
     private String mMoneySum;
     private String userID;
     String ipAddress = "";
+    private String mOutTradeNo;
 
     @Override
     protected int getLayoutId() {
@@ -119,11 +120,11 @@ public class RechargeDepositActivity extends BaseActivity {
             case R.id.btn_rd_recharge:
                 if (rdAliCheckbox.isChecked()) {
                     final AliPay aliPay = new AliPay(this);
-                    String outTradeNo = aliPay.getOutTradeNo();
+                    mOutTradeNo = aliPay.getOutTradeNo();
                     mMoneySum = figure.getText().toString().trim();
                     mMoneySum = mMoneySum.substring(0, mMoneySum.length() - 1);
                     Map<String, String> map = new HashMap<>();
-                    map.put("outtradeno", outTradeNo);
+                    map.put("outtradeno", mOutTradeNo);
                     map.put("orderbody", orderbody);
                     map.put("subject", subject);
                     map.put("money", mMoneySum);
@@ -165,13 +166,14 @@ public class RechargeDepositActivity extends BaseActivity {
                         } else {
                             ipAddress = weixinPay.getIpAddress();
                         }
-                        String outTradeNo = weixinPay.getOutTradeNo();
+                        mOutTradeNo = weixinPay.getOutTradeNo();
                         Map<String, String> map = new HashMap<>();
-                        map.put("out_trade_no", outTradeNo);
+                        map.put("out_trade_no", mOutTradeNo);
                         map.put("body", "充值");
+                        map.put("attach", userID);
                         map.put("total_price", "0.01");
                         map.put("spbill_create_ip", ipAddress);
-                        LogUtils.d("IP地址", ipAddress);
+                        LogUtils.d("微信支付", mOutTradeNo+"\n"+ipAddress);
                         OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINPAY).params(map).build().execute(new StringCallback() {
                             @Override
                             public void onError(Call call, Exception e, int id) {
@@ -204,6 +206,7 @@ public class RechargeDepositActivity extends BaseActivity {
                         ToastUtils.showShort(RechargeDepositActivity.this, "网络环境差，请稍后重试");
                     }
                 }
+                SPUtils.put(App.getContext(),"mOutTradeNo",mOutTradeNo);
                 break;
         }
     }
@@ -224,8 +227,8 @@ public class RechargeDepositActivity extends BaseActivity {
 
                         Toast.makeText(RechargeDepositActivity.this, "支付成功",
                                 Toast.LENGTH_SHORT).show();
-                        updateUserCashstatus(userID);
-                        returnData(mMoneySum);
+//                        updateUserCashstatus(userID);
+//                        returnData(mMoneySum);
 
 
                     } else {

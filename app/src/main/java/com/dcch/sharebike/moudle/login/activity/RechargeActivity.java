@@ -73,6 +73,7 @@ public class RechargeActivity extends BaseActivity {
     StepsView mStepsView;
     private String ipAddress = "";
     private String userID;
+    private String mOutTradeNo;
 
     @Override
     protected int getLayoutId() {
@@ -131,10 +132,10 @@ public class RechargeActivity extends BaseActivity {
             case R.id.btn_recharge:
                 if (aliCheckbox.isChecked()) {
                     final AliPay aliPay = new AliPay(this);
-                    String outTradeNo = aliPay.getOutTradeNo();
+                    mOutTradeNo = aliPay.getOutTradeNo();
                     String moneySum = money.getText().toString().trim();
                     Map<String, String> map = new HashMap<>();
-                    map.put("outtradeno", outTradeNo);
+                    map.put("outtradeno", mOutTradeNo);
                     map.put("orderbody", "交押金");
                     map.put("subject", "押金");
                     map.put("money", moneySum);
@@ -176,13 +177,14 @@ public class RechargeActivity extends BaseActivity {
                         } else {
                             ipAddress = weixinPay.getIpAddress();
                         }
-                        String outTradeNo = weixinPay.getOutTradeNo();
+                        mOutTradeNo = weixinPay.getOutTradeNo();
                         Map<String, String> map = new HashMap<>();
-                        map.put("out_trade_no", outTradeNo);
+                        map.put("out_trade_no", mOutTradeNo);
                         map.put("body", "充值");
+                        map.put("attach", userID);
                         map.put("total_price", "0.01");
                         map.put("spbill_create_ip", ipAddress);
-                        LogUtils.d("IP地址", ipAddress);
+                        LogUtils.d("微信支付", ipAddress);
                         OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINPAY).params(map).build().execute(new StringCallback() {
                             @Override
                             public void onError(Call call, Exception e, int id) {
@@ -215,6 +217,8 @@ public class RechargeActivity extends BaseActivity {
                         ToastUtils.showShort(RechargeActivity.this, "网络环境差，请稍后重试");
                     }
                 }
+
+                SPUtils.put(App.getContext(),"mOutTradeNo",mOutTradeNo);
                 break;
         }
     }
