@@ -210,8 +210,8 @@ public class WalletInfoActivity extends BaseActivity {
         Map<String, String> map = new HashMap<>();
         map.put("userId", uID);
         map.put("out_refund_no", outRefundNo);
-        map.put("total_fee", "100");
-        map.put("refund_fee", "100");
+        map.put("total_fee", "0.01");
+        map.put("refund_fee", "0.01");
         OkHttpUtils.post().url(Api.BASE_URL + Api.REFUNDWXPAY).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
