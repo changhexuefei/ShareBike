@@ -100,7 +100,7 @@ public class MyJourneyActivity extends BaseActivity {
 
     private void getJourneyInfo(String phone) {
         Map<String, String> map = new HashMap<>();
-        map.put("phone", mPhone);
+        map.put("phone", phone);
         OkHttpUtils.post().url(Api.BASE_URL + Api.GETCARRENTALORDERBYPHONE).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -111,62 +111,63 @@ public class MyJourneyActivity extends BaseActivity {
             public void onResponse(String response, int id) {
                 LogUtils.d("我的行程", response);
                 if (JsonUtils.isSuccess(response)) {
-                    mDefaultShow.setVisibility(View.GONE);
-                    journeyList.setVisibility(View.VISIBLE);
                     Gson gson = new Gson();
                     mJourneyInfo = gson.fromJson(response, JourneyInfo.class);
-
-                    mAdapter = new JourneyInfoAdapter(MyJourneyActivity.this, R.layout.item_my_journey, mJourneyInfo.getCarrOrders());
-                    journeyList.setLayoutManager(new LinearLayoutManager(MyJourneyActivity.this, OrientationHelper.VERTICAL, false));
-                    LRecyclerViewAdapter adapter = new LRecyclerViewAdapter(mAdapter);
-                    //添加分割线
-                    journeyList.addItemDecoration(new DividerItemDecoration(MyJourneyActivity.this, DividerItemDecoration.VERTICAL));
-                    journeyList.setAdapter(adapter);
-                    CommonFooter footerView = new CommonFooter(MyJourneyActivity.this, R.layout.footer);
-                    adapter.addFooterView(footerView);
-                    //禁用下拉刷新功能
-                    journeyList.setPullRefreshEnabled(false);
-                    //禁用自动加载更多功能
-                    journeyList.setLoadMoreEnabled(false);
-                    adapter.setOnItemClickListener(new OnItemClickListener() {
-                        @Override
-                        public void onItemClick(View view, int position) {
-                            ToastUtils.showShort(MyJourneyActivity.this, position + "");
-                            String bicycleNo = mJourneyInfo.getCarrOrders().get(position).getBicycleNo();
-                            String carRentalOrderId = mJourneyInfo.getCarrOrders().get(position).getCarRentalOrderId();
-                            if (bicycleNo != null && !bicycleNo.equals("") && !carRentalOrderId.equals("") && carRentalOrderId != null && uID != null && !uID.equals("")) {
-                                Intent journeyDetail = new Intent(MyJourneyActivity.this, JourneyDetailActivity.class);
-                                journeyDetail.putExtra("bicycleNo", bicycleNo);
-                                journeyDetail.putExtra("carRentalOrderId", carRentalOrderId);
-                                journeyDetail.putExtra("userId", uID);
-                                startActivity(journeyDetail);
+                    if(mJourneyInfo.getCarrOrders().size()>0){
+                        mDefaultShow.setVisibility(View.GONE);
+                        journeyList.setVisibility(View.VISIBLE);
+                        mAdapter = new JourneyInfoAdapter(MyJourneyActivity.this, R.layout.item_my_journey, mJourneyInfo.getCarrOrders());
+                        journeyList.setLayoutManager(new LinearLayoutManager(MyJourneyActivity.this, OrientationHelper.VERTICAL, false));
+                        LRecyclerViewAdapter adapter = new LRecyclerViewAdapter(mAdapter);
+                        //添加分割线
+                        journeyList.addItemDecoration(new DividerItemDecoration(MyJourneyActivity.this, DividerItemDecoration.VERTICAL));
+                        journeyList.setAdapter(adapter);
+                        CommonFooter footerView = new CommonFooter(MyJourneyActivity.this, R.layout.footer);
+                        adapter.addFooterView(footerView);
+                        //禁用下拉刷新功能
+                        journeyList.setPullRefreshEnabled(false);
+                        //禁用自动加载更多功能
+                        journeyList.setLoadMoreEnabled(false);
+                        adapter.setOnItemClickListener(new OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                ToastUtils.showShort(MyJourneyActivity.this, position + "");
+                                String bicycleNo = mJourneyInfo.getCarrOrders().get(position).getBicycleNo();
+                                String carRentalOrderId = mJourneyInfo.getCarrOrders().get(position).getCarRentalOrderId();
+                                if (bicycleNo != null && !bicycleNo.equals("") && !carRentalOrderId.equals("") && carRentalOrderId != null && uID != null && !uID.equals("")) {
+                                    Intent journeyDetail = new Intent(MyJourneyActivity.this, JourneyDetailActivity.class);
+                                    journeyDetail.putExtra("bicycleNo", bicycleNo);
+                                    journeyDetail.putExtra("carRentalOrderId", carRentalOrderId);
+                                    journeyDetail.putExtra("userId", uID);
+                                    startActivity(journeyDetail);
+                                }
                             }
-                        }
-                    });
-                    journeyList.setLScrollListener(new LRecyclerView.LScrollListener() {
-                        @Override
-                        public void onScrollUp() {
+                        });
+                        journeyList.setLScrollListener(new LRecyclerView.LScrollListener() {
+                            @Override
+                            public void onScrollUp() {
 
-                        }
+                            }
 
-                        @Override
-                        public void onScrollDown() {
+                            @Override
+                            public void onScrollDown() {
 
-                        }
+                            }
 
-                        @Override
-                        public void onScrolled(int distanceX, int distanceY) {
+                            @Override
+                            public void onScrolled(int distanceX, int distanceY) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onScrollStateChanged(int state) {
+                            @Override
+                            public void onScrollStateChanged(int state) {
 
-                        }
-                    });
+                            }
+                        });
 
-                } else {
-                    mDefaultShow.setVisibility(View.VISIBLE);
+                    }else {
+                        mDefaultShow.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });

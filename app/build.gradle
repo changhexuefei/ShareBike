@@ -25,8 +25,24 @@ android {
 
 
     }
+//    signingConfigs {
+//        debug{
+//            keyAlias 'onekey'
+//            keyPassword 'dcchadmin'
+//            storeFile file('E:\\jks\\mykey.jks')
+//            storePassword 'dcchadmin'
+//        }
+//        release {
+//            keyAlias 'onekey'
+//            keyPassword 'dcchadmin'
+//            storeFile file('E:\\jks\\mykey.jks')
+//            storePassword 'dcchadmin'
+//        }
+//    }
+
     buildTypes {
         release {
+//            signingConfig signingConfigs.release
             //启用混淆配置
             minifyEnabled false
             //Zip代码压缩优化
@@ -39,12 +55,18 @@ android {
         debug {
             //Zip代码压缩优化
             zipAlignEnabled true
+//            signingConfig signingConfigs.release
+
             //移除无用资源
 //            shrinkResources true
             //debugs使用release签名
         }
 
     }
+
+
+
+
     lintOptions {
         checkReleaseBuilds false
         abortOnError false

@@ -30,7 +30,7 @@ public class ShowRefundResultsActivity extends BaseActivity {
     @Override
     protected void initData() {
         mToolbar.setTitle("");
-        mTitle.setText(getResources().getString(R.string.about_us));
+        mTitle.setText(getResources().getString(R.string.refund_result));
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

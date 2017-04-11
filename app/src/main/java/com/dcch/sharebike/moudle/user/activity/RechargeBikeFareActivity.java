@@ -199,7 +199,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                         Map<String, String> map = new HashMap<>();
                         map.put("out_trade_no", mOutTradeNo);
                         map.put("attach", uID);
-                        map.put("body", "充值");
+                        map.put("body", "车费");
                         map.put("total_price", "0.01");
                         map.put("spbill_create_ip", ipAddress);
                         LogUtils.d("微信支付", ipAddress+"\n"+uID+"\n"+mOutTradeNo);

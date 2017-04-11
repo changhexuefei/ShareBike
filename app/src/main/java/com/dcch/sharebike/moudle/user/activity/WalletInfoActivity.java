@@ -63,7 +63,6 @@ public class WalletInfoActivity extends BaseActivity {
     private String uID;
     private UserInfo mInfo;
     private int mCashStatus;
-    private String mMOutTradeNo;
     private String mOutRefundNo;
     private String mTotal_fee;
     private String mRefund_fee;
@@ -77,14 +76,13 @@ public class WalletInfoActivity extends BaseActivity {
     protected void initData() {
 
         if (SPUtils.isLogin()) {
-            mMOutTradeNo = (String) SPUtils.get(App.getContext(), "mOutTradeNo", "");
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras();//"bundle"
             mInfo = (UserInfo) bundle.getSerializable("bundle");
             if (mInfo != null && !mInfo.equals("")) {
                 mCashStatus = mInfo.getCashStatus();
                 remainingSum.setText(String.valueOf(mInfo.getAggregateAmount()));
-                if (mInfo.getCashStatus()==1) {
+                if (mInfo.getCashStatus() == 1) {
                     showArea.setText("押金" + mInfo.getPledgeCash() + "元");
                     chargeDeposit.setText(tipThere);
                 } else if (mInfo.getCashStatus() == 0) {
@@ -201,27 +199,20 @@ public class WalletInfoActivity extends BaseActivity {
                 case R.id.btn_confirm:
                     WeixinPay weixinPay = new WeixinPay(WalletInfoActivity.this);
                     mOutRefundNo = weixinPay.getOutRefundNo();
-                    mTotal_fee = String.valueOf(mInfo.getPledgeCash());
-                    mRefund_fee = String.valueOf(mInfo.getPledgeCash());
-                    refundPledgeCash(mMOutTradeNo, mOutRefundNo, mTotal_fee, mRefund_fee);
-
+                    refundPledgeCash(uID, mOutRefundNo);
                     ToastUtils.showShort(WalletInfoActivity.this, "您点击的是退押金按钮");
-                    startActivity(new Intent(WalletInfoActivity.this, ShowRefundResultsActivity.class));
-                    refundPopuwindow.dismiss();
                     break;
 
             }
         }
     };
-
-    private void refundPledgeCash(String mOutTradeNo, String outRefundNo, String total_fee, String refund_fee) {
-
-        Map<String,String> map = new HashMap<>();
-        map.put("out_trade_no",mOutTradeNo);
-        map.put("out_refund_no",outRefundNo);
-        map.put("total_fee",total_fee);
-        map.put("refund_fee",refund_fee);
-        OkHttpUtils.post().url(Api.BASE_URL+Api.REFUNDWXPAY).params(map).build().execute(new StringCallback() {
+    private void refundPledgeCash(String uID, String outRefundNo) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", uID);
+        map.put("out_refund_no", outRefundNo);
+        map.put("total_fee", "100");
+        map.put("refund_fee", "100");
+        OkHttpUtils.post().url(Api.BASE_URL + Api.REFUNDWXPAY).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
 
@@ -229,7 +220,15 @@ public class WalletInfoActivity extends BaseActivity {
 
             @Override
             public void onResponse(String response, int id) {
-                LogUtils.d("推推",response);
+                LogUtils.d("退款", response);
+                //{"resultStatus":"0"}
+                if (JsonUtils.isSuccess(response)) {
+                    startActivity(new Intent(WalletInfoActivity.this, ShowRefundResultsActivity.class));
+                } else {
+//                    startActivity(new Intent(WalletInfoActivity.this, ShowRefundResultsActivity.class));
+                    ToastUtils.showShort(WalletInfoActivity.this,"退款失败！");
+                }
+                refundPopuwindow.dismiss();
             }
         });
 
@@ -289,10 +288,5 @@ public class WalletInfoActivity extends BaseActivity {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
-//    //退出登录页面后，设置页面发来的消息，将mInstructions控件显示
-//    @Subscriber(tag = "mOutTradeNo", mode = ThreadMode.MAIN)
-//    private void receiveFromRechargeBikeFare(MessageEvent info) {
-//       LogUtils.d("订单号",info.toString());
-//    }
 
 }

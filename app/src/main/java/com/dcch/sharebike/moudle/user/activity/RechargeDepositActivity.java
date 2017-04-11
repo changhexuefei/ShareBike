@@ -169,12 +169,12 @@ public class RechargeDepositActivity extends BaseActivity {
                         mOutTradeNo = weixinPay.getOutTradeNo();
                         Map<String, String> map = new HashMap<>();
                         map.put("out_trade_no", mOutTradeNo);
-                        map.put("body", "充值");
+                        map.put("body", "押金");
                         map.put("attach", userID);
                         map.put("total_price", "0.01");
                         map.put("spbill_create_ip", ipAddress);
                         LogUtils.d("微信支付", mOutTradeNo+"\n"+ipAddress);
-                        OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINPAY).params(map).build().execute(new StringCallback() {
+                        OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINCASHPAY).params(map).build().execute(new StringCallback() {
                             @Override
                             public void onError(Call call, Exception e, int id) {
                                 ToastUtils.showShort(RechargeDepositActivity.this, "服务器正忙请稍后！");
@@ -223,8 +223,6 @@ public class RechargeDepositActivity extends BaseActivity {
                     // String resultInfo = payResult.getResult();
                     String resultStatus = payResult.getResultStatus();
                     if (TextUtils.equals(resultStatus, "9000")) {
-
-
                         Toast.makeText(RechargeDepositActivity.this, "支付成功",
                                 Toast.LENGTH_SHORT).show();
 //                        updateUserCashstatus(userID);

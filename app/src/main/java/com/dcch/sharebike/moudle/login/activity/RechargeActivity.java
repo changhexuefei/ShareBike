@@ -180,12 +180,12 @@ public class RechargeActivity extends BaseActivity {
                         mOutTradeNo = weixinPay.getOutTradeNo();
                         Map<String, String> map = new HashMap<>();
                         map.put("out_trade_no", mOutTradeNo);
-                        map.put("body", "充值");
+                        map.put("body", "押金");
                         map.put("attach", userID);
                         map.put("total_price", "0.01");
                         map.put("spbill_create_ip", ipAddress);
                         LogUtils.d("微信支付", ipAddress);
-                        OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINPAY).params(map).build().execute(new StringCallback() {
+                        OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINCASHPAY).params(map).build().execute(new StringCallback() {
                             @Override
                             public void onError(Call call, Exception e, int id) {
                                 ToastUtils.showShort(RechargeActivity.this, "服务器正忙请稍后！");

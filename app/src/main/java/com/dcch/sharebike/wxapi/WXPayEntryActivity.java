@@ -9,6 +9,7 @@ import android.util.Log;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.moudle.user.activity.WalletInfoActivity;
+import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
@@ -40,6 +41,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
     @Override
     public void onReq(BaseReq req) {
+        LogUtils.d("微信支付","到我了");
     }
 
     @Override
@@ -53,7 +55,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                 startActivity(intent);
                 this.finish();
             } else if (resp.errCode == -1) {//支付失败
-                ToastUtils.showShort(App.getContext(), "支付失败！");
+                ToastUtils.showShort(App.getContext(), "支付失败！"+ resp.errCode);
                 this.finish();
             } else {//取消
                 ToastUtils.showShort(App.getContext(), "支付取消！");

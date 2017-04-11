@@ -194,7 +194,11 @@
         <activity
             android:name=".moudle.user.activity.RechargeBikeFareActivity"
             android:launchMode="singleTask">
-
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="wxd4b5d5e34b0dd095"/>
+            </intent-filter>
         </activity>
         <!-- Required SDK 核心功能 -->
         <!-- 可配置android:process参数将PushService放在其他进程中 -->
@@ -240,7 +244,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED"/>
                 <action android:name="android.intent.action.PACKAGE_REMOVED"/>
-
                 <data android:scheme="package"/>
             </intent-filter>
         </receiver>
@@ -350,16 +353,16 @@
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:scheme="wxd4b5d5e34b0dd095"/>
-            </intent-filter>
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.VIEW"/>-->
+                <!--<category android:name="android.intent.category.DEFAULT"/>-->
+                <!--<data android:scheme="wxd4b5d5e34b0dd095"/>-->
+            <!--</intent-filter>-->
         </activity>
 
         <service android:name=".service.DownService"/>
 
-        <receiver android:name=".receiver.AppRegister">
+        <receiver android:name=".receiver.AppRegister" android:permission="com.tencent.mm.plugin.permission.SEND">
             <intent-filter>
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP"/>
             </intent-filter>
