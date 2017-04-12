@@ -138,7 +138,7 @@ public class LoginFragment extends Fragment {
 ////                                节约碳排放
 //                                discharge.setText();
 //              运动成就
-                sportsAchievement.setText(String.valueOf(MapUtil.changeDouble(mInfo.getCalorie())));
+                sportsAchievement.setText(String.valueOf(MapUtil.changeOneDouble(mInfo.getCalorie())));
                 //用户头像
                 String userimage = mInfo.getUserimage();
                 if (userimage != null) {

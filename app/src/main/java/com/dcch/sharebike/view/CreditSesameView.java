@@ -74,7 +74,7 @@ public class CreditSesameView extends View {
         this.sesameStr = new String[]{"100", "较低", "150", "一般", "200", "中等", "250", "良好", "300", "优秀", "350"};
 //        this.sesameStr = new String[]{"350", "较差", "550", "中等", "600", "良好", "650", "优秀", "700", "极好", "950"};
         this.mMinNum = 0;
-        this.mMaxNum = 950;
+        this.mMaxNum = 350;
         this.mCurrentAngle = 0.0F;
         this.mTotalAngle = 210.0F;
 //        this.sesameLevel = "";

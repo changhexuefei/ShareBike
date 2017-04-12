@@ -353,6 +353,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 try {
                     JSONObject object = new JSONObject(response);
                     verificationCode = object.getString("code");
+                    securityCode.setText(verificationCode);
 
                 } catch (JSONException e) {
                     e.printStackTrace();

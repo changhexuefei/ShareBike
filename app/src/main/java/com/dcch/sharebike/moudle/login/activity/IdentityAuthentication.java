@@ -20,6 +20,7 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.utils.InPutUtils;
+import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -28,6 +29,8 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -75,7 +78,6 @@ public class IdentityAuthentication extends BaseActivity {
                 finish();
             }
         });
-
 
 
         String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
@@ -146,7 +148,7 @@ public class IdentityAuthentication extends BaseActivity {
         });
     }
 
-    @OnClick( R.id.btn_authentication)
+    @OnClick(R.id.btn_authentication)
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_authentication:
@@ -157,37 +159,37 @@ public class IdentityAuthentication extends BaseActivity {
     }
 
     private void verifyRealName(String uID, final String realName, String cardNum) {
-        Map<String, String> map = new HashMap<>();
-        map.put("userId", uID);
-        map.put("name", realName);
-        map.put("IDcard", cardNum);
+        try {
+            String encode = URLEncoder.encode(realName, "utf-8");//"UTF-8"
+            Map<String, String> map = new HashMap<>();
+            map.put("userId", uID);
+            map.put("name", encode);
+            map.put("IDcard", cardNum);
 
-        OkHttpUtils.post().url(Api.BASE_URL + Api.UPDATEUSERSTATUS).params(map).build().execute(new StringCallback() {
-            @Override
-            public void onError(Call call, Exception e, int id) {
-                Log.e("错误", e.getMessage());
-                ToastUtils.showShort(IdentityAuthentication.this, "服务器正忙，请稍后再试！");
-            }
+            OkHttpUtils.post().url(Api.BASE_URL + Api.UPDATEUSERSTATUS).params(map).build().execute(new StringCallback() {
+                @Override
+                public void onError(Call call, Exception e, int id) {
+                    Log.e("错误", e.getMessage());
+                    ToastUtils.showShort(IdentityAuthentication.this, "服务器正忙，请稍后再试！");
+                }
 
-            @Override
-            public void onResponse(String response, int id) {
-                Log.d("实名认证", response);
-                //{"code":"1"}
-                try {
-                    JSONObject object = new JSONObject(response);
-                    String code = object.optString("code");
-                    if (code.equals("1")) {
+                @Override
+                public void onResponse(String response, int id) {
+                    Log.d("实名认证", response);
+                    //{"code":"1"}
+                    if (JsonUtils.isSuccess(response)) {
                         Intent authentication = new Intent(IdentityAuthentication.this, AuthenticationOkActivity.class);
                         startActivity(authentication);
                         finish();
-                    } else if (code.equals("0")) {
+
+                    } else {
                         ToastUtils.showShort(IdentityAuthentication.this, "对不起，实名验证失败，请输入正确的信息");
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-            }
-        });
+            });
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

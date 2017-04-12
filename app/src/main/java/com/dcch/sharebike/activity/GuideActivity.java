@@ -1,5 +1,6 @@
 package com.dcch.sharebike.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
@@ -17,6 +19,7 @@ import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -26,8 +29,11 @@ public class GuideActivity extends BaseActivity {
     ViewPager viewpager_guide;
     @BindView(R.id.btn_start_main)
     Button btn_start_main;
+    @BindView(R.id.linearlayout_dot)
+    LinearLayout mLinearlayoutDot;
     private boolean istete = false;
     private ArrayList imageViews = new ArrayList();
+    private List<ImageView> mDots;
 
 
     @Override
@@ -50,6 +56,22 @@ public class GuideActivity extends BaseActivity {
             imageViews.add(imageView);
         }
 
+        //通过循环动态的添加点。
+        mDots = new ArrayList<ImageView>();
+        for (int i = 0; i < imageViews.size(); i++) {
+            ImageView imageView = new ImageView(this);
+            int width = Dp2Px(this, 6);
+            int heigth = Dp2Px(this, 6);
+            int margin = Dp2Px(this, 5);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, heigth);
+            params.setMargins(margin, margin, margin, margin);//设置margin,也就是外边距。
+            imageView.setLayoutParams(params);//传入参数params设置宽和高
+            imageView.setImageResource(R.drawable.dot_normal);//设置图片
+            mLinearlayoutDot.addView(imageView);//将图片添加到布局中
+            //将dot添加到dots集合中
+            mDots.add(imageView);
+        }
+        mDots.get(0).setImageResource(R.drawable.dot_focus);//设置启动后显示的第一个点
         btn_start_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,11 +79,10 @@ public class GuideActivity extends BaseActivity {
                 startActivity(intent);
                 SPUtils.put(App.getContext(), "isStartGuide", true);
                 SPUtils.put(App.getContext(), "isfirst", false);
-                LogUtils.d("kankan",SPUtils.get(App.getContext(),"isfirst",false)+"");
+                LogUtils.d("kankan", SPUtils.get(App.getContext(), "isfirst", false) + "");
                 finish();
             }
         });
-
 
     }
 
@@ -73,6 +94,7 @@ public class GuideActivity extends BaseActivity {
         viewpager_guide.addOnPageChangeListener(new MyOnPageChangeListener());
 
     }
+
 
     class MyPagerAdapter extends PagerAdapter {
 
@@ -125,6 +147,12 @@ public class GuideActivity extends BaseActivity {
 
         @Override
         public void onPageSelected(int position) {
+            //for-each循环将所有的dot设置为dot_normal
+            for (ImageView imageView : mDots) {
+                imageView.setImageResource(R.drawable.dot_normal);
+            }
+            //设置当前显示的页面的dot设置为dot_focused
+            mDots.get(position).setImageResource(R.drawable.dot_focus);
             if (position == imageViews.size() - 1 && istete) {// 最后一个页面才显示
                 // 显示按钮
                 btn_start_main.setVisibility(View.VISIBLE);
@@ -140,5 +168,12 @@ public class GuideActivity extends BaseActivity {
         }
     }
 
+    /*
+       将dp转化为px
+        */
+    public int Dp2Px(Context context, float dp) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
+    }
 
 }

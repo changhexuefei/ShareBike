@@ -47,8 +47,6 @@ import okhttp3.Call;
 
 public class PersonInfoActivity extends BaseActivity {
 
-    //    @BindView(R.id.back)
-//    ImageView back;
     @BindView(R.id.userInfoIcon)
     CircleImageView userInfoIcon;
     @BindView(R.id.userIcon)
@@ -222,18 +220,8 @@ public class PersonInfoActivity extends BaseActivity {
                                 Map<String, String> map = new HashMap<>();
                                 map.put("userId", uID);
                                 map.put("nickName", encode);
-                                /**
-                                 * 上传用户昵称的方法
-                                 *.addHeader("Content-Type", "text/html");    //这行很重要
-                                 httpPost.addHeader("charset", HTTP.UTF_8);
-                                 FORM_CONTENT_TYPE
-                                 = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");
-                                 */
-
                                 OkHttpUtils.post()
                                         .url(Api.BASE_URL + Api.EDITUSER)
-//                                        .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)
-//                                    .addHeader("Charset", "utf-8")
                                         .params(map)
                                         .build()
                                         .execute(new StringCallback() {

@@ -79,14 +79,6 @@ public class UnlockProgressActivity extends BaseActivity {
                 finish();
             }
         });
-
-//        Intent intent = getIntent();
-//        if (intent != null) {
-//            String bikeNo = intent.getStringExtra("bikeNo");
-//            String userId = intent.getStringExtra("userId");
-//            String phone = intent.getStringExtra("phone");
-//            openScan(phone, bikeNo, userId);
-//        }
         Animation mAnimation = AnimationUtils.loadAnimation(UnlockProgressActivity.this, R.anim.unlock_lock_anim);
         mUnlockIcon.startAnimation(mAnimation);
         mMyProgressBar.setMax(100);

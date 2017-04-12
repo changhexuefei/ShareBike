@@ -22,4 +22,14 @@
         android:layout_below="@+id/close_view_pager"
         android:layout_marginTop="20dp"/>
 
+    <LinearLayout
+        android:id="@+id/linear_dot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dp"
+        android:gravity="center"
+        android:orientation="horizontal"/>
+
+
 </RelativeLayout>

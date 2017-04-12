@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
         android:scaleType="fitXY"
-        android:src="@drawable/small_summer"/>
+        android:src="@drawable/menu_bg"/>
 
     <TextView
         android:id="@+id/tv_tip_one"

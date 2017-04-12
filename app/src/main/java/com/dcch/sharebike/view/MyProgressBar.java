@@ -200,9 +200,9 @@ public class MyProgressBar extends View {
         piant.setStyle(Paint.Style.FILL);
         piant.setColor(percenttextcolor);
         piant.setTextSize(percenttextsize);
-        String percent = "开锁中"+(int) (progress * 100 / max) + "%";
+//        String percent = "开锁中"+(int) (progress * 100 / max) + "%";
         Rect rect = new Rect();
-        piant.getTextBounds(percent, 0, percent.length(), rect);
+//        piant.getTextBounds(percent, 0, percent.length(), rect);
         float textWidth = rect.width();
         float textHeight = rect.height();
         if (textWidth >= getWidth()) {
@@ -210,7 +210,7 @@ public class MyProgressBar extends View {
         }
         Paint.FontMetrics metrics = piant.getFontMetrics();
         float baseline = (getMeasuredHeight()-metrics.bottom+metrics.top)/2-metrics.top;
-        canvas.drawText(percent, centerX - textWidth / 2, baseline, piant);
+        canvas.drawText("", centerX - textWidth / 2, baseline, piant);
 
     }
 

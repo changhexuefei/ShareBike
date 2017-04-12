@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationListener;
@@ -193,10 +194,10 @@ public class GPSService extends Service {
         if (!isEncrypt) {
             routeLat = getDeviceLocation(DeviceLocType.LATITUDE);
             routeLng = getDeviceLocation(DeviceLocType.LONGITUDE);
-            if (isDebug)
-                Toast.makeText(getApplicationContext(),
-                        "Device Loc:" + routeLat + "," + routeLng,
-                        Toast.LENGTH_SHORT).show();
+//            if (isDebug)
+//                Toast.makeText(getApplicationContext(),
+//                        "Device Loc:" + routeLat + "," + routeLng,
+//                        Toast.LENGTH_SHORT).show();
         }
 
         RoutePoint routePoint = new RoutePoint();
@@ -205,9 +206,9 @@ public class GPSService extends Service {
                     && routPointList.get(routPointList.size() - 1).getRouteLat() == routeLat
                     && (routPointList.get(routPointList.size() - 1).getRouteLng() == routeLng)) {
                 if (isDebug) {
-//                     Toast.makeText(getApplicationContext(),
-//                            "Route not change",
-//                            Toast.LENGTH_SHORT).show();
+                     Toast.makeText(getApplicationContext(),
+                            "Route not change",
+                            Toast.LENGTH_SHORT).show();
                 }
             } else {
                 routePoint.setId(startId++);
@@ -453,6 +454,16 @@ public class GPSService extends Service {
         // 第二个参数：SQl不允许一个空列，如果ContentValues是空的，那么这一列被明确的指明为NULL值
         // 第三个参数：ContentValues对象
         sqliteDatabase.insert("routePoint", null, values);
+        Cursor cursor = sqliteDatabase.query("routePoint", null, null, null, null, null, null);
+        while (cursor.moveToNext()){
+            String route_id = cursor.getString(cursor.getColumnIndex("route_id"));
+            String cycle_date = cursor.getString(cursor.getColumnIndex("cycle_date"));
+            String cycle_time = cursor.getString(cursor.getColumnIndex("cycle_time"));
+            String cycle_distance = cursor.getString(cursor.getColumnIndex("cycle_distance"));
+            String cycle_price = cursor.getString(cursor.getColumnIndex("cycle_price"));
+            String cycle_points = cursor.getString(cursor.getColumnIndex("cycle_points"));
+            LogUtils.d("数据库",route_id+"\n"+cycle_date+"\n"+cycle_time+"\n"+cycle_distance+"\n"+cycle_price+"\n"+cycle_points);
+        }
         sqliteDatabase.close();
     }
 }

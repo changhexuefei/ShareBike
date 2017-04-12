@@ -271,7 +271,6 @@ public class WalletInfoActivity extends BaseActivity {
                         showArea.setText("押金" + String.valueOf(mInfo.getPledgeCash()) + "元");
                         chargeDeposit.setText(tipThere);
                     }
-
                 }
             }
         });

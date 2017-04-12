@@ -8,8 +8,10 @@ import android.util.Log;
 
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.moudle.home.content.MyContent;
+import com.dcch.sharebike.moudle.login.activity.IdentityAuthentication;
 import com.dcch.sharebike.moudle.user.activity.WalletInfoActivity;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
@@ -18,15 +20,35 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.simple.eventbus.EventBus;
+
 
 public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
     private static final String TAG = "微信微信";
     private IWXAPI api;
+    private int mStatus;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
+        if (userDetail != null) {
+            try {
+                JSONObject object = new JSONObject(userDetail);
+                mStatus = object.getInt("status");
+                LogUtils.d("走着了",mStatus+"");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        EventBus.getDefault().register(this);
 //        setContentView(R.layout.pay_result);
         api = WXAPIFactory.createWXAPI(this, MyContent.APP_ID);
         api.handleIntent(getIntent(), this);
@@ -41,7 +63,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
     @Override
     public void onReq(BaseReq req) {
-        LogUtils.d("微信支付","到我了");
+        LogUtils.d("微信支付", "到我了");
     }
 
     @Override
@@ -49,13 +71,21 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
         Log.d(TAG, "onPayFinisherrCode = " + resp.errCode);
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
             if (resp.errCode == 0) {
-                Intent intent = new Intent(WXPayEntryActivity.this, WalletInfoActivity.class);
-                intent.putExtra("PAYCODE", resp.errCode + "");
-                ToastUtils.showShort(App.getContext(), "支付成功！");
-                startActivity(intent);
+                if (mStatus == 0) {
+                    LogUtils.d("走着了","zheli");
+                    Intent intent = new Intent(WXPayEntryActivity.this, IdentityAuthentication.class);
+                    intent.putExtra("PAYCODE", resp.errCode + "");
+                    ToastUtils.showShort(App.getContext(), "支付成功！");
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(WXPayEntryActivity.this, WalletInfoActivity.class);
+                    intent.putExtra("PAYCODE", resp.errCode + "");
+                    ToastUtils.showShort(App.getContext(), "支付成功！");
+                    startActivity(intent);
+                }
                 this.finish();
             } else if (resp.errCode == -1) {//支付失败
-                ToastUtils.showShort(App.getContext(), "支付失败！"+ resp.errCode);
+                ToastUtils.showShort(App.getContext(), "支付失败！" + resp.errCode);
                 this.finish();
             } else {//取消
                 ToastUtils.showShort(App.getContext(), "支付取消！");
@@ -63,4 +93,11 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
             }
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
 }
