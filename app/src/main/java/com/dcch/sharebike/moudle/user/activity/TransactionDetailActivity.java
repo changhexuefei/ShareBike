@@ -3,6 +3,7 @@ package com.dcch.sharebike.moudle.user.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.view.View;
@@ -95,10 +96,12 @@ public class TransactionDetailActivity extends BaseActivity {
                     mAdapter=new TransactionDetailInfoAdapter(TransactionDetailActivity.this,R.layout.item_transaction_detail,mTransactionDetailInfo.getPayBills());
                     LRecyclerViewAdapter adapter = new LRecyclerViewAdapter(mAdapter);
                     //添加分割线
-//                    mTransactList.addItemDecoration(new DividerItemDecoration(TransactionDetailActivity.this, DividerItemDecoration.VERTICAL));
+                    mTransactList.addItemDecoration(new DividerItemDecoration(TransactionDetailActivity.this, DividerItemDecoration.VERTICAL));
                     mTransactList.setAdapter(adapter);
                     //禁用下拉刷新功能
                     mTransactList.setPullRefreshEnabled(false);
+                    //禁用自动加载更多功能
+                    mTransactList.setLoadMoreEnabled(false);
 
                 }else{
                     mDefaultTransactionShow.setVisibility(View.VISIBLE);
