@@ -4,22 +4,22 @@
     android:layout_width="wrap_content"
     android:id="@+id/refund_area"
     android:background="@drawable/dialog_refund_bg"
-    android:layout_height="wrap_content"
+    android:layout_height="450dp"
     android:orientation="vertical">
 
 
     <TextView
-        android:layout_marginTop="130dp"
+        android:layout_above="@+id/btn_area"
         android:gravity="center"
         android:padding="20dp"
         android:id="@+id/tv_tip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="押金退还时间为2-7个工作日，在此期间您的账号将无法用车。是否任然退押金？" />
-
+        android:text="@string/refund_tips" />
     <LinearLayout
-        android:layout_below="@+id/tv_tip"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/btn_area"
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="取消" />
+            android:text="@string/refund_cancel" />
 
         <Button
             android:layout_marginLeft="10dp"
@@ -40,6 +40,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="退押金" />
+            android:text="@string/refund_cash_pledge" />
     </LinearLayout>
 </RelativeLayout>

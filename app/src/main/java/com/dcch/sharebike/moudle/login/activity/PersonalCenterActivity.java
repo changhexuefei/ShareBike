@@ -40,7 +40,7 @@ public class PersonalCenterActivity extends BaseActivity {
     @Override
     protected void initData() {
         mToolbar.setTitle("");
-        mTitle.setText(getResources().getString(R.string.share_title));
+        mTitle.setText(getResources().getString(R.string.people_center));
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

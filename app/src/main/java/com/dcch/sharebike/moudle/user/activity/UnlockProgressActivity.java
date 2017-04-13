@@ -82,34 +82,9 @@ public class UnlockProgressActivity extends BaseActivity {
         Animation mAnimation = AnimationUtils.loadAnimation(UnlockProgressActivity.this, R.anim.unlock_lock_anim);
         mUnlockIcon.startAnimation(mAnimation);
         mMyProgressBar.setMax(100);
+        mMyProgressBar.setProgress(50);
 
     }
-
-//    private void openScan(String phone, String bikeNo, String userId) {
-//        Map<String, String> map = new HashMap<>();
-//        map.put("userId", userId);
-//        map.put("phone", phone);
-//        map.put("bicycleNo", bikeNo);
-//
-//        OkHttpUtils.post().url(Api.BASE_URL + Api.OPENSCAN).params(map).build().execute(new StringCallback() {
-//            @Override
-//            public void onError(Call call, Exception e, int id) {
-//
-//            }
-//
-//            @Override
-//            public void onResponse(String response, int id) {
-//                if (JsonUtils.isSuccess(response)) {
-//                    handler.post(runnable);
-////                    startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
-//                } else {
-//                    handler.removeCallbacks(runnable);
-////                    mMyProgressBar.setProgress(90);
-//                }
-//            }
-//        });
-//    }
-
 
     private void downloading(MyProgressBar myProgress) {
         new Thread(new Runnable() {

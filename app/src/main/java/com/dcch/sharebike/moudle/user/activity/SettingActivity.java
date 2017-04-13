@@ -99,8 +99,8 @@ public class SettingActivity extends BaseActivity {
                 startActivity(address);
                 break;
             case R.id.checkVersions:
-//                int verCode = getVerCode();
-//                Log.d("版本",verCode+"");
+                int verCode = getVerCode();
+                Log.d("版本",verCode+"");
 //                if (2 > verCode) {
 ////                    // 这里来检测版本是否需要更新
 ////                    UpdateManager mUpdateManager = new UpdateManager(this);
@@ -147,7 +147,6 @@ public class SettingActivity extends BaseActivity {
                                 EventBus.getDefault().post(new MessageEvent(), "visible");
                                 startActivity(i1);
                                 SPUtils.clear(App.getContext());
-
                                 SPUtils.put(App.getContext(), "islogin", false);
                                 SPUtils.put(App.getContext(), "isfirst", false);
                                 SPUtils.put(App.getContext(), "isStartGuide", true);

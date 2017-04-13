@@ -23,7 +23,7 @@ public class AboutUsActivity extends BaseActivity {
     @Override
     protected void initData() {
         mToolbar.setTitle("");
-        mTitle.setText(getResources().getString(R.string.refund_result));
+        mTitle.setText(getResources().getString(R.string.about_us));
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

@@ -218,7 +218,6 @@ public class RechargeActivity extends BaseActivity {
                     }
                 }
 
-                SPUtils.put(App.getContext(),"mOutTradeNo",mOutTradeNo);
                 break;
         }
     }

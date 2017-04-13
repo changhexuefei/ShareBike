@@ -7,7 +7,11 @@
     android:layout_height="match_parent"
     tools:context="com.dcch.sharebike.moudle.user.activity.JourneyDetailActivity">
 
+    <include layout="@layout/toolbar"/>
+
+
     <com.baidu.mapapi.map.MapView
+        android:layout_below="@+id/toolbar"
         android:id="@+id/journey_mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

@@ -135,10 +135,15 @@
 #    }
 #
 #    # 极光推送
-#    -dontoptimize
-#    -dontpreverify
-#    -dontwarn cn.jpush.**
-#    -keep class cn.jpush.** { *; }
+
+-dontoptimize
+-dontpreverify
+
+-dontwarn cn.jpush.**
+-keep class cn.jpush.** { *; }
+
+-dontwarn cn.jiguang.**
+-keep class cn.jiguang.** { *; }
 #
 #    # OkHttp3
 #    -dontwarn com.squareup.okhttp3.**

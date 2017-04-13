@@ -8,13 +8,15 @@
     <FrameLayout
         android:id="@+id/top"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#41c0dc">
+        android:layout_height="56dp"
+        android:background="@color/colorHeading"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <ImageView
             android:id="@+id/MyCenter"
             android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:padding="16dp"
             android:src="@mipmap/menu" />
@@ -31,7 +33,7 @@
         <ImageView
             android:id="@+id/seek"
             android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_height="match_parent"
             android:layout_gravity="right|center_vertical"
             android:padding="16dp"
             android:src="@mipmap/find" />

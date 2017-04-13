@@ -13,7 +13,8 @@ public class Api {
     //认证押金
     public static final String UPDATEUSERCASHSTATUS = "updateUserCashStatus.do?";
     //认证身份
-    public static final String UPDATEUSERSTATUS = "updateUserAppStatus.do?";
+//    public static final String UPDATEUSERSTATUS = "updateUserAppStatus.do?";
+    public static final String UPDATEUSERSTATUS = "updateUserStatus.do?";
     //请求车辆信息
     public static final String GINPUT = "findBicycle.do?";
     //预约用车

@@ -141,4 +141,5 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.0'
     compile 'com.zhy:base-rvadapter:3.0.3'
+    compile 'com.android.support:percent:22.2.0'
 }

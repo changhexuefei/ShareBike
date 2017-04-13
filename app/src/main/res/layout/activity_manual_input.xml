@@ -13,7 +13,7 @@
     <FrameLayout
         android:id="@+id/input_area"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="56dp"
         android:background="#41c0dc">
 
         <ImageView

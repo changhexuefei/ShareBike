@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -30,7 +29,6 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.simple.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -202,10 +200,10 @@ public class WalletInfoActivity extends BaseActivity {
                     refundPledgeCash(uID, mOutRefundNo);
                     ToastUtils.showShort(WalletInfoActivity.this, "您点击的是退押金按钮");
                     break;
-
             }
         }
     };
+
     private void refundPledgeCash(String uID, String outRefundNo) {
         Map<String, String> map = new HashMap<>();
         map.put("userId", uID);
@@ -226,7 +224,7 @@ public class WalletInfoActivity extends BaseActivity {
                     startActivity(new Intent(WalletInfoActivity.this, ShowRefundResultsActivity.class));
                 } else {
 //                    startActivity(new Intent(WalletInfoActivity.this, ShowRefundResultsActivity.class));
-                    ToastUtils.showShort(WalletInfoActivity.this,"退款失败！");
+                    ToastUtils.showShort(WalletInfoActivity.this, "退款失败！");
                 }
                 refundPopuwindow.dismiss();
             }
@@ -276,16 +274,5 @@ public class WalletInfoActivity extends BaseActivity {
         });
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
 
 }

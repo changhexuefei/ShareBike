@@ -1296,11 +1296,11 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (uID != null && !uID.equals("")) {
                     checkBookingBikeInfoByUserID(uID);
 
-                }
-//                if (!isChecked && !isBook && !isShowRideOrder) {
+                }else{
                     //根据手机定位地点，得到车辆信息的方法
                     getBikeInfo(mCurrentLantitude, mCurrentLongitude);
-//                }
+
+                }
             }
 
         }
@@ -1613,7 +1613,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     class LocationReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-
             RidingInfo ridingInfo = (RidingInfo) intent.getSerializableExtra("ridingInfo");
             if (ridingInfo != null) {
                 double tripDist = MapUtil.changeDouble(ridingInfo.getTripDist());

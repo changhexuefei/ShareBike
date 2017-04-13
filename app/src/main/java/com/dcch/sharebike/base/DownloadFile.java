@@ -16,28 +16,29 @@ import java.net.URL;
 
 public class DownloadFile {
     private URL url = null;
-    public int downloadFile(String url,String path,String fileName) throws IOException {
-        InputStream inputStream ;
+
+    public int downloadFile(String url, String path, String fileName) throws IOException {
+        InputStream inputStream;
         FileUtils fileUtils = new FileUtils();
-        if(fileUtils.isFileExist(path+fileName)){//如果存在
-            Log.i("Debug","  "+"1");
+        if (fileUtils.isFileExist(path + fileName)) {//如果存在
+            Log.i("Debug", "  " + "1");
             return 1;
-        }else{
+        } else {
             inputStream = getInputStreamFromUrl(url);
-            File requltFile = fileUtils.writeToSdFromInput(path,fileName,inputStream);
-            if(requltFile == null){ //下载失败
-                Log.i("Debug","  "+"-1");
-                return  -1;
+            File requltFile = fileUtils.writeToSdFromInput(path, fileName, inputStream);
+            if (requltFile == null) { //下载失败
+                Log.i("Debug", "  " + "-1");
+                return -1;
             }
         }
-        if(inputStream!=null) inputStream.close();
-        Log.i("Debug","  "+"0");
+        if (inputStream != null) inputStream.close();
+        Log.i("Debug", "  " + "0");
         return 0;//成功
     }
 
     private InputStream getInputStreamFromUrl(String urlPath) throws IOException {
         url = new URL(urlPath);
-        HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         return urlConnection.getInputStream();
     }
 

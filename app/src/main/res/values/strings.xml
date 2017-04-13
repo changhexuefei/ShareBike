@@ -10,6 +10,7 @@
     <string name="title_recharge">押金充值</string>
     <string name="instructions">麒麟单车使用说明</string>
     <string name="share_title">麒麟单车</string>
+    <string name="people_center">个人中心</string>
     <string name="unlocking">扫码开锁</string>
     <string name="all">全部单车</string>
     <string name="one">一类车</string>
@@ -56,7 +57,7 @@
     <string name="public_name">麒麟单车</string>
     <string name="about_us">关于我们</string>
     <string name="qilinbikes">麒麟单车</string>
-    <string name="publicity">麒麟单车，骑乐无比</string>
+    <string name="publicity">麒麟单车，骑乐无穷</string>
     <string name="company_name">北京迪辰创和科技有限责任公司</string>
     <string name="my_wallet">我的钱包</string>
     <string name="my_favorable">我的优惠</string>
@@ -99,4 +100,8 @@
     <string name="refund_instructions">退款说明</string>
     <string name="transaction_detail">明细</string>
     <string name="customer_service">客户服务</string>
+    <string name="refund_tips">押金退还时间为2-7个工作日，在此期间您的账号将无法用车。是否仍然退押金？</string>
+    <string name="refund_cancel">取消</string>
+    <string name="refund_cash_pledge">退押金</string>
+    <string name="journey_detail">行程详情</string>
 </resources>

@@ -1,7 +1,10 @@
 package com.dcch.sharebike.moudle.user.activity;
 
 import android.content.Intent;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -45,6 +48,10 @@ public class JourneyDetailActivity extends BaseActivity {
     @BindView(R.id.journey_mapView)
     MapView mJourneyMapView;
     public ArrayList<RoutePoint> routePoints;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
     private BaiduMap mRouteBaiduMap;
     private BitmapDescriptor startBmp, endBmp;
     //    private MylocationListener mlistener;
@@ -58,6 +65,16 @@ public class JourneyDetailActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+
+        mToolbar.setTitle("");
+        mTitle.setText(getResources().getString(R.string.journey_detail));
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -117,6 +134,7 @@ public class JourneyDetailActivity extends BaseActivity {
         UiSettings settings = mRouteBaiduMap.getUiSettings();
         settings.setScrollGesturesEnabled(true);
     }
+
 
     public class MylocationListener implements BDLocationListener {
         //定位请求回调接口
