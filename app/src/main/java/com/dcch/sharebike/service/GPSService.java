@@ -183,41 +183,41 @@ public class GPSService extends Service {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
-                    startRecordRoute();
+//                    startRecordRoute();
             }
             super.handleMessage(msg);
         }
     };
 
-    private void startRecordRoute() {
-        // 获取设备经纬度
-        if (!isEncrypt) {
-            routeLat = getDeviceLocation(DeviceLocType.LATITUDE);
-            routeLng = getDeviceLocation(DeviceLocType.LONGITUDE);
+//    private void startRecordRoute() {
+//        // 获取设备经纬度
+//        if (!isEncrypt) {
+//            routeLat = getDeviceLocation(DeviceLocType.LATITUDE);
+//            routeLng = getDeviceLocation(DeviceLocType.LONGITUDE);
 //            if (isDebug)
 //                Toast.makeText(getApplicationContext(),
 //                        "Device Loc:" + routeLat + "," + routeLng,
 //                        Toast.LENGTH_SHORT).show();
-        }
-
-        RoutePoint routePoint = new RoutePoint();
-        if (routeLng != 5.55 && routeLat != 5.55) {
-            if (routPointList.size() > 0
-                    && routPointList.get(routPointList.size() - 1).getRouteLat() == routeLat
-                    && (routPointList.get(routPointList.size() - 1).getRouteLng() == routeLng)) {
-                if (isDebug) {
-                     Toast.makeText(getApplicationContext(),
-                            "Route not change",
-                            Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                routePoint.setId(startId++);
-                routePoint.setRouteLng(routeLng);
-                routePoint.setRouteLat(routeLat);
-                routPointList.add(routePoint);
-            }
-        }
-    }
+//        }
+//
+//        RoutePoint routePoint = new RoutePoint();
+//        if (routeLng != 5.55 && routeLat != 5.55) {
+//            if (routPointList.size() > 0
+//                    && routPointList.get(routPointList.size() - 1).getRouteLat() == routeLat
+//                    && (routPointList.get(routPointList.size() - 1).getRouteLng() == routeLng)) {
+//                if (isDebug) {
+//                     Toast.makeText(getApplicationContext(),
+//                            "Route not change",
+//                            Toast.LENGTH_SHORT).show();
+//                }
+//            } else {
+//                routePoint.setId(startId++);
+//                routePoint.setRouteLng(routeLng);
+//                routePoint.setRouteLat(routeLat);
+//                routPointList.add(routePoint);
+//            }
+//        }
+//    }
 
 // *获取设备提供的经纬度，Network或GPS
 

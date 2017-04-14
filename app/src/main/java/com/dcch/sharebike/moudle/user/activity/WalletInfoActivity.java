@@ -197,6 +197,7 @@ public class WalletInfoActivity extends BaseActivity {
                 case R.id.btn_confirm:
                     WeixinPay weixinPay = new WeixinPay(WalletInfoActivity.this);
                     mOutRefundNo = weixinPay.getOutRefundNo();
+                    LogUtils.d("退款",mOutRefundNo+"\n"+uID);
                     refundPledgeCash(uID, mOutRefundNo);
                     ToastUtils.showShort(WalletInfoActivity.this, "您点击的是退押金按钮");
                     break;

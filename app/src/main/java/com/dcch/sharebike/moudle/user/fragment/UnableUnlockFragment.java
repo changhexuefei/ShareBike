@@ -126,8 +126,9 @@ public class UnableUnlockFragment extends Fragment {
                     map.put("userId", uID);
                     map.put("bicycleNo", bikeNo);
                     map.put("faultDescription", contentText);
-                    map.put("selectFaultDescription", "1");
+                    map.put("selectFaultDescription", "");
                     map.put("imageFile", "");
+                    LogUtils.d("怎闷了",uID+"\n"+bikeNo+""+contentText);
                     OkHttpUtils.post()
                             .url(Api.BASE_URL + Api.ADDTROUBLEORDER)
                             .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)
