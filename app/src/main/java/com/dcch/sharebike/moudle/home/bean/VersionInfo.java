@@ -4,43 +4,35 @@ package com.dcch.sharebike.moudle.home.bean;
  * Created by Administrator on 2016/8/7 0007.
  */
 public class VersionInfo {
-
-    /**
-     * resultStatus : 1
-     * versioncode : 2
-     * filename : app
-     * description : 这是2.0的版本增加了用户中心的功能
-     * loadurl : http://192.168.1.108:8080/app-release.apk
-     */
-
-    private String resultStatus;
-    private int versioncode;
-    private String filename;
+    private int versionCode;
+    private String fileName;
     private String description;
-    private String loadurl;
+    private String loadUrl;
 
-    public String getResultStatus() {
-        return resultStatus;
+    public VersionInfo(int versionCode, String fileName, String description, String loadUrl) {
+        this.versionCode = versionCode;
+        this.fileName = fileName;
+        this.description = description;
+        this.loadUrl = loadUrl;
     }
 
-    public void setResultStatus(String resultStatus) {
-        this.resultStatus = resultStatus;
+    public VersionInfo() {
     }
 
-    public int getVersioncode() {
-        return versioncode;
+    public int getVersionCode() {
+        return versionCode;
     }
 
-    public void setVersioncode(int versioncode) {
-        this.versioncode = versioncode;
+    public void setVersionCode(int versionCode) {
+        this.versionCode = versionCode;
     }
 
-    public String getFilename() {
-        return filename;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public String getDescription() {
@@ -51,11 +43,11 @@ public class VersionInfo {
         this.description = description;
     }
 
-    public String getLoadurl() {
-        return loadurl;
+    public String getLoadUrl() {
+        return loadUrl;
     }
 
-    public void setLoadurl(String loadurl) {
-        this.loadurl = loadurl;
+    public void setLoadUrl(String loadUrl) {
+        this.loadUrl = loadUrl;
     }
 }

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.moudle.home.bean.VersionInfo;
 import com.dcch.sharebike.moudle.home.parse.ParseXmlService;
+import com.dcch.sharebike.utils.LogUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -36,7 +38,7 @@ public class UpdateManager {
     private Context mContext;
     private VersionInfo versionInfo;
     private int serverVersionCode;
-    private String jsonUrl = "http://192.168.1.108:8080/version.json";
+    private String xmlUrl = "http://192.168.0.104:8080/version.xml";
     private ProgressBar progressBar;
     private boolean cancelUpdate = false;
     private String fileSavePath;
@@ -69,8 +71,6 @@ public class UpdateManager {
     }
 
     public void versionUpdate() {
-
-//        LogUtils.d("版本", mCurrentVersionCode + "\n" + serverVersionCode);
         if (isUpdate()) {
             //4:
             showUpdateVersionDialog();
@@ -86,102 +86,83 @@ public class UpdateManager {
      */
     private boolean isUpdate() {
         // 获取当前软件版本
-        int versionCode = getVersionCode(mContext);
+        mCurrentVersionCode = getVersionCode(mContext);
         // 把version.xml放到网络上，然后获取文件信息
-        InputStream inStream = ParseXmlService.class.getClassLoader().getResourceAsStream("version.xml");
-        // 解析XML文件。 由于XML文件比较小，因此使用DOM方式进行解析
-        ParseXmlService service = new ParseXmlService();
-        try {
-            versionInfo = service.parseXml(inStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (null != versionInfo) {
-            int serviceCode = versionInfo.getVersioncode();
-            // 版本判断
-            if (serviceCode > versionCode) {
-                return true;
-            }
+        serverVersionCode = getServerVersionCode();
+        // 版本判断
+        if (serverVersionCode > mCurrentVersionCode) {
+            return true;
         }
         return false;
     }
 
-
     /**
      * 获取软件版本号
-     *
      * @param context
      * @return
      */
     private int getVersionCode(Context context) {
-        int versionCode = 0;
+        PackageManager pm = context.getPackageManager();
         try {
-            // 获取软件版本号，对应AndroidManifest.xml下android:versionCode
-            versionCode = context.getPackageManager().getPackageInfo("com.dcch.sharebike", 0).versionCode;
+            PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        return versionCode;
+        return 0;
     }
 
-//    public int getServerVersionCode() {
-////        getServerJson();
-//        if (versionInfo != null) {
-//            serverVersionCode = versionInfo.getVersioncode();
-//        }
-//        LogUtils.d("版本", serverVersionCode + "");
-//        return serverVersionCode;
-//    }
+    public int getServerVersionCode() {
+        versionInfo = getServerXml();
+        LogUtils.d("怎麽不走這裏", versionInfo + "");
+        if (versionInfo != null) {
+            serverVersionCode = versionInfo.getVersionCode();
+            LogUtils.d("怎麽不走這裏", versionInfo.getVersionCode() + "");
+        }
+        return serverVersionCode;
+    }
 
-//    public VersionInfo getServerJson() {
-//        OkHttpUtils.post().url(jsonUrl).build().execute(new StringCallback() {
-//            @Override
-//            public void onError(Call call, Exception e, int id) {
-//
-//            }
-//
-//            @Override
-//            public void onResponse(String response, int id) {
-//                LogUtils.d("版本", response);
-//                if (JsonUtils.isSuccess(response)) {
-//                    Gson gson = new Gson();
-//                    versionInfo = gson.fromJson(response, VersionInfo.class);
-//                    LogUtils.d("版本", versionInfo.getVersioncode() + "");
-//                }
-//            }
-//        });
-////        // 把version.xml放到网络上，然后获取文件信息
-////        InputStream inputStream = null;
-////        HttpURLConnection conn = null;
-////        try {
-////            URL url = new URL(xmlUrl);
-////            conn = (HttpURLConnection) url.openConnection();
-////            conn.setReadTimeout(5 * 1000);
-////            conn.setRequestMethod("GET");// 必须要大写
-////            inputStream = conn.getInputStream();
-////            ParseXmlService pareseXmlService = new ParseXmlService();
-////            versionInfo = pareseXmlService.parseXml(inputStream);
-////            LogUtils.d("版本", versionInfo.getVersionCode() + "");
-////        } catch (IOException e) {
-////            e.printStackTrace();
-////        } finally {
-////            if (inputStream != null) {
-////                try {
-////                    conn.disconnect();
-////                    inputStream.close();
-////                } catch (IOException e) {
-////                    e.printStackTrace();
-////                }
-////
-////            }
-////        }
-//        return versionInfo;
-//
-//    }
+    public VersionInfo getServerXml() {
+        // 把version.xml放到网络上，然后获取文件信息
+        Thread thread = new Thread() {
+            public void run() {
+                InputStream inputStream = null;
+                HttpURLConnection conn = null;
+                try {
+                    URL url = new URL(xmlUrl);
+                    conn = (HttpURLConnection) url.openConnection();
+                    conn.setReadTimeout(5 * 1000);
+                    conn.setRequestMethod("GET");// 必须要大写
+                    inputStream = conn.getInputStream();
+                    ParseXmlService pareseXmlService = new ParseXmlService();
+                    versionInfo = pareseXmlService.parseXml(inputStream);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (inputStream != null) {
+                        try {
+                            inputStream.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        };
+        thread.start();
+        try {
+            thread.join();
+        } catch (Exception e) {
+        }
+        if (versionInfo != null) {
+
+            return versionInfo;
+        }
+        return null;
+    }
 
     /**
-     * //     * 更新提示框
-     * //
+     * 更新提示框
      */
     private void showUpdateVersionDialog() {
         // 构造对话框
@@ -213,6 +194,7 @@ public class UpdateManager {
         // 构造软件下载对话框
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle("正在更新");
+        LogUtils.d("怎麽不走這裏","1223333");
         // 给下载对话框增加进度条
         final LayoutInflater inflater = LayoutInflater.from(mContext);
         View v = inflater.inflate(R.layout.downloaddialog, null);
@@ -254,7 +236,7 @@ public class UpdateManager {
                 String sdpath = Environment.getExternalStorageDirectory() + "/";
                 fileSavePath = sdpath + "download";
                 try {
-                    URL url = new URL(versionInfo.getLoadurl());
+                    URL url = new URL(versionInfo.getLoadUrl());
                     // 创建连接
                     conn = (HttpURLConnection) url.openConnection();
                     conn.setReadTimeout(5 * 1000);// 设置超时时间
@@ -270,7 +252,7 @@ public class UpdateManager {
                     if (!file.exists()) {
                         file.mkdir();
                     }
-                    File apkFile = new File(fileSavePath, versionInfo.getFilename() + ".apk");
+                    File apkFile = new File(fileSavePath, versionInfo.getFileName() + ".apk");
                     readFile(apkFile, is, length);
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
@@ -333,7 +315,7 @@ public class UpdateManager {
     }
 
     public void installAPK() {
-        File apkfile = new File(fileSavePath, versionInfo.getFilename() + ".apk");
+        File apkfile = new File(fileSavePath, versionInfo.getFileName() + ".apk");
         if (!apkfile.exists()) {
             return;
         }

@@ -30,13 +30,13 @@ public class ParseXmlService {
                         flag = true;
                         String name = pullParser.getName();
                         if ("VERSIONCODE".equalsIgnoreCase(name) && flag == true) {
-                            versionInfo.setVersioncode(Integer.valueOf(pullParser.nextText().trim()));
+                            versionInfo.setVersionCode(Integer.valueOf(pullParser.nextText().trim()));
                         } else if ("FILENAME".equalsIgnoreCase(name) && flag == true) {
-                            versionInfo.setFilename(pullParser.nextText().trim());
+                            versionInfo.setFileName(pullParser.nextText().trim());
                         } else if ("DESCRIPTION".equalsIgnoreCase(name) && flag == true) {
                             versionInfo.setDescription(pullParser.nextText().trim());
                         } else if ("LOADURL".equalsIgnoreCase(name) && flag == true) {
-                            versionInfo.setLoadurl(pullParser.nextText().trim());
+                            versionInfo.setLoadUrl(pullParser.nextText().trim());
                         }
                         break;
                     case XmlPullParser.END_TAG:
