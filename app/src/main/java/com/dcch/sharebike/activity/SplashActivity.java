@@ -11,6 +11,7 @@ import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.base.UpdateManager;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 
@@ -21,6 +22,7 @@ public class SplashActivity extends BaseActivity {
 
     @BindView(R.id.rl_splash_root)
     RelativeLayout mRlSplashRoot;
+
     private final static int SWITCH_MAINACTIVITY = 1000;
     private final static int SWITCH_GUIDACTIVITY = 1001;
 
@@ -47,6 +49,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+
         //设置全屏显示
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -54,7 +57,8 @@ public class SplashActivity extends BaseActivity {
         animation.setDuration(1000);
         animation.setFillAfter(true);
         mRlSplashRoot.startAnimation(animation);
-
+        final UpdateManager manager = new UpdateManager(this);
+        manager.versionUpdate();
         if (SPUtils.isFirst()) {
             handler.sendEmptyMessageDelayed(SWITCH_GUIDACTIVITY, 3000);
         } else {
