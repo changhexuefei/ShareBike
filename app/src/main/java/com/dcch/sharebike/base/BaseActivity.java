@@ -1,7 +1,10 @@
 package com.dcch.sharebike.base;
 
 
+import android.content.ComponentName;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
@@ -14,35 +17,6 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2017/2/7 0007.
  */
 public abstract class BaseActivity extends AppCompatActivity {
-//    private VersionInfo versionInfo;
-//    private int serverVersionCode;
-//    private String xmlUrl = "http://192.168.0.104:8080/version.xml";
-//    private ProgressBar progressBar;
-//    private boolean cancelUpdate = false;
-//    private String fileSavePath;
-//    private int progress;
-//    private AlertDialog downLoadDialog;
-//    private static final int DOWN = 1;// 用于区分正在下载
-//    private static final int DOWN_FINISH = 0;// 用于区分下载完成
-//    private int currentVersionCode;
-//    private Handler mHandler = new Handler() {
-//        public void handleMessage(Message msg) {
-//            switch (msg.what) {
-//                // 正在下载
-//                case DOWN:
-//                    // 设置进度条位置
-//                    progressBar.setProgress(progress);
-//                    break;
-//                case DOWN_FINISH:
-//                    // 安装文件
-//                    installAPK();
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }
-//    };
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,6 +55,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+//
     }
 
 //    public void versionUpdate() {

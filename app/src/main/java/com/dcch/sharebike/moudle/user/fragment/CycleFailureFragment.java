@@ -176,7 +176,7 @@ public class CycleFailureFragment extends Fragment {
 
         switch (view.getId()) {
             case R.id.scan_code:
-//               CycleFailureFragmentPermissionsDispatcher.showCameraWithCheck(this);
+               CycleFailureFragmentPermissionsDispatcher.showCameraWithCheck(this);
                 Intent i4 = new Intent(getActivity(), CaptureActivity.class);
                 i4.putExtra("msg","fail");
                 startActivityForResult(i4, 0);

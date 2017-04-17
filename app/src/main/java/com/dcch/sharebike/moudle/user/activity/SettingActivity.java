@@ -7,34 +7,31 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.base.ServiceAndroidContact;
+import com.dcch.sharebike.base.UpdateManager;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 
 import org.simple.eventbus.EventBus;
 
-import java.io.File;
-
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static com.dcch.sharebike.R.id.userAgreement;
 
 public class SettingActivity extends BaseActivity {
 
@@ -44,7 +41,7 @@ public class SettingActivity extends BaseActivity {
     RelativeLayout mCheckVersions;
     @BindView(R.id.aboutUs)
     RelativeLayout mAboutUs;
-    @BindView(R.id.userAgreement)
+    @BindView(userAgreement)
     RelativeLayout mUserAgreement;
     @BindView(R.id.cashPledgeExplain)
     RelativeLayout mCashPledgeExplain;
@@ -91,7 +88,7 @@ public class SettingActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.usualAddress, R.id.checkVersions, R.id.aboutUs, R.id.userAgreement, R.id.cashPledgeExplain, R.id.rechargeAgreement, R.id.signOut})
+    @OnClick({R.id.usualAddress, R.id.checkVersions, R.id.aboutUs, userAgreement, R.id.cashPledgeExplain, R.id.rechargeAgreement, R.id.signOut})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.usualAddress:
@@ -99,32 +96,14 @@ public class SettingActivity extends BaseActivity {
                 startActivity(address);
                 break;
             case R.id.checkVersions:
-                int verCode = getVerCode();
-                Log.d("版本",verCode+"");
-//                if (2 > verCode) {
-////                    // 这里来检测版本是否需要更新
-////                    UpdateManager mUpdateManager = new UpdateManager(this);
-////                    mUpdateManager.checkUpdateInfo();
-//                    ToastUtils.showShort(SettingActivity.this, "有新版本，记得更新哟");
-//                } else {
-//                    ToastUtils.showShort(SettingActivity.this, "已经是最新版本了无需更新");
-//                }
-
-                //测试是否安装安装某个软件
-                Boolean IIII = isPkgInstalled("com.dcch.sharebike");
-                Log.d("@@@@@",IIII+"");
-                Toast.makeText(getApplicationContext(),IIII+"",Toast.LENGTH_SHORT).show();
-
-                //安装指定的软件
-                String path = Environment.getExternalStorageDirectory() + "/app-release.apk";
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.fromFile(new File(path)), "application/vnd.android.package-archive");
-                startActivity(intent);
+                UpdateManager updateManager = new UpdateManager(this);
+                updateManager.checkVersion();
                 break;
             case R.id.aboutUs:
                 startActivity(new Intent(SettingActivity.this, AboutUsActivity.class));
                 break;
-            case R.id.userAgreement:
+            case userAgreement:
+                startActivity(new Intent(SettingActivity.this,UserAgreementActivity.class));
                 break;
             case R.id.cashPledgeExplain:
                 break;

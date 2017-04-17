@@ -38,7 +38,8 @@ public class UpdateManager {
     private Context mContext;
     private VersionInfo versionInfo;
     private int serverVersionCode;
-    private String xmlUrl = "http://192.168.0.104:8080/version.xml";
+
+    private String xmlUrl = "http://192.168.1.108:8080/version.xml";
     private ProgressBar progressBar;
     private boolean cancelUpdate = false;
     private String fileSavePath;
@@ -87,8 +88,8 @@ public class UpdateManager {
     private boolean isUpdate() {
         // 获取当前软件版本
         mCurrentVersionCode = getVersionCode(mContext);
-        // 把version.xml放到网络上，然后获取文件信息
         serverVersionCode = getServerVersionCode();
+        LogUtils.d("版本", mCurrentVersionCode + "\n" + serverVersionCode);
         // 版本判断
         if (serverVersionCode > mCurrentVersionCode) {
             return true;
@@ -96,8 +97,10 @@ public class UpdateManager {
         return false;
     }
 
+
     /**
      * 获取软件版本号
+     *
      * @param context
      * @return
      */
@@ -123,9 +126,9 @@ public class UpdateManager {
     }
 
     public VersionInfo getServerXml() {
-        // 把version.xml放到网络上，然后获取文件信息
         Thread thread = new Thread() {
             public void run() {
+                // 把ve.srsion.xml放到网络上，然后获取文件信息
                 InputStream inputStream = null;
                 HttpURLConnection conn = null;
                 try {
@@ -141,10 +144,12 @@ public class UpdateManager {
                 } finally {
                     if (inputStream != null) {
                         try {
+                            conn.disconnect();
                             inputStream.close();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+
                     }
                 }
             }
@@ -155,14 +160,14 @@ public class UpdateManager {
         } catch (Exception e) {
         }
         if (versionInfo != null) {
-
             return versionInfo;
         }
         return null;
     }
 
     /**
-     * 更新提示框
+     * //     * 更新提示框
+     * //
      */
     private void showUpdateVersionDialog() {
         // 构造对话框
@@ -261,54 +266,52 @@ public class UpdateManager {
                 } catch (IOException e) {
                     e.printStackTrace();
                 } finally {
-                    try {
-                        if (is != null) {
-                            conn.disconnect();
-                            is.close();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+
                 }
             }
         }
     }
 
-    private void readFile(File apkFile, InputStream is, int length) {
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(apkFile);
-            int count = 0;
-            // 缓存
-            byte buf[] = new byte[1024];
-            // 写入到文件中
-            do {
-                int numread = is.read(buf);
-                count += numread;
-                // 计算进度条位置
-                progress = (int) (((float) count / length) * 100);
-                // 更新进度
-                Message message = new Message();
-                message.obj = DOWN;
-                mHandler.sendMessage(message);
-                if (numread <= 0) {
-                    // 下载完成
-                    // 取消下载对话框显示
-                    downLoadDialog.dismiss();
-                    Message message2 = new Message();
-                    message2.obj = DOWN_FINISH;
-                    mHandler.sendMessage(message2);
-                    break;
+    private void readFile(final File apkFile, final InputStream is, final int length) {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                FileOutputStream fos = null;
+                try {
+                    fos = new FileOutputStream(apkFile);
+                    int count = 0;
+                    // 缓存
+                    byte buf[] = new byte[1024];
+                    // 写入到文件中
+                    do {
+                        int numread = is.read(buf);
+                        count += numread;
+                        // 计算进度条位置
+                        progress = (int) (((float) count / length) * 100);
+                        // 更新进度
+                        Message message = new Message();
+                        message.obj = DOWN;
+                        mHandler.sendMessage(message);
+                        if (numread <= 0) {
+                            // 下载完成
+                            // 取消下载对话框显示
+                            downLoadDialog.dismiss();
+                            Message message2 = new Message();
+                            message2.obj = DOWN_FINISH;
+                            mHandler.sendMessage(message2);
+                            break;
+                        }
+                        // 写入文件
+                        fos.write(buf, 0, numread);
+                    } while (!cancelUpdate);// 点击取消就停止下载.
+                    fos.close();
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                // 写入文件
-                fos.write(buf, 0, numread);
-            } while (!cancelUpdate);// 点击取消就停止下载.
-            fos.close();
-            is.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+            }
+        }).start();
 
     public void checkVersion(View view) {
         versionUpdate();

@@ -1,8 +1,10 @@
 package com.dcch.sharebike.moudle.user.fragment;
 
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -39,10 +41,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 
 /**
  * A simple {@link Fragment} subclass.
  */
+@RuntimePermissions
 public class UnableUnlockFragment extends Fragment {
 
     @BindView(R.id.bike_code)
@@ -69,6 +74,7 @@ public class UnableUnlockFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
+        showCamera();
         if (SPUtils.isLogin()) {
             String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
             Log.d("用户明细", userDetail);
@@ -102,7 +108,6 @@ public class UnableUnlockFragment extends Fragment {
         }
     }
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -114,6 +119,7 @@ public class UnableUnlockFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.scan_code:
+                UnableUnlockFragmentPermissionsDispatcher.showCameraWithCheck(this);
                 Intent i4 = new Intent(App.getContext(), CaptureActivity.class);
                 i4.putExtra("msg", "unable");
                 startActivityForResult(i4, 0);
@@ -179,6 +185,14 @@ public class UnableUnlockFragment extends Fragment {
         confirm.setBackgroundColor(getResources().getColor(R.color.colorTitle));
 
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        UnableUnlockFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
 
+    @NeedsPermission(Manifest.permission.CAMERA)
+    void showCamera() {
+    }
 
 }

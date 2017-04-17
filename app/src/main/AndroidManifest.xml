@@ -7,6 +7,13 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true"/>
+    <!-- 添加屏幕及版本支持 -->
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true"/>
     <!-- Required -->
     <permission
         android:name="${applicationId}.permission.JPUSH_MESSAGE"
@@ -16,7 +23,6 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE"/>
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -34,36 +40,16 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.GET_TASKS"/>
-
-    <!-- 添加屏幕及版本支持 -->
-    <supports-screens
-        android:anyDensity="true"
-        android:largeScreens="true"
-        android:normalScreens="true"
-        android:resizeable="true"
-        android:smallScreens="true"/>
-
     <!-- mob短信 需要的权限 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-    <uses-permission android:name="android.permission.GET_TASKS"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <!-- SD卡权限 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <!-- 读取联系人权限 -->
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <!-- 录音权限 -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
     <!-- 联网权限 -->
     <uses-permission android:name="android.permission.INTERNET"/>
-    <!-- 打电话权限 -->
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
     <!-- 网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <!-- 这个权限用于访问GPS定位 -->
@@ -198,7 +184,9 @@
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
+
                 <data android:scheme="wxd4b5d5e34b0dd095"/>
             </intent-filter>
         </activity>
@@ -246,6 +234,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED"/>
                 <action android:name="android.intent.action.PACKAGE_REMOVED"/>
+
                 <data android:scheme="package"/>
             </intent-filter>
         </receiver>
@@ -355,22 +344,27 @@
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.VIEW"/>-->
-                <!--<category android:name="android.intent.category.DEFAULT"/>-->
-                <!--<data android:scheme="wxd4b5d5e34b0dd095"/>-->
-            <!--</intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.VIEW"/> -->
+            <!-- <category android:name="android.intent.category.DEFAULT"/> -->
+            <!-- <data android:scheme="wxd4b5d5e34b0dd095"/> -->
+            <!-- </intent-filter> -->
         </activity>
 
         <service android:name=".service.DownService"/>
 
-        <receiver android:name=".receiver.AppRegister" android:permission="com.tencent.mm.plugin.permission.SEND">
+        <receiver
+            android:name=".receiver.AppRegister"
+            android:permission="com.tencent.mm.plugin.permission.SEND">
             <intent-filter>
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP"/>
             </intent-filter>
         </receiver>
 
         <activity android:name=".moudle.user.activity.JourneyDetailActivity">
+        </activity>
+        <activity android:name=".moudle.user.activity.UserAgreementActivity">
         </activity>
     </application>
 
