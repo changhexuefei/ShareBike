@@ -5,14 +5,6 @@ package com.dcch.sharebike.moudle.home.bean;
  */
 public class VersionInfo {
 
-    /**
-     * resultStatus : 1
-     * versioncode : 2
-     * filename : app
-     * description : 这是2.0的版本增加了用户中心的功能
-     * loadurl : http://192.168.1.108:8080/app-release.apk
-     */
-
     private String resultStatus;
     private int versioncode;
     private String filename;

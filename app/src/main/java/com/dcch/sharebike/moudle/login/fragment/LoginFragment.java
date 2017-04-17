@@ -135,8 +135,6 @@ public class LoginFragment extends Fragment {
                 remainSum.setText(String.valueOf(mInfo.getAggregateAmount()));
 //              骑行距离
                 person_distance.setText(String.valueOf(mInfo.getMileage()));
-////                                节约碳排放
-//                                discharge.setText();
 //              运动成就
                 sportsAchievement.setText(String.valueOf(MapUtil.changeOneDouble(mInfo.getCalorie())));
                 //用户头像
@@ -194,31 +192,26 @@ public class LoginFragment extends Fragment {
                 }
                 break;
             case R.id.favorable:
-                ToastUtils.showLong(getContext(), "优惠");
+                ToastUtils.showLong(getContext(), "敬请期待");
                 break;
             case R.id.journey:
-                ToastUtils.showLong(getContext(), "行程");
                 Intent myJourney = new Intent(App.getContext(), MyJourneyActivity.class);
                 myJourney.putExtra("phone", mPhone);
                 startActivity(myJourney);
                 break;
             case R.id.message:
-                ToastUtils.showLong(getContext(), "消息");
+//                ToastUtils.showLong(getContext(), "敬请期待");
                 Intent myMessage = new Intent(App.getContext(), MyMessageActivity.class);
                 startActivity(myMessage);
                 break;
             case R.id.friend:
-                ToastUtils.showLong(getContext(), "邀请好友");
                 startActivity(new Intent(getActivity(), InviteFriendsActivity.class));
-
                 break;
             case R.id.guide:
-                ToastUtils.showLong(getContext(), "用户指南");
                 Intent userGuide = new Intent(App.getContext(), UserGuideActivity.class);
                 startActivity(userGuide);
                 break;
             case R.id.setting:
-                ToastUtils.showLong(getContext(), "设置");
                 Intent setting = new Intent(App.getContext(), SettingActivity.class);
                 startActivity(setting);
                 break;

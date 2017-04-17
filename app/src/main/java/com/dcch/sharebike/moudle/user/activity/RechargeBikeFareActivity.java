@@ -107,7 +107,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
             }
         });
 
-        rbfAliCheckbox.setChecked(true);
+        rbfWeixinCheckbox.setChecked(true);
         rbRg110.setChecked(true);
         String s1 = rbRg110.getText().toString().trim();
         rechargeNumber = s1.substring(1, s1.length());
@@ -200,7 +200,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                         map.put("out_trade_no", mOutTradeNo);
                         map.put("attach", uID);
                         map.put("body", "车费");
-                        map.put("total_price", "0.01");
+                        map.put("total_price", rechargeNumber);
                         map.put("spbill_create_ip", ipAddress);
                         LogUtils.d("微信支付", ipAddress+"\n"+uID+"\n"+mOutTradeNo);
                         OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINPAY).params(map).build().execute(new StringCallback() {

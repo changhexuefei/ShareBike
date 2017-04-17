@@ -498,7 +498,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 }
                 break;
             case R.id.btn_my_location:
-
                 setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
                 getMyLocation();
                 break;

@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.moudle.home.bean.VersionInfo;
 import com.dcch.sharebike.moudle.home.parse.ParseXmlService;
+import com.dcch.sharebike.utils.LogUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -36,7 +37,7 @@ public class UpdateManager {
     private Context mContext;
     private VersionInfo versionInfo;
     private int serverVersionCode;
-    private String jsonUrl = "http://192.168.1.108:8080/version.json";
+    private String xmlUrl = "http://192.168.1.108:8080/version.xml";
     private ProgressBar progressBar;
     private boolean cancelUpdate = false;
     private String fileSavePath;
@@ -69,8 +70,6 @@ public class UpdateManager {
     }
 
     public void versionUpdate() {
-
-//        LogUtils.d("版本", mCurrentVersionCode + "\n" + serverVersionCode);
         if (isUpdate()) {
             //4:
             showUpdateVersionDialog();
@@ -86,22 +85,12 @@ public class UpdateManager {
      */
     private boolean isUpdate() {
         // 获取当前软件版本
-        int versionCode = getVersionCode(mContext);
-        // 把version.xml放到网络上，然后获取文件信息
-        InputStream inStream = ParseXmlService.class.getClassLoader().getResourceAsStream("version.xml");
-        // 解析XML文件。 由于XML文件比较小，因此使用DOM方式进行解析
-        ParseXmlService service = new ParseXmlService();
-        try {
-            versionInfo = service.parseXml(inStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (null != versionInfo) {
-            int serviceCode = versionInfo.getVersioncode();
-            // 版本判断
-            if (serviceCode > versionCode) {
-                return true;
-            }
+        mCurrentVersionCode = getVersionCode(mContext);
+        serverVersionCode = getServerVersionCode();
+        LogUtils.d("版本", mCurrentVersionCode + "\n" + serverVersionCode);
+        // 版本判断
+        if (serverVersionCode > mCurrentVersionCode) {
+            return true;
         }
         return false;
     }
@@ -124,60 +113,54 @@ public class UpdateManager {
         return versionCode;
     }
 
-//    public int getServerVersionCode() {
-////        getServerJson();
-//        if (versionInfo != null) {
-//            serverVersionCode = versionInfo.getVersioncode();
-//        }
-//        LogUtils.d("版本", serverVersionCode + "");
-//        return serverVersionCode;
-//    }
+    public int getServerVersionCode() {
+        versionInfo = getServerXml();
+        if (versionInfo != null) {
+            serverVersionCode = versionInfo.getVersioncode();
+        }
+        LogUtils.d("版本", serverVersionCode + "");
+        return serverVersionCode;
+    }
 
-//    public VersionInfo getServerJson() {
-//        OkHttpUtils.post().url(jsonUrl).build().execute(new StringCallback() {
-//            @Override
-//            public void onError(Call call, Exception e, int id) {
-//
-//            }
-//
-//            @Override
-//            public void onResponse(String response, int id) {
-//                LogUtils.d("版本", response);
-//                if (JsonUtils.isSuccess(response)) {
-//                    Gson gson = new Gson();
-//                    versionInfo = gson.fromJson(response, VersionInfo.class);
-//                    LogUtils.d("版本", versionInfo.getVersioncode() + "");
-//                }
-//            }
-//        });
-////        // 把version.xml放到网络上，然后获取文件信息
-////        InputStream inputStream = null;
-////        HttpURLConnection conn = null;
-////        try {
-////            URL url = new URL(xmlUrl);
-////            conn = (HttpURLConnection) url.openConnection();
-////            conn.setReadTimeout(5 * 1000);
-////            conn.setRequestMethod("GET");// 必须要大写
-////            inputStream = conn.getInputStream();
-////            ParseXmlService pareseXmlService = new ParseXmlService();
-////            versionInfo = pareseXmlService.parseXml(inputStream);
-////            LogUtils.d("版本", versionInfo.getVersionCode() + "");
-////        } catch (IOException e) {
-////            e.printStackTrace();
-////        } finally {
-////            if (inputStream != null) {
-////                try {
-////                    conn.disconnect();
-////                    inputStream.close();
-////                } catch (IOException e) {
-////                    e.printStackTrace();
-////                }
-////
-////            }
-////        }
-//        return versionInfo;
-//
-//    }
+    public VersionInfo getServerXml() {
+        Thread thread = new Thread() {
+            public void run() {
+                // 把ve.srsion.xml放到网络上，然后获取文件信息
+                InputStream inputStream = null;
+                HttpURLConnection conn = null;
+                try {
+                    URL url = new URL(xmlUrl);
+                    conn = (HttpURLConnection) url.openConnection();
+                    conn.setReadTimeout(5 * 1000);
+                    conn.setRequestMethod("GET");// 必须要大写
+                    inputStream = conn.getInputStream();
+                    ParseXmlService pareseXmlService = new ParseXmlService();
+                    versionInfo = pareseXmlService.parseXml(inputStream);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (inputStream != null) {
+                        try {
+                            conn.disconnect();
+                            inputStream.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+            }
+        };
+        thread.start();
+        try {
+            thread.join();
+        } catch (Exception e) {
+        }
+        if (versionInfo != null) {
+            return versionInfo;
+        }
+        return null;
+    }
 
     /**
      * //     * 更新提示框
@@ -279,56 +262,57 @@ public class UpdateManager {
                 } catch (IOException e) {
                     e.printStackTrace();
                 } finally {
-                    try {
-                        if (is != null) {
-                            conn.disconnect();
-                            is.close();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+
                 }
             }
         }
     }
 
-    private void readFile(File apkFile, InputStream is, int length) {
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(apkFile);
-            int count = 0;
-            // 缓存
-            byte buf[] = new byte[1024];
-            // 写入到文件中
-            do {
-                int numread = is.read(buf);
-                count += numread;
-                // 计算进度条位置
-                progress = (int) (((float) count / length) * 100);
-                // 更新进度
-                Message message = new Message();
-                message.obj = DOWN;
-                mHandler.sendMessage(message);
-                if (numread <= 0) {
-                    // 下载完成
-                    // 取消下载对话框显示
-                    downLoadDialog.dismiss();
-                    Message message2 = new Message();
-                    message2.obj = DOWN_FINISH;
-                    mHandler.sendMessage(message2);
-                    break;
+    private void readFile(final File apkFile, final InputStream is, final int length) {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                FileOutputStream fos = null;
+                try {
+                    fos = new FileOutputStream(apkFile);
+                    int count = 0;
+                    // 缓存
+                    byte buf[] = new byte[1024];
+                    // 写入到文件中
+                    do {
+                        int numread = is.read(buf);
+                        count += numread;
+                        // 计算进度条位置
+                        progress = (int) (((float) count / length) * 100);
+                        // 更新进度
+                        Message message = new Message();
+                        message.obj = DOWN;
+                        mHandler.sendMessage(message);
+                        if (numread <= 0) {
+                            // 下载完成
+                            // 取消下载对话框显示
+                            downLoadDialog.dismiss();
+                            Message message2 = new Message();
+                            message2.obj = DOWN_FINISH;
+                            mHandler.sendMessage(message2);
+                            break;
+                        }
+                        // 写入文件
+                        fos.write(buf, 0, numread);
+                    } while (!cancelUpdate);// 点击取消就停止下载.
+                    fos.close();
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                // 写入文件
-                fos.write(buf, 0, numread);
-            } while (!cancelUpdate);// 点击取消就停止下载.
-            fos.close();
-            is.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            }
+        }).start();
+
+
     }
 
-    public void checkVersion(View view) {
+    public void checkVersion() {
         versionUpdate();
     }
 

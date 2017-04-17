@@ -95,7 +95,6 @@ public class InviteFriendsActivity extends BaseActivity {
                         //比如分享到QQ，其他平台则只需要更换平台类名，例如Wechat.NAME则是微信
                         Platform platSina = ShareSDK.getPlatform(SinaWeibo.NAME);
                         showShare(platSina.getName());
-
                         break;
                 }
             }
@@ -126,7 +125,7 @@ public class InviteFriendsActivity extends BaseActivity {
         // text是分享文本，所有平台都需要这个字段
         oks.setText("分享快乐，就骑麒麟单车");
         //分享网络图片，新浪微博分享网络图片需要通过审核后申请高级写入接口，否则请注释掉测试新浪微博
-        oks.setImageUrl("http://www.70bikes.cn/");
+        oks.setImageUrl("http://img2.niutuku.com/desk/1208/2110/ntk-2110-36971.jpg");
         // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
 //        oks.setImagePath();//确保SDcard下面存在此张图片
         // url仅在微信（包括好友和朋友圈）中使用

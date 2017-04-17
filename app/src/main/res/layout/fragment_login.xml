@@ -69,7 +69,6 @@
                     app:civ_border_color="#fff"
                     app:civ_border_width="2dp"/>
 
-
                 <ImageView
                     android:id="@+id/detail_bar_image"
                     android:layout_width="match_parent"
@@ -128,12 +127,13 @@
                 </LinearLayout>
 
                 <View
+                    android:visibility="gone"
                     android:layout_width="0.5dp"
                     android:layout_height="match_parent"
                     android:background="@color/lineColor"/>
 
                 <LinearLayout
-
+                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -282,13 +282,24 @@
                 android:gravity="center_vertical">
 
                 <TextView
+                    android:id="@+id/my_msg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="@string/my_message"/>
 
+                <ImageView
+                    android:visibility="gone"
+                    android:id="@+id/msg_tag"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/tv_tv"
+                    android:src="@drawable/news_content_background"/>
+
                 <TextView
+                    android:id="@+id/tv_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"

@@ -48,7 +48,6 @@ import okhttp3.Call;
 
 public class RechargeDepositActivity extends BaseActivity {
 
-
     @BindView(R.id.figure)
     TextView figure;
     @BindView(R.id.rd_ali_checkbox)
@@ -90,7 +89,7 @@ public class RechargeDepositActivity extends BaseActivity {
                 finish();
             }
         });
-        rdAliCheckbox.setChecked(true);
+        rdWeixinCheckbox.setChecked(true);
         String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
         Log.d("用户明细", userDetail);
         try {
@@ -118,11 +117,11 @@ public class RechargeDepositActivity extends BaseActivity {
                 rdWeixinCheckbox.setChecked(true);
                 break;
             case R.id.btn_rd_recharge:
+                mMoneySum = figure.getText().toString().trim();
+                mMoneySum = mMoneySum.substring(0, mMoneySum.length() - 1);
                 if (rdAliCheckbox.isChecked()) {
                     final AliPay aliPay = new AliPay(this);
                     mOutTradeNo = aliPay.getOutTradeNo();
-                    mMoneySum = figure.getText().toString().trim();
-                    mMoneySum = mMoneySum.substring(0, mMoneySum.length() - 1);
                     Map<String, String> map = new HashMap<>();
                     map.put("outtradeno", mOutTradeNo);
                     map.put("orderbody", orderbody);
@@ -171,7 +170,7 @@ public class RechargeDepositActivity extends BaseActivity {
                         map.put("out_trade_no", mOutTradeNo);
                         map.put("body", "押金");
                         map.put("attach", userID);
-                        map.put("total_price", "0.01");
+                        map.put("total_price", mMoneySum);
                         map.put("spbill_create_ip", ipAddress);
                         LogUtils.d("微信支付", mOutTradeNo+"\n"+ipAddress);
                         OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINCASHPAY).params(map).build().execute(new StringCallback() {

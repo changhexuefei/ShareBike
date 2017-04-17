@@ -82,6 +82,28 @@
         android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/rbf_weixinArea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/weixin"
+                style="@style/rb_pay_type"
+                android:drawableLeft="@drawable/weixin_ic"
+                android:text="@string/weixin"/>
+
+            <CheckBox
+                android:id="@+id/rbf_weixin_checkbox"
+                style="@style/checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#F9F9F9"/>
+
+        <RelativeLayout
             android:id="@+id/rbf_aliArea"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -99,28 +121,6 @@
                 android:layout_height="wrap_content"/>
         </RelativeLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#F9F9F9"/>
-
-        <RelativeLayout
-            android:id="@+id/rbf_weixinArea"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/weixin"
-                style="@style/rb_pay_type"
-                android:drawableLeft="@drawable/weixin_ic"
-                android:text="@string/weixin"/>
-
-            <CheckBox
-                android:id="@+id/rbf_weixin_checkbox"
-                style="@style/checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </RelativeLayout>
     </LinearLayout>
 
     <Button

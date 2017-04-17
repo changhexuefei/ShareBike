@@ -27,6 +27,7 @@ import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.utils.InPutUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.google.gson.Gson;
@@ -234,7 +235,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         switch (view.getId()) {
 
             case R.id.getSecurityCode:
-                getseCode(phone);
+                if (NetUtils.isConnected(LoginActivity.this)) {
+                    getseCode(phone);
+                } else {
+                    ToastUtils.showLong(LoginActivity.this, "请检查网络后重试！！");
+                }
+
                 break;
             case R.id.login_confirm:
                 //将收到的验证码和手机号提交再次核对
@@ -343,7 +349,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onError(Call call, Exception e, int id) {
                 ToastUtils.showLong(App.getContext(), "网络错误，请重试");
-                LogUtils.e(e.getMessage());
+                LogUtils.d("网络排查", e.getMessage());
             }
 
             @Override

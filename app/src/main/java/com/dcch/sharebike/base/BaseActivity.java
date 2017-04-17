@@ -1,10 +1,7 @@
 package com.dcch.sharebike.base;
 
 
-import android.content.ComponentName;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
@@ -18,8 +15,6 @@ import butterknife.ButterKnife;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,8 +22,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getLayoutId());
         ButterKnife.bind(this);
         App.getInstance().addActivity(this);
-
-//
         initData();
         initListener();
     }
@@ -49,6 +42,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+//
     }
 }

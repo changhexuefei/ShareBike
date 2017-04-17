@@ -94,8 +94,8 @@ public class RechargeActivity extends BaseActivity {
             }
         });
 
-        //默认支付宝选中
-        aliCheckbox.setChecked(true);
+        //默认微信选中
+        weixinCheckbox.setChecked(true);
         String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
         Log.d("用户明细", userDetail);
         try {
@@ -130,10 +130,10 @@ public class RechargeActivity extends BaseActivity {
                 break;
 
             case R.id.btn_recharge:
+                String moneySum = money.getText().toString().trim();
                 if (aliCheckbox.isChecked()) {
                     final AliPay aliPay = new AliPay(this);
                     mOutTradeNo = aliPay.getOutTradeNo();
-                    String moneySum = money.getText().toString().trim();
                     Map<String, String> map = new HashMap<>();
                     map.put("outtradeno", mOutTradeNo);
                     map.put("orderbody", "交押金");
@@ -148,7 +148,6 @@ public class RechargeActivity extends BaseActivity {
                         @Override
                         public void onResponse(final String response, int id) {
                             LogUtils.d("支付", response);
-
                             Runnable payRunnable = new Runnable() {
                                 @Override
                                 public void run() {
@@ -182,7 +181,7 @@ public class RechargeActivity extends BaseActivity {
                         map.put("out_trade_no", mOutTradeNo);
                         map.put("body", "押金");
                         map.put("attach", userID);
-                        map.put("total_price", "0.01");
+                        map.put("total_price", moneySum);
                         map.put("spbill_create_ip", ipAddress);
                         LogUtils.d("微信支付", ipAddress);
                         OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINCASHPAY).params(map).build().execute(new StringCallback() {

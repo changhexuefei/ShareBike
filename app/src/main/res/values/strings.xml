@@ -19,7 +19,7 @@
     <string name="mobile_tip_two">更换手机号，登录重新交押金</string>
     <string name="mobile_tip_there">车费余额，行程等信息不变</string>
     <string name="mobile_title">手机号</string>
-    <string name="cash_pledge">199</string>
+    <string name="cash_pledge">99</string>
     <string name="findTrouble">发现车辆故障</string>
     <string name="scan_tips">扫描二维码或者手动输入编码</string>
     <string name="scan_tip_one">重新扫码或输入</string>
@@ -57,7 +57,7 @@
     <string name="public_name">麒麟单车</string>
     <string name="about_us">关于我们</string>
     <string name="qilinbikes">麒麟单车</string>
-    <string name="publicity">麒麟单车，骑乐无穷</string>
+    <string name="publicity">绿色出行，麒乐无穷</string>
     <string name="company_name">北京迪辰创和科技有限责任公司</string>
     <string name="my_wallet">我的钱包</string>
     <string name="my_favorable">我的优惠</string>
@@ -67,6 +67,7 @@
     <string name="invite_friends">邀请好友</string>
     <string name="user_guide">用户指南</string>
     <string name="setting">设置</string>
+    <string name="user_agreement">用户协议</string>
     <string name="cumulative_cycling">累计骑行(公里)</string>
     <string name="saving_carbon_emissions">节约碳排放(千克)</string>
     <string name="sports_achievement">运动成就(大卡)</string>
@@ -104,4 +105,6 @@
     <string name="refund_cancel">取消</string>
     <string name="refund_cash_pledge">退押金</string>
     <string name="journey_detail">行程详情</string>
+    <string name="splash_tip_one">绿色出行</string>
+    <string name="splash_tip_two">麒乐无穷</string>
 </resources>
