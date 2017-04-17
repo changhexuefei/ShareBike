@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.alipay.WeixinPay;
 import com.dcch.sharebike.app.App;
@@ -197,7 +198,7 @@ public class WalletInfoActivity extends BaseActivity {
                 case R.id.btn_confirm:
                     WeixinPay weixinPay = new WeixinPay(WalletInfoActivity.this);
                     mOutRefundNo = weixinPay.getOutRefundNo();
-                    LogUtils.d("退款",mOutRefundNo+"\n"+uID);
+                    LogUtils.d("退款", mOutRefundNo + "\n" + uID);
                     refundPledgeCash(uID, mOutRefundNo);
                     ToastUtils.showShort(WalletInfoActivity.this, "您点击的是退押金按钮");
                     break;
@@ -275,5 +276,9 @@ public class WalletInfoActivity extends BaseActivity {
         });
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(WalletInfoActivity.this, MainActivity.class));
+    }
 }
