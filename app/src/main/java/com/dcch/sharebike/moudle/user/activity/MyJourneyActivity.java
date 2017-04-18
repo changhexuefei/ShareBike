@@ -6,8 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -36,19 +36,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 import okhttp3.Call;
 
 public class MyJourneyActivity extends BaseActivity {
 
-    @BindView(R.id.back)
-    ImageView back;
     @BindView(R.id.journey_list)
     LRecyclerView journeyList;
     @BindView(R.id.no_journey)
     TextView noJourney;
     @BindView(R.id.default_show)
     RelativeLayout mDefaultShow;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
     private String mPhone;
     private JourneyInfoAdapter mAdapter;
     private String userDetail;
@@ -64,6 +65,16 @@ public class MyJourneyActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        mToolbar.setTitle("");
+        mTitle.setText(getResources().getString(R.string.my_journey));
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         if (SPUtils.isLogin()) {
             userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
             object = null;
@@ -82,14 +93,6 @@ public class MyJourneyActivity extends BaseActivity {
         }
     }
 
-    @OnClick(R.id.back)
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.back:
-                finish();
-                break;
-        }
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,7 +116,7 @@ public class MyJourneyActivity extends BaseActivity {
                 if (JsonUtils.isSuccess(response)) {
                     Gson gson = new Gson();
                     mJourneyInfo = gson.fromJson(response, JourneyInfo.class);
-                    if(mJourneyInfo.getCarrOrders().size()>0){
+                    if (mJourneyInfo.getCarrOrders().size() > 0) {
                         mDefaultShow.setVisibility(View.GONE);
                         journeyList.setVisibility(View.VISIBLE);
                         mAdapter = new JourneyInfoAdapter(MyJourneyActivity.this, R.layout.item_my_journey, mJourneyInfo.getCarrOrders());
@@ -165,7 +168,7 @@ public class MyJourneyActivity extends BaseActivity {
                             }
                         });
 
-                    }else {
+                    } else {
                         mDefaultShow.setVisibility(View.VISIBLE);
                     }
                 }
@@ -173,7 +176,6 @@ public class MyJourneyActivity extends BaseActivity {
         });
 
     }
-
 
 
     @Override

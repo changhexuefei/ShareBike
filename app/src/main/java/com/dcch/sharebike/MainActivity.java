@@ -71,10 +71,12 @@ import com.dcch.sharebike.moudle.home.bean.RidingInfo;
 import com.dcch.sharebike.moudle.home.bean.ShowBikeRentalOrderInfo;
 import com.dcch.sharebike.moudle.home.bean.UserBookingBikeInfo;
 import com.dcch.sharebike.moudle.login.activity.ClickCameraPopupActivity;
+import com.dcch.sharebike.moudle.login.activity.ClickMyHelpActivity;
 import com.dcch.sharebike.moudle.login.activity.IdentityAuthentication;
 import com.dcch.sharebike.moudle.login.activity.LoginActivity;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.moudle.login.activity.RechargeActivity;
+import com.dcch.sharebike.moudle.search.activity.SeekActivity;
 import com.dcch.sharebike.moudle.user.activity.CustomerServiceActivity;
 import com.dcch.sharebike.moudle.user.activity.RechargeDepositActivity;
 import com.dcch.sharebike.moudle.user.activity.RidingResultActivity;
@@ -121,6 +123,7 @@ import okhttp3.Call;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+import static com.dcch.sharebike.R.id.seek;
 import static com.dcch.sharebike.utils.MapUtil.stringToInt;
 
 
@@ -130,7 +133,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     MapView mMapView;
     @BindView(R.id.MyCenter)
     ImageView mMyCenter;
-    @BindView(R.id.seek)
+    @BindView(seek)
     ImageView mSeek;
     @BindView(R.id.btn_my_location)
     ImageButton mBtnMyLocation;
@@ -348,7 +351,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                                      }
 
                                  } else {
-                                //根据手机定位地点，得到手机定位点的周围半径1000米范围内的车辆信息的方法
+                                     //根据手机定位地点，得到手机定位点的周围半径1000米范围内的车辆信息的方法
 //                                     getBikeInfo(mCurrentLantitude, mCurrentLongitude);
                                      checkOrderInfoByUserID(uID);
                                  }
@@ -478,12 +481,35 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     }
 
 
-    @OnClick({R.id.MyCenter, R.id.btn_my_location, R.id.scan})
+    @OnClick({R.id.MyCenter, R.id.btn_my_location, R.id.scan, seek, R.id.instructions, R.id.btn_my_help})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.MyCenter:
                 Intent personal = new Intent(this, PersonalCenterActivity.class);
                 startActivity(personal);
+                break;
+            case R.id.btn_my_help:
+                if (SPUtils.isLogin()) {
+                    popupDialog();
+                } else {
+                    startActivity(new Intent(this, ClickMyHelpActivity.class));
+                }
+                break;
+
+            case R.id.instructions:
+                Intent i2 = new Intent(this, PersonalCenterActivity.class);
+                startActivity(i2);
+                break;
+
+            case R.id.seek:
+                if (isClick) {
+                    Intent seek = new Intent(this, SeekActivity.class);
+                    seek.putExtra("address", address1);
+                    startActivityForResult(seek, 1);
+                }
+                if (!isClick) {
+                    ToastUtils.showShort(MainActivity.this, "在预约和骑行过程中，此功能不可用！");
+                }
                 break;
 
             case R.id.btn_my_location:
@@ -1155,7 +1181,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         if (result != null && result.error == SearchResult.ERRORNO.NO_ERROR) {
             walkingRouteLine = result.getRouteLines().get(0);
             distance = walkingRouteLine.getDistance();
-            mWalkTime=walkingRouteLine.getDuration()/60;
+            mWalkTime = walkingRouteLine.getDuration() / 60;
 //            mWalkTime = distance / 60;
             mDistance = MapUtil.distanceFormatter(distance);
             mCastTime = String.valueOf(mWalkTime);
@@ -1163,7 +1189,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 menuWindow.mDistance.setText(mDistance);
             }
             if (!mCastTime.equals("") && mCastTime != null) {
-                menuWindow.mArrivalTime.setText(mCastTime+"分钟");
+                menuWindow.mArrivalTime.setText(mCastTime + "分钟");
             }
 
         }
@@ -1273,7 +1299,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (uID != null && !uID.equals("")) {
                     checkBookingBikeInfoByUserID(uID);
 
-                }else{
+                } else {
                     //根据手机定位地点，得到车辆信息的方法
                     getBikeInfo(mCurrentLantitude, mCurrentLongitude);
                 }
@@ -1317,9 +1343,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     mShowBikeRentalOrderPopupWindow.showAsDropDown(findViewById(R.id.top));
                     mShowBikeRentalOrderPopupWindow.setOutsideTouchable(false);
                     mShowBikeRentalOrderPopupWindow.setFocusable(false);
-                } else{
+                } else {
                     //根据手机定位地点，得到车辆信息的方法
-                    LogUtils.d("你怎么了",isBook+"");
+                    LogUtils.d("你怎么了", isBook + "");
                     getBikeInfo(mCurrentLantitude, mCurrentLongitude);
                 }
             }
