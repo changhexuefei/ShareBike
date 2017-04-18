@@ -311,9 +311,9 @@ public class UpdateManager {
                     e.printStackTrace();
                 }
             }
-        }).start();
+        }).start();}
 
-    public void checkVersion(View view) {
+    public void checkVersion() {
         versionUpdate();
     }
 
