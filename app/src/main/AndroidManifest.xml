@@ -100,8 +100,7 @@
             android:launchMode="singleTask">
         </activity>
         <activity android:name=".activity.SplashActivity"
-                  android:theme="@style/Theme.AppCompat"
-            >
+                  android:theme="@style/Theme.AppCompat">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

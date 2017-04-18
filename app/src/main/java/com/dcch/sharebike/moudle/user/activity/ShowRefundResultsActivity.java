@@ -14,7 +14,6 @@ import butterknife.OnClick;
 
 public class ShowRefundResultsActivity extends BaseActivity {
 
-
     @BindView(R.id.verify)
     Button mVerify;
     @BindView(R.id.title)

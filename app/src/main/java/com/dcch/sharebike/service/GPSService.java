@@ -153,7 +153,7 @@ public class GPSService extends Service {
             mCarRentalOrderId = intent.getStringExtra("carRentalOrderId");
             Log.d("大神", mUserId + "\n" + mBicycleNo + "\n" + mCarRentalOrderDate + "\n" + mCarRentalOrderId);
             // 开启轨迹记录线程
-            new Thread(new RouteRecordThread()).start();
+//            new Thread(new RouteRecordThread()).start();
         }
         Log.d("BDGpsService", "********BDGpsService onStartCommand*******");
         if (locationClient != null && !locationClient.isStarted()) {

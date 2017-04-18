@@ -38,8 +38,7 @@ public class UpdateManager {
     private Context mContext;
     private VersionInfo versionInfo;
     private int serverVersionCode;
-
-    private String xmlUrl = "http://192.168.1.108:8080/version.xml";
+    private String xmlUrl = "http://192.168.1.109:8000/version.xml";
     private ProgressBar progressBar;
     private boolean cancelUpdate = false;
     private String fileSavePath;
@@ -229,18 +228,21 @@ public class UpdateManager {
      * 下载apk的方法
      */
     public class downloadApkThread extends Thread {
+
         InputStream is;
         HttpURLConnection conn;
 
         @Override
         public void run() {
             super.run();
+
             // 判断SD卡是否存在，并且是否具有读写权限
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                 // 获得存储卡的路径
                 String sdpath = Environment.getExternalStorageDirectory() + "/";
                 fileSavePath = sdpath + "download";
                 try {
+                    LogUtils.d("怎麽不走這裏","1223333++++++"+versionInfo.getLoadUrl());
                     URL url = new URL(versionInfo.getLoadUrl());
                     // 创建连接
                     conn = (HttpURLConnection) url.openConnection();
@@ -249,7 +251,8 @@ public class UpdateManager {
                     conn.setRequestProperty("Charset", "GBK,utf-8;q=0.7,*;q=0.3");
                     // 获取文件大小
                     int length = conn.getContentLength();
-                    progressBar.setMax(length);
+//                    progressBar.setMax(length);
+                    LogUtils.d("怎麽不走這裏","1223333++++++"+length);
                     // 创建输入流
                     is = conn.getInputStream();
                     File file = new File(fileSavePath);
@@ -258,6 +261,7 @@ public class UpdateManager {
                         file.mkdir();
                     }
                     File apkFile = new File(fileSavePath, versionInfo.getFileName() + ".apk");
+                    LogUtils.d("怎麽不走這裏",apkFile+"\n"+length+"\n"+is);
                     readFile(apkFile, is, length);
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
@@ -277,6 +281,7 @@ public class UpdateManager {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                LogUtils.d("怎麽不走這裏","1223333-----");
                 FileOutputStream fos = null;
                 try {
                     fos = new FileOutputStream(apkFile);
@@ -289,9 +294,10 @@ public class UpdateManager {
                         count += numread;
                         // 计算进度条位置
                         progress = (int) (((float) count / length) * 100);
+                        LogUtils.d("怎麽不走這裏","1223333-----"+progress);
                         // 更新进度
                         Message message = new Message();
-                        message.obj = DOWN;
+                        message.what = DOWN;
                         mHandler.sendMessage(message);
                         if (numread <= 0) {
                             // 下载完成

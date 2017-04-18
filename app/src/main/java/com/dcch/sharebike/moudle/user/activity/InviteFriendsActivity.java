@@ -1,14 +1,13 @@
 package com.dcch.sharebike.moudle.user.activity;
 
-import android.support.annotation.IdRes;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.utils.LogUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -21,24 +20,23 @@ import cn.sharesdk.tencent.qzone.QZone;
 import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.wechat.moments.WechatMoments;
 
-public class InviteFriendsActivity extends BaseActivity {
 
+
+public class InviteFriendsActivity extends BaseActivity {
     @BindView(R.id.tv_tip_four)
     TextView mTvTipFour;
     @BindView(R.id.updateInvitationCode)
     TextView mUpdateInvitationCode;
     @BindView(R.id.shareWeiChat)
-    RadioButton mShareWeiChat;
+    Button mShareWeiChat;
     @BindView(R.id.shareWeiChatCircle)
-    RadioButton mShareWeiChatCircle;
+    Button mShareWeiChatCircle;
     @BindView(R.id.shareQQ)
-    RadioButton mShareQQ;
+    Button mShareQQ;
     @BindView(R.id.shareQQZONE)
-    RadioButton mShareQQZONE;
+    Button mShareQQZONE;
     @BindView(R.id.shareSina)
-    RadioButton mShareSina;
-    @BindView(R.id.sharePlatform)
-    RadioGroup mSharePlatform;
+    Button mShareSina;
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.toolbar)
@@ -66,47 +64,47 @@ public class InviteFriendsActivity extends BaseActivity {
     @Override
     protected void initListener() {
         super.initListener();
-        mSharePlatform.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                switch (checkedId) {
-                    case R.id.shareWeiChat:
-                        //分享到微信
-                        Platform platWeiChat = ShareSDK.getPlatform(Wechat.NAME);
-                        showShare(platWeiChat.getName());
-
-                        break;
-                    case R.id.shareWeiChatCircle:
-                        //分享到微信朋友圈
-                        Platform platWeiChatCircle = ShareSDK.getPlatform(WechatMoments.NAME);
-                        showShare(platWeiChatCircle.getName());
-                        break;
-                    case R.id.shareQQ:
-                        //比如分享到QQ，其他平台则只需要更换平台类名，例如Wechat.NAME则是微信
-                        Platform plat = ShareSDK.getPlatform(QQ.NAME);
-                        showShare(plat.getName());
-                        break;
-                    case R.id.shareQQZONE:
-                        //比如分享到QQ，其他平台则只需要更换平台类名，例如Wechat.NAME则是微信
-                        Platform platQQZONE = ShareSDK.getPlatform(QZone.NAME);
-                        showShare(platQQZONE.getName());
-                        break;
-                    case R.id.shareSina:
-                        //比如分享到QQ，其他平台则只需要更换平台类名，例如Wechat.NAME则是微信
-                        Platform platSina = ShareSDK.getPlatform(SinaWeibo.NAME);
-                        showShare(platSina.getName());
-                        break;
-                }
-            }
-        });
     }
 
-    @OnClick( R.id.updateInvitationCode)
+    @OnClick( {R.id.updateInvitationCode,R.id.shareWeiChat,R.id.shareWeiChatCircle,R.id.shareQQ,R.id.shareQQZONE,R.id.shareSina})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.updateInvitationCode:
                 String inviteCode = mUpdateInvitationCode.getText().toString().trim();
                 break;
+
+            case R.id.shareWeiChat:
+                LogUtils.d("点击","微信");
+                //分享到微信
+                Platform platWeiChat = ShareSDK.getPlatform(Wechat.NAME);
+                showShare(platWeiChat.getName());
+                break;
+            case R.id.shareWeiChatCircle:
+                //分享到微信朋友圈
+                LogUtils.d("点击","微信朋友圈");
+                Platform platWeiChatCircle = ShareSDK.getPlatform(WechatMoments.NAME);
+                showShare(platWeiChatCircle.getName());
+                break;
+            case R.id.shareQQ:
+                //比如分享到QQ，其他平台则只需要更换平台类名，例如Wechat.NAME则是微信
+                LogUtils.d("点击","QQ");
+                Platform plat = ShareSDK.getPlatform(QQ.NAME);
+                showShare(plat.getName());
+                break;
+
+            case R.id.shareQQZONE:
+                //比如分享到QQ，其他平台则只需要更换平台类名，例如Wechat.NAME则是微信
+                LogUtils.d("点击","QQZone");
+                Platform platQQZONE = ShareSDK.getPlatform(QZone.NAME);
+                showShare(platQQZONE.getName());
+                break;
+
+            case R.id.shareSina:
+                //比如分享到QQ，其他平台则只需要更换平台类名，例如Wechat.NAME则是微信
+                Platform platSina = ShareSDK.getPlatform(SinaWeibo.NAME);
+                showShare(platSina.getName());
+                break;
+
         }
     }
 
