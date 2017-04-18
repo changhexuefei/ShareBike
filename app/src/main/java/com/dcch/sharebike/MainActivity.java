@@ -71,12 +71,10 @@ import com.dcch.sharebike.moudle.home.bean.RidingInfo;
 import com.dcch.sharebike.moudle.home.bean.ShowBikeRentalOrderInfo;
 import com.dcch.sharebike.moudle.home.bean.UserBookingBikeInfo;
 import com.dcch.sharebike.moudle.login.activity.ClickCameraPopupActivity;
-import com.dcch.sharebike.moudle.login.activity.ClickMyHelpActivity;
 import com.dcch.sharebike.moudle.login.activity.IdentityAuthentication;
 import com.dcch.sharebike.moudle.login.activity.LoginActivity;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.moudle.login.activity.RechargeActivity;
-import com.dcch.sharebike.moudle.search.activity.SeekActivity;
 import com.dcch.sharebike.moudle.user.activity.CustomerServiceActivity;
 import com.dcch.sharebike.moudle.user.activity.RechargeDepositActivity;
 import com.dcch.sharebike.moudle.user.activity.RidingResultActivity;
@@ -467,7 +465,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         option.setOpenGps(true);// 打开gps
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);// 设置定位模式
         option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(1000);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
+        option.setScanSpan(5000);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
         option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
         option.setIsNeedLocationDescribe(true);//可选，设置是否需要地址描述
         option.setNeedDeviceDirect(false);//可选，设置是否需要设备方向结果
@@ -480,38 +478,19 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     }
 
 
-    @OnClick({R.id.MyCenter, R.id.seek, R.id.btn_my_location, R.id.instructions, R.id.btn_my_help, R.id.scan})
+    @OnClick({R.id.MyCenter, R.id.btn_my_location, R.id.scan})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.MyCenter:
                 Intent personal = new Intent(this, PersonalCenterActivity.class);
                 startActivity(personal);
                 break;
-            case R.id.seek:
-                if (isClick) {
-                    Intent seek = new Intent(this, SeekActivity.class);
-                    seek.putExtra("address", address1);
-                    startActivityForResult(seek, 1);
-                }
-                if (!isClick) {
-                    ToastUtils.showShort(MainActivity.this, "在预约和骑行过程中，此功能不可用！");
-                }
-                break;
+
             case R.id.btn_my_location:
                 setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
                 getMyLocation();
                 break;
-            case R.id.instructions:
-                Intent i2 = new Intent(this, PersonalCenterActivity.class);
-                startActivity(i2);
-                break;
-            case R.id.btn_my_help:
-                if (SPUtils.isLogin()) {
-                    popupDialog();
-                } else {
-                    startActivity(new Intent(this, ClickMyHelpActivity.class));
-                }
-                break;
+
             case R.id.scan:
                 if (SPUtils.isLogin()) {
                     if (cashStatus == 1 && status == 1) {
@@ -540,7 +519,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 .latitude(mCurrentLantitude)//
                 .longitude(mCurrentLongitude).build();
         mMap.setMyLocationData(data);
-
     }
 
 
@@ -1298,7 +1276,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 }else{
                     //根据手机定位地点，得到车辆信息的方法
                     getBikeInfo(mCurrentLantitude, mCurrentLongitude);
-
                 }
             }
 

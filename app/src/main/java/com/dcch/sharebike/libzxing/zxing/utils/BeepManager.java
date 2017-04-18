@@ -27,6 +27,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.dcch.sharebike.R;
+import com.dcch.sharebike.libzxing.zxing.activity.CaptureActivity;
 
 import java.io.Closeable;
 import java.io.IOException;

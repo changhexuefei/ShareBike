@@ -23,7 +23,6 @@ import cn.sharesdk.wechat.moments.WechatMoments;
 
 
 public class InviteFriendsActivity extends BaseActivity {
-
     @BindView(R.id.tv_tip_four)
     TextView mTvTipFour;
     @BindView(R.id.updateInvitationCode)
