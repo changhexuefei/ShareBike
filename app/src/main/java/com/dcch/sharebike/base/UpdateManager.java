@@ -48,6 +48,7 @@ public class UpdateManager {
     private static final int DOWN_FINISH = 0;// 用于区分下载完成
     private int mCurrentVersionCode;
 
+
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -188,6 +189,7 @@ public class UpdateManager {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+
             }
         });
         Dialog noticeDialog = builder.create();
