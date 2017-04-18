@@ -55,6 +55,7 @@ android {
         debug {
             //Zip代码压缩优化
             zipAlignEnabled true
+            minifyEnabled false
 //            signingConfig signingConfigs.release
 
             //移除无用资源

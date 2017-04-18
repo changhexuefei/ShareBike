@@ -96,7 +96,7 @@
             android:text="@string/inviteShare"/>
     </RelativeLayout>
 
-    <RadioGroup
+    <LinearLayout
         android:id="@+id/sharePlatform"
         android:layout_width="match_parent"
         android:layout_height="70dp"
@@ -106,47 +106,47 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <RadioButton
+        <Button
             android:id="@+id/shareWeiChat"
             style="@style/share_style"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:drawableTop="@mipmap/umeng_socialize_wechat"
             android:text="微信"/>
 
-        <RadioButton
+        <Button
             android:id="@+id/shareWeiChatCircle"
             style="@style/share_style"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:drawableTop="@mipmap/umeng_socialize_wxcircle"
             android:text="微信朋友圈"/>
 
-        <RadioButton
+        <Button
             android:id="@+id/shareQQ"
             style="@style/share_style"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:drawableTop="@mipmap/umeng_socialize_qq_on"
             android:text="QQ好友"/>
 
-        <RadioButton
+        <Button
             android:id="@+id/shareQQZONE"
             style="@style/share_style"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:drawableTop="@mipmap/umeng_socialize_qzone_on"
             android:text="QQ空间"/>
 
-        <RadioButton
+        <Button
             android:id="@+id/shareSina"
             style="@style/share_style"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:drawableTop="@mipmap/umeng_socialize_sina_on"
             android:text="微博"/>
 
-    </RadioGroup>
+    </LinearLayout>
 
 
 </RelativeLayout>
