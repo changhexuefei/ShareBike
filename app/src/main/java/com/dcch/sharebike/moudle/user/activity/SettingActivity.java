@@ -35,8 +35,8 @@ import static com.dcch.sharebike.R.id.userAgreement;
 
 public class SettingActivity extends BaseActivity {
 
-    @BindView(R.id.usualAddress)
-    RelativeLayout mUsualAddress;
+    //    @BindView(R.id.usualAddress)
+//    RelativeLayout mUsualAddress;
     @BindView(R.id.checkVersions)
     RelativeLayout mCheckVersions;
     @BindView(R.id.aboutUs)
@@ -69,7 +69,6 @@ public class SettingActivity extends BaseActivity {
     };
 
 
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_setting;
@@ -88,13 +87,14 @@ public class SettingActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.usualAddress, R.id.checkVersions, R.id.aboutUs, userAgreement, R.id.cashPledgeExplain, R.id.rechargeAgreement, R.id.signOut})
+    //R.id.usualAddress,
+    @OnClick({R.id.checkVersions, R.id.aboutUs, userAgreement, R.id.cashPledgeExplain, R.id.rechargeAgreement, R.id.signOut})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.usualAddress:
-                Intent address = new Intent(this, UsualAddressActivity.class);
-                startActivity(address);
-                break;
+//            case R.id.usualAddress:
+//                Intent address = new Intent(this, UsualAddressActivity.class);
+//                startActivity(address);
+//                break;
             case R.id.checkVersions:
                 UpdateManager updateManager = new UpdateManager(this);
                 updateManager.checkVersion();
@@ -103,11 +103,13 @@ public class SettingActivity extends BaseActivity {
                 startActivity(new Intent(SettingActivity.this, AboutUsActivity.class));
                 break;
             case userAgreement:
-                startActivity(new Intent(SettingActivity.this,UserAgreementActivity.class));
+                startActivity(new Intent(SettingActivity.this, UserAgreementActivity.class));
                 break;
             case R.id.cashPledgeExplain:
+                startActivity(new Intent(SettingActivity.this, CashPledgeExplainActivity.class));
                 break;
             case R.id.rechargeAgreement:
+                startActivity(new Intent(SettingActivity.this, RechargeAgreementActivity.class));
                 break;
             case R.id.signOut:
                 new AlertDialog.Builder(this)
@@ -136,6 +138,7 @@ public class SettingActivity extends BaseActivity {
                 break;
         }
     }
+
     // 获取当前应用的版本号
     public int getVerCode() {
         int verCode = -1;
@@ -157,7 +160,7 @@ public class SettingActivity extends BaseActivity {
         Intent intent = new Intent();
 //        intent.setAction("com.gao.startService");
         intent.setPackage(getPackageName());
-        bindService(intent,coon,BIND_AUTO_CREATE);
+        bindService(intent, coon, BIND_AUTO_CREATE);
         if (IS == true) {
             /*String path = Environment.getExternalStorageDirectory() + "/DateApp.apk";
             Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -166,6 +169,7 @@ public class SettingActivity extends BaseActivity {
             IS = false;
         }
     }
+
     /***
      * 检查是否存在某个App存在
      * @param pkgName

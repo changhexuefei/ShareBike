@@ -65,6 +65,7 @@ public class WalletInfoActivity extends BaseActivity {
     private String mOutRefundNo;
     private String mTotal_fee;
     private String mRefund_fee;
+    private String mToken;
 
     @Override
     protected int getLayoutId() {
@@ -73,7 +74,6 @@ public class WalletInfoActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
         if (SPUtils.isLogin()) {
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras();//"bundle"
@@ -94,9 +94,9 @@ public class WalletInfoActivity extends BaseActivity {
             if (userDetail != null) {
                 try {
                     JSONObject object = new JSONObject(userDetail);
-                    int userId = object.getInt("id");
+                    int userId = object.optInt("id");
                     uID = String.valueOf(userId);
-
+                    mToken = object.optString("token");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -114,12 +114,12 @@ public class WalletInfoActivity extends BaseActivity {
             case R.id.transactionDetail:
                 Intent dealDetail = new Intent(this, TransactionDetailActivity.class);
                 dealDetail.putExtra("userId", uID);
+                dealDetail.putExtra("token",mToken);
                 startActivity(dealDetail);
                 break;
             case R.id.recharge:
                 if (mCashStatus == 1) {
                     Intent intent = new Intent(WalletInfoActivity.this, RechargeBikeFareActivity.class);
-//                    startActivityForResult(intent, 0);
                     startActivity(intent);
                 } else if (mCashStatus == 0) {
                     popupDialog();
@@ -128,7 +128,6 @@ public class WalletInfoActivity extends BaseActivity {
             case R.id.chargeDeposit:
                 if (chargeDeposit.getText().equals(tipFour)) {
                     Intent rechargeDeposit = new Intent(WalletInfoActivity.this, RechargeDepositActivity.class);
-//                    startActivityForResult(rechargeDeposit, 1);
                     startActivity(rechargeDeposit);
                 } else if (chargeDeposit.getText().equals(tipThere)) {
                     showRefundPopuwindow();
@@ -137,28 +136,6 @@ public class WalletInfoActivity extends BaseActivity {
         }
     }
 
-//    //充值车费的回调
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        int i = Integer.valueOf(remainingSum.getText().toString()).intValue();
-//        if (data != null) {
-//            String recherge = data.getStringExtra("recherge");
-//            String deposit = data.getStringExtra("deposit");
-//            // 根据上面发送过去的请求码来区别
-//            switch (requestCode) {
-//                case 0:
-//                    int i1 = Integer.parseInt(recherge.split("\\.")[0]);
-//                    String rechergeSum = String.valueOf(i + i1);
-//                    remainingSum.setText(rechergeSum);
-//                    break;
-//                case 1:
-//                    showArea.setText("押金" + deposit + "元");
-//                    chargeDeposit.setText(tipThere);
-//                    break;
-//            }
-//        }
-//    }
 
     private void showRefundPopuwindow() {
         if (refundPopuwindow != null && !refundPopuwindow.equals("")) {
@@ -199,23 +176,24 @@ public class WalletInfoActivity extends BaseActivity {
                     WeixinPay weixinPay = new WeixinPay(WalletInfoActivity.this);
                     mOutRefundNo = weixinPay.getOutRefundNo();
                     LogUtils.d("退款", mOutRefundNo + "\n" + uID);
-                    refundPledgeCash(uID, mOutRefundNo);
+                    refundPledgeCash(uID, mOutRefundNo,mToken);
                     ToastUtils.showShort(WalletInfoActivity.this, "您点击的是退押金按钮");
                     break;
             }
         }
     };
 
-    private void refundPledgeCash(String uID, String outRefundNo) {
+    private void refundPledgeCash(String uID, String outRefundNo,String mToken) {
         Map<String, String> map = new HashMap<>();
         map.put("userId", uID);
         map.put("out_refund_no", outRefundNo);
         map.put("total_fee", "0.01");
         map.put("refund_fee", "0.01");
+        map.put("token",mToken);
         OkHttpUtils.post().url(Api.BASE_URL + Api.REFUNDWXPAY).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-
+                LogUtils.e("错误",e.getMessage());
             }
 
             @Override
@@ -231,22 +209,21 @@ public class WalletInfoActivity extends BaseActivity {
                 refundPopuwindow.dismiss();
             }
         });
-
     }
-
 
     @Override
     protected void onResume() {
         super.onResume();
         if (uID != null) {
-            getUserInfo(uID);
+            getUserInfo(uID,mToken);
         }
     }
 
     //从服务端拿到客户信息
-    private void getUserInfo(String uID) {
+    private void getUserInfo(String uID,String mToken) {
         Map<String, String> map = new HashMap<>();
         map.put("userId", uID);
+        map.put("token",mToken);
         OkHttpUtils.post().url(Api.BASE_URL + Api.INFOUSER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {

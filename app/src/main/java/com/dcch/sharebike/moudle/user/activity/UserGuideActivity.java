@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
-import com.dcch.sharebike.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -53,8 +52,8 @@ public class UserGuideActivity extends BaseActivity {
         });
 
     }
-
-    @OnClick({R.id.lock, R.id.breakdown, R.id.depositInstructions, R.id.topUpInstructions, R.id.report, R.id.unFindBike, R.id.allQuestion})
+    //, R.id.allQuestion
+    @OnClick({R.id.lock, R.id.breakdown, R.id.depositInstructions, R.id.topUpInstructions, R.id.report, R.id.unFindBike})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.lock:
@@ -66,11 +65,12 @@ public class UserGuideActivity extends BaseActivity {
                 Intent bikeTrouble = new Intent(this, CustomerServiceActivity.class);
                 bikeTrouble.putExtra("name", "1");
                 startActivity(bikeTrouble);
-
                 break;
             case R.id.depositInstructions:
+                startActivity(new Intent(this,CashPledgeExplainActivity.class));
                 break;
             case R.id.topUpInstructions:
+                startActivity(new Intent(this,RechargeAgreementActivity.class));
                 break;
             case R.id.report:
                 Intent reportIllegalParking = new Intent(this, CustomerServiceActivity.class);
@@ -79,12 +79,12 @@ public class UserGuideActivity extends BaseActivity {
                 break;
             case R.id.unFindBike:
                 break;
-            case R.id.allQuestion:
-                ToastUtils.showShort(this, "全部问题");
-//               Intent allQuestionPage = new Intent(this,CustomerServiceActivity.class);
-//                allQuestionPage.putExtra("name","all");
-//                startActivity(allQuestionPage);
-                break;
+//            case R.id.allQuestion:
+//                ToastUtils.showShort(this, "全部问题");
+////               Intent allQuestionPage = new Intent(this,CustomerServiceActivity.class);
+////                allQuestionPage.putExtra("name","all");
+////                startActivity(allQuestionPage);
+//                break;
         }
     }
 

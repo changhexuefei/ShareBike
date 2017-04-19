@@ -12,26 +12,24 @@ import com.dcch.sharebike.http.Api;
 
 import butterknife.BindView;
 
-public class UserAgreementActivity extends BaseActivity {
-
+public class RechargeAgreementActivity extends BaseActivity {
 
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.userAgreement)
-    WebView mUserAgreement;
+    @BindView(R.id.recharge_agreement_webView)
+    WebView mRechargeAgreementWebView;
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_user_agreement;
+        return R.layout.activity_recharge_agreement;
     }
 
     @Override
     protected void initData() {
-
         mToolbar.setTitle("");
-        mTitle.setText(getResources().getString(R.string.user_agreement));
+        mTitle.setText(getResources().getString(R.string.recharge_agreement));
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,13 +37,14 @@ public class UserAgreementActivity extends BaseActivity {
                 finish();
             }
         });
-        mUserAgreement.getSettings().setJavaScriptEnabled(true);
-        mUserAgreement.getSettings().setSupportZoom(false);
-        mUserAgreement.getSettings().setBuiltInZoomControls(false);
-        mUserAgreement.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        mRechargeAgreementWebView.getSettings().setJavaScriptEnabled(true);
+        mRechargeAgreementWebView.getSettings().setSupportZoom(false);
+        mRechargeAgreementWebView.getSettings().setBuiltInZoomControls(false);
+        mRechargeAgreementWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 //        mUserAgreement.getSettings().setDefaultFontSize(18);
 //        mUserAgreement.getSettings().setUseWideViewPort(true);//关键点
-        mUserAgreement.loadUrl(Api.USERAGREEMENT);
+        mRechargeAgreementWebView.loadUrl(Api.RECHARGEAGREEMENT);
+
     }
 
 }

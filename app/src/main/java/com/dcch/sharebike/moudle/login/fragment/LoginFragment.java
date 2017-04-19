@@ -16,15 +16,16 @@ import com.bumptech.glide.Glide;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.http.Api;
+import com.dcch.sharebike.moudle.login.activity.LoginActivity;
 import com.dcch.sharebike.moudle.user.activity.CreditIntegralActivity;
 import com.dcch.sharebike.moudle.user.activity.InviteFriendsActivity;
 import com.dcch.sharebike.moudle.user.activity.MyJourneyActivity;
-import com.dcch.sharebike.moudle.user.activity.MyMessageActivity;
 import com.dcch.sharebike.moudle.user.activity.PersonInfoActivity;
 import com.dcch.sharebike.moudle.user.activity.SettingActivity;
 import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
 import com.dcch.sharebike.moudle.user.activity.WalletInfoActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
+import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.MapUtil;
 import com.dcch.sharebike.utils.SPUtils;
@@ -79,6 +80,7 @@ public class LoginFragment extends Fragment {
     private UserInfo mInfo;
     private String uID;
     private String mPhone;
+    private String mToken;
 
 
     public LoginFragment() {
@@ -93,7 +95,8 @@ public class LoginFragment extends Fragment {
             if (userDetail != null) {
                 try {
                     JSONObject object = new JSONObject(userDetail);
-                    int userId = object.getInt("id");
+                    int userId = object.optInt("id");
+                    mToken = object.optString("token");
                     uID = String.valueOf(userId);
 
                 } catch (JSONException e) {
@@ -106,15 +109,17 @@ public class LoginFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (uID != null) {
-            getUserInfo(uID);
+        if (uID != null && mToken != null) {
+            getUserInfo(uID, mToken);
         }
     }
 
     //从服务端拿到客户信息
-    private void getUserInfo(String uID) {
+    private void getUserInfo(String uID, String mToken) {
         Map<String, String> map = new HashMap<>();
         map.put("userId", uID);
+        map.put("token", mToken);
+        LogUtils.d("状态", uID + "\n" + mToken);
         OkHttpUtils.post().url(Api.BASE_URL + Api.INFOUSER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -125,26 +130,37 @@ public class LoginFragment extends Fragment {
             @Override
             public void onResponse(String response, int id) {
                 Log.d("用户的信息", response);
-                Gson gson = new Gson();
-                mInfo = gson.fromJson(response, UserInfo.class);
-                //手机号中间四位数字用*号代替的做法
-                mPhone = mInfo.getPhone();
-                String nn = mInfo.getNickName().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
-                nickName.setText(nn);
-                creditScore.setText("信用积分 " + String.valueOf(mInfo.getIntegral()));
-                remainSum.setText(String.valueOf(mInfo.getAggregateAmount()));
+                if (JsonUtils.isSuccess(response)) {
+                    Gson gson = new Gson();
+                    mInfo = gson.fromJson(response, UserInfo.class);
+                    //手机号中间四位数字用*号代替的做法
+                    mPhone = mInfo.getPhone();
+                    if (mPhone != null) {
+                        String nn = mInfo.getNickName().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
+                        nickName.setText(nn);
+                    }
+                    if (mInfo.getIntegral() != 0) {
+                        creditScore.setText("信用积分 " + String.valueOf(mInfo.getIntegral()));
+                    }
+                    remainSum.setText(String.valueOf(mInfo.getAggregateAmount()));
+
 //              骑行距离
-                person_distance.setText(String.valueOf(mInfo.getMileage()));
+                    person_distance.setText(String.valueOf(mInfo.getMileage()));
+
 //              运动成就
-                sportsAchievement.setText(String.valueOf(MapUtil.changeOneDouble(mInfo.getCalorie())));
-                //用户头像
-                String userimage = mInfo.getUserimage();
-                if (userimage != null) {
-                    Log.d("用户头像路径", userimage);
-                    //使用用户自定义的头像
-                    Glide.with(App.getContext()).load(userimage).into(userIcon);
+                    sportsAchievement.setText(String.valueOf(MapUtil.changeOneDouble(mInfo.getCalorie())));
+                    //用户头像
+                    String userimage = mInfo.getUserimage();
+                    if (userimage != null) {
+                        Log.d("用户头像路径", userimage);
+                        //使用用户自定义的头像
+                        Glide.with(App.getContext()).load(userimage).into(userIcon);
+                    } else {
+                        userIcon.setImageResource(R.mipmap.avatar_default_login);
+                    }
                 } else {
-                    userIcon.setImageResource(R.mipmap.avatar_default_login);
+                    LogUtils.d("状态", "您被迫下线了");
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
             }
         });
@@ -153,7 +169,6 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-//        getUserInfo(uID);
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -171,7 +186,6 @@ public class LoginFragment extends Fragment {
                     credit.putExtra("score", mCreditScore);
                     startActivity(credit);
                 }
-
                 break;
             case R.id.userIcon:
                 if (mInfo != null) {
@@ -195,14 +209,17 @@ public class LoginFragment extends Fragment {
                 ToastUtils.showLong(getContext(), "敬请期待");
                 break;
             case R.id.journey:
-                Intent myJourney = new Intent(App.getContext(), MyJourneyActivity.class);
-                myJourney.putExtra("phone", mPhone);
-                startActivity(myJourney);
+                if (mPhone != null && mToken != null) {
+                    Intent myJourney = new Intent(App.getContext(), MyJourneyActivity.class);
+                    myJourney.putExtra("phone", mPhone);
+                    myJourney.putExtra("token", mToken);
+                    startActivity(myJourney);
+                }
                 break;
             case R.id.message:
-//                ToastUtils.showLong(getContext(), "敬请期待");
-                Intent myMessage = new Intent(App.getContext(), MyMessageActivity.class);
-                startActivity(myMessage);
+                ToastUtils.showLong(getContext(), "敬请期待");
+//                Intent myMessage = new Intent(App.getContext(), MyMessageActivity.class);
+//                startActivity(myMessage);
                 break;
             case R.id.friend:
                 startActivity(new Intent(getActivity(), InviteFriendsActivity.class));

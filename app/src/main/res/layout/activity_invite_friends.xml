@@ -23,13 +23,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/invite_icon"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:text="@string/inviteTipOne"
         android:textColor="#000000"
         android:textSize="16sp"
         android:textStyle="bold"/>
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/tv_tip_two"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
@@ -41,6 +42,7 @@
         android:textSize="12sp"/>
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/tv_tip_there"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,6 +53,7 @@
         android:textSize="12sp"/>
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/tv_tip_four"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -69,6 +72,7 @@
         android:layout_below="@+id/tv_tip_four">
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/updateInvitationCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,7 +87,7 @@
         android:id="@+id/rl_tip"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_below="@+id/updateArea"
+        android:layout_above="@+id/view_line"
         android:layout_marginTop="10dp">
 
         <TextView
@@ -91,18 +95,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="6dp"
-            android:layout_marginTop="15dp"
             android:text="@string/inviteShare"/>
     </RelativeLayout>
-
+    <View
+        android:layout_marginBottom="10dp"
+        android:id="@+id/view_line"
+        android:layout_above="@+id/sharePlatform"
+        android:background="@color/lineColor"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
+<!--android:layout_below="@+id/rl_tip"-->
     <LinearLayout
         android:id="@+id/sharePlatform"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:layout_below="@+id/rl_tip"
+        android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="15dp"
         android:gravity="center"
         android:orientation="horizontal">
 

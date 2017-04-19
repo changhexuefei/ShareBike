@@ -9,6 +9,7 @@ import android.support.v7.widget.OrientationHelper;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
@@ -37,15 +38,20 @@ import okhttp3.Call;
 
 public class TransactionDetailActivity extends BaseActivity {
 
-    @BindView(R.id.back)
-    ImageView back;
+
     @BindView(R.id.transact_list)
     LRecyclerView mTransactList;
     @BindView(R.id.default_transaction_show)
     RelativeLayout mDefaultTransactionShow;
+    @BindView(R.id.back)
+    ImageView mBack;
+    @BindView(R.id.refundExplain)
+    TextView mRefundExplain;
+
     private String mUserId;
     private TransactionDetailInfo mTransactionDetailInfo;
     private TransactionDetailInfoAdapter mAdapter;
+    private String mToken;
 
     @Override
     protected int getLayoutId() {
@@ -58,14 +64,11 @@ public class TransactionDetailActivity extends BaseActivity {
         Intent intent = getIntent();
         if (intent != null) {
             mUserId = intent.getStringExtra("userId");
+            mToken = intent.getStringExtra("token");
         }
 
     }
 
-    @OnClick(R.id.back)
-    public void onClick() {
-        finish();
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,25 +78,26 @@ public class TransactionDetailActivity extends BaseActivity {
 
 
     private void getTransactionDetail(String userId) {
-        Map<String,String> map = new HashMap<>();
-        map.put("userId",userId);
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("token", mToken);
         OkHttpUtils.post().url(Api.BASE_URL + Api.SEARCHPAYLIST).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(TransactionDetailActivity.this,"服务器忙！");
+                ToastUtils.showShort(TransactionDetailActivity.this, "服务器忙！");
             }
 
             @Override
             public void onResponse(String response, int id) {
-                LogUtils.d("充值",response);
-                if(JsonUtils.isSuccess(response)){
+                LogUtils.d("充值", response);
+                if (JsonUtils.isSuccess(response)) {
                     mDefaultTransactionShow.setVisibility(View.GONE);
                     mTransactList.setVisibility(View.VISIBLE);
                     Gson gson = new Gson();
                     mTransactionDetailInfo = gson.fromJson(response, TransactionDetailInfo.class);
-                    LogUtils.d("几条",mTransactionDetailInfo.getPayBills().size()+"");
+                    LogUtils.d("几条", mTransactionDetailInfo.getPayBills().size() + "");
                     mTransactList.setLayoutManager(new LinearLayoutManager(TransactionDetailActivity.this, OrientationHelper.VERTICAL, false));
-                    mAdapter=new TransactionDetailInfoAdapter(TransactionDetailActivity.this,R.layout.item_transaction_detail,mTransactionDetailInfo.getPayBills());
+                    mAdapter = new TransactionDetailInfoAdapter(TransactionDetailActivity.this, R.layout.item_transaction_detail, mTransactionDetailInfo.getPayBills());
                     LRecyclerViewAdapter adapter = new LRecyclerViewAdapter(mAdapter);
                     //添加分割线
                     mTransactList.addItemDecoration(new DividerItemDecoration(TransactionDetailActivity.this, DividerItemDecoration.VERTICAL));
@@ -103,11 +107,22 @@ public class TransactionDetailActivity extends BaseActivity {
                     //禁用自动加载更多功能
                     mTransactList.setLoadMoreEnabled(false);
 
-                }else{
+                } else {
                     mDefaultTransactionShow.setVisibility(View.VISIBLE);
                 }
             }
         });
     }
 
+    @OnClick({R.id.back, R.id.refundExplain})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.back:
+                finish();
+                break;
+            case R.id.refundExplain:
+                startActivity(new Intent(this,RefundExplainActivity.class));
+                break;
+        }
+    }
 }

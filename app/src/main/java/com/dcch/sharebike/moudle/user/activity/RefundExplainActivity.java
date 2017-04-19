@@ -12,26 +12,25 @@ import com.dcch.sharebike.http.Api;
 
 import butterknife.BindView;
 
-public class UserAgreementActivity extends BaseActivity {
+public class RefundExplainActivity extends BaseActivity {
 
 
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.userAgreement)
-    WebView mUserAgreement;
+    @BindView(R.id.refund_explain_web_view)
+    WebView mRefundExplainWebView;
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_user_agreement;
+        return R.layout.activity_refund_explain;
     }
 
     @Override
     protected void initData() {
-
         mToolbar.setTitle("");
-        mTitle.setText(getResources().getString(R.string.user_agreement));
+        mTitle.setText(getResources().getString(R.string.refund_instructions));
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,13 +38,15 @@ public class UserAgreementActivity extends BaseActivity {
                 finish();
             }
         });
-        mUserAgreement.getSettings().setJavaScriptEnabled(true);
-        mUserAgreement.getSettings().setSupportZoom(false);
-        mUserAgreement.getSettings().setBuiltInZoomControls(false);
-        mUserAgreement.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+
+        mRefundExplainWebView.getSettings().setJavaScriptEnabled(true);
+        mRefundExplainWebView.getSettings().setSupportZoom(false);
+        mRefundExplainWebView.getSettings().setBuiltInZoomControls(false);
+        mRefundExplainWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 //        mUserAgreement.getSettings().setDefaultFontSize(18);
 //        mUserAgreement.getSettings().setUseWideViewPort(true);//关键点
-        mUserAgreement.loadUrl(Api.USERAGREEMENT);
+        mRefundExplainWebView.loadUrl(Api.REFUNDEXPLAIN);
+
     }
 
 }

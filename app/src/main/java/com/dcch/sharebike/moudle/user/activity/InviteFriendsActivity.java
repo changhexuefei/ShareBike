@@ -23,10 +23,10 @@ import cn.sharesdk.wechat.moments.WechatMoments;
 
 
 public class InviteFriendsActivity extends BaseActivity {
-    @BindView(R.id.tv_tip_four)
-    TextView mTvTipFour;
-    @BindView(R.id.updateInvitationCode)
-    TextView mUpdateInvitationCode;
+//    @BindView(R.id.tv_tip_four)
+//    TextView mTvTipFour;
+//    @BindView(R.id.updateInvitationCode)
+//    TextView mUpdateInvitationCode;
     @BindView(R.id.shareWeiChat)
     Button mShareWeiChat;
     @BindView(R.id.shareWeiChatCircle)
@@ -65,13 +65,13 @@ public class InviteFriendsActivity extends BaseActivity {
     protected void initListener() {
         super.initListener();
     }
-
-    @OnClick( {R.id.updateInvitationCode,R.id.shareWeiChat,R.id.shareWeiChatCircle,R.id.shareQQ,R.id.shareQQZONE,R.id.shareSina})
+    //R.id.updateInvitationCode,
+    @OnClick( {R.id.shareWeiChat,R.id.shareWeiChatCircle,R.id.shareQQ,R.id.shareQQZONE,R.id.shareSina})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.updateInvitationCode:
-                String inviteCode = mUpdateInvitationCode.getText().toString().trim();
-                break;
+//            case R.id.updateInvitationCode:
+//                String inviteCode = mUpdateInvitationCode.getText().toString().trim();
+//                break;
 
             case R.id.shareWeiChat:
                 LogUtils.d("点击","微信");
@@ -123,7 +123,7 @@ public class InviteFriendsActivity extends BaseActivity {
         // text是分享文本，所有平台都需要这个字段
         oks.setText("分享快乐，就骑麒麟单车");
         //分享网络图片，新浪微博分享网络图片需要通过审核后申请高级写入接口，否则请注释掉测试新浪微博
-        oks.setImageUrl("http://img2.niutuku.com/desk/1208/2110/ntk-2110-36971.jpg");
+        oks.setImageUrl("http://192.168.1.131:8080/MavenSSM/Images/qilin-yv-now-L_96.png");
         // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
 //        oks.setImagePath();//确保SDcard下面存在此张图片
         // url仅在微信（包括好友和朋友圈）中使用

@@ -84,6 +84,7 @@ public class GPSService extends Service {
     private boolean isEncrypt = false; // true:读取百度加密经纬度 false:读取设备提供经纬度
     private boolean isDebug = true;
     private LocationManager mLocationManager;
+    private String mToken;
 
     // 设备定位经纬度
     private enum DeviceLocType {
@@ -147,6 +148,7 @@ public class GPSService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
+            mToken = intent.getStringExtra("token");
             mUserId = intent.getStringExtra("userId");
             mBicycleNo = intent.getStringExtra("bicycleNo");
             mCarRentalOrderDate = intent.getStringExtra("carRentalOrderDate");
@@ -395,16 +397,15 @@ public class GPSService extends Service {
 
                 Map<String, String> map = new HashMap<String, String>();
                 String url = Api.BASE_URL + Api.ORDERCAST;
+                map.put("token",mToken);
                 map.put("carRentalOrderDate", mCarRentalOrderDate);
                 map.put("bicycleNo", mBicycleNo);
                 map.put("carRentalOrderId", mCarRentalOrderId);
                 map.put("userId", mUserId);
                 map.put("lng", mRouteLng + "");
-                LogUtils.d("距离",mRouteLng + "");
                 map.put("lat", mRouteLat + "");
-                LogUtils.d("距离",mRouteLat + "");
                 map.put("mile", totalDistance / 1000 + "");
-                LogUtils.d("距离",totalDistance / 1000 + "");
+
 
                 OkHttpUtils.post().url(url).params(map).build().execute(new StringCallback() {
                     @Override

@@ -65,6 +65,7 @@ public class UnableUnlockFragment extends Fragment {
     String contentText;
     public static final String BOUNDARY = "ZnGpDtePMx0KrHh_G0X99Yef9r8JZsRJSXC";
     private String result;
+    private String mToken;
 
     public UnableUnlockFragment() {
         // Required empty public constructor
@@ -80,8 +81,9 @@ public class UnableUnlockFragment extends Fragment {
             Log.d("用户明细", userDetail);
             try {
                 JSONObject object = new JSONObject(userDetail);
-                int id = object.getInt("id");
+                int id = object.optInt("id");
                 uID = String.valueOf(id);
+                mToken = object.optString("token");
                 Log.d("用户ID", uID);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -134,7 +136,7 @@ public class UnableUnlockFragment extends Fragment {
                     map.put("faultDescription", contentText);
                     map.put("selectFaultDescription", "");
                     map.put("imageFile", "");
-                    LogUtils.d("怎闷了",uID+"\n"+bikeNo+""+contentText);
+                    map.put("token",mToken);
                     OkHttpUtils.post()
                             .url(Api.BASE_URL + Api.ADDTROUBLEORDER)
                             .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)

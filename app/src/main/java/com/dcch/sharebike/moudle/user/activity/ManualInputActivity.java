@@ -48,6 +48,7 @@ public class ManualInputActivity extends BaseActivity {
     private String mTag;
     private Camera camera = null;
     private Camera.Parameters parameters = null;
+    private String mToken;
 
 
     @Override
@@ -60,6 +61,7 @@ public class ManualInputActivity extends BaseActivity {
         Intent intent = getIntent();
         if (intent != null) {
             mTag = intent.getStringExtra("tag");
+            mToken = intent.getStringExtra("token");
         }
 
     }
@@ -123,6 +125,7 @@ public class ManualInputActivity extends BaseActivity {
             case R.id.ensure:
                 Map<String, String> map = new HashMap<>();
                 map.put("lockremark", bikeNo);
+                map.put("token",mToken);
                 OkHttpUtils.post().url(Api.BASE_URL + Api.CHECKBICYCLENO).params(map).build().execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {

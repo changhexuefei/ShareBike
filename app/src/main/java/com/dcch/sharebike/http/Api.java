@@ -2,10 +2,10 @@ package com.dcch.sharebike.http;
 
 
 public class Api {
-//    public static final String BASE_URL = "http://192.168.1.159:8080/MavenSSM/mobile/";
+    //    public static final String BASE_URL = "http://192.168.1.159:8080/MavenSSM/mobile/";
 //    public static final String BASE_URL = "http://192.168.1.148:8080/MavenSSM/mobile/";
 //    public static final String BASE_URL = "http://192.168.1.131:8080/MavenSSM/mobile/";
-    public static final String BASE_URL = "http://114.112.86.38/MavenSSM/mobile/";
+        public static final String BASE_URL = "http://114.112.86.38/MavenSSM/mobile/";
 //    获取验证码
     public static final String REGISTER = "register.do?";
     //注册登录
@@ -14,7 +14,7 @@ public class Api {
     public static final String UPDATEUSERCASHSTATUS = "updateUserCashStatus.do?";
     //认证身份
     public static final String UPDATEUSERSTATUS = "updateUserAppStatus.do?";
-//    public static final String UPDATEUSERSTATUS = "updateUserStatus.do?";
+    //    public static final String UPDATEUSERSTATUS = "updateUserStatus.do?";
     //请求车辆信息
     public static final String GINPUT = "findBicycle.do?";
     //预约用车
@@ -61,5 +61,12 @@ public class Api {
     public static final String SEARCHPAYLIST = "searchPayList.do?";
     //微信退款
     public static final String REFUNDWXPAY = "refundWXPay.do?";
-
+    //用户协议
+    public static final String USERAGREEMENT = "http://192.168.1.131:8080/MavenSSM/Explain/userAgreement.jsp";
+    //退款说明
+    public static final String REFUNDEXPLAIN = "http://192.168.1.131:8080/MavenSSM/Explain/refundAgreement.jsp";
+    //押金说明
+    public static final String DEPOSITAGREEMENT = "http://192.168.1.131:8080/MavenSSM/Explain/depositAgreement.jsp";
+    //充值协议
+    public static final String RECHARGEAGREEMENT = "http://192.168.1.131:8080/MavenSSM/Explain/rechargeAgreement.jsp";
 }

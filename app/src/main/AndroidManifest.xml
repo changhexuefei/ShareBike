@@ -99,8 +99,9 @@
             android:name=".MainActivity"
             android:launchMode="singleTask">
         </activity>
-        <activity android:name=".activity.SplashActivity"
-                  android:theme="@style/Theme.AppCompat">
+        <activity
+            android:name=".activity.SplashActivity"
+            android:theme="@style/Theme.AppCompat">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -364,6 +365,12 @@
         <activity android:name=".moudle.user.activity.JourneyDetailActivity">
         </activity>
         <activity android:name=".moudle.user.activity.UserAgreementActivity">
+        </activity>
+        <activity android:name=".moudle.user.activity.RefundExplainActivity">
+        </activity>
+        <activity android:name=".moudle.user.activity.CashPledgeExplainActivity">
+        </activity>
+        <activity android:name=".moudle.user.activity.RechargeAgreementActivity">
         </activity>
     </application>
 

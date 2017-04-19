@@ -105,6 +105,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     private Camera.Parameters parameters = null;
     public static boolean kaiguan = true; // 定义开关状态，状态为false，打开状态，状态为true，关闭状态
     private String mMsg;
+    private String mToken;
 
     public Handler getHandler() {
         return handler;
@@ -150,12 +151,14 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         Intent intent = getIntent();
         if (intent != null) {
             mMsg = intent.getStringExtra("msg");
+            mToken = intent.getStringExtra("token");
         }
         mManualInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent manual = new Intent(CaptureActivity.this, ManualInputActivity.class);
                 manual.putExtra("tag", mMsg);
+                manual.putExtra("token",mToken);
                 startActivity(manual);
             }
         });
@@ -266,6 +269,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         final String rawResultText = rawResult.getText();
         Map<String, String> map = new HashMap<>();
         map.put("lockremark", rawResultText);
+        map.put("token",mToken);
         OkHttpUtils.post().url(Api.BASE_URL + Api.CHECKBICYCLENO).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {

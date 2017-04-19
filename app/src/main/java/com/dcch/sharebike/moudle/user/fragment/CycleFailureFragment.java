@@ -113,6 +113,7 @@ public class CycleFailureFragment extends Fragment {
     private String mImageResult = "";
     private String selectResult = "";
     String content = "";
+    private String mToken;
 
     public CycleFailureFragment() {
         // Required empty public constructor
@@ -128,8 +129,9 @@ public class CycleFailureFragment extends Fragment {
             String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
             try {
                 JSONObject object = new JSONObject(userDetail);
-                int id = object.getInt("id");
+                int id = object.optInt("id");
                 uID = String.valueOf(id);
+                mToken = object.optString("token");
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -224,6 +226,7 @@ public class CycleFailureFragment extends Fragment {
                     map.put("faultDescription", contentText);
                     map.put("selectFaultDescription", selectResult);
                     map.put("imageFile", mImageResult);
+                    map.put("token",mToken);
                     OkHttpUtils.post()
                             .url(Api.BASE_URL + Api.ADDTROUBLEORDER)
                             .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)

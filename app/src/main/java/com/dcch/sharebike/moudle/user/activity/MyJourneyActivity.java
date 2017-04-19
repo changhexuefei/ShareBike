@@ -56,6 +56,7 @@ public class MyJourneyActivity extends BaseActivity {
     private JSONObject object;
     private String uID;
     private JourneyInfo mJourneyInfo;
+    private String mToken;
 
 
     @Override
@@ -90,6 +91,7 @@ public class MyJourneyActivity extends BaseActivity {
         Intent intent = getIntent();
         if (intent != null) {
             mPhone = intent.getStringExtra("phone");
+            mToken = intent.getStringExtra("token");
         }
     }
 
@@ -98,12 +100,14 @@ public class MyJourneyActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         LogUtils.d("why", "为什么onCreate");
         super.onCreate(savedInstanceState);
-        getJourneyInfo(mPhone);
+        getJourneyInfo(mPhone,mToken);
     }
 
-    private void getJourneyInfo(String phone) {
+    private void getJourneyInfo(String phone,String mToken) {
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone);
+        map.put("token",mToken);
+        LogUtils.d("空空",phone+"\n"+mToken);
         OkHttpUtils.post().url(Api.BASE_URL + Api.GETCARRENTALORDERBYPHONE).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {

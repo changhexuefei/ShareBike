@@ -48,7 +48,6 @@
     <string name="realName_identity_title">实名认证</string>
     <string name="identity_tip_one">请输入姓名</string>
     <string name="indetity_tip_two">请输入身份证号</string>
-    <string name="identity_area">实名认证</string>
     <string name="company_mail">ditek@ditek.com.cn</string>
     <string name="email">电子邮箱</string>
     <string name="company_phone">010-82601206</string>
@@ -68,6 +67,7 @@
     <string name="user_guide">用户指南</string>
     <string name="setting">设置</string>
     <string name="user_agreement">用户协议</string>
+    <string name="recharge_agreement">充值协议</string>
     <string name="cumulative_cycling">累计骑行(公里)</string>
     <string name="saving_carbon_emissions">节约碳排放(千克)</string>
     <string name="sports_achievement">运动成就(大卡)</string>
@@ -107,4 +107,5 @@
     <string name="journey_detail">行程详情</string>
     <string name="splash_tip_one">绿色出行</string>
     <string name="splash_tip_two">麒乐无穷</string>
+    <string name="cashPledge_explain">押金说明</string>
 </resources>

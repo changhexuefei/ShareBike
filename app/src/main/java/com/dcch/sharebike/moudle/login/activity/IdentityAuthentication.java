@@ -59,6 +59,7 @@ public class IdentityAuthentication extends BaseActivity {
     private String realName;
     private String cardNum;
     private String uID;
+    private String mToken;
 
     @Override
     protected int getLayoutId() {
@@ -68,7 +69,7 @@ public class IdentityAuthentication extends BaseActivity {
     @Override
     protected void initData() {
         mToolbar.setTitle("");
-        mTitle.setText(getResources().getString(R.string.identity_area));
+        mTitle.setText(getResources().getString(R.string.realName_identity_title));
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +85,7 @@ public class IdentityAuthentication extends BaseActivity {
         try {
             JSONObject object = new JSONObject(userDetail);
             int id = object.getInt("id");
+            mToken = object.optString("token");
             uID = String.valueOf(id);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -153,18 +155,19 @@ public class IdentityAuthentication extends BaseActivity {
         switch (view.getId()) {
             case R.id.btn_authentication:
                 //实名认证的接口
-                verifyRealName(uID, realName, cardNum);
+                verifyRealName(uID, realName, cardNum,mToken);
                 break;
         }
     }
 
-    private void verifyRealName(String uID, final String realName, String cardNum) {
+    private void verifyRealName(String uID, final String realName, String cardNum,String token) {
         try {
             String encode = URLEncoder.encode(realName, "utf-8");//"UTF-8"
             Map<String, String> map = new HashMap<>();
             map.put("userId", uID);
             map.put("name", encode);
             map.put("IDcard", cardNum);
+            map.put("token",token);
 
             OkHttpUtils.post().url(Api.BASE_URL + Api.UPDATEUSERSTATUS).params(map).build().execute(new StringCallback() {
                 @Override

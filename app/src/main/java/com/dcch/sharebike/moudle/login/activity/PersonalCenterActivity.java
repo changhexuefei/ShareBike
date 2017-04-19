@@ -1,7 +1,6 @@
 package com.dcch.sharebike.moudle.login.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +13,7 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.moudle.login.fragment.LoginFragment;
 import com.dcch.sharebike.moudle.login.fragment.UnLoginFragment;
+import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 
 import butterknife.BindView;
@@ -29,8 +29,8 @@ public class PersonalCenterActivity extends BaseActivity {
     TextView mTitle;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    //记录Fragment的位置
-    private int position = 0;
+//    //记录Fragment的位置
+//    private int position = 0;
 
     @Override
     protected int getLayoutId() {
@@ -53,11 +53,10 @@ public class PersonalCenterActivity extends BaseActivity {
         showFragment();
     }
 
-
     private void showFragment() {
         hideFragments();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-
+        LogUtils.d("状态", SPUtils.isLogin() + "1");
         if (SPUtils.isLogin()) {
             if (lf == null) {
                 lf = new LoginFragment();
@@ -94,20 +93,26 @@ public class PersonalCenterActivity extends BaseActivity {
         Intent backToLoginMain = new Intent(PersonalCenterActivity.this, MainActivity.class);
         startActivity(backToLoginMain);
         finish();
-
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        position = savedInstanceState.getInt("position");
-        showFragment();
-        super.onRestoreInstanceState(savedInstanceState);
+    protected void onResume() {
+        super.onResume();
+        LogUtils.d("状态", SPUtils.isLogin() + "2");
+
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        //记录当前的position
-        outState.putInt("position", position);
-    }
+    //    @Override
+//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+//        position = savedInstanceState.getInt("position");
+//        showFragment();
+//        super.onRestoreInstanceState(savedInstanceState);
+//    }
+//
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        //记录当前的position
+//        outState.putInt("position", position);
+//    }
 
 }
