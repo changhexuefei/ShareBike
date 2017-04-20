@@ -83,7 +83,6 @@
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.FLASHLIGHT"/>
-
     <uses-feature android:name="android.hardware.camera.autofocus"/>
 
     <application
@@ -104,7 +103,6 @@
             android:theme="@style/Theme.AppCompat">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -332,14 +330,12 @@
         <activity android:name=".moudle.user.activity.InviteFriendsActivity"/>
         <activity android:name=".moudle.user.activity.AboutUsActivity"/>
         <activity android:name=".moudle.user.activity.SetAddressActivity"/>
-        <activity android:name=".moudle.user.activity.ShowRefundResultsActivity">
-        </activity>
-        <activity android:name=".moudle.user.activity.ManualInputActivity">
-        </activity>
-        <activity android:name=".moudle.user.activity.RidingResultActivity">
-        </activity>
-        <activity android:name=".moudle.user.activity.UnlockProgressActivity">
-        </activity>
+        <activity android:name=".moudle.user.activity.ShowRefundResultsActivity"/>
+        <activity android:name=".moudle.user.activity.ManualInputActivity"/>
+        <activity
+            android:name=".moudle.user.activity.RidingResultActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".moudle.user.activity.UnlockProgressActivity"/>
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"

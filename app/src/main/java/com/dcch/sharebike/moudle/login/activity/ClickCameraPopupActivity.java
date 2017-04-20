@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
+import com.dcch.sharebike.utils.LogUtils;
 
 import org.simple.eventbus.EventBus;
 
@@ -65,5 +66,11 @@ public class ClickCameraPopupActivity extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
         EventBus.getDefault().post(new MessageEvent(), "allShow");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LogUtils.d("看看","onResume");
     }
 }

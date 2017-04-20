@@ -34,7 +34,7 @@
     <string name="upload">提交</string>
     <string name="myMessage">我的消息</string>
     <string name="inviteFriends">邀请好友</string>
-    <string name="inviteTipTwo">好友用您的邀请码成功注册，您的信用值会增加哦!</string>
+    <string name="inviteTipTwo">来一场说走就走的麒行之旅</string>
     <string name="inviteTipOne">邀请好友一起骑行</string>
     <string name="inviteTipThere">您的专属邀请码为：</string>
     <string name="inviteUpdateCode">修改</string>
@@ -45,6 +45,8 @@
     <string name="realName_identity">实名认证</string>
     <string name="deposit_pay">押金交纳</string>
     <string name="phone_verification">手机验证</string>
+    <string name="agreement">用车服务条款</string>
+    <string name="ride_result">骑行结束页</string>
     <string name="realName_identity_title">实名认证</string>
     <string name="identity_tip_one">请输入姓名</string>
     <string name="indetity_tip_two">请输入身份证号</string>
@@ -108,4 +110,8 @@
     <string name="splash_tip_one">绿色出行</string>
     <string name="splash_tip_two">麒乐无穷</string>
     <string name="cashPledge_explain">押金说明</string>
+    <string name="transport_regulations">《用车服务条例》</string>
+    <string name="login_tip">点击-确定，即表示已阅读并同意</string>
+    <string name="recharge_bike_fare_tips">麒麟不会以任何形式要求您输入银行账户和密码</string>
+    <string name="recharge_bike_fare_tip_two">点击充值，即表示您已阅读并同意</string>
 </resources>

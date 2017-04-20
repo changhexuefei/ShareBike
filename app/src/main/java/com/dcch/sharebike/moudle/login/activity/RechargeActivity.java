@@ -66,14 +66,11 @@ public class RechargeActivity extends BaseActivity {
     TextView mTitle;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-
     private static final int SDK_PAY_FLAG = 1;
-    private static final int SDK_AUTH_FLAG = 2;
+//    private static final int SDK_AUTH_FLAG = 2;
     @BindView(R.id.stepsView)
     StepsView mStepsView;
-    private String ipAddress = "";
     private String userID;
-    private String mOutTradeNo;
 
     @Override
     protected int getLayoutId() {
@@ -131,87 +128,96 @@ public class RechargeActivity extends BaseActivity {
 
             case R.id.btn_recharge:
                 String moneySum = money.getText().toString().trim();
+                String outTradeNo;
                 if (aliCheckbox.isChecked()) {
                     final AliPay aliPay = new AliPay(this);
-                    mOutTradeNo = aliPay.getOutTradeNo();
-                    Map<String, String> map = new HashMap<>();
-                    map.put("outtradeno", mOutTradeNo);
-                    map.put("orderbody", "交押金");
-                    map.put("subject", "押金");
-                    map.put("money", moneySum);
-                    OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAY).params(map).build().execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            LogUtils.d(e.getMessage());
-                        }
+                    outTradeNo = aliPay.getOutTradeNo();
+                    if (moneySum != null && userID != null && outTradeNo != null) {
+                        Map<String, String> map = new HashMap<>();
+                        map.put("passback_params", userID);
+                        map.put("outtradeno", outTradeNo);
+                        map.put("orderbody", "交押金");
+                        map.put("subject", "押金");
+                        map.put("money", moneySum);
+                        OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAY).params(map).build().execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                LogUtils.d(e.getMessage());
+                            }
 
-                        @Override
-                        public void onResponse(final String response, int id) {
-                            LogUtils.d("支付", response);
-                            Runnable payRunnable = new Runnable() {
-                                @Override
-                                public void run() {
-                                    EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
-                                    PayTask task = new PayTask(RechargeActivity.this);
-                                    Map<String, String> stringStringMap = task.payV2(response, true);
-                                    Message msg = new Message();
-                                    msg.what = SDK_PAY_FLAG;
-                                    msg.obj = stringStringMap;
-                                    handler.sendMessage(msg);
-
-                                }
-                            };
-                            // 必须异步调用
-                            Thread payThread = new Thread(payRunnable);
-                            payThread.start();
-                        }
-                    });
+                            @Override
+                            public void onResponse(final String response, int id) {
+                                LogUtils.d("支付", response);
+                                Runnable payRunnable = new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
+                                        PayTask task = new PayTask(RechargeActivity.this);
+                                        Map<String, String> stringStringMap = task.payV2(response, true);
+                                        Message msg = new Message();
+                                        msg.what = SDK_PAY_FLAG;
+                                        msg.obj = stringStringMap;
+                                        handler.sendMessage(msg);
+                                    }
+                                };
+                                // 必须异步调用
+                                Thread payThread = new Thread(payRunnable);
+                                payThread.start();
+                            }
+                        });
+                    } else {
+                        ToastUtils.showShort(App.getContext(), "服务忙，请稍后重试");
+                    }
                 } else if (weixinCheckbox.isChecked()) {
                     //调取微信的支付方式
                     final IWXAPI msgApi = WXAPIFactory.createWXAPI(this, MyContent.APP_ID);
                     WeixinPay weixinPay = new WeixinPay(this);
                     if (NetUtils.isConnected(App.getContext())) {
+                        String ipAddress;
                         if (NetUtils.isWifi(App.getContext())) {
                             ipAddress = weixinPay.getLocalIpAddress();
                         } else {
                             ipAddress = weixinPay.getIpAddress();
                         }
-                        mOutTradeNo = weixinPay.getOutTradeNo();
-                        Map<String, String> map = new HashMap<>();
-                        map.put("out_trade_no", mOutTradeNo);
-                        map.put("body", "押金");
-                        map.put("attach", userID);
-                        map.put("total_price", "0.01");
-                        map.put("spbill_create_ip", ipAddress);
-                        LogUtils.d("微信支付", ipAddress);
-                        OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINCASHPAY).params(map).build().execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                ToastUtils.showShort(RechargeActivity.this, "服务器正忙请稍后！");
-                            }
-
-                            @Override
-                            public void onResponse(String response, int id) {
-                                LogUtils.d("微信支付", response);
-                                if (JsonUtils.isSuccess(response)) {
-                                    PayReq req = new PayReq();
-                                    Gson gson = new Gson();
-                                    WeixinReturnInfo weixinReturnInfo = gson.fromJson(response, WeixinReturnInfo.class);
-                                    req.appId = weixinReturnInfo.getAppid();
-                                    req.partnerId = weixinReturnInfo.getMch_id();
-                                    req.prepayId = weixinReturnInfo.getPrepay_id();
-                                    req.nonceStr = weixinReturnInfo.getNonce_str();
-                                    req.timeStamp = weixinReturnInfo.getTimestamp();
-                                    req.packageValue = weixinReturnInfo.getPackageid();
-                                    req.sign = weixinReturnInfo.getSign();
-                                    req.extData = "app data"; // optional
-                                    msgApi.sendReq(req);
-                                } else {
+                        outTradeNo = weixinPay.getOutTradeNo();
+                        if (outTradeNo != null && userID != null && ipAddress != null) {
+                            Map<String, String> map = new HashMap<>();
+                            map.put("out_trade_no", outTradeNo);
+                            map.put("body", "押金");
+                            map.put("attach", userID);
+                            map.put("total_price", "0.01");
+                            map.put("spbill_create_ip", ipAddress);
+                            LogUtils.d("微信支付", ipAddress);
+                            OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINCASHPAY).params(map).build().execute(new StringCallback() {
+                                @Override
+                                public void onError(Call call, Exception e, int id) {
                                     ToastUtils.showShort(RechargeActivity.this, "服务器正忙请稍后！");
                                 }
-                            }
-                        });
 
+                                @Override
+                                public void onResponse(String response, int id) {
+                                    LogUtils.d("微信支付", response);
+                                    if (JsonUtils.isSuccess(response)) {
+                                        PayReq req = new PayReq();
+                                        Gson gson = new Gson();
+                                        WeixinReturnInfo weixinReturnInfo = gson.fromJson(response, WeixinReturnInfo.class);
+                                        req.appId = weixinReturnInfo.getAppid();
+                                        req.partnerId = weixinReturnInfo.getMch_id();
+                                        req.prepayId = weixinReturnInfo.getPrepay_id();
+                                        req.nonceStr = weixinReturnInfo.getNonce_str();
+                                        req.timeStamp = weixinReturnInfo.getTimestamp();
+                                        req.packageValue = weixinReturnInfo.getPackageid();
+                                        req.sign = weixinReturnInfo.getSign();
+                                        req.extData = "app data"; // optional
+                                        msgApi.sendReq(req);
+                                    } else {
+                                        ToastUtils.showShort(RechargeActivity.this, "服务器正忙请稍后！");
+                                    }
+                                }
+                            });
+                        } else {
+                            ToastUtils.showShort(App.getContext(), "服务忙，请稍后重试");
+                        }
                     } else {
                         ToastUtils.showShort(RechargeActivity.this, "网络环境差，请稍后重试");
                     }

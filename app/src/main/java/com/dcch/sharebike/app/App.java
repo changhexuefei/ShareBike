@@ -32,7 +32,6 @@ public class App extends Application {
             instance = new App();
         }
         return instance;
-
     }
 
     @Override
@@ -87,12 +86,9 @@ public class App extends Application {
     //遍历所有Activity并finish
 
     public void exit() {
-
         for (Activity activity : activityList) {
             activity.finish();
         }
         System.exit(0);
     }
-
-
 }

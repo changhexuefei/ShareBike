@@ -15,7 +15,6 @@
  */
 package com.dcch.sharebike.libzxing.zxing.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,6 +38,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.dcch.sharebike.R;
+import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.libzxing.zxing.camera.CameraManager;
 import com.dcch.sharebike.libzxing.zxing.decode.DecodeThread;
@@ -60,7 +60,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 
@@ -74,7 +73,7 @@ import okhttp3.Call;
  * @author dswitkin@google.com (Daniel Switkin)
  * @author Sean Owen
  */
-public final class CaptureActivity extends Activity implements SurfaceHolder.Callback {
+public final class CaptureActivity extends BaseActivity implements SurfaceHolder.Callback {
 
     private static final String TAG = CaptureActivity.class.getSimpleName();
 
@@ -103,7 +102,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     private boolean isHasSurface = false;
     private Camera camera = null;
     private Camera.Parameters parameters = null;
-    public static boolean kaiguan = true; // 定义开关状态，状态为false，打开状态，状态为true，关闭状态
     private String mMsg;
     private String mToken;
 
@@ -121,10 +119,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        setContentView(R.layout.activity_capture);
-        ButterKnife.bind(this);
-        controlIconSize();
-
         scanPreview = (SurfaceView) findViewById(R.id.capture_preview);
         scanContainer = (RelativeLayout) findViewById(R.id.capture_container);
         scanCropView = (RelativeLayout) findViewById(R.id.capture_crop_view);
@@ -139,6 +133,17 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         animation.setRepeatCount(-1);
         animation.setRepeatMode(Animation.RESTART);
         scanLine.startAnimation(animation);
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_capture;
+    }
+
+    @Override
+    protected void initData() {
+        controlIconSize();
+        init();
     }
 
     private void controlIconSize() {
@@ -179,15 +184,11 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                 }
             }
         });
-
     }
-
 
     @Override
     protected void onResume() {
         super.onResume();
-        init();
-
         // CameraManager must be initialized here, not in onCreate(). This is
         // necessary because we don't
         // want to open the camera driver and measure the screen size if we're

@@ -65,11 +65,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private static final int CODE_ING = 1;   //已发送，倒计时
     private static final int CODE_REPEAT = 2;  //重新发送
     private static final int SMSDDK_HANDLER = 3;  //短信回调
-
-
     private int TIME = 60;//倒计时60s
-
-
     private String seCode;
     private String phone;
 
@@ -91,42 +87,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     getSecurityCode.setBackgroundColor(Color.parseColor("#F05B47"));
                     getSecurityCode.setClickable(true);
                     break;
-//                case SMSDDK_HANDLER:
-//                    int event = msg.arg1;
-//                    int result = msg.arg2;
-//                    Object data = msg.obj;
-//                    //回调完成
-//                    if (result == SMSSDK.RESULT_COMPLETE) {
-//                        //验证码验证成功
-//                        if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-//                            Toast.makeText(LoginActivity.this, "验证成功", Toast.LENGTH_LONG).show();
-//                            Intent i1 = new Intent(LoginActivity.this, RechargeActivity.class);
-//                            startActivity(i1);
-//                            finish();
-//                        }
-//                        //已发送验证码
-//                        else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-//                            Toast.makeText(getApplicationContext(), "验证码已经发送",
-//                                    Toast.LENGTH_SHORT).show();
-//                        } else {
-//                            ((Throwable) data).printStackTrace();
-//                        }
-//                    }
-//                    if (result == SMSSDK.RESULT_ERROR) {
-//                        try {
-//                            Throwable throwable = (Throwable) data;
-//                            throwable.printStackTrace();
-//                            JSONObject object = new JSONObject(throwable.getMessage());
-//                            String des = object.optString("detail");//错误描述
-//                            int status = object.optInt("status");//错误代码
-//                            if (status > 0 && !TextUtils.isEmpty(des)) {
-//                                Toast.makeText(getApplicationContext(), des, Toast.LENGTH_SHORT).show();
-//                                return;
-//                            }
-//                        } catch (Exception e) {
-//                            //do something
-//                        }
-//                    }
+
             }
         }
     };
@@ -151,26 +112,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
         });
     }
-//    private void initSDK() {
-//        SMSSDK.initSDK(LoginActivity.this, "1b4c24f4f4475", "3ba2116b2a11e2836bc5eb1a00fa84ac");
-//        EventHandler eventHandler = new EventHandler() {
-//            @Override
-//            public void afterEvent(int event, int result, Object data) {
-//                Message msg = new Message();
-//                msg.arg1 = event;
-//                msg.arg2 = result;
-//                msg.obj = data;
-//                msg.what = SMSDDK_HANDLER;
-//                handler.sendMessage(msg);
-//            }
-//        };
-    //注册回调监听接口
-//        SMSSDK.registerEventHandler(eventHandler);
-//    }
 
+    //
     @Override
     protected void initListener() {
-
         userPhone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -223,17 +168,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         confirm.setBackgroundColor(Color.parseColor("#F8941D"));
                     }
                 }
-
             }
         });
     }
-
 
     //, R.id.back
     @OnClick({R.id.getSecurityCode, R.id.login_confirm, R.id.rules})
     public void onClick(View view) {
         switch (view.getId()) {
-
             case R.id.getSecurityCode:
                 if (NetUtils.isConnected(LoginActivity.this)) {
                     getseCode(phone);
@@ -248,7 +190,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 //                compareVerificationCode("86", phone, securityCode.getText().toString());
                 if (phone != null && verificationCode != null && verificationCode.equals(seCode)) {
                     registerAndLogin(phone);
-
                 } else {
                     ToastUtils.showShort(this, "验证码错误");
                 }
@@ -295,7 +236,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     protected void onDestroy() {
-//        SMSSDK.unregisterAllEventHandler();
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
@@ -372,5 +312,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this,PersonalCenterActivity.class));
     }
 }

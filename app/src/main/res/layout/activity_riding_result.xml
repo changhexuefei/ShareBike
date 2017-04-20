@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,50 +9,25 @@
     android:background="#cecbcb"
     tools:context="com.dcch.sharebike.moudle.user.activity.RidingResultActivity">
 
-    <FrameLayout
-        android:id="@+id/ride_page"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:background="@color/colorHeading"
-        app:layout_constraintEnd_toEndOf="@id/constraintLayout"
-        app:layout_constraintStart_toStartOf="@id/constraintLayout">
 
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:padding="12dp"
-            android:src="@mipmap/back"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="骑行结束页"
-            android:textColor="@color/common"
-            android:textSize="16sp"/>
-    </FrameLayout>
+    <include layout="@layout/toolbar"/>
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_show"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:layout_below="@+id/toolbar"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        app:cardBackgroundColor="@color/colorTitle"
-        app:layout_constraintEnd_toEndOf="@id/constraintLayout"
-        app:layout_constraintStart_toStartOf="@id/constraintLayout"
-        app:layout_constraintTop_toBottomOf="@+id/ride_page">
-
+        app:cardBackgroundColor="@color/colorTitle">
 
         <RelativeLayout
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center_horizontal"
             android:id="@+id/cost_show"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
             android:gravity="center_horizontal">
 
             <ImageView
@@ -75,10 +50,11 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_gravity="center"
-            android:gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center">
+
             <TextView
                 android:id="@+id/text4"
                 android:layout_width="wrap_content"
@@ -95,22 +71,19 @@
                 android:paddingLeft="5dp"
                 android:text="0.50元"
                 android:textColor="#ffffff"/>
-
-
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
         android:id="@+id/riding_time"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_below="@+id/card_show"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         app:contentPaddingLeft="15dp"
         app:contentPaddingRight="15dp"
-        app:layout_constraintEnd_toEndOf="@id/constraintLayout"
-        app:layout_constraintStart_toStartOf="@id/constraintLayout"
         app:layout_constraintTop_toBottomOf="@+id/card_show">
 
         <TextView
@@ -130,16 +103,14 @@
 
     <android.support.v7.widget.CardView
         android:id="@+id/myWalletCard"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_below="@+id/riding_time"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="0.5dp"
         app:contentPaddingLeft="15dp"
-        app:contentPaddingRight="15dp"
-        app:layout_constraintEnd_toEndOf="@id/constraintLayout"
-        app:layout_constraintStart_toStartOf="@id/constraintLayout"
-        app:layout_constraintTop_toBottomOf="@+id/riding_time">
+        app:contentPaddingRight="15dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -154,22 +125,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
             android:text="10元"/>
-
-
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
         android:id="@+id/myCountry"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_below="@+id/myWalletCard"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="0.5dp"
         app:contentPaddingLeft="15dp"
-        app:contentPaddingRight="15dp"
-        app:layout_constraintEnd_toEndOf="@id/constraintLayout"
-        app:layout_constraintStart_toStartOf="@id/constraintLayout"
-        app:layout_constraintTop_toBottomOf="@+id/myWalletCard">
+        app:contentPaddingRight="15dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -190,16 +157,15 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/myCountry"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="0.5dp"
         app:contentPaddingLeft="15dp"
-        app:contentPaddingRight="15dp"
-        app:layout_constraintEnd_toEndOf="@id/constraintLayout"
-        app:layout_constraintStart_toStartOf="@id/constraintLayout"
-        app:layout_constraintTop_toBottomOf="@+id/myCountry">
+        app:contentPaddingRight="15dp">
 
         <TextView
             android:id="@+id/text5"
@@ -235,8 +201,6 @@
             android:drawableTop="@drawable/share_journey_selector"
             android:gravity="center"
             android:text="分享行程"/>
-
-
     </android.support.v7.widget.CardView>
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

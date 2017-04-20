@@ -161,6 +161,7 @@ public class LoginFragment extends Fragment {
                 } else {
                     LogUtils.d("状态", "您被迫下线了");
                     startActivity(new Intent(getActivity(), LoginActivity.class));
+                    getActivity().finish();
                 }
             }
         });

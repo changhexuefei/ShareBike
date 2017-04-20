@@ -55,7 +55,7 @@
 
     <ImageView
         android:layout_marginTop="60dp"
-        android:layout_alignParentRight="true"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="right"
         android:id="@+id/close"
         android:layout_width="35dp"

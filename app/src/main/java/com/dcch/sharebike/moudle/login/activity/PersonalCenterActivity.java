@@ -1,7 +1,6 @@
 package com.dcch.sharebike.moudle.login.activity;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -22,7 +21,6 @@ public class PersonalCenterActivity extends BaseActivity {
 
     @BindView(R.id.showFragment)
     FrameLayout showFragment;
-    FragmentManager supportFragmentManager;
     LoginFragment lf;
     UnLoginFragment uf;
     @BindView(R.id.title)

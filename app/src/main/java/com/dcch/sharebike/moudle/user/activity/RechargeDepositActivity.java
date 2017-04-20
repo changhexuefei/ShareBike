@@ -1,6 +1,5 @@
 package com.dcch.sharebike.moudle.user.activity;
 
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.Toolbar;
@@ -63,12 +62,11 @@ public class RechargeDepositActivity extends BaseActivity {
     private final static String orderbody = "交押金";
     private final static String subject = "押金";
     private static final int SDK_PAY_FLAG = 1;
-    private static final int SDK_AUTH_FLAG = 2;
+//    private static final int SDK_AUTH_FLAG = 2;
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    private String mMoneySum;
     private String userID;
     String ipAddress = "";
     private String mOutTradeNo;
@@ -100,10 +98,7 @@ public class RechargeDepositActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
     }
-
 
     @OnClick({R.id.rd_aliArea, R.id.rd_weixinArea, R.id.btn_rd_recharge})
     public void onClick(View view) {
@@ -117,43 +112,47 @@ public class RechargeDepositActivity extends BaseActivity {
                 rdWeixinCheckbox.setChecked(true);
                 break;
             case R.id.btn_rd_recharge:
-                mMoneySum = figure.getText().toString().trim();
-                mMoneySum = mMoneySum.substring(0, mMoneySum.length() - 1);
+                String moneySum = figure.getText().toString().trim();
+                moneySum = moneySum.substring(0, moneySum.length() - 1);
                 if (rdAliCheckbox.isChecked()) {
                     final AliPay aliPay = new AliPay(this);
                     mOutTradeNo = aliPay.getOutTradeNo();
-                    Map<String, String> map = new HashMap<>();
-                    map.put("outtradeno", mOutTradeNo);
-                    map.put("orderbody", orderbody);
-                    map.put("subject", subject);
-                    map.put("money", mMoneySum);
-                    OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAY).params(map).build().execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            LogUtils.d(e.getMessage());
-                        }
+                    if (moneySum != null && userID != null && mOutTradeNo != null && subject != null && orderbody != null) {
+                        Map<String, String> map = new HashMap<>();
+                        map.put("passback_params", userID);
+                        map.put("outtradeno", mOutTradeNo);
+                        map.put("orderbody", orderbody);
+                        map.put("subject", subject);
+                        map.put("money", moneySum);
+                        OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAY).params(map).build().execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                LogUtils.d(e.getMessage());
+                            }
 
-                        @Override
-                        public void onResponse(final String response, int id) {
+                            @Override
+                            public void onResponse(final String response, int id) {
 //                        LogUtils.d("支付", response);
-                            Runnable payRunnable = new Runnable() {
-                                @Override
-                                public void run() {
-                                    EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
-                                    PayTask task = new PayTask(RechargeDepositActivity.this);
-                                    Map<String, String> stringStringMap = task.payV2(response, true);
-                                    Message msg = new Message();
-                                    msg.what = SDK_PAY_FLAG;
-                                    msg.obj = stringStringMap;
-                                    handler.sendMessage(msg);
-
-                                }
-                            };
-                            // 必须异步调用
-                            Thread payThread = new Thread(payRunnable);
-                            payThread.start();
-                        }
-                    });
+                                Runnable payRunnable = new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
+                                        PayTask task = new PayTask(RechargeDepositActivity.this);
+                                        Map<String, String> stringStringMap = task.payV2(response, true);
+                                        Message msg = new Message();
+                                        msg.what = SDK_PAY_FLAG;
+                                        msg.obj = stringStringMap;
+                                        handler.sendMessage(msg);
+                                    }
+                                };
+                                // 必须异步调用
+                                Thread payThread = new Thread(payRunnable);
+                                payThread.start();
+                            }
+                        });
+                    } else {
+                        ToastUtils.showShort(App.getContext(), "服务忙，请稍后重试");
+                    }
                 } else if (rdWeixinCheckbox.isChecked()) {
                     //调取微信的支付方式
                     final IWXAPI msgApi = WXAPIFactory.createWXAPI(this, MyContent.APP_ID);
@@ -161,51 +160,53 @@ public class RechargeDepositActivity extends BaseActivity {
                     if (NetUtils.isConnected(App.getContext())) {
                         if (NetUtils.isWifi(App.getContext())) {
                             ipAddress = weixinPay.getLocalIpAddress();
-
                         } else {
                             ipAddress = weixinPay.getIpAddress();
                         }
                         mOutTradeNo = weixinPay.getOutTradeNo();
-                        Map<String, String> map = new HashMap<>();
-                        map.put("out_trade_no", mOutTradeNo);
-                        map.put("body", "押金");
-                        map.put("attach", userID);
-                        map.put("total_price", mMoneySum);
-                        map.put("spbill_create_ip", ipAddress);
-                        LogUtils.d("微信支付", mOutTradeNo+"\n"+ipAddress);
-                        OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINCASHPAY).params(map).build().execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                ToastUtils.showShort(RechargeDepositActivity.this, "服务器正忙请稍后！");
-                            }
-
-                            @Override
-                            public void onResponse(String response, int id) {
-                                LogUtils.d("微信支付", response);
-                                if (JsonUtils.isSuccess(response)) {
-                                    PayReq req = new PayReq();
-                                    Gson gson = new Gson();
-                                    WeixinReturnInfo weixinReturnInfo = gson.fromJson(response, WeixinReturnInfo.class);
-                                    req.appId = weixinReturnInfo.getAppid();
-                                    req.partnerId = weixinReturnInfo.getMch_id();
-                                    req.prepayId = weixinReturnInfo.getPrepay_id();
-                                    req.nonceStr = weixinReturnInfo.getNonce_str();
-                                    req.timeStamp = weixinReturnInfo.getTimestamp();
-                                    req.packageValue = weixinReturnInfo.getPackageid();
-                                    req.sign = weixinReturnInfo.getSign();
-                                    req.extData = "app data"; // optional
-                                    msgApi.sendReq(req);
-                                } else {
+                        if (userID != null && mOutTradeNo != null && moneySum != null) {
+                            Map<String, String> map = new HashMap<>();
+                            map.put("out_trade_no", mOutTradeNo);
+                            map.put("body", "押金");
+                            map.put("attach", userID);
+                            map.put("total_price", moneySum);
+                            map.put("spbill_create_ip", ipAddress);
+                            LogUtils.d("微信支付", mOutTradeNo + "\n" + ipAddress);
+                            OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINCASHPAY).params(map).build().execute(new StringCallback() {
+                                @Override
+                                public void onError(Call call, Exception e, int id) {
                                     ToastUtils.showShort(RechargeDepositActivity.this, "服务器正忙请稍后！");
                                 }
-                            }
-                        });
 
+                                @Override
+                                public void onResponse(String response, int id) {
+                                    LogUtils.d("微信支付", response);
+                                    if (JsonUtils.isSuccess(response)) {
+                                        PayReq req = new PayReq();
+                                        Gson gson = new Gson();
+                                        WeixinReturnInfo weixinReturnInfo = gson.fromJson(response, WeixinReturnInfo.class);
+                                        req.appId = weixinReturnInfo.getAppid();
+                                        req.partnerId = weixinReturnInfo.getMch_id();
+                                        req.prepayId = weixinReturnInfo.getPrepay_id();
+                                        req.nonceStr = weixinReturnInfo.getNonce_str();
+                                        req.timeStamp = weixinReturnInfo.getTimestamp();
+                                        req.packageValue = weixinReturnInfo.getPackageid();
+                                        req.sign = weixinReturnInfo.getSign();
+                                        req.extData = "app data"; // optional
+                                        msgApi.sendReq(req);
+                                    } else {
+                                        ToastUtils.showShort(RechargeDepositActivity.this, "服务器正忙请稍后！");
+                                    }
+                                }
+                            });
+                        } else {
+                            ToastUtils.showShort(App.getContext(), "服务忙，请稍后重试");
+                        }
                     } else {
                         ToastUtils.showShort(RechargeDepositActivity.this, "网络环境差，请稍后重试");
                     }
                 }
-                SPUtils.put(App.getContext(),"mOutTradeNo",mOutTradeNo);
+                SPUtils.put(App.getContext(), "mOutTradeNo", mOutTradeNo);
                 break;
         }
     }
@@ -226,8 +227,6 @@ public class RechargeDepositActivity extends BaseActivity {
                                 Toast.LENGTH_SHORT).show();
 //                        updateUserCashstatus(userID);
 //                        returnData(mMoneySum);
-
-
                     } else {
                         // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
                         if (TextUtils.equals(resultStatus, "8000")) {
@@ -243,43 +242,5 @@ public class RechargeDepositActivity extends BaseActivity {
             }
         }
     };
-
-    private void updateUserCashstatus(String userID) {
-        Map<String, String> map = new HashMap<>();
-        map.put("userId", userID);
-        OkHttpUtils.post().url(Api.BASE_URL + Api.UPDATEUSERCASHSTATUS).params(map).build().execute(new StringCallback() {
-            @Override
-            public void onError(Call call, Exception e, int id) {
-                Log.e("onError:", e.getMessage());
-                ToastUtils.showShort(RechargeDepositActivity.this, "服务器正忙，请稍后再试！");
-            }
-
-            @Override
-            public void onResponse(String response, int id) {
-                Log.d("交押金后", response);
-                //{"code":"1"}
-                try {
-                    JSONObject object = new JSONObject(response);
-                    String code = object.optString("code");
-                    if (code.equals("1")) {
-                        ToastUtils.showShort(RechargeDepositActivity.this, "用户资料更新成功！");
-                    } else if (code.equals("0")) {
-                        ToastUtils.showShort(RechargeDepositActivity.this, "用户资料更新失败！");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-    }
-
-    private void returnData(String moneySum) {
-        Intent mIntent = new Intent();
-        mIntent.putExtra("deposit", moneySum);
-        // 设置结果，并进行传送
-        this.setResult(0, mIntent);
-        this.finish();
-    }
 
 }

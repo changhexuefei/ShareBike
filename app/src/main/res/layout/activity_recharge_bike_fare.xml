@@ -12,32 +12,32 @@
 
     <TextView
         android:id="@+id/tv20"
-        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_below="@+id/toolbar"
         android:background="#F9F9F9"
         android:gravity="center_vertical"
         android:paddingLeft="20dp"
         android:text="充值金额"
         android:textColor="#716F76"/>
-    
+
     <EditText
-        android:visibility="gone"
-        android:textSize="12sp"
-        android:gravity="center"
-        android:hint="按需输入充值金额，最低一元"
-        android:background="#e1dede"
+        android:id="@+id/moneySum"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/tv20"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:id="@+id/moneySum"
-        android:layout_below="@+id/tv20"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"/>
+        android:background="#e1dede"
+        android:gravity="center"
+        android:hint="按需输入充值金额，最低一元"
+        android:textSize="12sp"
+        android:visibility="gone"/>
 
     <RadioGroup
-        android:layout_below="@+id/moneySum"
         android:id="@+id/rg_rec_rg1"
-        style="@style/rg_money">
+        style="@style/rg_money"
+        android:layout_below="@+id/moneySum">
 
         <RadioButton
             android:id="@+id/rb_rg1_10"
@@ -46,7 +46,7 @@
 
         <Space
             android:layout_width="10dp"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
         <RadioButton
             android:id="@+id/rb_rg1_20"
@@ -55,16 +55,19 @@
     </RadioGroup>
 
     <RadioGroup
-        android:layout_below="@+id/rg_rec_rg1"
         android:id="@+id/rg_rec_rg2"
-        style="@style/rg_money">
+        style="@style/rg_money"
+        android:layout_below="@+id/rg_rec_rg1">
+
         <RadioButton
             android:id="@+id/rb_rg2_50"
             style="@style/rb_money_check"
             android:text="￥50.00"/>
+
         <Space
             android:layout_width="10dp"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
+
         <RadioButton
             android:id="@+id/rb_rg2_100"
             style="@style/rb_money_check"
@@ -72,13 +75,13 @@
     </RadioGroup>
 
     <LinearLayout
-        android:layout_marginTop="10dp"
-        android:background="#ffffff"
         android:id="@+id/pay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/rg_rec_rg2"
+        android:layout_marginTop="10dp"
+        android:background="#ffffff"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -98,6 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </RelativeLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
@@ -123,18 +127,52 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bike_fare_tip_two"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="@string/recharge_bike_fare_tip_two"/>
+
+        <TextView
+            android:id="@+id/recharge_agreement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:text="@string/recharge_agreement"
+            android:textColor="@color/colorTitle"/>
+
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/bike_fare_tip_two"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_rbf_recharge"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="@string/recharge_bike_fare_tips"/>
+
     <Button
         android:id="@+id/btn_rbf_recharge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="22dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
         android:background="@color/colorTitle"
-        android:text="车费充值"
+        android:text="@string/recharge_bike_fare"
         android:textColor="#ffffff"
-        android:textSize="16sp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:textSize="16sp"/>
 
 </RelativeLayout>

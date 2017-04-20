@@ -1,5 +1,6 @@
 package com.dcch.sharebike.moudle.user.activity;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.Toolbar;
@@ -81,12 +82,16 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
     String ipAddress = "";
 
     private static final int SDK_PAY_FLAG = 1;
-    private static final int SDK_AUTH_FLAG = 2;
+//    private static final int SDK_AUTH_FLAG = 2;
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    private String mOutTradeNo;
+    @BindView(R.id.weixin)
+    TextView mWeixin;
+    @BindView(R.id.recharge_agreement)
+    TextView mRechargeAgreement;
+//    private String mOutTradeNo;
     private IWXAPI mMsgApi;
 
     @Override
@@ -96,7 +101,6 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
 
     @Override
     protected void initData() {
-
         mToolbar.setTitle("");
         mTitle.setText(getResources().getString(R.string.recharge_bike_fare));
         setSupportActionBar(mToolbar);
@@ -134,10 +138,12 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         rgRecRg2.setOnCheckedChangeListener(this);
     }
 
-    @OnClick({R.id.rbf_aliArea, R.id.rbf_weixinArea, R.id.btn_rbf_recharge})
+    @OnClick({R.id.recharge_agreement, R.id.rbf_aliArea, R.id.rbf_weixinArea, R.id.btn_rbf_recharge})
     public void onClick(View view) {
         switch (view.getId()) {
-
+            case R.id.recharge_agreement:
+                startActivity(new Intent(this, RechargeAgreementActivity.class));
+                break;
             case R.id.rbf_aliArea:
                 rbfAliCheckbox.setChecked(true);
                 rbfWeixinCheckbox.setChecked(false);
@@ -147,44 +153,48 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                 rbfWeixinCheckbox.setChecked(true);
                 break;
             case R.id.btn_rbf_recharge:
-
                 //这里要分两种情况，调取微信和支付宝的支付方式
                 if (rbfAliCheckbox.isChecked()) {
                     //选择支付宝，调取支付宝的支付方法
                     AliPay aliPay = new AliPay(this);
                     String outTradeNo = aliPay.getOutTradeNo();
                     Map<String, String> map = new HashMap<>();
-                    map.put("outtradeno", outTradeNo);
-                    map.put("orderbody", "交车费");
-                    map.put("subject", "车费");
-                    map.put("money", rechargeNumber);
-                    ToastUtils.showShort(RechargeBikeFareActivity.this, rechargeNumber);
-                    OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAY).params(map).build().execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            LogUtils.d(e.getMessage());
-                        }
+                    if (uID != null && rechargeNumber != null && outTradeNo != null) {
+                        map.put("passback_params", uID);
+                        map.put("outtradeno", outTradeNo);
+                        map.put("orderbody", "交车费");
+                        map.put("subject", "车费");
+                        map.put("money", rechargeNumber);
+                        ToastUtils.showShort(RechargeBikeFareActivity.this, rechargeNumber);
+                        OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAY).params(map).build().execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                LogUtils.d(e.getMessage());
+                            }
 
-                        @Override
-                        public void onResponse(final String response, int id) {
-                            LogUtils.d("支付", response);
-                            Runnable payRunnable = new Runnable() {
-                                @Override
-                                public void run() {
-                                    EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
-                                    PayTask task = new PayTask(RechargeBikeFareActivity.this);
-                                    Map<String, String> stringStringMap = task.payV2(response, true);
-                                    Message msg = new Message();
-                                    msg.what = SDK_PAY_FLAG;
-                                    msg.obj = stringStringMap;
-                                    handler.sendMessage(msg);
-                                }
-                            };
-                            // 必须异步调用
-                            Thread payThread = new Thread(payRunnable);
-                            payThread.start();
-                        }
-                    });
+                            @Override
+                            public void onResponse(final String response, int id) {
+                                LogUtils.d("支付", response);
+                                Runnable payRunnable = new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
+                                        PayTask task = new PayTask(RechargeBikeFareActivity.this);
+                                        Map<String, String> stringStringMap = task.payV2(response, true);
+                                        Message msg = new Message();
+                                        msg.what = SDK_PAY_FLAG;
+                                        msg.obj = stringStringMap;
+                                        handler.sendMessage(msg);
+                                    }
+                                };
+                                // 必须异步调用
+                                Thread payThread = new Thread(payRunnable);
+                                payThread.start();
+                            }
+                        });
+                    } else {
+                        ToastUtils.showShort(App.getContext(), "服务忙，请稍后重试");
+                    }
                 } else if (rbfWeixinCheckbox.isChecked()) {
                     //调取微信的支付方式
                     mMsgApi = WXAPIFactory.createWXAPI(this, MyContent.APP_ID);
@@ -195,44 +205,46 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                         } else {
                             ipAddress = weixinPay.getIpAddress();
                         }
-                       String mOutTradeNo = weixinPay.getOutTradeNo();
-                        Map<String, String> map = new HashMap<>();
-                        map.put("out_trade_no", mOutTradeNo);
-                        map.put("attach", uID);
-                        map.put("body", "车费");
-                        map.put("total_price", rechargeNumber);
-                        map.put("spbill_create_ip", ipAddress);
-                        LogUtils.d("微信支付", ipAddress+"\n"+uID+"\n"+mOutTradeNo);
-                        OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINPAY).params(map).build().execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                ToastUtils.showShort(RechargeBikeFareActivity.this, "服务器正忙请稍后！");
-                            }
-
-                            @Override
-                            public void onResponse(String response, int id) {
-                                LogUtils.d("微信支付", response);
-                                if (JsonUtils.isSuccess(response)) {
-                                    PayReq req = new PayReq();
-                                    Gson gson = new Gson();
-                                    WeixinReturnInfo weixinReturnInfo = gson.fromJson(response, WeixinReturnInfo.class);
-                                    req.appId = weixinReturnInfo.getAppid();
-                                    req.partnerId = weixinReturnInfo.getMch_id();
-                                    req.prepayId = weixinReturnInfo.getPrepay_id();
-                                    req.packageValue = weixinReturnInfo.getPackageid();
-                                    req.nonceStr = weixinReturnInfo.getNonce_str();
-                                    req.timeStamp = weixinReturnInfo.getTimestamp();
-                                    req.sign = weixinReturnInfo.getSign();
-                                    req.extData = "app data"; // optional
-                                    Toast.makeText(RechargeBikeFareActivity.this, "正常调起支付", Toast.LENGTH_SHORT).show();
-                                    LogUtils.d("微信支付",req.appId+"\n"+req.partnerId+"\n"+req.prepayId+"\n"+req.nonceStr+"\n"+req.timeStamp+"\n"+req.packageValue+"\n"+req.sign+"\n"+req.extData);
-                                    mMsgApi.sendReq(req);
-                                } else {
+                        String mOutTradeNo = weixinPay.getOutTradeNo();
+                        if (uID != null && mOutTradeNo != null && ipAddress != null) {
+                            Map<String, String> map = new HashMap<>();
+                            map.put("out_trade_no", mOutTradeNo);
+                            map.put("attach", uID);
+                            map.put("body", "车费");
+                            map.put("total_price", rechargeNumber);
+                            map.put("spbill_create_ip", ipAddress);
+                            LogUtils.d("微信支付", ipAddress + "\n" + uID + "\n" + mOutTradeNo);
+                            OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINPAY).params(map).build().execute(new StringCallback() {
+                                @Override
+                                public void onError(Call call, Exception e, int id) {
                                     ToastUtils.showShort(RechargeBikeFareActivity.this, "服务器正忙请稍后！");
                                 }
-                            }
-                        });
 
+                                @Override
+                                public void onResponse(String response, int id) {
+                                    LogUtils.d("微信支付", response);
+                                    if (JsonUtils.isSuccess(response)) {
+                                        PayReq req = new PayReq();
+                                        Gson gson = new Gson();
+                                        WeixinReturnInfo weixinReturnInfo = gson.fromJson(response, WeixinReturnInfo.class);
+                                        req.appId = weixinReturnInfo.getAppid();
+                                        req.partnerId = weixinReturnInfo.getMch_id();
+                                        req.prepayId = weixinReturnInfo.getPrepay_id();
+                                        req.packageValue = weixinReturnInfo.getPackageid();
+                                        req.nonceStr = weixinReturnInfo.getNonce_str();
+                                        req.timeStamp = weixinReturnInfo.getTimestamp();
+                                        req.sign = weixinReturnInfo.getSign();
+                                        req.extData = "app data"; // optional
+                                        LogUtils.d("微信支付", req.appId + "\n" + req.partnerId + "\n" + req.prepayId + "\n" + req.nonceStr + "\n" + req.timeStamp + "\n" + req.packageValue + "\n" + req.sign + "\n" + req.extData);
+                                        mMsgApi.sendReq(req);
+                                    } else {
+                                        ToastUtils.showShort(RechargeBikeFareActivity.this, "服务器正忙请稍后！");
+                                    }
+                                }
+                            });
+                        } else {
+                            ToastUtils.showShort(App.getContext(), "服务忙，请稍后重试");
+                        }
                     } else {
                         ToastUtils.showShort(RechargeBikeFareActivity.this, "网络环境差，请稍后重试");
                     }
@@ -304,44 +316,4 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
             }
         }
     };
-
-//    private void returnData(String rechargeNumber) {
-//        Intent mIntent = new Intent();
-//        mIntent.putExtra("recherge", rechargeNumber);
-//        // 设置结果，并进行传送
-//        this.setResult(0, mIntent);
-//        this.finish();
-//    }
-
-
-//    private void updateRechargeInfo(String uID, final String rechargeNumber) {
-//        Map<String, String> map = new HashMap<>();
-//        map.put("userId", uID);
-//        map.put("amount", rechargeNumber);
-//        OkHttpUtils.post().url(Api.BASE_URL + Api.RECHARGE).params(map).build().execute(new StringCallback() {
-//            @Override
-//            public void onError(Call call, Exception e, int id) {
-//                Log.e("修改充值信息", e.getMessage());
-//                ToastUtils.showShort(RechargeBikeFareActivity.this, "服务器正忙！");
-//            }
-//
-//            @Override
-//            public void onResponse(String response, int id) {
-//                Log.d("修改的结果", response);
-//                //{"code":"1"}
-//                try {
-//                    JSONObject object = new JSONObject(response);
-//                    String code = object.optString("code");
-//                    if (code.equals("1")) {
-//                        ToastUtils.showShort(RechargeBikeFareActivity.this, "修改用户资料成功！");
-//                    } else if (code.equals("0")) {
-//                        ToastUtils.showShort(RechargeBikeFareActivity.this, "服务器正忙！");
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//    }
-
 }

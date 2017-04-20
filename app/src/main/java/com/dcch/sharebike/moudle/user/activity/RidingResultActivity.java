@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
@@ -20,8 +20,6 @@ import butterknife.OnClick;
 
 public class RidingResultActivity extends BaseActivity {
 
-    @BindView(R.id.back)
-    ImageView mBack;
     @BindView(R.id.moneyResult_show)
     TextView mMoneyResultShow;
     @BindView(R.id.ride_cost)
@@ -36,6 +34,10 @@ public class RidingResultActivity extends BaseActivity {
     TextView mTakePhone;
     @BindView(R.id.share_journey)
     TextView mShareJourney;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
 
     @Override
@@ -45,6 +47,15 @@ public class RidingResultActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        mToolbar.setTitle("");
+        mTitle.setText(getResources().getString(R.string.agreement));
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         MapUtil.initDrawable(mTakePhone);
         MapUtil.initDrawable(mShareJourney);
     }
@@ -54,20 +65,18 @@ public class RidingResultActivity extends BaseActivity {
         super.initListener();
     }
 
-    @OnClick({R.id.back, R.id.myCountry, R.id.take_phone, R.id.share_journey})
+    //R.id.back,
+    @OnClick({R.id.myCountry, R.id.take_phone, R.id.share_journey})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.back:
-                finish();
-                break;
             case R.id.myCountry:
-                ToastUtils.showShort(RidingResultActivity.this,"您点击的是行程详情");
+                ToastUtils.showShort(RidingResultActivity.this, "您点击的是行程详情");
                 break;
             case R.id.take_phone:
-                ToastUtils.showShort(RidingResultActivity.this,"您点击的是拍照");
+                ToastUtils.showShort(RidingResultActivity.this, "您点击的是拍照");
                 break;
             case R.id.share_journey:
-                ToastUtils.showShort(RidingResultActivity.this,"您点击的是分享行程");
+                ToastUtils.showShort(RidingResultActivity.this, "您点击的是分享行程");
                 break;
         }
     }
@@ -75,28 +84,28 @@ public class RidingResultActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogUtils.d("周期","onCreate");
+        LogUtils.d("周期", "onCreate");
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        if(extras!=null){
-            RidingInfo ridingInfo= (RidingInfo) extras.getSerializable("result");
+        if (extras != null) {
+            RidingInfo ridingInfo = (RidingInfo) extras.getSerializable("result");
             mMoneyResultShow.setText(String.valueOf(ridingInfo.getRideCost()));
-            mRideCost.setText(String.valueOf(ridingInfo.getRideCost())+"元");
-            mRideTime.setText(String.valueOf(ridingInfo.getTripTime())+"分钟");
-            mBalance.setText(String.valueOf(ridingInfo.getAmount())+"元");
+            mRideCost.setText(String.valueOf(ridingInfo.getRideCost()) + "元");
+            mRideTime.setText(String.valueOf(ridingInfo.getTripTime()) + "分钟");
+            mBalance.setText(String.valueOf(ridingInfo.getAmount()) + "元");
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        LogUtils.d("周期","onPause");
+        LogUtils.d("周期", "onPause");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LogUtils.d("周期","onDestroy");
+        LogUtils.d("周期", "onDestroy");
     }
 
 }

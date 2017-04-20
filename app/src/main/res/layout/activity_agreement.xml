@@ -6,12 +6,11 @@
     android:layout_height="match_parent"
     tools:context="com.dcch.sharebike.moudle.login.activity.AgreementActivity">
 
-
-    <TextView
-        android:textSize="20sp"
-        android:gravity="center"
+    <include layout="@layout/toolbar"/>
+    <WebView
+        android:id="@+id/agreement_webView"
+        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="这是条款页面" />
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>
