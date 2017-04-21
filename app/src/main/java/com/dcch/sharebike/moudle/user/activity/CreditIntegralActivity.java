@@ -60,7 +60,7 @@ public class CreditIntegralActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mNewCredit.setSesameValues(Integer.valueOf(mScore).intValue());
+        mNewCredit.setSesameValues(Integer.valueOf(mScore));
 //        startColorChangeAnim();
     }
 

@@ -144,7 +144,7 @@ public class SettingActivity extends BaseActivity {
         int verCode = -1;
         try {
             verCode = getPackageManager().getPackageInfo("com.dcch.sharebike", 0).versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (PackageManager.NameNotFoundException ignored) {
         }
         return verCode;
     }
@@ -161,7 +161,7 @@ public class SettingActivity extends BaseActivity {
 //        intent.setAction("com.gao.startService");
         intent.setPackage(getPackageName());
         bindService(intent, coon, BIND_AUTO_CREATE);
-        if (IS == true) {
+        if (IS) {
             /*String path = Environment.getExternalStorageDirectory() + "/DateApp.apk";
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setDataAndType(Uri.fromFile(new File(path)), "application/vnd.android.package-archive");
@@ -176,7 +176,7 @@ public class SettingActivity extends BaseActivity {
      * @return
      */
     private boolean isPkgInstalled(String pkgName) {
-        PackageInfo packageInfo = null;
+        PackageInfo packageInfo;
         try {
             packageInfo = this.getPackageManager().getPackageInfo(pkgName, 0);
         } catch (PackageManager.NameNotFoundException e) {

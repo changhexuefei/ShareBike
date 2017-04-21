@@ -4,7 +4,6 @@ package com.dcch.sharebike.service;
 import android.app.Notification;
 import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -44,7 +43,7 @@ public class RouteService extends Service {
     //定位图层显示方式
     private MyLocationConfiguration.LocationMode locationMode;
 //    AllInterface.IUpdateLocation iUpdateLocation;
-    public ArrayList<RoutePoint> routPointList = new ArrayList<RoutePoint>();
+    public ArrayList<RoutePoint> routPointList = new ArrayList<>();
     public int totalDistance = 0;
     public float totalPrice = 0;
     public long beginTime = 0, totalTime = 0;
@@ -178,7 +177,7 @@ public class RouteService extends Service {
 
 
     //所有的定位信息都通过接口回调来实现
-    public class MylocationListener implements BDLocationListener {
+    private class MylocationListener implements BDLocationListener {
         //定位请求回调接口
         private boolean isFirstIn = true;
 
@@ -244,8 +243,8 @@ public class RouteService extends Service {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            NetworkInfo.State wifiState = null;
-            NetworkInfo.State mobileState = null;
+            NetworkInfo.State wifiState;
+            NetworkInfo.State mobileState;
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             wifiState = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
             mobileState = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState();
@@ -268,8 +267,8 @@ public class RouteService extends Service {
         }
     }
 
-    public void insertData(String routeListStr) {
-        ContentValues values = new ContentValues();
+//    public void insertData(String routeListStr) {
+//        ContentValues values = new ContentValues();
 //        // 向该对象中插入键值对，其中键是列名，值是希望插入到这一列的值，值必须和数据当中的数据类型一致
 //        values.put("cycle_date", Utils.getDateFromMillisecond(beginTime));
 //        values.put("cycle_time", totalTime);
@@ -286,5 +285,5 @@ public class RouteService extends Service {
 //        // 第三个参数：ContentValues对象
 //        sqliteDatabase.insert("cycle_route", null, values);
 //        sqliteDatabase.close();
-    }
+//    }
 }

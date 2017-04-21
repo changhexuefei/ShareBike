@@ -2,11 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.dcch.sharebike">
 
-    <uses-sdk android:minSdkVersion="7"/>
-
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true"/>
+    <!--<uses-sdk android:minSdkVersion="7"/>-->
+    <!--<uses-feature-->
+        <!--android:name="android.hardware.camera"-->
+        <!--android:required="true"/>-->
     <!-- 添加屏幕及版本支持 -->
     <supports-screens
         android:anyDensity="true"
@@ -40,14 +39,13 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
-    <!-- mob短信 需要的权限 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <!--&lt;!&ndash; mob短信 需要的权限 &ndash;&gt;-->
+    <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>-->
+    <!--<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>-->
+    <!--<uses-permission android:name="android.permission.RECEIVE_SMS"/>-->
 
     <!-- SD卡权限 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
     <!-- 联网权限 -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <!-- 网络定位 -->
@@ -68,6 +66,7 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
     <uses-permission android:name="android.permission.GET_TASKS"/>
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
@@ -80,15 +79,15 @@
     <!-- 蓝牙分享所需的权限 -->
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.FLASHLIGHT"/>
     <uses-feature android:name="android.hardware.camera.autofocus"/>
-
+    <!--android:hardwareAccelerated="true"-->
     <application
         android:name=".app.App"
         android:allowBackup="true"
-        android:hardwareAccelerated="true"
         android:icon="@drawable/sharebike"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -298,8 +297,6 @@
         <activity
             android:name=".moudle.login.activity.ClickCameraPopupActivity"
             android:theme="@style/translucent">
-
-            <!-- android:theme="@android:style/Theme.Dialog" -->
 
         </activity>
         <activity

@@ -2,13 +2,12 @@ package com.dcch.sharebike.moudle.user.activity;
 
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
+import com.tencent.smtt.sdk.WebView;
 
 import butterknife.BindView;
 
@@ -21,6 +20,7 @@ public class RefundExplainActivity extends BaseActivity {
     Toolbar mToolbar;
     @BindView(R.id.refund_explain_web_view)
     WebView mRefundExplainWebView;
+
 
     @Override
     protected int getLayoutId() {
@@ -39,12 +39,6 @@ public class RefundExplainActivity extends BaseActivity {
             }
         });
 
-        mRefundExplainWebView.getSettings().setJavaScriptEnabled(true);
-        mRefundExplainWebView.getSettings().setSupportZoom(false);
-        mRefundExplainWebView.getSettings().setBuiltInZoomControls(false);
-        mRefundExplainWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-//        mUserAgreement.getSettings().setDefaultFontSize(18);
-//        mUserAgreement.getSettings().setUseWideViewPort(true);//关键点
         mRefundExplainWebView.loadUrl(Api.REFUNDEXPLAIN);
 
     }

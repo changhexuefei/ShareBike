@@ -11,45 +11,21 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             //选择要添加的对应cpu类型的.so库。
-            abiFilters 'armeabi', 'armeabi-v8a'
-            // 还可以添加  'mips', 'mips64' 'armeabi-v7a', 'x86', 'x86_64',
+            abiFilters 'armeabi', 'armeabi-v8a', 'mips', 'mips64'
+            // 还可以添加   , 'x86_64',,'armeabi-v7a', 'x86'
         }
-//        //配置极光推送
-//        manifestPlaceholders = [
-//                JPUSH_PKGNAME: applicationId,
-//                JPUSH_APPKEY : "008791cd27d527134a8291b7", //JPush上注册的包名对应的appkey.
-//                JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
-//        ]
-
-
     }
-//    signingConfigs {
-//        debug{
-//            keyAlias 'onekey'
-//            keyPassword 'dcchadmin'
-//            storeFile file('E:\\jks\\mykey.jks')
-//            storePassword 'dcchadmin'
-//        }
-//        release {
-//            keyAlias 'onekey'
-//            keyPassword 'dcchadmin'
-//            storeFile file('E:\\jks\\mykey.jks')
-//            storePassword 'dcchadmin'
-//        }
-//    }
 
     buildTypes {
         release {
-//            signingConfig signingConfigs.release
             //启用混淆配置
             minifyEnabled false
             //Zip代码压缩优化
             zipAlignEnabled true
             //移除无用资源
-//            shrinkResources true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
@@ -57,17 +33,9 @@ android {
             //Zip代码压缩优化
             zipAlignEnabled true
             minifyEnabled false
-//            signingConfig signingConfigs.release
-
-            //移除无用资源
-//            shrinkResources true
-            //debugs使用release签名
         }
 
     }
-
-
-
 
     lintOptions {
         checkReleaseBuilds false
@@ -85,8 +53,9 @@ repositories {
     flatDir {
         dirs 'libs'
     }
-
 }
+
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -139,4 +108,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.0'
+    compile files('libs/tbs_sdk_thirdapp_v3.1.0.1034_43100_sharewithdownload_obfs_20170301_182143.jar')
+
 }

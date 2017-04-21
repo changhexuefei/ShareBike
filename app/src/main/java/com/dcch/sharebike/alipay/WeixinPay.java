@@ -17,9 +17,6 @@ import java.util.Random;
 
 import static android.content.Context.WIFI_SERVICE;
 
-/**
- * Created by Administrator on 2017/3/6 0006.
- */
 
 public class WeixinPay {
     private Activity activity;
@@ -76,7 +73,7 @@ public class WeixinPay {
                             && inetAddress instanceof Inet4Address) {
                         // if (!inetAddress.isLoopbackAddress() && inetAddress
                         // instanceof Inet6Address) {
-                        return inetAddress.getHostAddress().toString();
+                        return inetAddress.getHostAddress();
                     }
                 }
             }

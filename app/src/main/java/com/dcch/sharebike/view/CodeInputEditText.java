@@ -132,7 +132,6 @@ public class CodeInputEditText extends RelativeLayout {
         LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(dip2px(context, slpilinewidth),LayoutParams.WRAP_CONTENT);
         for(int i = 0; i < textViews.length; i++)
         {
-            final int index = i;
             TextView textView = new TextView(context);
             textView.setGravity(Gravity.CENTER);
             textViews[i] = textView;
@@ -140,8 +139,6 @@ public class CodeInputEditText extends RelativeLayout {
             textViews[i].setTextColor(context.getResources().getColor(codecolor));
             textViews[i].setInputType(InputType.TYPE_CLASS_NUMBER);
             linearLayout.addView(textView, params);
-
-
             if(i < textViews.length - 1)
             {
                 View view = new View(context);
@@ -157,11 +154,11 @@ public class CodeInputEditText extends RelativeLayout {
      */
     public void setShowPwd(boolean showPwd) {
         int length = textViews.length;
-        for(int i = 0; i < length; i++) {
+        for (TextView textView : textViews) {
             if (showPwd) {
-                textViews[i].setTransformationMethod(PasswordTransformationMethod.getInstance());
+                textView.setTransformationMethod(PasswordTransformationMethod.getInstance());
             } else {
-                textViews[i].setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                textView.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
             }
         }
     }
@@ -173,8 +170,8 @@ public class CodeInputEditText extends RelativeLayout {
     public void setInputType(int type)
     {
         int length = textViews.length;
-        for(int i = 0; i < length; i++) {
-            textViews[i].setInputType(type);
+        for (TextView textView : textViews) {
+            textView.setInputType(type);
         }
     }
 

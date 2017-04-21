@@ -193,7 +193,7 @@ public abstract class LoadingPage extends FrameLayout {
 	protected abstract String a();
 
 	//提供内部的枚举类
-	public enum ResultState {
+	enum ResultState {
 		ERROR(2), EMPTY(3), SUCCESS(4);
 
 		private int state;

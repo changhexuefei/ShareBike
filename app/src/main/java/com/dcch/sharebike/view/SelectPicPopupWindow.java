@@ -21,8 +21,8 @@ import com.dcch.sharebike.moudle.home.bean.BikeInfo;
 public class SelectPicPopupWindow extends PopupWindow {
 
     private BikeInfo mBikeInfo;
-    TextView mBikeLocationInfo;
-    TextView mUnitPrice;
+    private TextView mBikeLocationInfo;
+    private TextView mUnitPrice;
     public TextView mDistance;
     public TextView mArrivalTime;
     public Button mOrder;

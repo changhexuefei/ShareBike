@@ -128,7 +128,7 @@ public class UnableUnlockFragment extends Fragment {
                 break;
             case R.id.un_confirm:
                 bikeNo = bikeCode.getText().toString().trim();
-                contentText = questionDesc.getContentText().toString().trim();
+                contentText = questionDesc.getContentText().trim();
                 if (!uID.equals("") && uID != null && !bikeNo.equals("") && bikeNo != null) {
                     Map<String, String> map = new HashMap<>();
                     map.put("userId", uID);

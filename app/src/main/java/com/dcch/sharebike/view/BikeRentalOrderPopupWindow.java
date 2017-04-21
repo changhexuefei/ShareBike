@@ -20,7 +20,7 @@ public class BikeRentalOrderPopupWindow extends PopupWindow {
     public TextView rideTime;
     public TextView rideDistance;
     public TextView consumeEnergy;
-    public TextView bikeNo;
+    private TextView bikeNo;
     public TextView costCycling;
     private View mBikeRentalOrderView;
 

@@ -62,7 +62,7 @@ public class CreditSesameView extends View {
     private Paint mBitmapPaint;
 
     public CreditSesameView(Context context) {
-        this(context, (AttributeSet) null);
+        this(context, null);
     }
 
     public CreditSesameView(Context context, AttributeSet attrs) {
@@ -274,22 +274,22 @@ public class CreditSesameView extends View {
     }
 
     public void startAnim() {
-        ValueAnimator mAngleAnim = ValueAnimator.ofFloat(new float[]{this.mCurrentAngle, this.mTotalAngle});
+        ValueAnimator mAngleAnim = ValueAnimator.ofFloat(this.mCurrentAngle, this.mTotalAngle);
         mAngleAnim.setInterpolator(new AccelerateDecelerateInterpolator());
         mAngleAnim.setDuration(3000L);
         mAngleAnim.addUpdateListener(new AnimatorUpdateListener() {
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                CreditSesameView.this.mCurrentAngle = ((Float) valueAnimator.getAnimatedValue()).floatValue();
+                CreditSesameView.this.mCurrentAngle = (Float) valueAnimator.getAnimatedValue();
                 CreditSesameView.this.postInvalidate();
             }
         });
         mAngleAnim.start();
-        ValueAnimator mNumAnim = ValueAnimator.ofInt(new int[]{this.mMinNum, this.mMaxNum});
+        ValueAnimator mNumAnim = ValueAnimator.ofInt(this.mMinNum, this.mMaxNum);
         mNumAnim.setDuration(3000L);
         mNumAnim.setInterpolator(new LinearInterpolator());
         mNumAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                CreditSesameView.this.mMinNum = ((Integer) valueAnimator.getAnimatedValue()).intValue();
+                CreditSesameView.this.mMinNum = (Integer) valueAnimator.getAnimatedValue();
                 CreditSesameView.this.postInvalidate();
             }
         });

@@ -23,11 +23,11 @@ import com.dcch.sharebike.moudle.home.bean.BookingBikeInfo;
 
 public class BookBikePopupWindow extends PopupWindow {
     private BookingBikeInfo bookingBikeInfo;
-    TextView mBookBikeLocationInfo;
-    TextView mBikeNumber;
+    private TextView mBookBikeLocationInfo;
+    private TextView mBikeNumber;
     public TextView mHoldTime;
     public ImageView forBellIcon;
-    Button mCancel;
+    private Button mCancel;
     private View mCancelBookBikeWindow;
 
     public BookBikePopupWindow(Context context, BookingBikeInfo bookingBikeInfo, View.OnClickListener bookBikeItemsOnClick) {

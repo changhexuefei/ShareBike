@@ -106,7 +106,6 @@ public class UnlockProgressActivity extends BaseActivity {
                     msg.arg1 = progress;
                     msg.sendToTarget();
                 }
-                progress = 0;
             }
         }).start();
     }

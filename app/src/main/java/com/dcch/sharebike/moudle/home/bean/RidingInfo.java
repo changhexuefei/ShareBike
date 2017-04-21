@@ -2,9 +2,7 @@ package com.dcch.sharebike.moudle.home.bean;
 
 import java.io.Serializable;
 
-/**
- * Created by Administrator on 2017/3/22 0022.
- */
+
 
 public class RidingInfo implements Serializable {
 

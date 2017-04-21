@@ -2,13 +2,12 @@ package com.dcch.sharebike.moudle.user.activity;
 
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
+import com.tencent.smtt.sdk.WebView;
 
 import butterknife.BindView;
 
@@ -20,6 +19,7 @@ public class RechargeAgreementActivity extends BaseActivity {
     Toolbar mToolbar;
     @BindView(R.id.recharge_agreement_webView)
     WebView mRechargeAgreementWebView;
+
 
     @Override
     protected int getLayoutId() {
@@ -37,12 +37,7 @@ public class RechargeAgreementActivity extends BaseActivity {
                 finish();
             }
         });
-        mRechargeAgreementWebView.getSettings().setJavaScriptEnabled(true);
-        mRechargeAgreementWebView.getSettings().setSupportZoom(false);
-        mRechargeAgreementWebView.getSettings().setBuiltInZoomControls(false);
-        mRechargeAgreementWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-//        mUserAgreement.getSettings().setDefaultFontSize(18);
-//        mUserAgreement.getSettings().setUseWideViewPort(true);//关键点
+
         mRechargeAgreementWebView.loadUrl(Api.RECHARGEAGREEMENT);
 
     }

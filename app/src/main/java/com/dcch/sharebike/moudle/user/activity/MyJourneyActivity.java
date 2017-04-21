@@ -103,7 +103,7 @@ public class MyJourneyActivity extends BaseActivity {
         getJourneyInfo(mPhone,mToken);
     }
 
-    private void getJourneyInfo(String phone,String mToken) {
+    private void getJourneyInfo(String phone, final String mToken) {
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone);
         map.put("token",mToken);
@@ -146,6 +146,7 @@ public class MyJourneyActivity extends BaseActivity {
                                     journeyDetail.putExtra("bicycleNo", bicycleNo);
                                     journeyDetail.putExtra("carRentalOrderId", carRentalOrderId);
                                     journeyDetail.putExtra("userId", uID);
+                                    journeyDetail.putExtra("token",mToken);
                                     startActivity(journeyDetail);
                                 }
                             }

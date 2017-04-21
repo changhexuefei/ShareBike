@@ -9,7 +9,7 @@ import android.os.CountDownTimer;
 public class MyCountDownTimer extends CountDownTimer {
 
 
-    public MyCountDownTimer(long millisInFuture, long countDownInterval) {
+    protected MyCountDownTimer(long millisInFuture, long countDownInterval) {
         super(millisInFuture, countDownInterval);
     }
 
@@ -40,8 +40,8 @@ public class MyCountDownTimer extends CountDownTimer {
 //            hour += minute/60;
         }
 //        String sh = "";
-        String sm ="";
-        String ss = "";
+        String sm;
+        String ss;
 //        if(hour <10)
 //        {
 //            sh = "0" + String.valueOf(hour);

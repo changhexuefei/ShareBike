@@ -114,8 +114,8 @@ public class CountdownTextView extends TextView {
         long seconds = second % 60;
 
 //        String hourString = "";
-        String minuteString = "";
-        String secondString = "";
+        String minuteString;
+        String secondString;
 //        if(hours < 10){
 //            hourString = "0";
 //            if(hours == 0){
@@ -139,7 +139,8 @@ public class CountdownTextView extends TextView {
         if(seconds < 10){
             secondString = "0";
             if (seconds == 0) {
-                secondString += "0";
+                switch (secondString += "0") {
+                }
             }else {
                 secondString += String.valueOf(seconds);
             }

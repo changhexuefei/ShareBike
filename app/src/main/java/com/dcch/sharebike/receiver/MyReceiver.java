@@ -96,7 +96,7 @@ public class MyReceiver extends BroadcastReceiver {
         String title = bundle.getString(JPushInterface.EXTRA_TITLE);
         String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
         LogUtils.d(TAG,extras+"\n"+title+"\n"+message);
-        String versionsUrl = "";
+        String versionsUrl;
         try {
             JSONObject extrasJson = new JSONObject(extras);
             versionsUrl = extrasJson.optString("DownloadDate");

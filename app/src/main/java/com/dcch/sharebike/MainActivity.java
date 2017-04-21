@@ -506,7 +506,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                         startActivity(new Intent(this, RechargeDepositActivity.class));
                     }
                 } else {
-////                    没有登录的情况设置Activity
+//                没有登录的情况设置Activity
                     mBtnMyHelp.setVisibility(View.GONE);
                     mBtnMyLocation.setVisibility(View.GONE);
                     mScan.setVisibility(View.GONE);
@@ -854,38 +854,33 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 @Override
                 public void onError(Call call, Exception e, int id) {
                     Log.e("错误", e.getMessage());
+                    ToastUtils.showShort(MainActivity.this, "抱歉，服务器正忙！");
                 }
 
                 @Override
                 public void onResponse(String response, int id) {
-                    try {
-                        JSONObject object = new JSONObject(response);
-                        String resultStatus = object.getString("resultStatus");
-                        int bookingCarStatus = object.getInt("bookingCarStatus");
-                        if (resultStatus.equals("1") && bookingCarStatus == 1) {
-                            ToastUtils.showLong(MainActivity.this, "取消成功！");
-                            isBook = false;
-                            isChecked = false;
-                            isClick = true;
-                            if (bookBikePopupWindow != null && !bookBikePopupWindow.equals("")) {
-                                bookBikePopupWindow.dismiss();
-                                bookBikePopupWindow.setFocusable(true);
-                                timer.cancel();
-                            } else if (!userBookingBikePopupWindow.equals("") && userBookingBikePopupWindow != null) {
-                                userBookingBikePopupWindow.setFocusable(true);
-                                userBookingBikePopupWindow.dismiss();
-                                timer.cancel();
-                            }
-                            isShowBookOrder = false;
-                            mMap.clear();
-                            //根据手机定位地点，得到手机定位点的周围半径1000米范围内的车辆信息的方法
-                            getBikeInfo(mCurrentLantitude, mCurrentLongitude);
-                            setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
-                        } else {
-                            ToastUtils.showLong(MainActivity.this, "取消失败！");
+                    LogUtils.d("取消", response);
+                    if (JsonUtils.isSuccess(response)) {
+                        ToastUtils.showLong(MainActivity.this, "取消成功！");
+                        isBook = false;
+                        isChecked = false;
+                        isClick = true;
+                        if (bookBikePopupWindow != null && !bookBikePopupWindow.equals("")) {
+                            bookBikePopupWindow.dismiss();
+                            bookBikePopupWindow.setFocusable(true);
+                            timer.cancel();
+                        } else if (!userBookingBikePopupWindow.equals("") && userBookingBikePopupWindow != null) {
+                            userBookingBikePopupWindow.setFocusable(true);
+                            userBookingBikePopupWindow.dismiss();
+                            timer.cancel();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                        isShowBookOrder = false;
+                        mMap.clear();
+                        //根据手机定位地点，得到手机定位点的周围半径1000米范围内的车辆信息的方法
+                        getBikeInfo(mCurrentLantitude, mCurrentLongitude);
+                        setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
+                    } else {
+                        ToastUtils.showLong(MainActivity.this, "取消失败！");
                     }
                 }
             });
@@ -1014,7 +1009,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     setUserMapCenter(lat, lon);
                     break;
             }
-
         }
     }
 
@@ -1022,11 +1016,12 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private void openScan(final String uID, String phone, final String result, final String mToken) {
         if (phone != null && !phone.equals("") && result != null && !result.equals("")) {
             Map<String, String> map = new HashMap<>();
-            map.clear();
+//            map.clear();
             map.put("userId", uID);
             map.put("phone", phone);
             map.put("bicycleNo", result);
             map.put("token", mToken);
+            LogUtils.d("看看数据", mToken + "\n");
             LogUtils.d("开锁", phone);
             LogUtils.d("开锁", result);
             LogUtils.d("开锁", uID);
@@ -1045,6 +1040,16 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     ToastUtils.showShort(MainActivity.this, response);
                     if (JsonUtils.isSuccess(response)) {
                         LogUtils.d("开锁", "什么情况！");
+                        if (timer != null) {
+                            timer.cancel();
+                        }
+                        if (userBookingBikePopupWindow != null) {
+                            userBookingBikePopupWindow.dismiss();
+                        }
+                        if (bookBikePopupWindow != null) {
+                            bookBikePopupWindow.dismiss();
+                        }
+                        cancelBookingBike(bookingCarId, bicycleNo);
                         EventBus.getDefault().post(new MessageEvent(), "on");
                         Map<String, String> map = new HashMap<>();
                         map.put("userId", uID);
@@ -1061,21 +1066,16 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                             public void onResponse(String response, int id) {
                                 Log.d("骑行订单", response);
                                 if (JsonUtils.isSuccess(response)) {
+                                    mMap.clear();
                                     isShowRideOrder = true;
                                     isClick = false;
                                     Gson gson = new Gson();
                                     bikeRentalOrderInfo = gson.fromJson(response, BikeRentalOrderInfo.class);
-                                    mServiceIntent = new Intent(MainActivity.this, GPSService.class);
-                                    mServiceIntent.putExtra("token", mToken);
-                                    mServiceIntent.putExtra("userId", uID);
-                                    mServiceIntent.putExtra("bicycleNo", bikeRentalOrderInfo.getBicycleNo());
-                                    mServiceIntent.putExtra("carRentalOrderDate", bikeRentalOrderInfo.getCarRentalOrderDate());
-                                    mServiceIntent.putExtra("carRentalOrderId", bikeRentalOrderInfo.getCarRentalOrderId());
-                                    LogUtils.d("神圣", uID + "\n" + bikeRentalOrderInfo.getBicycleNo() + "\n" + bikeRentalOrderInfo.getCarRentalOrderDate() + "\n" + bikeRentalOrderInfo.getCarRentalOrderId());
-                                    startService(mServiceIntent);
-                                    mScan.setVisibility(View.INVISIBLE);
                                     String bicycleNo = bikeRentalOrderInfo.getBicycleNo();
-                                    ToastUtils.showShort(MainActivity.this, bicycleNo);
+                                    String carRentalOrderDate = bikeRentalOrderInfo.getCarRentalOrderDate();
+                                    String carRentalOrderId = bikeRentalOrderInfo.getCarRentalOrderId();
+                                    withServicesMutually(mToken, uID, bicycleNo, carRentalOrderDate, carRentalOrderId);
+                                    mScan.setVisibility(View.INVISIBLE);
                                     if (menuWindow != null) {
                                         menuWindow.dismiss();
                                     }
@@ -1085,7 +1085,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                                     if (userBookingBikePopupWindow != null) {
                                         userBookingBikePopupWindow.dismiss();
                                     }
-                                    mMap.clear();
                                     orderPopupWindow = new BikeRentalOrderPopupWindow(MainActivity.this, bikeRentalOrderInfo);
                                     orderPopupWindow.showAsDropDown(findViewById(R.id.top));
                                     orderPopupWindow.setOutsideTouchable(false);
@@ -1307,16 +1306,11 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     mMap.clear();
                     Gson gson = new Gson();
                     mShowBikeRentalOrderInfo = gson.fromJson(response, ShowBikeRentalOrderInfo.class);
-                    mServiceIntent = new Intent(MainActivity.this, GPSService.class);
-                    mServiceIntent.putExtra("userId", uID);
-                    mServiceIntent.putExtra("bicycleNo", mShowBikeRentalOrderInfo.getBicycleNo());
-                    mServiceIntent.putExtra("carRentalOrderDate", mShowBikeRentalOrderInfo.getCarRentalOrderDate());
-                    mServiceIntent.putExtra("carRentalOrderId", mShowBikeRentalOrderInfo.getCarRentalOrderId());
-                    LogUtils.d("神圣", uID + "\n" + mShowBikeRentalOrderInfo.getBicycleNo() + "\n" + mShowBikeRentalOrderInfo.getCarRentalOrderDate() + "\n" + mShowBikeRentalOrderInfo.getCarRentalOrderId());
-                    startService(mServiceIntent);
-                    mScan.setVisibility(View.INVISIBLE);
                     String bicycleNo = mShowBikeRentalOrderInfo.getBicycleNo();
-                    ToastUtils.showShort(MainActivity.this, bicycleNo);
+                    String carRentalOrderDate = mShowBikeRentalOrderInfo.getCarRentalOrderDate();
+                    String carRentalOrderId = mShowBikeRentalOrderInfo.getCarRentalOrderId();
+                    withServicesMutually(mToken, uID, bicycleNo, carRentalOrderDate, carRentalOrderId);
+                    mScan.setVisibility(View.INVISIBLE);
                     mShowBikeRentalOrderPopupWindow = new ShowBikeRentalOrderPopupWindow(MainActivity.this, mShowBikeRentalOrderInfo);
                     mShowBikeRentalOrderPopupWindow.showAsDropDown(findViewById(R.id.top));
                     mShowBikeRentalOrderPopupWindow.setOutsideTouchable(false);
@@ -1328,6 +1322,19 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 }
             }
         });
+    }
+
+    //与services交互的方法
+    private void withServicesMutually(String token, String uID, String bicycleNo, String carRentalOrderDate, String carRentalOrderId) {
+        LogUtils.d("神圣", uID + "\n" + mShowBikeRentalOrderInfo.getBicycleNo() + "\n" + mShowBikeRentalOrderInfo.getCarRentalOrderDate() + "\n" + mShowBikeRentalOrderInfo.getCarRentalOrderId());
+        mServiceIntent = new Intent(MainActivity.this, GPSService.class);
+        ToastUtils.showShort(MainActivity.this, bicycleNo);
+        mServiceIntent.putExtra("token", token);
+        mServiceIntent.putExtra("userId", uID);
+        mServiceIntent.putExtra("bicycleNo", bicycleNo);
+        mServiceIntent.putExtra("carRentalOrderDate", carRentalOrderDate);
+        mServiceIntent.putExtra("carRentalOrderId", carRentalOrderId);
+        startService(mServiceIntent);
     }
 
     //获得自行车信息的方法
@@ -1342,7 +1349,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 @Override
                 public void onError(Call call, Exception e, int id) {
                     LogUtils.e(e.getMessage());
+                    mMap.clear();
                     ToastUtils.showShort(MainActivity.this, "抱歉，服务器正忙！");
+
                 }
 
                 @Override
@@ -1393,6 +1402,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         mMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
     }
 
+    //检查用户账户余额
     private void checkAggregate(String uID, final String mToken) {
         Map<String, String> map = new HashMap<>();
         map.put("userId", uID);
@@ -1409,15 +1419,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 //{"resultStatus":"1"}
                 if (JsonUtils.isSuccess(response)) {
                     MainActivityPermissionsDispatcher.showCameraWithCheck(MainActivity.this);
-                    if (timer != null) {
-                        timer.cancel();
-                    }
-                    if (userBookingBikePopupWindow != null) {
-                        userBookingBikePopupWindow.dismiss();
-                    }
-                    if (bookBikePopupWindow != null) {
-                        bookBikePopupWindow.dismiss();
-                    }
                     Intent i4 = new Intent(MainActivity.this, CaptureActivity.class);
                     i4.putExtra("token", mToken);
                     i4.putExtra("msg", "main");
@@ -1457,11 +1458,12 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             JSONObject object;
             try {
                 object = new JSONObject(userDetail);
-                int id = object.getInt("id");
+                int id = object.optInt("id");
                 mToken = object.optString("token");
                 uID = String.valueOf(id);
                 if (uID != null && mToken != null) {
                     queryUserInfo(uID, mToken);
+//                    checkBookingBikeInfoByUserID(uID);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

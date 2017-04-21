@@ -107,7 +107,6 @@ public class ManualInputActivity extends BaseActivity {
         mManualInputArea.setOnTextFinishListener(new CodeInputEditText.OnTextFinishListener() {
             @Override
             public void onFinish(String str) {
-//                Toast.makeText(ManualInputActivity.this, str, Toast.LENGTH_SHORT).show();
                 bikeNo = str;
                 mEnsure.setEnabled(true);
                 mEnsure.setBackgroundColor(Color.parseColor("#F8941D"));
@@ -137,24 +136,31 @@ public class ManualInputActivity extends BaseActivity {
                         LogUtils.d("锁号", response);
                         //{"resultStatus":"0"}
                         if (JsonUtils.isSuccess(response)) {
-                            if (mTag.equals("main")) {
-                                Intent bikeNoIntent = new Intent(ManualInputActivity.this, UnlockProgressActivity.class);
-                                startActivity(bikeNoIntent);
-                                EventBus.getDefault().post(new CodeEvent(bikeNo), "bikeNo");
-                            } else if (mTag.equals("unable")) {
-                                Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
-                                EventBus.getDefault().post(new CodeEvent(bikeNo), "unable_bikeNo");
-                                startActivity(bikeNoIntent);
-
-                            } else if (mTag.equals("reports")) {
-                                Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
-                                EventBus.getDefault().post(new CodeEvent(bikeNo), "report_bikeNo");
-                                startActivity(bikeNoIntent);
-
-                            } else if (mTag.equals("fail")) {
-                                Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
-                                EventBus.getDefault().post(new CodeEvent(bikeNo), "fail_bikeNo");
-                                startActivity(bikeNoIntent);
+                            switch (mTag) {
+                                case "main": {
+                                    Intent bikeNoIntent = new Intent(ManualInputActivity.this, UnlockProgressActivity.class);
+                                    startActivity(bikeNoIntent);
+                                    EventBus.getDefault().post(new CodeEvent(bikeNo), "bikeNo");
+                                    break;
+                                }
+                                case "unable": {
+                                    Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
+                                    EventBus.getDefault().post(new CodeEvent(bikeNo), "unable_bikeNo");
+                                    startActivity(bikeNoIntent);
+                                    break;
+                                }
+                                case "reports": {
+                                    Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
+                                    EventBus.getDefault().post(new CodeEvent(bikeNo), "report_bikeNo");
+                                    startActivity(bikeNoIntent);
+                                    break;
+                                }
+                                case "fail": {
+                                    Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
+                                    EventBus.getDefault().post(new CodeEvent(bikeNo), "fail_bikeNo");
+                                    startActivity(bikeNoIntent);
+                                    break;
+                                }
                             }
                             finish();
                         } else {

@@ -7,9 +7,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
-/**
- * Created by Administrator on 2017/3/6 0006.
- */
 
 public class AliPay {
     private Activity activity;

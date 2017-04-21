@@ -2,13 +2,12 @@ package com.dcch.sharebike.moudle.user.activity;
 
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
+import com.tencent.smtt.sdk.WebView;
 
 import butterknife.BindView;
 
@@ -20,6 +19,7 @@ public class CashPledgeExplainActivity extends BaseActivity {
     Toolbar mToolbar;
     @BindView(R.id.cashPledge_explain_webView)
     WebView mCashPledgeExplainWebView;
+
 
     @Override
     protected int getLayoutId() {
@@ -37,12 +37,7 @@ public class CashPledgeExplainActivity extends BaseActivity {
                 finish();
             }
         });
-        mCashPledgeExplainWebView.getSettings().setJavaScriptEnabled(true);
-        mCashPledgeExplainWebView.getSettings().setSupportZoom(false);
-        mCashPledgeExplainWebView.getSettings().setBuiltInZoomControls(false);
-        mCashPledgeExplainWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-//        mUserAgreement.getSettings().setDefaultFontSize(18);
-//        mUserAgreement.getSettings().setUseWideViewPort(true);//关键点
+
         mCashPledgeExplainWebView.loadUrl(Api.DEPOSITAGREEMENT);
 
     }

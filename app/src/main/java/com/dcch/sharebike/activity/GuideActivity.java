@@ -46,18 +46,18 @@ public class GuideActivity extends BaseActivity {
         //设置全屏显示
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        int[] ids = {R.drawable.qilinone, R.drawable.yellow, R.drawable.timg,
-                R.drawable.yellow};
+        int[] ids = {R.drawable.qilinone, R.drawable.share, R.drawable.timg,
+                R.drawable.share};
         imageViews = new ArrayList();
-        for (int i = 0; i < ids.length; i++) {
+        for (int id : ids) {
             ImageView imageView = new ImageView(this);
-            imageView.setBackgroundResource(ids[i]);//一定要设置为背景
+            imageView.setBackgroundResource(id);//一定要设置为背景
             //加入到集合中
             imageViews.add(imageView);
         }
 
         //通过循环动态的添加点。
-        mDots = new ArrayList<ImageView>();
+        mDots = new ArrayList<>();
         for (int i = 0; i < imageViews.size(); i++) {
             ImageView imageView = new ImageView(this);
             int width = Dp2Px(this, 6);
@@ -96,7 +96,7 @@ public class GuideActivity extends BaseActivity {
     }
 
 
-    class MyPagerAdapter extends PagerAdapter {
+    private class MyPagerAdapter extends PagerAdapter {
 
         @Override
         public int getCount() {
@@ -127,7 +127,7 @@ public class GuideActivity extends BaseActivity {
     }
 
 
-    class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
+    private class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
         /**
          * 当页面滚动了的时候回调这个方法
@@ -138,11 +138,7 @@ public class GuideActivity extends BaseActivity {
          */
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            if (positionOffset != 0) {
-                istete = true;
-            } else {
-                istete = false;
-            }
+            istete = positionOffset != 0;
         }
 
         @Override

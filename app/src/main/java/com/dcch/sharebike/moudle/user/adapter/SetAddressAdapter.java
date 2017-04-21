@@ -20,7 +20,7 @@ import java.util.List;
 public class SetAddressAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mLayoutInflater;
-    List<SuggestionResult.SuggestionInfo> allSuggestions;
+    private List<SuggestionResult.SuggestionInfo> allSuggestions;
 
     public SetAddressAdapter(Context context) {
         mContext = context;
@@ -67,7 +67,7 @@ public class SetAddressAdapter extends BaseAdapter {
         return view;
     }
 
-    class ViewHolder {
+    private class ViewHolder {
         ImageView iv_icon;
         TextView place_name,address;
     }

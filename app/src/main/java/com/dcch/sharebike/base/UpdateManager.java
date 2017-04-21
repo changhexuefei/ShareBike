@@ -26,13 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
-
-/**
- * Created by Administrator on 2017/4/14 0014.
- */
 
 public class UpdateManager {
     private Context mContext;
@@ -46,7 +40,6 @@ public class UpdateManager {
     private AlertDialog downLoadDialog;
     private static final int DOWN = 1;// 用于区分正在下载
     private static final int DOWN_FINISH = 0;// 用于区分下载完成
-    private int mCurrentVersionCode;
 
 
     private Handler mHandler = new Handler() {
@@ -71,7 +64,7 @@ public class UpdateManager {
         this.mContext = context;
     }
 
-    public void versionUpdate() {
+    private void versionUpdate() {
         if (isUpdate()) {
             //4:
             showUpdateVersionDialog();
@@ -87,11 +80,11 @@ public class UpdateManager {
      */
     private boolean isUpdate() {
         // 获取当前软件版本
-        mCurrentVersionCode = getVersionCode(mContext);
+        int currentVersionCode = getVersionCode(mContext);
         serverVersionCode = getServerVersionCode();
-        LogUtils.d("版本", mCurrentVersionCode + "\n" + serverVersionCode);
+        LogUtils.d("版本", currentVersionCode + "\n" + serverVersionCode);
         // 版本判断
-        if (serverVersionCode > mCurrentVersionCode) {
+        if (serverVersionCode > currentVersionCode) {
             return true;
         }
         return false;
@@ -115,7 +108,7 @@ public class UpdateManager {
         return 0;
     }
 
-    public int getServerVersionCode() {
+    private int getServerVersionCode() {
         versionInfo = getServerXml();
         LogUtils.d("怎麽不走這裏", versionInfo + "");
         if (versionInfo != null) {
@@ -125,7 +118,7 @@ public class UpdateManager {
         return serverVersionCode;
     }
 
-    public VersionInfo getServerXml() {
+    private VersionInfo getServerXml() {
         Thread thread = new Thread() {
             public void run() {
                 // 把ve.srsion.xml放到网络上，然后获取文件信息
@@ -157,7 +150,7 @@ public class UpdateManager {
         thread.start();
         try {
             thread.join();
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         if (versionInfo != null) {
             return versionInfo;
@@ -229,7 +222,7 @@ public class UpdateManager {
     /**
      * 下载apk的方法
      */
-    public class downloadApkThread extends Thread {
+    private class downloadApkThread extends Thread {
 
         InputStream is;
         HttpURLConnection conn;
@@ -264,10 +257,6 @@ public class UpdateManager {
                     File apkFile = new File(fileSavePath, versionInfo.getFileName() + ".apk");
                     LogUtils.d("怎麽不走這裏", apkFile + "\n" + length + "\n" + is);
                     readFile(apkFile, is, length);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (ProtocolException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -281,7 +270,7 @@ public class UpdateManager {
             @Override
             public void run() {
                 LogUtils.d("怎麽不走這裏", "1223333-----");
-                FileOutputStream fos = null;
+                FileOutputStream fos;
                 try {
                     fos = new FileOutputStream(apkFile);
                     int count = 0;
@@ -323,7 +312,7 @@ public class UpdateManager {
         versionUpdate();
     }
 
-    public void installAPK() {
+    private void installAPK() {
         File apkfile = new File(fileSavePath, versionInfo.getFileName() + ".apk");
         if (!apkfile.exists()) {
             return;

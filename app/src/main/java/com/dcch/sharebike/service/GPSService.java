@@ -16,7 +16,6 @@ import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -38,7 +37,6 @@ import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -97,18 +95,16 @@ public class GPSService extends Service {
         super.onCreate();
 //        initNotification();
         // 初始化路径
-        File filestoreMusic = new File(ROUTE_PATH);
-        LogUtils.d("路径",ROUTE_PATH);
-        if (!filestoreMusic.exists()) {
-            filestoreMusic.mkdir();
-        }
-        startTime = getTimeStr();
-        if (isDebug) {
-            Toast.makeText(getApplicationContext(), "Start Record Route",
-                    Toast.LENGTH_SHORT).show();
-        }
-
-
+//        File filestoreMusic = new File(ROUTE_PATH);
+//        LogUtils.d("路径",ROUTE_PATH);
+//        if (!filestoreMusic.exists()) {
+//            filestoreMusic.mkdir();
+//        }
+//        startTime = getTimeStr();
+//        if (isDebug) {
+//            Toast.makeText(getApplicationContext(), "Start Record Route",
+//                    Toast.LENGTH_SHORT).show();
+//        }
         beginTime = System.currentTimeMillis();
         totalTime = 0;
         totalDistance = 0;
@@ -263,7 +259,7 @@ public class GPSService extends Service {
 
 
       //* 设备位置监听器
-    class deviceLocationListener implements LocationListener {
+      private class deviceLocationListener implements LocationListener {
 
         // Provider的状态在可用、暂时不可用和无服务三个状态直接切换时触发此函数
         public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -335,7 +331,7 @@ public class GPSService extends Service {
         return null;
     }
 
-    public class BDGpsServiceListener implements BDLocationListener {
+    private class BDGpsServiceListener implements BDLocationListener {
         //发送广播，提示更新界面
         private void sendToActivity(Bundle bundle) {
             Log.d("hhhh", bundle + "");
@@ -395,7 +391,7 @@ public class GPSService extends Service {
 //                startNotifi(totalTime + "分钟", totalDistance + "米", totalPrice + "元");
 //                sendToActivity(sb.toString());
 
-                Map<String, String> map = new HashMap<String, String>();
+                Map<String, String> map = new HashMap<>();
                 String url = Api.BASE_URL + Api.ORDERCAST;
                 map.put("token",mToken);
                 map.put("carRentalOrderDate", mCarRentalOrderDate);
@@ -405,7 +401,7 @@ public class GPSService extends Service {
                 map.put("lng", mRouteLng + "");
                 map.put("lat", mRouteLat + "");
                 map.put("mile", totalDistance / 1000 + "");
-
+                LogUtils.d("看看数据",mToken+"\n"+mCarRentalOrderDate+"\n"+mBicycleNo+"\n"+mCarRentalOrderId+"\n"+mUserId);
 
                 OkHttpUtils.post().url(url).params(map).build().execute(new StringCallback() {
                     @Override
@@ -465,6 +461,7 @@ public class GPSService extends Service {
             String cycle_points = cursor.getString(cursor.getColumnIndex("cycle_points"));
             LogUtils.d("数据库",route_id+"\n"+cycle_date+"\n"+cycle_time+"\n"+cycle_distance+"\n"+cycle_price+"\n"+cycle_points);
         }
+        cursor.close();
         sqliteDatabase.close();
     }
 }

@@ -2,13 +2,12 @@ package com.dcch.sharebike.moudle.user.activity;
 
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
+import com.tencent.smtt.sdk.WebView;
 
 import butterknife.BindView;
 
@@ -19,8 +18,9 @@ public class UserAgreementActivity extends BaseActivity {
     TextView mTitle;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.userAgreement)
-    WebView mUserAgreement;
+    @BindView(R.id.userAgreement_webView)
+    WebView mUserAgreementWebView;
+
 
     @Override
     protected int getLayoutId() {
@@ -39,13 +39,7 @@ public class UserAgreementActivity extends BaseActivity {
                 finish();
             }
         });
-        mUserAgreement.getSettings().setJavaScriptEnabled(true);
-        mUserAgreement.getSettings().setSupportZoom(false);
-        mUserAgreement.getSettings().setBuiltInZoomControls(false);
-        mUserAgreement.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-//        mUserAgreement.getSettings().setDefaultFontSize(18);
-//        mUserAgreement.getSettings().setUseWideViewPort(true);//关键点
-        mUserAgreement.loadUrl(Api.USERAGREEMENT);
+        mUserAgreementWebView.loadUrl(Api.USERAGREEMENT);
     }
 
 }

@@ -151,7 +151,7 @@ public class MyProgressBar extends View {
         piant.setColor(percenttextcolor);
         piant.setTextSize(percenttextsize);
 
-        String percent = (int) (progress * 100 / max) + "%";
+        String percent = progress * 100 / max + "%";
         Rect rect = new Rect();
         piant.getTextBounds(percent, 0, percent.length(), rect);
         float textWidth = rect.width();
@@ -237,7 +237,6 @@ public class MyProgressBar extends View {
 
     public void setProgress(int progress) {
         if (progress > max) {
-            progress = max;
         } else {
             this.progress = progress;
             postInvalidate();
