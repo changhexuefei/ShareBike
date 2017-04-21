@@ -1326,7 +1326,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     //与services交互的方法
     private void withServicesMutually(String token, String uID, String bicycleNo, String carRentalOrderDate, String carRentalOrderId) {
-        LogUtils.d("神圣", uID + "\n" + mShowBikeRentalOrderInfo.getBicycleNo() + "\n" + mShowBikeRentalOrderInfo.getCarRentalOrderDate() + "\n" + mShowBikeRentalOrderInfo.getCarRentalOrderId());
         mServiceIntent = new Intent(MainActivity.this, GPSService.class);
         ToastUtils.showShort(MainActivity.this, bicycleNo);
         mServiceIntent.putExtra("token", token);
