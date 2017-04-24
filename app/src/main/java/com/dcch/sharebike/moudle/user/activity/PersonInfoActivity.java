@@ -96,9 +96,10 @@ public class PersonInfoActivity extends BaseActivity {
         Bundle user = intent.getExtras();
         if (user != null) {
             mUserBundle = (UserInfo) user.getSerializable("userBundle");
-            assert mUserBundle != null;
-            nickName.setText(mUserBundle.getNickName().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
-            telephone.setText(mUserBundle.getPhone().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
+            if(mUserBundle!=null){
+                nickName.setText(mUserBundle.getNickName().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
+                telephone.setText(mUserBundle.getPhone().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
+            }
             if (mUserBundle.getStatus() == 0) {
                 authority.setText("未认证");
                 realName.setText("未认证");

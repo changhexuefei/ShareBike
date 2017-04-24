@@ -37,8 +37,12 @@ public class AgreementActivity extends BaseActivity {
                 finish();
             }
         });
-
         mAgreementWebView.loadUrl(Api.USERAGREEMENT);
+        mAgreementWebView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                return false;
+            }
+        });
     }
-
 }

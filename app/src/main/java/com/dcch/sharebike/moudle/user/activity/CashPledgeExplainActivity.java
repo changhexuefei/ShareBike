@@ -39,7 +39,12 @@ public class CashPledgeExplainActivity extends BaseActivity {
         });
 
         mCashPledgeExplainWebView.loadUrl(Api.DEPOSITAGREEMENT);
-
+        mCashPledgeExplainWebView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                return false;
+            }
+        });
     }
 
 }

@@ -39,6 +39,12 @@ public class RechargeAgreementActivity extends BaseActivity {
         });
 
         mRechargeAgreementWebView.loadUrl(Api.RECHARGEAGREEMENT);
+        mRechargeAgreementWebView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                return false;
+            }
+        });
 
     }
 

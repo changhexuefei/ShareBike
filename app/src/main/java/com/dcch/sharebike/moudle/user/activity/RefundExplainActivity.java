@@ -38,9 +38,12 @@ public class RefundExplainActivity extends BaseActivity {
                 finish();
             }
         });
-
         mRefundExplainWebView.loadUrl(Api.REFUNDEXPLAIN);
-
+        mRefundExplainWebView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                return false;
+            }
+        });
     }
-
 }

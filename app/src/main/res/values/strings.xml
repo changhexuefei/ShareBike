@@ -114,4 +114,7 @@
     <string name="login_tip">点击-确定，即表示已阅读并同意</string>
     <string name="recharge_bike_fare_tips">麒麟不会以任何形式要求您输入银行账户和密码</string>
     <string name="recharge_bike_fare_tip_two">点击充值，即表示您已阅读并同意</string>
+    <string name="log_out">退出登录</string>
+    <string name="check_update">检查新版本</string>
+    <string name="usually_address">常用地址</string>
 </resources>

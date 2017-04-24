@@ -96,16 +96,17 @@ public class MyReceiver extends BroadcastReceiver {
         String title = bundle.getString(JPushInterface.EXTRA_TITLE);
         String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
         LogUtils.d(TAG,extras+"\n"+title+"\n"+message);
-        String versionsUrl;
+        String versionsUrl = null;
         try {
-            JSONObject extrasJson = new JSONObject(extras);
-            versionsUrl = extrasJson.optString("DownloadDate");
-            Log.d(TAG,"收到key为 one的数据    "+versionsUrl);
+            if(extras!=null){
+                JSONObject extrasJson = new JSONObject(extras);
+                versionsUrl = extrasJson.optString("one");
+                Log.d(TAG,"收到key为 one的数据    "+versionsUrl);
+            }
             Intent i = new Intent(context, SplashActivity.class);
             bundle.putBoolean("push", true);
             i.putExtras(bundle);
             PendingIntent pi = PendingIntent.getActivity(context, 1000, i, PendingIntent.FLAG_UPDATE_CURRENT);
-
             notifyBuilder.setContentTitle(title);
             notifyBuilder.setContentText(message);
             notifyBuilder.setContentIntent(pi);
@@ -159,7 +160,4 @@ public class MyReceiver extends BroadcastReceiver {
         }
         return bitmap;
     }
-
-
-
 }

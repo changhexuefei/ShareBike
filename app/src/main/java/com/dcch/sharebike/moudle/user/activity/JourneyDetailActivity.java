@@ -44,7 +44,6 @@ import okhttp3.Call;
 
 public class JourneyDetailActivity extends BaseActivity {
 
-
     @BindView(R.id.journey_mapView)
     MapView mJourneyMapView;
     public ArrayList<RoutePoint> routePoints;
@@ -65,7 +64,6 @@ public class JourneyDetailActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
         mToolbar.setTitle("");
         mTitle.setText(getResources().getString(R.string.journey_detail));
         setSupportActionBar(mToolbar);
@@ -91,8 +89,6 @@ public class JourneyDetailActivity extends BaseActivity {
         startBmp = BitmapDescriptorFactory.fromResource(R.mipmap.route_start);
         endBmp = BitmapDescriptorFactory.fromResource(R.mipmap.route_end);
         initMap();
-
-
     }
 
     private void addOverLayout(LatLng startPosition, LatLng endPosition) {

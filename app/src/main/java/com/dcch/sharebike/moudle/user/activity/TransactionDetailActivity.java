@@ -47,7 +47,6 @@ public class TransactionDetailActivity extends BaseActivity {
     ImageView mBack;
     @BindView(R.id.refundExplain)
     TextView mRefundExplain;
-
     private String mUserId;
     private TransactionDetailInfo mTransactionDetailInfo;
     private TransactionDetailInfoAdapter mAdapter;
@@ -66,7 +65,6 @@ public class TransactionDetailActivity extends BaseActivity {
             mUserId = intent.getStringExtra("userId");
             mToken = intent.getStringExtra("token");
         }
-
     }
 
 

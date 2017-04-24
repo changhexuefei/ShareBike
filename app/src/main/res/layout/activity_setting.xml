@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="常用地址" />
+                android:text="@string/usually_address" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -37,6 +37,7 @@
                 android:padding="10dp" />
         </RelativeLayout>
         <View
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginTop="2dp"
@@ -54,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="检查新版本" />
+                android:text="@string/check_update" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -81,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="关于我们" />
+                android:text="@string/about_us" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -109,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="用户协议" />
+                android:text="@string/user_agreement" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -136,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="押金说明" />
+                android:text="@string/cashPledge_explain" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -163,7 +164,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="充值协议" />
+                android:text="@string/recharge_agreement" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -177,7 +178,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorTitle"
-            android:text="退出登录"
+            android:text="@string/log_out"
             android:textColor="#ffffff"
             android:textSize="16sp"
             android:layout_marginTop="30dp"
