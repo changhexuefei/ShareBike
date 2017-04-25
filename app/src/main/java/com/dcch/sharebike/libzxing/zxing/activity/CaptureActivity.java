@@ -116,7 +116,6 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         scanPreview = (SurfaceView) findViewById(R.id.capture_preview);
@@ -329,8 +328,8 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
         // camera error
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.app_name));
-        builder.setMessage("Camera error");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setMessage("请允许打开摄像头");
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
