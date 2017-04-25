@@ -319,7 +319,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                                              @Override
                                              public void onFinish() {
                                                  super.onFinish();
-                                                 cancelBookingBike(bookingCarId, bicycleNo,uID,mToken);
+                                                 cancelBookingBike(bookingCarId, bicycleNo, uID, mToken);
                                              }
                                          }.start();
                                      } else {
@@ -706,7 +706,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    cancelBookingBike(bookingCarId, bicycleNo,uID,mToken);
+                                    cancelBookingBike(bookingCarId, bicycleNo, uID, mToken);
                                 }
                             }).create().show();
                     break;
@@ -733,7 +733,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    cancelBookingBike(bookingCarId, bicycleNo,uID,mToken);
+                                    cancelBookingBike(bookingCarId, bicycleNo, uID, mToken);
                                 }
                             }).create().show();
                     break;
@@ -847,13 +847,13 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     }
 
     //取消预约的方法
-    private void cancelBookingBike(String bookingCarId, String bicycleNo,String uID,String token) {
+    private void cancelBookingBike(String bookingCarId, String bicycleNo, String uID, String token) {
         if (bookingCarId != null && !bookingCarId.equals("") && bicycleNo != null && !bicycleNo.equals("")) {
             Map<String, String> map = new HashMap<>();
             map.put("bookingCarId", bookingCarId);
             map.put("bicycleNo", bicycleNo);
-            map.put("userId",uID);
-            map.put("token",token);
+            map.put("userId", uID);
+            map.put("token", token);
             OkHttpUtils.post().url(Api.BASE_URL + Api.CANCELBOOK).params(map).build().execute(new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
@@ -941,7 +941,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                             @Override
                             public void onFinish() {
                                 super.onFinish();
-                                cancelBookingBike(bookingCarId, bicycleNo,uID,mToken);
+                                cancelBookingBike(bookingCarId, bicycleNo, uID, mToken);
                             }
                         }.start();
 
@@ -964,7 +964,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         StyledDialog.buildBottomSheetGv(this, "客户服务", strings, "", 2, new MyItemDialogListener() {
             @Override
             public void onItemClick(CharSequence text, int position) {
-                ToastUtils.showLong(MainActivity.this, text + "-----" + position);
+//                ToastUtils.showLong(MainActivity.this, text + "-----" + position);
                 if (position == 0) {
                     Intent unlock = new Intent(MainActivity.this, CustomerServiceActivity.class);
                     unlock.putExtra("name", "0");
@@ -1053,7 +1053,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                         if (bookBikePopupWindow != null) {
                             bookBikePopupWindow.dismiss();
                         }
-                        cancelBookingBike(bookingCarId, bicycleNo,uID,mToken);
+                        cancelBookingBike(bookingCarId, bicycleNo, uID, mToken);
                         EventBus.getDefault().post(new MessageEvent(), "on");
                         Map<String, String> map = new HashMap<>();
                         map.put("userId", uID);
@@ -1613,13 +1613,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             RidingInfo ridingInfo = (RidingInfo) intent.getSerializableExtra("ridingInfo");
             if (ridingInfo != null) {
                 double tripDist = MapUtil.changeDouble(ridingInfo.getTripDist());
-                LogUtils.d("距离", tripDist + "");
                 double calorie = MapUtil.changeDouble(ridingInfo.getCalorie());
                 String dist = String.valueOf(tripDist * 1000);
-                LogUtils.d("距离", dist + "");
                 int i = stringToInt(dist);
                 String s = MapUtil.distanceFormatter(i);
-                LogUtils.d("距离", s + "");
                 if (orderPopupWindow != null) {
                     mMap.clear();
                     orderPopupWindow.rideDistance.setText(s);
@@ -1642,7 +1639,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         @Override
         public void onReceive(Context context, Intent intent) {
             RidingInfo ridingInfo = (RidingInfo) intent.getSerializableExtra("ridingInfo");
-            Log.d("bbbb", ridingInfo + "");
             if (ridingInfo != null) {
                 if (orderPopupWindow != null) {
                     orderPopupWindow.dismiss();

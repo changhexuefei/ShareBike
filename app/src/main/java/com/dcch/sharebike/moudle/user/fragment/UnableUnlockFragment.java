@@ -124,6 +124,7 @@ public class UnableUnlockFragment extends Fragment {
                 UnableUnlockFragmentPermissionsDispatcher.showCameraWithCheck(this);
                 Intent i4 = new Intent(App.getContext(), CaptureActivity.class);
                 i4.putExtra("msg", "unable");
+                i4.putExtra("token",mToken);
                 startActivityForResult(i4, 0);
                 break;
             case R.id.un_confirm:

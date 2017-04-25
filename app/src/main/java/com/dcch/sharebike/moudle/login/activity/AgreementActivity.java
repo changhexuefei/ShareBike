@@ -29,7 +29,7 @@ public class AgreementActivity extends BaseActivity {
     @Override
     protected void initData() {
         mToolbar.setTitle("");
-        mTitle.setText(getResources().getString(R.string.ride_result));
+        mTitle.setText(getResources().getString(R.string.bike_service_regulations));
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

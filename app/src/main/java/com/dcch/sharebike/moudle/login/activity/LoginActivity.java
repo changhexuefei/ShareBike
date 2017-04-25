@@ -289,7 +289,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onError(Call call, Exception e, int id) {
                 ToastUtils.showLong(App.getContext(), "网络错误，请重试");
-                LogUtils.d("网络排查", e.getMessage());
             }
 
             @Override

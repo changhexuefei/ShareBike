@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:padding="8dp"
-                    android:text="停车点"
+                    android:text="@string/docking_stations"
                     android:textColor="#000000"
                     android:textSize="16sp"/>
 
@@ -127,7 +127,7 @@
                 android:gravity="center"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:text="共享单车不需要固定的车桩，请将单车停放在路边公共停车区域内，方便他人取用"/>
+                android:text="@string/docking_stations_desc"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -146,7 +146,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:padding="8dp"
-                    android:text="预约与计费"
+                    android:text="@string/appointment_billing"
                     android:textColor="#000000"
                     android:textSize="16sp"/>
 
@@ -170,7 +170,7 @@
                 android:gravity="center"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:text="共享单车不需要固定的车桩，请将单车停放在路边公共停车区域内，方便他人取用"/>
+                android:text="@string/appointment_billing_desc"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -189,7 +189,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:padding="8dp"
-                    android:text="开锁帮助"
+                    android:text="@string/help_unlock"
                     android:textColor="#000000"
                     android:textSize="16sp"/>
 
@@ -213,7 +213,7 @@
                 android:gravity="center"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:text="共享单车不需要固定的车桩，请将单车停放在路边公共停车区域内，方便他人取用"/>
+                android:text="@string/help_unlock_desc"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -232,7 +232,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:padding="8dp"
-                    android:text="如何关锁"
+                    android:text="@string/open_lock"
                     android:textColor="#000000"
                     android:textSize="16sp"/>
 
@@ -256,7 +256,7 @@
                 android:gravity="center"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:text="共享单车不需要固定的车桩，请将单车停放在路边公共停车区域内，方便他人取用"/>
+                android:text="@string/open_lock_desc"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -274,7 +274,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:padding="8dp"
-                    android:text="客户服务"
+                    android:text="@string/customerService"
                     android:textColor="#000000"
                     android:textSize="16sp"/>
 
@@ -300,7 +300,7 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:paddingTop="10dp"
-                android:text="共享单车不需要固定的车桩，请将单车停放在路边公共停车区域内，方便他人取用"/>
+                android:text="@string/customerServicedesc"/>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

@@ -189,6 +189,7 @@ public class PersonInfoActivity extends BaseActivity {
         map.put("token", token);
         map.put("imageFile", mImageResult);
         map.put("userId", uID);
+        LogUtils.d("用户",uID+token+mImageResult);
         //用户上传头像的方法
         OkHttpUtils.post().url(Api.BASE_URL + Api.UPLOADAVATAR)
                 .params(map)
@@ -197,8 +198,8 @@ public class PersonInfoActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        Log.e("错误", e.getMessage());
-                        ToastUtils.showShort(PersonInfoActivity.this, "服务器暂时不可用，请稍后再试");
+//                        Log.e("错误", e.getMessage());
+                        ToastUtils.showShort(PersonInfoActivity.this, "服务器忙，请稍后再试");
                     }
 
                     @Override

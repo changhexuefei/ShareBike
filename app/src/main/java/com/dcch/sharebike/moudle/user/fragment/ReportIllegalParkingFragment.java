@@ -126,6 +126,7 @@ public class ReportIllegalParkingFragment extends Fragment {
                 ReportIllegalParkingFragmentPermissionsDispatcher.showCameraWithCheck(this);
                 Intent i4 = new Intent(App.getContext(), CaptureActivity.class);
                 i4.putExtra("msg", "reports");
+                i4.putExtra("token", mToken);
                 startActivityForResult(i4, 0);
                 break;
             case R.id.select_photo:

@@ -181,6 +181,7 @@ public class CycleFailureFragment extends Fragment {
                CycleFailureFragmentPermissionsDispatcher.showCameraWithCheck(this);
                 Intent i4 = new Intent(getActivity(), CaptureActivity.class);
                 i4.putExtra("msg","fail");
+                i4.putExtra("token",mToken);
                 startActivityForResult(i4, 0);
                 break;
 

@@ -12,7 +12,7 @@
     <dimen name="horizontal_corner">10dp</dimen>
     <dimen name="title_size">18sp</dimen>
     <dimen name="sub_title_size">14sp</dimen>
-    <dimen name="detail_image_height">250dp</dimen>
+    <dimen name="detail_image_height">220dp</dimen>
 
 
 </resources>

@@ -125,6 +125,7 @@ public class ManualInputActivity extends BaseActivity {
                 Map<String, String> map = new HashMap<>();
                 map.put("lockremark", bikeNo);
                 map.put("token",mToken);
+                LogUtils.d("捕获",bikeNo+"\n"+mToken);
                 OkHttpUtils.post().url(Api.BASE_URL + Api.CHECKBICYCLENO).params(map).build().execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {

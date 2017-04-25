@@ -23,6 +23,7 @@ import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.base.ServiceAndroidContact;
 import com.dcch.sharebike.base.UpdateManager;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
+import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 
@@ -96,8 +97,18 @@ public class SettingActivity extends BaseActivity {
 //                startActivity(address);
 //                break;
             case R.id.checkVersions:
-                UpdateManager updateManager = new UpdateManager(this);
-                updateManager.checkVersion();
+                if(NetUtils.isConnected(this)){
+                    if(NetUtils.isWifi(this)){
+                        UpdateManager updateManager = new UpdateManager(this);
+                        updateManager.checkVersion();
+                    }else{
+                        ToastUtils.showShort(this,"你当前使用的手机网络,请切换成无线网络进行下载");
+                    }
+
+                }else{
+                    ToastUtils.showShort(this,"网络无法连接，请检查网络连接");
+                }
+
                 break;
             case R.id.aboutUs:
                 startActivity(new Intent(SettingActivity.this, AboutUsActivity.class));

@@ -21,8 +21,6 @@ import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.home.bean.VersionInfo;
 import com.dcch.sharebike.moudle.home.parse.ParseXmlService;
 import com.dcch.sharebike.utils.LogUtils;
-import com.dcch.sharebike.utils.NetUtils;
-import com.dcch.sharebike.utils.ToastUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -215,28 +213,7 @@ public class UpdateManager {
         downLoadDialog.show();
         // 下载文件
         //6:
-        if (NetUtils.isConnected(mContext)) {
-            if (NetUtils.isWifi(mContext)) {
-                downloadApk();
-            } else {
-                ToastUtils.showLong(mContext, "您当前为手机流量连接，请连接wifi下载");
-                AlertDialog alertDialog = new AlertDialog.Builder(mContext)
-                        .setTitle("提示")
-                        .setMessage("您当前为手机流量连接，是否下载？")
-                        .setNegativeButton("取消", null)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                downloadApk();
-                            }
-                        })
-                        .show();
-            }
-
-        } else {
-            ToastUtils.showLong(mContext, "您当前的手机没有联网！");
-        }
-
+        downloadApk();
     }
 
     private void downloadApk() {
@@ -347,7 +324,7 @@ public class UpdateManager {
         i.setDataAndType(Uri.parse("file://" + apkfile.toString()), "application/vnd.android.package-archive");
         mContext.startActivity(i);
         android.os.Process.killProcess(android.os.Process.myPid());
-        uninstallApk(mContext,apkfile.getAbsolutePath());
+        uninstallApk(mContext, apkfile.getAbsolutePath());
     }
 
 
