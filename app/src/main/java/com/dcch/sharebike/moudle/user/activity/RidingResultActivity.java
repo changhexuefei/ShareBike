@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.moudle.home.bean.RidingInfo;
+import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.MapUtil;
 import com.dcch.sharebike.utils.ToastUtils;
@@ -70,12 +71,21 @@ public class RidingResultActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.myCountry:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 ToastUtils.showShort(RidingResultActivity.this, "您点击的是行程详情");
                 break;
             case R.id.take_phone:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 ToastUtils.showShort(RidingResultActivity.this, "您点击的是拍照");
                 break;
             case R.id.share_journey:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 ToastUtils.showShort(RidingResultActivity.this, "您点击的是分享行程");
                 break;
         }

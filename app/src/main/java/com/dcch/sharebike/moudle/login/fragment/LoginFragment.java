@@ -25,6 +25,7 @@ import com.dcch.sharebike.moudle.user.activity.SettingActivity;
 import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
 import com.dcch.sharebike.moudle.user.activity.WalletInfoActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
+import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.MapUtil;
@@ -154,7 +155,9 @@ public class LoginFragment extends Fragment {
                     if (userimage != null) {
                         Log.d("用户头像路径", userimage);
                         //使用用户自定义的头像
-                        Glide.with(App.getContext()).load(userimage).into(userIcon);
+                        Glide.with(App.getContext()).load(userimage)
+                                .error(R.mipmap.avatar_default_login)
+                                .into(userIcon);
                     } else {
                         userIcon.setImageResource(R.mipmap.avatar_default_login);
                     }
@@ -179,6 +182,9 @@ public class LoginFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.creditScore:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 String mCreditScore = creditScore.getText().toString().trim();
                 mCreditScore = mCreditScore.substring(5, mCreditScore.length());
                 LogUtils.d("积分", mCreditScore);
@@ -189,6 +195,9 @@ public class LoginFragment extends Fragment {
                 }
                 break;
             case R.id.userIcon:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 if (mInfo != null) {
                     Intent personInfo = new Intent(App.getContext(), PersonInfoActivity.class);
                     Bundle mUserBundle = new Bundle();
@@ -198,6 +207,9 @@ public class LoginFragment extends Fragment {
                 }
                 break;
             case R.id.wallet:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 if (mInfo != null) {
                     Intent walletInfo = new Intent(App.getContext(), WalletInfoActivity.class);
                     Bundle bundle = new Bundle();
@@ -207,9 +219,15 @@ public class LoginFragment extends Fragment {
                 }
                 break;
             case R.id.favorable:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 ToastUtils.showLong(getContext(), "敬请期待");
                 break;
             case R.id.journey:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 if (mPhone != null && mToken != null) {
                     Intent myJourney = new Intent(App.getContext(), MyJourneyActivity.class);
                     myJourney.putExtra("phone", mPhone);
@@ -218,18 +236,30 @@ public class LoginFragment extends Fragment {
                 }
                 break;
             case R.id.message:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 ToastUtils.showLong(getContext(), "敬请期待");
 //                Intent myMessage = new Intent(App.getContext(), MyMessageActivity.class);
 //                startActivity(myMessage);
                 break;
             case R.id.friend:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 startActivity(new Intent(getActivity(), InviteFriendsActivity.class));
                 break;
             case R.id.guide:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 Intent userGuide = new Intent(App.getContext(), UserGuideActivity.class);
                 startActivity(userGuide);
                 break;
             case R.id.setting:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 Intent setting = new Intent(App.getContext(), SettingActivity.class);
                 startActivity(setting);
                 break;

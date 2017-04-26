@@ -19,6 +19,7 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
+import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
@@ -108,16 +109,25 @@ public class WalletInfoActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 startActivity(new Intent(this, PersonalCenterActivity.class));
                 finish();
                 break;
             case R.id.transactionDetail:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 Intent dealDetail = new Intent(this, TransactionDetailActivity.class);
                 dealDetail.putExtra("userId", uID);
                 dealDetail.putExtra("token",mToken);
                 startActivity(dealDetail);
                 break;
             case R.id.recharge:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 if (mCashStatus == 1) {
                     Intent intent = new Intent(WalletInfoActivity.this, RechargeBikeFareActivity.class);
                     startActivity(intent);
@@ -126,6 +136,9 @@ public class WalletInfoActivity extends BaseActivity {
                 }
                 break;
             case R.id.chargeDeposit:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 if (chargeDeposit.getText().equals(tipFour)) {
                     Intent rechargeDeposit = new Intent(WalletInfoActivity.this, RechargeDepositActivity.class);
                     startActivity(rechargeDeposit);

@@ -23,6 +23,7 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.moudle.user.bean.WeixinReturnInfo;
+import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.NetUtils;
@@ -104,14 +105,23 @@ public class RechargeDepositActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rd_aliArea:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 rdAliCheckbox.setChecked(true);
                 rdWeixinCheckbox.setChecked(false);
                 break;
             case R.id.rd_weixinArea:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 rdAliCheckbox.setChecked(false);
                 rdWeixinCheckbox.setChecked(true);
                 break;
             case R.id.btn_rd_recharge:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 String moneySum = figure.getText().toString().trim();
                 moneySum = moneySum.substring(0, moneySum.length() - 1);
                 if (rdAliCheckbox.isChecked()) {

@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.utils.ClickUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -46,6 +47,9 @@ public class ShowRefundResultsActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.verify:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 startActivity(new Intent(ShowRefundResultsActivity.this, WalletInfoActivity.class));
                 finish();
                 break;

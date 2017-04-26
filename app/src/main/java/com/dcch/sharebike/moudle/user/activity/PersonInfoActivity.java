@@ -2,10 +2,8 @@ package com.dcch.sharebike.moudle.user.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -18,8 +16,10 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
+import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.PictureProcessingUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -28,9 +28,6 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -96,7 +93,7 @@ public class PersonInfoActivity extends BaseActivity {
         Bundle user = intent.getExtras();
         if (user != null) {
             mUserBundle = (UserInfo) user.getSerializable("userBundle");
-            if(mUserBundle!=null){
+            if (mUserBundle != null) {
                 nickName.setText(mUserBundle.getNickName().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
                 telephone.setText(mUserBundle.getPhone().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
             }
@@ -109,7 +106,7 @@ public class PersonInfoActivity extends BaseActivity {
                 realName.setText(mUserBundle.getName());
             }
             if (mUserBundle.getUserimage() != null) {
-                Glide.with(App.getContext()).load(mUserBundle.getUserimage()).into(userInfoIcon);
+                Glide.with(App.getContext()).load(mUserBundle.getUserimage()).error(R.mipmap.avatar_default_login).into(userInfoIcon);
             } else {
                 userInfoIcon.setImageResource(R.mipmap.avatar_default_login);
             }
@@ -137,6 +134,9 @@ public class PersonInfoActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.userIcon:
+                if (ClickUtils.isFastClick()) {
+                    return;
+                }
                 RxGalleryFinal.with(PersonInfoActivity.this)
                         .cropHideBottomControls(true)
                         .cropOvalDimmedLayer(false)
@@ -151,8 +151,8 @@ public class PersonInfoActivity extends BaseActivity {
                             protected void onEvent(ImageRadioResultEvent imageRadioResultEvent) throws Exception {
                                 //得到图片的路径
                                 result = imageRadioResultEvent.getResult().getOriginalPath();
-                                Bitmap bitmap = getimage(result);
-                                String mImageResult = bitmapToBase64(bitmap);
+                                Bitmap bitmap = PictureProcessingUtils.getimage(result);
+                                String mImageResult = PictureProcessingUtils.bitmapToBase64(bitmap);
                                 if (result != null && !result.equals("")) {
                                     //将图片赋值给图片控件
                                     Glide.with(App.getContext()).load(result).into(userInfoIcon);
@@ -166,6 +166,9 @@ public class PersonInfoActivity extends BaseActivity {
                         }).openGallery();
                 break;
             case R.id.userNickname:
+                if (ClickUtils.isFastClick()) {
+                    return;
+                }
                 Intent changeNickName = new Intent(this, ChangeUserNickNameActivity.class);
                 String trim = nickName.getText().toString().trim();
                 Log.d("trim", trim);
@@ -174,6 +177,9 @@ public class PersonInfoActivity extends BaseActivity {
                 startActivityForResult(changeNickName, 0);
                 break;
             case R.id.phone:
+                if (ClickUtils.isFastClick()) {
+                    return;
+                }
                 if (mUserBundle != null) {
                     Intent mobileNum = new Intent(this, MobileNumActivity.class);
                     mobileNum.putExtra("cashStatus", mUserBundle.getCashStatus());
@@ -187,9 +193,9 @@ public class PersonInfoActivity extends BaseActivity {
     private void upLoadIcon(String mImageResult, String token, String uID) {
         Map<String, String> map = new HashMap<>();
         map.put("token", token);
-        map.put("imageFile", mImageResult);
         map.put("userId", uID);
-        LogUtils.d("用户",uID+token+mImageResult);
+        map.put("imageFile", mImageResult);
+        LogUtils.d("用户", uID + token + mImageResult);
         //用户上传头像的方法
         OkHttpUtils.post().url(Api.BASE_URL + Api.UPLOADAVATAR)
                 .params(map)
@@ -269,84 +275,4 @@ public class PersonInfoActivity extends BaseActivity {
                     }
                 });
     }
-
-
-    /**
-     * 将bitmap转换成base64字符串
-     *
-     * @param bitmap
-     * @return base64 字符串
-     */
-    public static String bitmapToBase64(Bitmap bitmap) {
-        String result = null;
-        ByteArrayOutputStream baos = null;
-        try {
-            if (bitmap != null) {
-                baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                baos.flush();
-                baos.close();
-                byte[] bitmapBytes = baos.toByteArray();
-                result = Base64.encodeToString(bitmapBytes, Base64.DEFAULT);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (baos != null) {
-                    baos.flush();
-                    baos.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return result;
-    }
-
-    /**
-     * 压缩
-     *
-     * @param image
-     * @return
-     */
-    private Bitmap compressImage(Bitmap image) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
-        int options = 100;
-        while (baos.toByteArray().length / 1024 > 100) {  //循环判断如果压缩后图片是否大于100kb,大于继续压缩
-            baos.reset();//重置baos即清空baos
-            image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
-            options -= 10;//每次都减少10
-        }
-        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream中
-        return BitmapFactory.decodeStream(isBm, null, null);
-    }
-
-    private Bitmap getimage(String srcPath) {
-        BitmapFactory.Options newOpts = new BitmapFactory.Options();
-        //开始读入图片，此时把options.inJustDecodeBounds 设回true了
-        newOpts.inJustDecodeBounds = true;
-        Bitmap bitmap = BitmapFactory.decodeFile(srcPath, newOpts);//此时返回bm为空
-        newOpts.inJustDecodeBounds = false;
-        int w = newOpts.outWidth;
-        int h = newOpts.outHeight;
-        //现在主流手机比较多是800*480分辨率，所以高和宽我们设置为
-        float hh = 800f;//这里设置高度为800f
-        float ww = 480f;//这里设置宽度为480f
-        //缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
-        int be = 1;//be=1表示不缩放
-        if (w > h && w > ww) {//如果宽度大的话根据宽度固定大小缩放
-            be = (int) (newOpts.outWidth / ww);
-        } else if (w < h && h > hh) {//如果高度高的话根据宽度固定大小缩放
-            be = (int) (newOpts.outHeight / hh);
-        }
-        if (be <= 0)
-            be = 1;
-        newOpts.inSampleSize = be;//设置缩放比例
-        //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
-        bitmap = BitmapFactory.decodeFile(srcPath, newOpts);
-        return compressImage(bitmap);//压缩好比例大小后再进行质量压缩
-    }
-
 }

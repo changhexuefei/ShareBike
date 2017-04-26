@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.moudle.login.activity.LoginActivity;
+import com.dcch.sharebike.utils.ClickUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +36,9 @@ public class UnLoginFragment extends Fragment {
 
     @OnClick(R.id.login)
     public void onClick() {
+        if(ClickUtils.isFastClick()){
+            return;
+        }
         Intent intent = new Intent(getContext(), LoginActivity.class);
         startActivity(intent);
 

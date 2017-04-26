@@ -17,6 +17,7 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.CodeEvent;
 import com.dcch.sharebike.http.Api;
+import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.DensityUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
@@ -119,13 +120,19 @@ public class ManualInputActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 finish();
                 break;
             case R.id.ensure:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 Map<String, String> map = new HashMap<>();
                 map.put("lockremark", bikeNo);
-                map.put("token",mToken);
-                LogUtils.d("捕获",bikeNo+"\n"+mToken);
+                map.put("token", mToken);
+                LogUtils.d("捕获", bikeNo + "\n" + mToken);
                 OkHttpUtils.post().url(Api.BASE_URL + Api.CHECKBICYCLENO).params(map).build().execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
@@ -140,8 +147,8 @@ public class ManualInputActivity extends BaseActivity {
                             switch (mTag) {
                                 case "main": {
                                     Intent bikeNoIntent = new Intent(ManualInputActivity.this, UnlockProgressActivity.class);
-                                    startActivity(bikeNoIntent);
                                     EventBus.getDefault().post(new CodeEvent(bikeNo), "bikeNo");
+                                    startActivity(bikeNoIntent);
                                     break;
                                 }
                                 case "unable": {

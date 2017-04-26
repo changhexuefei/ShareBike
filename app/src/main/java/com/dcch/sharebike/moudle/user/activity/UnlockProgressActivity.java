@@ -138,6 +138,7 @@ public class UnlockProgressActivity extends BaseActivity {
     private void receiveFromMainOther(MessageEvent info) {
         LogUtils.d("消息",info.toString());
         ToastUtils.showShort(App.getContext(),"开锁失败！");
+        startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
         UnlockProgressActivity.this.finish();
     }
 

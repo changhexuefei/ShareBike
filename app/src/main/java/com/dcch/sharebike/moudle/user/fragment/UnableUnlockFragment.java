@@ -20,6 +20,7 @@ import com.dcch.sharebike.base.CodeEvent;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.libzxing.zxing.activity.CaptureActivity;
 import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
+import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
@@ -121,6 +122,9 @@ public class UnableUnlockFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.scan_code:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 UnableUnlockFragmentPermissionsDispatcher.showCameraWithCheck(this);
                 Intent i4 = new Intent(App.getContext(), CaptureActivity.class);
                 i4.putExtra("msg", "unable");
@@ -128,6 +132,9 @@ public class UnableUnlockFragment extends Fragment {
                 startActivityForResult(i4, 0);
                 break;
             case R.id.un_confirm:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 bikeNo = bikeCode.getText().toString().trim();
                 contentText = questionDesc.getContentText().trim();
                 if (!uID.equals("") && uID != null && !bikeNo.equals("") && bikeNo != null) {

@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 
 import butterknife.BindView;
@@ -45,9 +46,15 @@ public class ChangeUserNickNameActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 finish();
                 break;
             case R.id.save_nickname:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 String newName = changeNickname.getText().toString().trim();
                 if (newName != null) {
                     if (newName.equals("")) {

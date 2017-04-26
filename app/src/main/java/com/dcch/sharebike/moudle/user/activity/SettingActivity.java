@@ -23,6 +23,7 @@ import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.base.ServiceAndroidContact;
 import com.dcch.sharebike.base.UpdateManager;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
+import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
@@ -97,6 +98,9 @@ public class SettingActivity extends BaseActivity {
 //                startActivity(address);
 //                break;
             case R.id.checkVersions:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 if(NetUtils.isConnected(this)){
                     if(NetUtils.isWifi(this)){
                         UpdateManager updateManager = new UpdateManager(this);
@@ -111,18 +115,33 @@ public class SettingActivity extends BaseActivity {
 
                 break;
             case R.id.aboutUs:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 startActivity(new Intent(SettingActivity.this, AboutUsActivity.class));
                 break;
             case userAgreement:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 startActivity(new Intent(SettingActivity.this, UserAgreementActivity.class));
                 break;
             case R.id.cashPledgeExplain:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 startActivity(new Intent(SettingActivity.this, CashPledgeExplainActivity.class));
                 break;
             case R.id.rechargeAgreement:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 startActivity(new Intent(SettingActivity.this, RechargeAgreementActivity.class));
                 break;
             case R.id.signOut:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 new AlertDialog.Builder(this)
                         .setTitle("退出登录")
                         .setMessage("确定退出登录吗？")

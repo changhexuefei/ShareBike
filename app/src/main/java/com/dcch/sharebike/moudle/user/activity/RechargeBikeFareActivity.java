@@ -28,6 +28,7 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.moudle.user.bean.WeixinReturnInfo;
+import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.NetUtils;
@@ -142,17 +143,29 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.recharge_agreement:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 startActivity(new Intent(this, RechargeAgreementActivity.class));
                 break;
             case R.id.rbf_aliArea:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 rbfAliCheckbox.setChecked(true);
                 rbfWeixinCheckbox.setChecked(false);
                 break;
             case R.id.rbf_weixinArea:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 rbfAliCheckbox.setChecked(false);
                 rbfWeixinCheckbox.setChecked(true);
                 break;
             case R.id.btn_rbf_recharge:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 //这里要分两种情况，调取微信和支付宝的支付方式
                 if (rbfAliCheckbox.isChecked()) {
                     //选择支付宝，调取支付宝的支付方法

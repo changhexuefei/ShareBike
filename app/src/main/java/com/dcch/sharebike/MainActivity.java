@@ -82,6 +82,7 @@ import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.overlayutil.OverlayManager;
 import com.dcch.sharebike.overlayutil.WalkingRouteOverlay;
 import com.dcch.sharebike.service.GPSService;
+import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.MapUtil;
@@ -462,10 +463,16 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.MyCenter:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 Intent personal = new Intent(this, PersonalCenterActivity.class);
                 startActivity(personal);
                 break;
             case btn_my_help:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 if (SPUtils.isLogin()) {
                     popupDialog();
                 } else {
@@ -474,11 +481,17 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 break;
 
             case R.id.instructions:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 Intent i2 = new Intent(this, PersonalCenterActivity.class);
                 startActivity(i2);
                 break;
 
             case seek:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 if (isClick) {
                     Intent seek = new Intent(this, SeekActivity.class);
                     seek.putExtra("address", address1);
@@ -490,6 +503,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 break;
 
             case R.id.btn_my_location:
+
                 if (routeOverlay != null)
                     routeOverlay.removeFromMap();
                 setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
@@ -497,6 +511,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 break;
 
             case R.id.scan:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 if (SPUtils.isLogin()) {
                     if (cashStatus == 1 && status == 1 && mToken != null) {
                         checkAggregate(uID, mToken);

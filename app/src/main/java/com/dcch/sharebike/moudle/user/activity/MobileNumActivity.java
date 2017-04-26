@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.utils.ClickUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -55,6 +56,9 @@ public class MobileNumActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.replace_mobile_num:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 if (mCashStatus == 1) {
                     new AlertDialog.Builder(this)
                             .setMessage("更换手机号需先退押金您还未退押金，是否前去退押金?")

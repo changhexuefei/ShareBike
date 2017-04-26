@@ -24,6 +24,7 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
+import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.InPutUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
@@ -177,6 +178,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.getSecurityCode:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 if (NetUtils.isConnected(LoginActivity.this)) {
                     getseCode(phone);
                 } else {
@@ -185,6 +189,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                 break;
             case R.id.login_confirm:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 //将收到的验证码和手机号提交再次核对
 //                SMSSDK.submitVerificationCode("86", phone, securityCode.getText().toString());
 //                compareVerificationCode("86", phone, securityCode.getText().toString());
@@ -195,6 +202,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
                 break;
             case R.id.rules:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 Intent intent = new Intent(this, AgreementActivity.class);
                 startActivity(intent);
                 break;

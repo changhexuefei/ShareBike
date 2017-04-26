@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.LogUtils;
 
 import butterknife.BindView;
@@ -74,18 +75,27 @@ public class InviteFriendsActivity extends BaseActivity {
 //                break;
 
             case R.id.shareWeiChat:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 LogUtils.d("点击","微信");
                 //分享到微信
                 Platform platWeiChat = ShareSDK.getPlatform(Wechat.NAME);
                 showShare(platWeiChat.getName());
                 break;
             case R.id.shareWeiChatCircle:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 //分享到微信朋友圈
                 LogUtils.d("点击","微信朋友圈");
                 Platform platWeiChatCircle = ShareSDK.getPlatform(WechatMoments.NAME);
                 showShare(platWeiChatCircle.getName());
                 break;
             case R.id.shareQQ:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 //比如分享到QQ，其他平台则只需要更换平台类名，例如Wechat.NAME则是微信
                 LogUtils.d("点击","QQ");
                 Platform plat = ShareSDK.getPlatform(QQ.NAME);
@@ -93,6 +103,9 @@ public class InviteFriendsActivity extends BaseActivity {
                 break;
 
             case R.id.shareQQZONE:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 //比如分享到QQ，其他平台则只需要更换平台类名，例如Wechat.NAME则是微信
                 LogUtils.d("点击","QQZone");
                 Platform platQQZONE = ShareSDK.getPlatform(QZone.NAME);
@@ -100,6 +113,9 @@ public class InviteFriendsActivity extends BaseActivity {
                 break;
 
             case R.id.shareSina:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 //比如分享到QQ，其他平台则只需要更换平台类名，例如Wechat.NAME则是微信
                 Platform platSina = ShareSDK.getPlatform(SinaWeibo.NAME);
                 showShare(platSina.getName());
