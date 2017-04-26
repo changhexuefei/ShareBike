@@ -205,7 +205,7 @@
                 android:layout_height="200dp"
                 android:layout_margin="10dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/small_autumn"/>
+                android:src="@drawable/help_unlock"/>
 
             <TextView
                 android:layout_width="wrap_content"

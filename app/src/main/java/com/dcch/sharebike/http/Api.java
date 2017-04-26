@@ -6,7 +6,7 @@ public class Api {
 //    public static final String BASE_URL = "http://192.168.1.142:8080/MavenSSM/mobile/";
 //    public static final String BASE_URL = "http://192.168.1.131:8080/MavenSSM/mobile/";
     public static final String BASE_URL = "http://114.112.86.38/MavenSSM/mobile/";
-    //    获取验证码
+    //获取验证码
     public static final String REGISTER = "register.do?";
     //注册登录
     public static final String SAVEUSER = "saveUser.do?";
@@ -22,7 +22,7 @@ public class Api {
     //取消预约用车
     public static final String CANCELBOOK = "updateBookingCar.do?";
     //扫码开锁
-    public static final String OPENSCAN = "openScan.do?";
+    public static final String OPENSCAN = "OpenLock.do?";
     //根据用户ID查询预约单车信息
     public static final String SEARCHBOOKING = "searchBooking.do?";
     //生成用车订单
@@ -69,5 +69,5 @@ public class Api {
     public static final String DEPOSITAGREEMENT = "http://www.70bikes.com/MavenSSM/Explain/depositAgreement.jsp";
     //充值协议
     public static final String RECHARGEAGREEMENT = "http://www.70bikes.com/MavenSSM/Explain/rechargeAgreement.jsp";
-    public static final String VERSION = "http://192.168.1.131:8080/MavenSSM/version/version.xml";
+    public static final String VERSION = "http://www.70bikes.com/MavenSSM/version/version.xml";
 }
