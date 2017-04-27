@@ -17,6 +17,7 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.login.activity.LoginActivity;
+import com.dcch.sharebike.moudle.user.activity.CouponListActivity;
 import com.dcch.sharebike.moudle.user.activity.CreditIntegralActivity;
 import com.dcch.sharebike.moudle.user.activity.InviteFriendsActivity;
 import com.dcch.sharebike.moudle.user.activity.MyJourneyActivity;
@@ -182,7 +183,7 @@ public class LoginFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.creditScore:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 String mCreditScore = creditScore.getText().toString().trim();
@@ -195,7 +196,7 @@ public class LoginFragment extends Fragment {
                 }
                 break;
             case R.id.userIcon:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 if (mInfo != null) {
@@ -207,7 +208,7 @@ public class LoginFragment extends Fragment {
                 }
                 break;
             case R.id.wallet:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 if (mInfo != null) {
@@ -219,13 +220,19 @@ public class LoginFragment extends Fragment {
                 }
                 break;
             case R.id.favorable:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
+                }
+                if (uID != null && mToken != null) {
+                    Intent coupon = new Intent(App.getContext(), CouponListActivity.class);
+                    coupon.putExtra("userId", uID);
+                    coupon.putExtra("token", mToken);
+                    startActivity(coupon);
                 }
                 ToastUtils.showLong(getContext(), "敬请期待");
                 break;
             case R.id.journey:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 if (mPhone != null && mToken != null) {
@@ -236,7 +243,7 @@ public class LoginFragment extends Fragment {
                 }
                 break;
             case R.id.message:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 ToastUtils.showLong(getContext(), "敬请期待");
@@ -244,24 +251,22 @@ public class LoginFragment extends Fragment {
 //                startActivity(myMessage);
                 break;
             case R.id.friend:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 startActivity(new Intent(getActivity(), InviteFriendsActivity.class));
                 break;
             case R.id.guide:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
-                Intent userGuide = new Intent(App.getContext(), UserGuideActivity.class);
-                startActivity(userGuide);
+                startActivity(new Intent(App.getContext(), UserGuideActivity.class));
                 break;
             case R.id.setting:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
-                Intent setting = new Intent(App.getContext(), SettingActivity.class);
-                startActivity(setting);
+                startActivity(new Intent(App.getContext(), SettingActivity.class));
                 break;
         }
     }

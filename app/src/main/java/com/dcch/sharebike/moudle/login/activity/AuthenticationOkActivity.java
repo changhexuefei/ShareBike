@@ -12,6 +12,7 @@ import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
+import com.dcch.sharebike.utils.ClickUtils;
 
 import org.simple.eventbus.EventBus;
 
@@ -51,6 +52,9 @@ public class AuthenticationOkActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back_to_main:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 Intent backToMain = new Intent(this, MainActivity.class);
                 EventBus.getDefault().post(new MessageEvent(), "gone");
                 startActivity(backToMain);

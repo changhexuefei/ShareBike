@@ -19,8 +19,10 @@ import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.home.content.MyContent;
+import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.InPutUtils;
 import com.dcch.sharebike.utils.JsonUtils;
+import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -155,12 +157,15 @@ public class IdentityAuthentication extends BaseActivity {
         switch (view.getId()) {
             case R.id.btn_authentication:
                 //实名认证的接口
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 verifyRealName(uID, realName, cardNum,mToken);
                 break;
         }
     }
 
-    private void verifyRealName(String uID, final String realName, String cardNum,String token) {
+    private void verifyRealName(final String uID, final String realName, String cardNum, String token) {
         try {
             String encode = URLEncoder.encode(realName, "utf-8");//"UTF-8"
             Map<String, String> map = new HashMap<>();
@@ -182,6 +187,7 @@ public class IdentityAuthentication extends BaseActivity {
                     //{"code":"1"}
                     if (JsonUtils.isSuccess(response)) {
                         Intent authentication = new Intent(IdentityAuthentication.this, AuthenticationOkActivity.class);
+                        createCoupon(uID);
                         startActivity(authentication);
                         finish();
 
@@ -193,6 +199,22 @@ public class IdentityAuthentication extends BaseActivity {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+    }
+
+    private void createCoupon(String uID) {
+        Map<String,String> map = new HashMap<>();
+        map.put("userId",uID);
+        OkHttpUtils.post().url(Api.BASE_URL+Api.ADDCOUPON).params(map).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                LogUtils.e("优惠券",e.getMessage());
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                LogUtils.d("优惠券",response);
+            }
+        });
     }
 
     @Override

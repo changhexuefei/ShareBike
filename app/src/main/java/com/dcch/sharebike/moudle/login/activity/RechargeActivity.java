@@ -26,6 +26,7 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.moudle.user.bean.WeixinReturnInfo;
+import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.NetUtils;
@@ -127,6 +128,9 @@ public class RechargeActivity extends BaseActivity {
                 break;
 
             case R.id.btn_recharge:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 String moneySum = money.getText().toString().trim();
                 String outTradeNo;
                 if (aliCheckbox.isChecked()) {

@@ -17,6 +17,7 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.CodeEvent;
 import com.dcch.sharebike.http.Api;
+import com.dcch.sharebike.moudle.login.activity.OpenLockTipAcitivity;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.DensityUtils;
 import com.dcch.sharebike.utils.JsonUtils;
@@ -45,6 +46,8 @@ public class ManualInputActivity extends BaseActivity {
     CodeInputEditText mManualInputArea;
     @BindView(R.id.ensure)
     Button mEnsure;
+    @BindView(R.id.manual_help_tip)
+    TextView mManualHelpTip;
     private String bikeNo = "";
     private String mTag;
     private Camera camera = null;
@@ -116,17 +119,17 @@ public class ManualInputActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.back, R.id.ensure})
+    @OnClick({R.id.back, R.id.ensure, R.id.manual_help_tip})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 finish();
                 break;
             case R.id.ensure:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 Map<String, String> map = new HashMap<>();
@@ -179,6 +182,14 @@ public class ManualInputActivity extends BaseActivity {
                         }
                     }
                 });
+                break;
+
+
+            case R.id.manual_help_tip:
+                if (ClickUtils.isFastClick()) {
+                    return;
+                }
+                startActivity(new Intent(this, OpenLockTipAcitivity.class));
                 break;
         }
     }

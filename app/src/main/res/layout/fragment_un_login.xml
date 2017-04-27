@@ -116,7 +116,7 @@
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="200dp"
                 android:layout_margin="10dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/parking_images"/>
@@ -159,7 +159,7 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="200dp"
                 android:layout_margin="10dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/bookingbillingpictures"/>
@@ -248,7 +248,7 @@
                 android:layout_height="200dp"
                 android:layout_margin="10dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/small_winter"/>
+                android:src="@drawable/close_lock"/>
 
             <TextView
                 android:layout_width="wrap_content"

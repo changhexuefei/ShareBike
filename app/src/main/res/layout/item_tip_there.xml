@@ -25,7 +25,7 @@
             android:layout_marginBottom="5dp"
             android:layout_marginTop="80dp"
             android:scaleType="fitXY"
-            android:src="@drawable/small_summer"/>
+            android:src="@drawable/help_unlock"/>
 
         <TextView
             android:id="@+id/title_click_camera"

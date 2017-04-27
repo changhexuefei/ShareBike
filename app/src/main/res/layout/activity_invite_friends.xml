@@ -7,15 +7,17 @@
     android:layout_height="match_parent"
     tools:context="com.dcch.sharebike.moudle.user.activity.InviteFriendsActivity">
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar"
+             android:id="@+id/include"/>
 
     <ImageView
         android:id="@+id/invite_icon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
         android:scaleType="fitXY"
-        android:src="@drawable/menu_bg"/>
+        android:src="@drawable/menu_bg"
+        android:layout_below="@+id/include"
+        android:layout_alignParentStart="true"/>
 
     <TextView
         android:id="@+id/tv_tip_one"

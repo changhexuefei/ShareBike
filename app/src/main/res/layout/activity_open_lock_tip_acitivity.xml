@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_click_camera_popup"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.dcch.sharebike.moudle.login.activity.ClickCameraPopupActivity">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/activity_click_camera_popup"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:context="com.dcch.sharebike.moudle.login.activity.OpenLockTipAcitivity">
 
     <FrameLayout
         android:layout_marginTop="18dp"
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:layout_alignTop="@+id/close"
+        android:layout_alignTop="@+id/open_lock_close"
         android:layout_alignParentStart="true">
 
         <android.support.v7.widget.CardView
@@ -59,20 +59,9 @@
         android:layout_marginTop="60dp"
         android:layout_centerHorizontal="true"
         android:layout_gravity="right"
-        android:id="@+id/close"
+        android:id="@+id/open_lock_close"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:src="@mipmap/hintcard_close" />
-
-    <Button
-        android:id="@+id/toLoginActivity"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="500dp"
-        android:background="@drawable/card_login_button_normal"
-        android:text="@string/login_immediately"
-        android:textColor="#ffffff" />
-
 
 </RelativeLayout>

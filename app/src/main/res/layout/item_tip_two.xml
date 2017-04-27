@@ -15,7 +15,9 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         app:cardCornerRadius="2dp"
-        app:contentPadding="10dp">
+        app:contentPadding="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
 
         <ImageView
             android:id="@+id/img"
@@ -25,7 +27,7 @@
             android:layout_marginBottom="5dp"
             android:layout_marginTop="80dp"
             android:scaleType="fitXY"
-            android:src="@drawable/small_autumn"/>
+            android:src="@drawable/bookingbillingpictures"/>
 
         <TextView
             android:id="@+id/title_click_camera"

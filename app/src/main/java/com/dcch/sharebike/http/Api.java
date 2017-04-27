@@ -4,8 +4,8 @@ package com.dcch.sharebike.http;
 public class Api {
     //    public static final String BASE_URL = "http://192.168.1.159:8080/MavenSSM/mobile/";
 //    public static final String BASE_URL = "http://192.168.1.142:8080/MavenSSM/mobile/";
-//    public static final String BASE_URL = "http://192.168.1.131:8080/MavenSSM/mobile/";
-    public static final String BASE_URL = "http://114.112.86.38/MavenSSM/mobile/";
+    public static final String BASE_URL = "http://192.168.1.131:8080/MavenSSM/mobile/";
+//    public static final String BASE_URL = "http://114.112.86.38/MavenSSM/mobile/";
     //获取验证码
     public static final String REGISTER = "register.do?";
     //注册登录
@@ -15,6 +15,8 @@ public class Api {
     //认证身份
     public static final String UPDATEUSERSTATUS = "updateUserAppStatus.do?";
     //    public static final String UPDATEUSERSTATUS = "updateUserStatus.do?";
+    //注册成功生成优惠券
+    public static final String ADDCOUPON = "addCoupon.do?";
     //请求车辆信息
     public static final String GINPUT = "findBicycle.do?";
     //预约用车
@@ -55,8 +57,11 @@ public class Api {
     public static final String SEARCHORDERING = "searchOrdering.do?";
     //行程列表
     public static final String GETCARRENTALORDERBYPHONE = "getCarRentalOrderByPhone.do?";
+    //获取优惠券列表
+    public static final String GETCOUPON = "getCoupon.do?";
     //单个行程
-    public static final String TRIPRECORD = "tripRecord.do?";
+    public static final String TRIPRECORD = "positionRecord.do?";
+//    public static final String TRIPRECORD = "tripRecord.do?";
     //交易列表
     public static final String SEARCHPAYLIST = "searchPayList.do?";
     //微信退款

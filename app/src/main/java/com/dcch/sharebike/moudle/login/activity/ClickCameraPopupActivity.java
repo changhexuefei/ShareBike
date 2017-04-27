@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
+import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.LogUtils;
 
 import org.simple.eventbus.EventBus;
@@ -45,10 +46,16 @@ public class ClickCameraPopupActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.close:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 EventBus.getDefault().post(new MessageEvent(), "allShow");
                 finish();
                 break;
             case R.id.toLoginActivity:
+                if(ClickUtils.isFastClick()){
+                    return;
+                }
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
                 EventBus.getDefault().post(new MessageEvent(), "allShow");

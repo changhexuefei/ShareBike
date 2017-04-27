@@ -185,8 +185,10 @@ public class JourneyDetailActivity extends BaseActivity {
                         for (int i = 0; i < records.length(); i++) {
                             JSONObject jsonObject = records.getJSONObject(i);
                             RoutePoint routePoint = new RoutePoint();
-                            routePoint.setRouteLat(Double.valueOf(jsonObject.optString("lat")));
-                            routePoint.setRouteLng(Double.valueOf(jsonObject.optString("lng")));
+                            routePoint.setRouteLat(jsonObject.optDouble("GPSY"));
+                            routePoint.setRouteLng(jsonObject.optDouble("GPSX"));
+//                            routePoint.setRouteLat(Double.valueOf(jsonObject.optString("lat")));
+//                            routePoint.setRouteLng(Double.valueOf(jsonObject.optString("lng")));
                             routePoints.add(routePoint);
                         }
                         for (int i = 0; i < routePoints.size(); i++) {

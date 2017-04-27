@@ -46,7 +46,7 @@ public class GuideActivity extends BaseActivity {
         //设置全屏显示
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        int[] ids = {R.drawable.qilinone, R.drawable.qilintwo, R.drawable.timg,
+        int[] ids = {R.drawable.qilinone, R.drawable.qilin, R.drawable.qilinthere,
                 R.drawable.qilintwo};
         imageViews = new ArrayList();
         for (int id : ids) {

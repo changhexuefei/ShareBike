@@ -45,7 +45,9 @@ import com.dcch.sharebike.libzxing.zxing.decode.DecodeThread;
 import com.dcch.sharebike.libzxing.zxing.utils.BeepManager;
 import com.dcch.sharebike.libzxing.zxing.utils.CaptureActivityHandler;
 import com.dcch.sharebike.libzxing.zxing.utils.InactivityTimer;
+import com.dcch.sharebike.moudle.login.activity.OpenLockTipAcitivity;
 import com.dcch.sharebike.moudle.user.activity.ManualInputActivity;
+import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.DensityUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
@@ -160,6 +162,9 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
         mManualInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (ClickUtils.isFastClick()) {
+                    return;
+                }
                 Intent manual = new Intent(CaptureActivity.this, ManualInputActivity.class);
                 manual.putExtra("tag", mMsg);
                 manual.putExtra("token",mToken);
@@ -181,6 +186,16 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
                     parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);// 关闭
                     camera.setParameters(parameters);
                 }
+            }
+        });
+        mHelpTip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (ClickUtils.isFastClick()) {
+                    return;
+                }
+                Intent openLock = new Intent(CaptureActivity.this, OpenLockTipAcitivity.class);
+                startActivity(openLock);
             }
         });
     }
