@@ -99,15 +99,16 @@
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask">
-        </activity>
-        <activity
-            android:name=".activity.SplashActivity"
-            android:theme="@style/Theme.AppCompat">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.SplashActivity"
+            android:theme="@style/Theme.AppCompat">
+
         </activity>
         <activity android:name=".activity.GuideActivity"/>
         <activity
@@ -157,18 +158,30 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".moudle.login.activity.PersonalCenterActivity"/>
+        <activity
+            android:name=".moudle.login.activity.PersonalCenterActivity"
+            android:launchMode="singleTask"
+            />
         <activity android:name=".moudle.login.activity.LoginActivity"/>
         <activity android:name=".moudle.search.activity.SeekActivity"/>
         <activity android:name=".moudle.login.activity.AgreementActivity"/>
-        <activity android:name=".moudle.login.activity.RechargeActivity"/>
+        <activity
+            android:name=".moudle.login.activity.RechargeActivity"
+            android:launchMode="singleTask"
+            />
         <activity android:name=".moudle.login.activity.IdentityAuthentication"/>
-        <activity android:name=".moudle.user.activity.PersonInfoActivity"/>
+        <activity
+            android:name=".moudle.user.activity.PersonInfoActivity"
+            android:launchMode="singleTask"
+            />
         <activity android:name=".moudle.user.activity.CreditIntegralActivity"/>
         <activity
             android:name=".moudle.user.activity.WalletInfoActivity"
             android:launchMode="singleTask"/>
-        <activity android:name=".moudle.user.activity.TransactionDetailActivity"/>
+        <activity
+            android:name=".moudle.user.activity.TransactionDetailActivity"
+            android:launchMode="singleTask"
+            />
         <activity android:name=".moudle.user.activity.SettingActivity"/>
         <activity android:name=".moudle.user.activity.UsualAddressActivity"/>
         <activity android:name=".moudle.user.activity.ChangeUserNickNameActivity"/>

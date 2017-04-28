@@ -71,13 +71,13 @@ public class SplashActivity extends BaseActivity {
             LogUtils.e("已经登录...");
             Intent login = new Intent(App.getContext(), MainActivity.class);
             startActivity(login);
-            overridePendingTransition(R.anim.zoomin, R.anim.zoomout);
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             SplashActivity.this.finish();
         } else {
             LogUtils.e("没有登录...");
             if (isStartGuide) {
                 startActivity(new Intent(App.getContext(), MainActivity.class));
-                overridePendingTransition(R.anim.zoomin, R.anim.zoomout);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 finish();
             } else {
                 startActivity(new Intent(App.getContext(), GuideActivity.class));

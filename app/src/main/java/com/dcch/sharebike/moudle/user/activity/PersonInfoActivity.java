@@ -87,8 +87,6 @@ public class PersonInfoActivity extends BaseActivity {
                 finish();
             }
         });
-
-
         Intent intent = getIntent();
         Bundle user = intent.getExtras();
         if (user != null) {

@@ -4,8 +4,8 @@ package com.dcch.sharebike.http;
 public class Api {
     //    public static final String BASE_URL = "http://192.168.1.159:8080/MavenSSM/mobile/";
 //    public static final String BASE_URL = "http://192.168.1.142:8080/MavenSSM/mobile/";
-    public static final String BASE_URL = "http://192.168.1.131:8080/MavenSSM/mobile/";
-//    public static final String BASE_URL = "http://114.112.86.38/MavenSSM/mobile/";
+//    public static final String BASE_URL = "http://192.168.1.131:8080/MavenSSM/mobile/";
+    public static final String BASE_URL = "http://114.112.86.38/MavenSSM/mobile/";
     //获取验证码
     public static final String REGISTER = "register.do?";
     //注册登录
@@ -74,5 +74,6 @@ public class Api {
     public static final String DEPOSITAGREEMENT = "http://www.70bikes.com/MavenSSM/Explain/depositAgreement.jsp";
     //充值协议
     public static final String RECHARGEAGREEMENT = "http://www.70bikes.com/MavenSSM/Explain/rechargeAgreement.jsp";
+    //
     public static final String VERSION = "http://www.70bikes.com/MavenSSM/version/version.xml";
 }
