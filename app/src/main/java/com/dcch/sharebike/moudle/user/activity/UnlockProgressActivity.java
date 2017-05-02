@@ -83,7 +83,6 @@ public class UnlockProgressActivity extends BaseActivity {
         Animation mAnimation = AnimationUtils.loadAnimation(UnlockProgressActivity.this, R.anim.unlock_lock_anim);
         mUnlockIcon.startAnimation(mAnimation);
         mMyProgressBar.setMax(100);
-
     }
 
     private void downloading(MyProgressBar myProgress) {
@@ -128,20 +127,19 @@ public class UnlockProgressActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
-
     @Subscriber(tag = "on", mode = ThreadMode.MAIN)
     private void receiveFromMain(MessageEvent info) {
-        LogUtils.d("消息",info.toString());
+        LogUtils.d("消息", info.toString());
         downloading(mMyProgressBar);
     }
+
     @Subscriber(tag = "off", mode = ThreadMode.MAIN)
     private void receiveFromMainOther(MessageEvent info) {
-        LogUtils.d("消息",info.toString());
-        ToastUtils.showShort(App.getContext(),"开锁失败！");
+        LogUtils.d("消息", info.toString());
+        ToastUtils.showShort(App.getContext(), "开锁失败！");
         startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
         UnlockProgressActivity.this.finish();
     }
-
 
 
     //    //定义线程
