@@ -305,7 +305,7 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
                     CaptureActivity.this.finish();
 
                 } else {
-                    ToastUtils.showShort(CaptureActivity.this, "二维码格式有误");
+                    ToastUtils.showShort(CaptureActivity.this, "二维码格式有误"+rawResultText+mToken);
                 }
             }
         });

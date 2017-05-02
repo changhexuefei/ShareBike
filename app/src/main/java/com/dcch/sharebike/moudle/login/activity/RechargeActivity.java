@@ -223,7 +223,7 @@ public class RechargeActivity extends BaseActivity {
                             ToastUtils.showShort(App.getContext(), "服务忙，请稍后重试");
                         }
                     } else {
-                        ToastUtils.showShort(RechargeActivity.this, "网络环境差，请稍后重试");
+                        ToastUtils.showShort(RechargeActivity.this, "当前网络环境差，请稍后重试");
                     }
                 }
                 break;

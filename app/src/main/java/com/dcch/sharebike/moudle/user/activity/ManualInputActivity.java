@@ -178,7 +178,7 @@ public class ManualInputActivity extends BaseActivity {
                             mManualInputArea.clearText();
                             mEnsure.setEnabled(false);
                             mEnsure.setBackgroundColor(Color.parseColor("#6b6b6b"));
-                            ToastUtils.showShort(ManualInputActivity.this, "该车辆编号不存在，请重新输入！");
+                            ToastUtils.showShort(ManualInputActivity.this, "该车辆编号不存在，请重新输入！"+bikeNo+mToken);
                         }
                     }
                 });

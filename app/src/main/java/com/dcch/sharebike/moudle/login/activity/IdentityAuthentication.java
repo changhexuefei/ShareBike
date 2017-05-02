@@ -1,12 +1,15 @@
 package com.dcch.sharebike.moudle.login.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,7 +25,6 @@ import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.InPutUtils;
 import com.dcch.sharebike.utils.JsonUtils;
-import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -157,10 +159,10 @@ public class IdentityAuthentication extends BaseActivity {
         switch (view.getId()) {
             case R.id.btn_authentication:
                 //实名认证的接口
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
-                verifyRealName(uID, realName, cardNum,mToken);
+                verifyRealName(uID, realName, cardNum, mToken);
                 break;
         }
     }
@@ -172,7 +174,7 @@ public class IdentityAuthentication extends BaseActivity {
             map.put("userId", uID);
             map.put("name", encode);
             map.put("IDcard", cardNum);
-            map.put("token",token);
+            map.put("token", token);
 
             OkHttpUtils.post().url(Api.BASE_URL + Api.UPDATEUSERSTATUS).params(map).build().execute(new StringCallback() {
                 @Override
@@ -187,7 +189,6 @@ public class IdentityAuthentication extends BaseActivity {
                     //{"code":"1"}
                     if (JsonUtils.isSuccess(response)) {
                         Intent authentication = new Intent(IdentityAuthentication.this, AuthenticationOkActivity.class);
-                        createCoupon(uID);
                         startActivity(authentication);
                         finish();
 
@@ -201,21 +202,7 @@ public class IdentityAuthentication extends BaseActivity {
         }
     }
 
-    private void createCoupon(String uID) {
-        Map<String,String> map = new HashMap<>();
-        map.put("userId",uID);
-        OkHttpUtils.post().url(Api.BASE_URL+Api.ADDCOUPON).params(map).build().execute(new StringCallback() {
-            @Override
-            public void onError(Call call, Exception e, int id) {
-                LogUtils.e("优惠券",e.getMessage());
-            }
 
-            @Override
-            public void onResponse(String response, int id) {
-                LogUtils.d("优惠券",response);
-            }
-        });
-    }
 
     @Override
     public void onBackPressed() {
@@ -224,5 +211,26 @@ public class IdentityAuthentication extends BaseActivity {
         startActivity(backToLoginMain);
         finish();
     }
+
+    public void showDialog(Context mContext) {
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View view = inflater.inflate(R.layout.coupon, null);
+
+        AlertDialog dialog = new AlertDialog.Builder(mContext)
+                .setCancelable(true)
+                .setView(view)
+                .show();
+
+
+        Button btn_discount = (Button) view.findViewById(R.id.btn_discount);
+        btn_discount.setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("测试", "对话框中的Button被点击了");
+
+            }
+        });
+    }
+
 
 }

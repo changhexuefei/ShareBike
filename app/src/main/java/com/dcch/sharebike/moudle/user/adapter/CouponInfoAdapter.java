@@ -21,7 +21,7 @@ public class CouponInfoAdapter extends CommonAdapter<CouponInfo.CouponsBean> {
     @Override
     protected void convert(ViewHolder holder, CouponInfo.CouponsBean couponsBean, int position) {
         holder.setText(R.id.couponNum, couponsBean.getCouponNo());
-        holder.setText(R.id.expiry_date, couponsBean.getEndTime().substring(0,couponsBean.getEndTime().length()-8));
+        holder.setText(R.id.expiry_date, couponsBean.getEndTime());
         holder.setText(R.id.coupon_amount, String.valueOf(couponsBean.getAmount()) + "元");
     }
 }

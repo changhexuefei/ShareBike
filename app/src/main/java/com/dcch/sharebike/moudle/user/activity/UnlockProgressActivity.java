@@ -50,6 +50,7 @@ public class UnlockProgressActivity extends BaseActivity {
                         isDownloading = false;
                         stop = true;
                         startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
+                        UnlockProgressActivity.this.finish();
                     }
                     break;
                 case PAUSE_PROGRESS:
@@ -82,7 +83,6 @@ public class UnlockProgressActivity extends BaseActivity {
         Animation mAnimation = AnimationUtils.loadAnimation(UnlockProgressActivity.this, R.anim.unlock_lock_anim);
         mUnlockIcon.startAnimation(mAnimation);
         mMyProgressBar.setMax(100);
-        mMyProgressBar.setProgress(50);
 
     }
 

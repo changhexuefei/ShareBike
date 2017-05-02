@@ -71,7 +71,7 @@ public class CreditSesameView extends View {
 
     public CreditSesameView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.sesameStr = new String[]{"100", "较低", "150", "一般", "200", "中等", "250", "良好", "300", "优秀", "350"};
+        this.sesameStr = new String[]{"100", "较低", "250", "一般", "300", "中等", "350", "良好", "400", "优秀", "650"};
 //        this.sesameStr = new String[]{"350", "较差", "550", "中等", "600", "良好", "650", "优秀", "700", "极好", "950"};
         this.mMinNum = 0;
         this.mMaxNum = 350;
@@ -242,28 +242,28 @@ public class CreditSesameView extends View {
             this.mTotalAngle = 0.0F;
 //            this.sesameLevel = "信用较差";
             this.evaluationTime = "评估时间:" + this.getCurrentTime();
-        } else if (values <= 150) {
+        } else if (values <= 250) {
             this.mMaxNum = values;
             this.mTotalAngle = (float) ((values - 100) * 80) / 400.0F + 2.0F;
 //            this.sesameLevel = "信用较差";
             this.evaluationTime = "评估时间:" + this.getCurrentTime();
-        } else if (values <= 300) {
+        } else if (values <= 400) {
             this.mMaxNum = values;
-            if (values > 150 && values <= 200) {
+            if (values > 250 && values <= 300) {
 //                this.sesameLevel = "信用中等";
-                this.mTotalAngle = (float) ((values - 150) * 120) / 150.0F + 43.0F;
-            } else if (values > 200 && values <= 250) {
+                this.mTotalAngle = (float) ((values - 250) * 120) / 150.0F + 43.0F;
+            } else if (values > 300 && values <= 350) {
 //                this.sesameLevel = "信用良好";
-                this.mTotalAngle = (float) ((values - 150) * 120) / 150.0F + 45.0F;
+                this.mTotalAngle = (float) ((values - 250) * 120) / 150.0F + 45.0F;
             } else {
 //                this.sesameLevel = "信用优秀";
-                this.mTotalAngle = (float) ((values - 150) * 120) / 150.0F + 48.0F;
+                this.mTotalAngle = (float) ((values - 250) * 120) / 150.0F + 48.0F;
             }
 
             this.evaluationTime = "评估时间:" + this.getCurrentTime();
-        } else if (values <= 350) {
+        } else if (values <= 650) {
             this.mMaxNum = values;
-            this.mTotalAngle = (float) ((values - 300) * 40) / 250.0F + 170.0F;
+            this.mTotalAngle = (float) ((values - 400) * 40) / 250.0F + 170.0F;
 //            this.sesameLevel = "信用极好";
             this.evaluationTime = "评估时间:" + this.getCurrentTime();
         } else {

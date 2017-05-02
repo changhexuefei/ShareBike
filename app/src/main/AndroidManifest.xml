@@ -160,7 +160,6 @@
 
         <activity
             android:name=".moudle.login.activity.PersonalCenterActivity"
-            android:launchMode="singleTask"
             />
         <activity android:name=".moudle.login.activity.LoginActivity"/>
         <activity android:name=".moudle.search.activity.SeekActivity"/>

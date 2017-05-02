@@ -503,13 +503,15 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 break;
 
             case R.id.btn_my_location:
-                if (routeOverlay != null)
+                if (routeOverlay != null && !isBook) {
                     routeOverlay.removeFromMap();
+                }
                 if (menuWindow != null) {
                     menuWindow.dismiss();
                 }
+//                addOverlay(bikeInfos);
                 setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
-                getMyLocation();
+//                getMyLocation();
                 break;
 
             case R.id.scan:

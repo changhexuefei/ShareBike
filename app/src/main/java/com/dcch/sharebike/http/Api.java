@@ -51,6 +51,7 @@ public class Api {
     public static final String ORDERCAST = "orderCast.do?";
     //查询余额
     public static final String CHECKAGGREGATE = "checkAggregate.do?";
+    public static final String SEARCHAMOUNT = "searchAmount.do?";
     //查询车辆编号
     public static final String CHECKBICYCLENO = "checkBicycleNo.do?";
     //查询是否有骑行订单

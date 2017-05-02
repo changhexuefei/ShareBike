@@ -17,6 +17,7 @@ import com.dcch.sharebike.alipay.WeixinPay;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
+import com.dcch.sharebike.moudle.login.activity.LoginActivity;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.utils.ClickUtils;
@@ -67,6 +68,7 @@ public class WalletInfoActivity extends BaseActivity {
     private String mTotal_fee;
     private String mRefund_fee;
     private String mToken;
+    private Map<String, String> mMap;
 
     @Override
     protected int getLayoutId() {
@@ -109,23 +111,23 @@ public class WalletInfoActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 startActivity(new Intent(this, PersonalCenterActivity.class));
                 finish();
                 break;
             case R.id.transactionDetail:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 Intent dealDetail = new Intent(this, TransactionDetailActivity.class);
                 dealDetail.putExtra("userId", uID);
-                dealDetail.putExtra("token",mToken);
+                dealDetail.putExtra("token", mToken);
                 startActivity(dealDetail);
                 break;
             case R.id.recharge:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 if (mCashStatus == 1) {
@@ -136,7 +138,7 @@ public class WalletInfoActivity extends BaseActivity {
                 }
                 break;
             case R.id.chargeDeposit:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 if (chargeDeposit.getText().equals(tipFour)) {
@@ -186,27 +188,62 @@ public class WalletInfoActivity extends BaseActivity {
                     refundPopuwindow.dismiss();
                     break;
                 case R.id.btn_confirm:
-                    WeixinPay weixinPay = new WeixinPay(WalletInfoActivity.this);
-                    mOutRefundNo = weixinPay.getOutRefundNo();
-                    LogUtils.d("退款", mOutRefundNo + "\n" + uID);
-                    refundPledgeCash(uID, mOutRefundNo,mToken);
-                    ToastUtils.showShort(WalletInfoActivity.this, "您点击的是退押金按钮");
+                    //先进行检查余额操作
+                    checkAccountBalances(uID, mToken);
+
                     break;
             }
         }
     };
 
-    private void refundPledgeCash(String uID, String outRefundNo,String mToken) {
-        Map<String, String> map = new HashMap<>();
-        map.put("userId", uID);
-        map.put("out_refund_no", outRefundNo);
-        map.put("total_fee", "0.01");
-        map.put("refund_fee", "0.01");
-        map.put("token",mToken);
-        OkHttpUtils.post().url(Api.BASE_URL + Api.REFUNDWXPAY).params(map).build().execute(new StringCallback() {
+    private void checkAccountBalances(final String uID, String token) {
+        mMap = new HashMap<>();
+        mMap.clear();
+        mMap.put("userId", uID);
+        mMap.put("token", token);
+        OkHttpUtils.post().url(Api.BASE_URL + Api.SEARCHAMOUNT).params(mMap).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                LogUtils.e("错误",e.getMessage());
+                ToastUtils.showShort(App.getContext(), "服务器正忙，请稍后再试");
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                LogUtils.d("余额", response);
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if (object.optString("resultStatus").equals("1")) {
+                        WeixinPay weixinPay = new WeixinPay(WalletInfoActivity.this);
+                        mOutRefundNo = weixinPay.getOutRefundNo();
+                        refundPledgeCash(uID, mOutRefundNo, mToken);
+                    } else if (object.optString("resultStatus").equals("0")) {
+                        ToastUtils.showShort(WalletInfoActivity.this, "您的账户车费余额不足，请先充值后再进行退款操作！");
+                        startActivity(new Intent(WalletInfoActivity.this, RechargeBikeFareActivity.class));
+                    } else if (object.optString("resultStatus").equals("2")) {
+                        ToastUtils.showShort(App.getContext(), "您的账户在其他设备上登录，您被迫下线！");
+                        startActivity(new Intent(App.getContext(), LoginActivity.class));
+                        WalletInfoActivity.this.finish();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+    }
+
+    private void refundPledgeCash(String uID, String outRefundNo, String mToken) {
+        mMap = new HashMap<>();
+        mMap.put("userId", uID);
+        mMap.put("out_refund_no", outRefundNo);
+        mMap.put("total_fee", "0.01");
+        mMap.put("refund_fee", "0.01");
+        mMap.put("token", mToken);
+        OkHttpUtils.post().url(Api.BASE_URL + Api.REFUNDWXPAY).params(mMap).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                LogUtils.e("错误", e.getMessage());
             }
 
             @Override
@@ -228,15 +265,15 @@ public class WalletInfoActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         if (uID != null) {
-            getUserInfo(uID,mToken);
+            getUserInfo(uID, mToken);
         }
     }
 
     //从服务端拿到客户信息
-    private void getUserInfo(String uID,String mToken) {
+    private void getUserInfo(String uID, String mToken) {
         Map<String, String> map = new HashMap<>();
         map.put("userId", uID);
-        map.put("token",mToken);
+        map.put("token", mToken);
         OkHttpUtils.post().url(Api.BASE_URL + Api.INFOUSER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {

@@ -23,7 +23,7 @@
                 android:layout_marginTop="30dp"
                 android:text="@string/unlock"
                 android:textColor="#000000"
-                android:textSize="14sp" />
+                android:textSize="18sp"/>
 
             <RelativeLayout
                 android:id="@+id/scan_code"
@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
-                    android:src="@mipmap/report_issue_scan_qrcode" />
+                    android:src="@mipmap/report_issue_scan_qrcode"/>
 
                 <TextView
                     android:id="@+id/bike_code"
@@ -49,7 +49,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
                     android:layout_toRightOf="@+id/report_issue"
-                    android:hint="@string/scan_tips" />
+                    android:hint="@string/scan_tips"/>
 
                 <TextView
                     android:id="@+id/tips"
@@ -61,7 +61,7 @@
                     android:text="@string/scan_tip_one"
                     android:textColor="@color/colorTitle"
                     android:textSize="10sp"
-                    android:visibility="invisible" />
+                    android:visibility="invisible"/>
 
             </RelativeLayout>
 
@@ -71,45 +71,47 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="20dp"
-                android:text="1.观察车锁是否亮起"
+                android:text="@string/_1"
                 android:textColor="#000000"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <TextView
+                android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="10dp"
-                android:text="如果车锁蓝灯亮起，代表这辆车已经被预约，请换其他单车使用"
-                android:textColor="#000000" />
+                android:text="@string/_1_tip"
+                android:textColor="#000000"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="20dp"
-                android:text="2.提示单车处于故障中，请换其他单车"
+                android:text="@string/_2"
                 android:textColor="#000000"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <TextView
+                android:id="@+id/textView5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="10dp"
-                android:text="如果车锁蓝灯亮起，代表这辆车已经被预约，请换其他单车使用"
-                android:textColor="#000000" />
+                android:text="@string/_2_tip"
+                android:textColor="#000000"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="20dp"
-                android:text="3.提示单车处于故障中，请换其他单车"
+                android:text="@string/_3"
                 android:textColor="#000000"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -117,10 +119,11 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="10dp"
-                android:text="如果车锁蓝灯亮起，代表这辆车已经被预约，请换其他单车使用"
-                android:textColor="#000000" />
+                android:text="@string/_3_tip"
+                android:textColor="#000000"/>
 
-            <com.louisgeek.multiedittextviewlib.MultiEditInputView xmlns:app="http://schemas.android.com/apk/res-auto"
+            <com.louisgeek.multiedittextviewlib.MultiEditInputView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/questionDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -130,11 +133,10 @@
                 android:padding="5dp"
                 app:contentHeight="100dp"
                 app:hintText="@string/question_describe"
-                app:maxCount="140" />
+                app:maxCount="140"/>
 
 
             <TextView
-                android:enabled="false"
                 android:id="@+id/un_confirm"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -142,10 +144,11 @@
                 android:layout_margin="15dp"
                 android:layout_marginBottom="20dp"
                 android:background="#c6bfbf"
+                android:enabled="false"
                 android:gravity="center"
                 android:text="@string/upload"
                 android:textColor="#ffffff"
-                android:textSize="18sp" />
+                android:textSize="18sp"/>
 
         </LinearLayout>
 
