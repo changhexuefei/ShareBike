@@ -6,9 +6,9 @@
     <string name="tip1">押金可原路返回</string>
     <string name="weixin">微信</string>
     <string name="zhifubao">支付宝</string>
-    <string name="tip">押金（可退）</string>
+    <string name="tip">押金（0元）</string>
     <string name="title_recharge">押金充值</string>
-    <string name="instructions">麒麟单车使用说明</string>
+    <string name="instructions">麒麟单车免押金注册使用说明</string>
     <string name="share_title">麒麟单车</string>
     <string name="people_center">个人中心</string>
     <string name="unlocking">扫码开锁</string>
@@ -19,7 +19,7 @@
     <string name="mobile_tip_two">更换手机号，登录重新交押金</string>
     <string name="mobile_tip_there">车费余额，行程等信息不变</string>
     <string name="mobile_title">手机号</string>
-    <string name="cash_pledge">99</string>
+    <string name="cash_pledge">0</string>
     <string name="findTrouble">发现车辆故障</string>
     <string name="scan_tips">扫描二维码或者手动输入编码</string>
     <string name="scan_tip_one">重新扫码或输入</string>
@@ -113,6 +113,7 @@
     <string name="splash_tip_one">绿色出行</string>
     <string name="splash_tip_two">麒乐无穷</string>
     <string name="cashPledge_explain">押金说明</string>
+    <string name="coupon_explain">优惠券规则</string>
     <string name="transport_regulations">《用车服务条例》</string>
     <string name="login_tip">点击-确定，即表示已阅读并同意</string>
     <string name="recharge_bike_fare_tips">麒麟不会以任何形式要求您输入银行账户和密码</string>
@@ -137,4 +138,11 @@
     <string name="_1_tip">如果车锁蓝灯亮起，代表这辆车已经被预约，请换其他麒麟单车使用</string>
     <string name="_2_tip">当前提示下，该辆单车可能处于故障中，正在等待维修人员前往维修。请换其他麒麟单车使用。</string>
     <string name="_3_tip">多次尝试仍开锁失败，请描述现象并提交，麒麟单车会因您的关怀越变越好</string>
+    <string name="coupon_tip">没有可用优惠券</string>
+    <string name="journey_cost">行程总费用</string>
+    <string name="coupon_deduction">优惠券抵扣</string>
+    <string name="riding_result_tip_one">拍停车照或分享行程增加信用分</string>
+    <string name="taking_pictures">停车拍照</string>
+    <string name="share_schedule">分享行程</string>
+    <string name="ride_time">骑行时间</string>
 </resources>

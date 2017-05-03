@@ -6,11 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
@@ -32,20 +30,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import okhttp3.Call;
 
 public class CouponListActivity extends BaseActivity {
 
-    @BindView(R.id.title)
-    TextView mTitle;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+//    @BindView(R.id.title)
+//    TextView mTitle;
+//    @BindView(R.id.toolbar)
+//    Toolbar mToolbar;
     @BindView(R.id.coupon_list)
     LRecyclerView mCouponList;
     @BindView(R.id.iv_no_journey)
     ImageView mIvNoJourney;
     @BindView(R.id.default_show)
     RelativeLayout mDefaultShow;
+    @BindView(R.id.back)
+    ImageView mBack;
+    @BindView(R.id.coupon_rule)
+    ImageView mCouponRule;
     private String mToken;
     private String mUserId;
     private CouponInfoAdapter mCouponInfoAdapter;
@@ -58,15 +61,15 @@ public class CouponListActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        mToolbar.setTitle("");
-        mTitle.setText(getResources().getString(R.string.my_coupon));
-        setSupportActionBar(mToolbar);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+//        mToolbar.setTitle("");
+//        mTitle.setText(getResources().getString(R.string.my_coupon));
+//        setSupportActionBar(mToolbar);
+//        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                finish();
+//            }
+//        });
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -147,4 +150,15 @@ public class CouponListActivity extends BaseActivity {
     }
 
 
+    @OnClick({R.id.back, R.id.coupon_rule})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.back:
+                finish();
+                break;
+            case R.id.coupon_rule:
+                startActivity(new Intent(CouponListActivity.this,CouponRuleActivity.class));
+                break;
+        }
+    }
 }

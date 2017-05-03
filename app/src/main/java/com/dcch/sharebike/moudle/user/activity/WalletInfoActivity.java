@@ -130,12 +130,8 @@ public class WalletInfoActivity extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                if (mCashStatus == 1) {
-                    Intent intent = new Intent(WalletInfoActivity.this, RechargeBikeFareActivity.class);
-                    startActivity(intent);
-                } else if (mCashStatus == 0) {
-                    popupDialog();
-                }
+                rechargeBikeFare();
+//                choosePrepaid();
                 break;
             case R.id.chargeDeposit:
                 if (ClickUtils.isFastClick()) {
@@ -149,6 +145,20 @@ public class WalletInfoActivity extends BaseActivity {
                 }
                 break;
         }
+    }
+
+    private void choosePrepaid() {
+        if (mCashStatus == 1) {
+            Intent intent = new Intent(WalletInfoActivity.this, RechargeBikeFareActivity.class);
+            startActivity(intent);
+        } else if (mCashStatus == 0) {
+            popupDialog();
+        }
+    }
+
+    private void rechargeBikeFare() {
+        Intent intent = new Intent(WalletInfoActivity.this, RechargeBikeFareActivity.class);
+        startActivity(intent);
     }
 
 

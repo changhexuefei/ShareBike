@@ -7,13 +7,45 @@
                 tools:context="com.dcch.sharebike.moudle.user.activity.MyJourneyActivity">
 
 
-    <include layout="@layout/toolbar"/>
+    <!--<include layout="@layout/toolbar"/>-->
+
+    <FrameLayout
+        android:id="@+id/myCoupon"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/colorHeading">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:padding="12dp"
+            android:src="@mipmap/back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/my_coupon"
+            android:textColor="@color/common"
+            android:textSize="16sp"/>
+
+        <ImageView
+            android:id="@+id/coupon_rule"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:padding="6dp"
+            android:src="@mipmap/common_info"/>
+
+    </FrameLayout>
+
 
     <com.github.jdsjlzx.recyclerview.LRecyclerView
         android:id="@+id/coupon_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/myCoupon"
         android:visibility="gone">
 
     </com.github.jdsjlzx.recyclerview.LRecyclerView>
@@ -21,25 +53,27 @@
 
     <RelativeLayout
         android:id="@+id/default_show"
-        android:layout_centerInParent="true"
-        android:layout_below="@+id/toolbar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/myCoupon"
+        android:layout_centerInParent="true">
+
         <ImageView
-            android:layout_marginTop="10dp"
             android:id="@+id/iv_no_journey"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/empty_view_img"
-            android:layout_centerHorizontal="true" />
-        <TextView
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:layout_below="@+id/iv_no_journey"
+            android:src="@drawable/empty_view_img"/>
+
+        <TextView
             android:id="@+id/no_journey"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_no_journey"
             android:layout_centerInParent="true"
-            android:text="没有可用优惠券"
-            android:textSize="16sp" />
+            android:layout_marginTop="10dp"
+            android:text="@string/coupon_tip"
+            android:textSize="16sp"/>
     </RelativeLayout>
 </RelativeLayout>

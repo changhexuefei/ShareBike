@@ -108,7 +108,6 @@
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/Theme.AppCompat">
-
         </activity>
         <activity android:name=".activity.GuideActivity"/>
         <activity
@@ -158,29 +157,24 @@
             </intent-filter>
         </service>
 
-        <activity
-            android:name=".moudle.login.activity.PersonalCenterActivity"
-            />
+        <activity android:name=".moudle.login.activity.PersonalCenterActivity"/>
         <activity android:name=".moudle.login.activity.LoginActivity"/>
         <activity android:name=".moudle.search.activity.SeekActivity"/>
         <activity android:name=".moudle.login.activity.AgreementActivity"/>
         <activity
             android:name=".moudle.login.activity.RechargeActivity"
-            android:launchMode="singleTask"
-            />
+            android:launchMode="singleTask"/>
         <activity android:name=".moudle.login.activity.IdentityAuthentication"/>
         <activity
             android:name=".moudle.user.activity.PersonInfoActivity"
-            android:launchMode="singleTask"
-            />
+            android:launchMode="singleTask"/>
         <activity android:name=".moudle.user.activity.CreditIntegralActivity"/>
         <activity
             android:name=".moudle.user.activity.WalletInfoActivity"
             android:launchMode="singleTask"/>
         <activity
             android:name=".moudle.user.activity.TransactionDetailActivity"
-            android:launchMode="singleTask"
-            />
+            android:launchMode="singleTask"/>
         <activity android:name=".moudle.user.activity.SettingActivity"/>
         <activity android:name=".moudle.user.activity.UsualAddressActivity"/>
         <activity android:name=".moudle.user.activity.ChangeUserNickNameActivity"/>
@@ -347,10 +341,7 @@
         <activity
             android:name=".moudle.user.activity.RidingResultActivity"
             android:launchMode="singleTask"/>
-        <activity
-            android:name=".moudle.user.activity.UnlockProgressActivity"
-            android:launchMode="singleTask"
-            />
+        <activity android:name=".moudle.user.activity.UnlockProgressActivity"/>
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
@@ -401,6 +392,11 @@
             android:theme="@style/translucent">
         </activity>
         <activity android:name=".moudle.user.activity.CouponListActivity">
+        </activity>
+        <activity
+            android:name=".moudle.login.activity.PropagandaPosterActivity"
+            android:theme="@style/translucent"/>
+        <activity android:name=".moudle.user.activity.CouponRuleActivity">
         </activity>
     </application>
 

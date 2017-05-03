@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.moudle.home.bean.RidingInfo;
@@ -39,6 +40,8 @@ public class RidingResultActivity extends BaseActivity {
     TextView mTitle;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.coupon_cost)
+    TextView mCouponCost;
 
 
     @Override
@@ -54,7 +57,8 @@ public class RidingResultActivity extends BaseActivity {
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                startActivity(new Intent(RidingResultActivity.this, MainActivity.class));
+                RidingResultActivity.this.finish();
             }
         });
         MapUtil.initDrawable(mTakePhone);
@@ -71,19 +75,19 @@ public class RidingResultActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.myCountry:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 ToastUtils.showShort(RidingResultActivity.this, "您点击的是行程详情");
                 break;
             case R.id.take_phone:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 ToastUtils.showShort(RidingResultActivity.this, "您点击的是拍照");
                 break;
             case R.id.share_journey:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 ToastUtils.showShort(RidingResultActivity.this, "您点击的是分享行程");
@@ -99,10 +103,16 @@ public class RidingResultActivity extends BaseActivity {
         Bundle extras = intent.getExtras();
         if (extras != null) {
             RidingInfo ridingInfo = (RidingInfo) extras.getSerializable("result");
-            mMoneyResultShow.setText(String.valueOf(ridingInfo.getRideCost()));
-            mRideCost.setText(String.valueOf(ridingInfo.getRideCost()) + "元");
+            mMoneyResultShow.setText(String.valueOf(ridingInfo.getFinalCast()));
+            mRideCost.setText(String.valueOf(ridingInfo.getOrderCast()) + "元");
             mRideTime.setText(String.valueOf(ridingInfo.getTripTime()) + "分钟");
-            mBalance.setText(String.valueOf(ridingInfo.getAmount()) + "元");
+            if (ridingInfo.getAmount() <= 0) {
+                mBalance.setText("您的余额不足，请前往充值");
+                mBalance.setTextColor(R.color.colorTitle);
+            } else {
+                mBalance.setText(String.valueOf(ridingInfo.getAmount()) + "元");
+            }
+            mCouponCost.setText(String.valueOf(ridingInfo.getCouponAmount() + "元"));
         }
     }
 
@@ -118,4 +128,10 @@ public class RidingResultActivity extends BaseActivity {
         LogUtils.d("周期", "onDestroy");
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(RidingResultActivity.this, MainActivity.class));
+        RidingResultActivity.this.finish();
+    }
 }

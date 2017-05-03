@@ -3,36 +3,37 @@ package com.dcch.sharebike.moudle.home.bean;
 import java.io.Serializable;
 
 
-
 public class RidingInfo implements Serializable {
 
+
     /**
-     * carRentalOrderId : 4a759fc76b5949b8b3bd3dfce7b31663
-     * tripDist : 0.09788349
-     * tripTime : 1
+     * carRentalOrderId : 786c5908ca1941ee9919cb9e8551697f
+     * tripDist : 0.008730947
+     * tripTime : 0
      * rideCost : 1
      * status : 0
-     * calorie : 2.8386214
+     * calorie : 0.25319746
      * resultStatus : 1
+     * amount : 0
+     * bicycleNo : null
+     * couponno : null
+     * couponAmount : 0
+     * orderCast : 0
+     * finalCast : 0
      */
 
     private String carRentalOrderId;
     private double tripDist;
     private int tripTime;
-    private int rideCost;
+    private float rideCost;
     private int status;
     private double calorie;
     private String resultStatus;
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
-
-    private String amount;
+    private float amount;
+    private Object couponno;
+    private float couponAmount;
+    private float orderCast;
+    private float finalCast;
 
     public String getCarRentalOrderId() {
         return carRentalOrderId;
@@ -58,11 +59,11 @@ public class RidingInfo implements Serializable {
         this.tripTime = tripTime;
     }
 
-    public int getRideCost() {
+    public float getRideCost() {
         return rideCost;
     }
 
-    public void setRideCost(int rideCost) {
+    public void setRideCost(float rideCost) {
         this.rideCost = rideCost;
     }
 
@@ -88,5 +89,45 @@ public class RidingInfo implements Serializable {
 
     public void setResultStatus(String resultStatus) {
         this.resultStatus = resultStatus;
+    }
+
+    public float getAmount() {
+        return amount;
+    }
+
+    public void setAmount(float amount) {
+        this.amount = amount;
+    }
+
+    public Object getCouponno() {
+        return couponno;
+    }
+
+    public void setCouponno(Object couponno) {
+        this.couponno = couponno;
+    }
+
+    public float getCouponAmount() {
+        return couponAmount;
+    }
+
+    public void setCouponAmount(float couponAmount) {
+        this.couponAmount = couponAmount;
+    }
+
+    public float getOrderCast() {
+        return orderCast;
+    }
+
+    public void setOrderCast(float orderCast) {
+        this.orderCast = orderCast;
+    }
+
+    public float getFinalCast() {
+        return finalCast;
+    }
+
+    public void setFinalCast(float finalCast) {
+        this.finalCast = finalCast;
     }
 }

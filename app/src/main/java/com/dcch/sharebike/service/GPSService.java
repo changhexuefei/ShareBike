@@ -392,7 +392,6 @@ public class GPSService extends Service {
 //                sendToActivity(sb.toString());
 
                 Map<String, String> map = new HashMap<>();
-                String url = Api.BASE_URL + Api.ORDERCAST;
                 map.put("token",mToken);
                 map.put("carRentalOrderDate", mCarRentalOrderDate);
                 map.put("bicycleNo", mBicycleNo);
@@ -403,9 +402,10 @@ public class GPSService extends Service {
                 map.put("mile", totalDistance / 1000 + "");
                 LogUtils.d("看看数据",mToken+"\n"+mCarRentalOrderDate+"\n"+mBicycleNo+"\n"+mCarRentalOrderId+"\n"+mUserId);
 
-                OkHttpUtils.post().url(url).params(map).build().execute(new StringCallback() {
+                OkHttpUtils.post().url(Api.BASE_URL + Api.ORDERCAST).params(map).build().execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
+                        LogUtils.d("后台",e.getMessage());
                         ToastUtils.showShort(App.getContext(), "服务正忙！");
                     }
 

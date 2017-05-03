@@ -38,6 +38,13 @@
             android:layout_gravity="right|center_vertical"
             android:padding="16dp"
             android:src="@mipmap/find" />
+        <ImageView
+            android:id="@+id/specialOffer"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right|center_vertical"
+            android:padding="8dp"
+            android:src="@mipmap/ic_activity" />
 
     </FrameLayout>
 

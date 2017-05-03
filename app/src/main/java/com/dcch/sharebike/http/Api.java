@@ -11,14 +11,14 @@ public class Api {
     //注册登录
     public static final String SAVEUSER = "saveUser.do?";
     //认证押金
-//    public static final String UPDATEUSERCASHSTATUS = "updateUserCashStatus.do?";
+    public static final String UPDATEUSERCASHSTATUS = "updateUserCashStatus.do?";
     //认证身份
     public static final String UPDATEUSERSTATUS = "updateUserAppStatus.do?";
     //    public static final String UPDATEUSERSTATUS = "updateUserStatus.do?";
     //注册成功生成优惠券
     public static final String ADDCOUPON = "addCoupon.do?";
     //请求车辆信息
-    public static final String GINPUT = "findBicycle.do?";
+    public static final String FINDBICYCLE = "findBicycle.do?";
     //预约用车
     public static final String BOOKBIKE = "addBookingCar.do?";
     //取消预约用车
@@ -75,6 +75,8 @@ public class Api {
     public static final String DEPOSITAGREEMENT = "http://www.70bikes.com/MavenSSM/Explain/depositAgreement.jsp";
     //充值协议
     public static final String RECHARGEAGREEMENT = "http://www.70bikes.com/MavenSSM/Explain/rechargeAgreement.jsp";
+    //优惠券使用规则
+    public static final String FAVORABLERULE = "http://www.70bikes.com/MavenSSM/Explain/couponAgreement.jsp";
     //
     public static final String VERSION = "http://www.70bikes.com/MavenSSM/version/version.xml";
 }

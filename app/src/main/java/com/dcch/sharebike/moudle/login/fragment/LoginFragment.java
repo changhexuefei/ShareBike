@@ -229,7 +229,6 @@ public class LoginFragment extends Fragment {
                     coupon.putExtra("token", mToken);
                     startActivity(coupon);
                 }
-                ToastUtils.showLong(getContext(), "敬请期待");
                 break;
             case R.id.journey:
                 if (ClickUtils.isFastClick()) {

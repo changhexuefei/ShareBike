@@ -23,7 +23,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text2"
-        android:text="@string/tip2"/>
+        android:text="@string/tip2"
+        android:visibility="invisible"/>
 
 
     <Button
@@ -47,6 +48,32 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/depositArea"
         android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/withoutMarginArea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff">
+
+            <TextView
+                android:drawablePadding="10dp"
+                android:id="@+id/withoutMargin"
+                style="@style/rb_pay_type"
+                android:drawableLeft="@drawable/sharebike"
+                android:text="麒麟免押金"
+                android:textColor="@color/colorTitle"/>
+
+            <CheckBox
+                android:id="@+id/withoutMargin_checkbox"
+                style="@style/checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#F9F9F9"/>
+
 
         <RelativeLayout
             android:id="@+id/weixinArea"
@@ -106,6 +133,7 @@
         android:orientation="horizontal">
 
         <TextView
+
             android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
@@ -113,7 +141,7 @@
             android:gravity="center_vertical"
             android:paddingLeft="8dp"
             android:text="@string/tip"
-            android:textColor="#716F76"
+            android:textColor="@color/colorTitle"
             android:textSize="16sp"/>
 
 
@@ -138,5 +166,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/pay"
-        android:text="@string/tip1"/>
+        android:text="@string/tip1"
+        android:visibility="invisible"/>
 </RelativeLayout>

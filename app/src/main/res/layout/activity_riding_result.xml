@@ -59,7 +59,7 @@
                 android:id="@+id/text4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="行程总费用"
+                android:text="@string/journey_cost"
                 android:textColor="#ffffff"/>
 
             <TextView
@@ -68,6 +68,31 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/text4"
                 android:layout_toRightOf="@+id/text4"
+                android:paddingLeft="5dp"
+                android:text="0.50元"
+                android:textColor="#ffffff"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginTop="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/text6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/coupon_deduction"
+                android:textColor="#ffffff"/>
+
+            <TextView
+                android:id="@+id/coupon_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/text6"
+                android:layout_toRightOf="@+id/text6"
                 android:paddingLeft="5dp"
                 android:text="0.50元"
                 android:textColor="#ffffff"/>
@@ -90,7 +115,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="骑行时间"
+            android:text="@string/ride_time"
             android:textColor="#000000"/>
 
         <TextView
@@ -116,7 +141,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="我的钱包"
+            android:text="@string/my_wallet"
             android:textColor="#000000"/>
 
         <TextView
@@ -142,7 +167,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="行程详情"
+            android:text="@string/journey_detail"
             android:textColor="#000000"/>
 
         <TextView
@@ -173,7 +198,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|top"
             android:layout_marginTop="20dp"
-            android:text="拍停车照或分享行程增加信用分"/>
+            android:text="@string/riding_result_tip_one"/>
 
         <TextView
             android:id="@+id/take_phone"
@@ -186,7 +211,7 @@
             android:drawablePadding="5dp"
             android:drawableTop="@drawable/take_photo_selector"
             android:gravity="center"
-            android:text="停车拍照"/>
+            android:text="@string/taking_pictures"/>
 
         <TextView
             android:id="@+id/share_journey"
@@ -200,7 +225,7 @@
             android:drawablePadding="5dp"
             android:drawableTop="@drawable/share_journey_selector"
             android:gravity="center"
-            android:text="分享行程"/>
+            android:text="@string/share_schedule"/>
     </android.support.v7.widget.CardView>
 
 </RelativeLayout>

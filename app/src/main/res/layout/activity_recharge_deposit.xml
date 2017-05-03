@@ -26,16 +26,18 @@
             android:text="金额"/>
 
         <TextView
+            android:textColor="@color/colorTitle"
             android:id="@+id/figure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv10"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
-            android:text="99元"
-            android:textSize="16sp"/>
+            android:text="0元"
+            android:textSize="20sp"/>
 
         <TextView
+            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/figure"
