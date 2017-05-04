@@ -274,7 +274,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     } else if (userInfo.getCashStatus() == 0 && userInfo.getStatus() == 1) {
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     } else if (userInfo.getCashStatus() == 1 && userInfo.getStatus() == 1) {
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        startActivity(new Intent(LoginActivity.this, PersonalCenterActivity.class));
                     }
 
                     EventBus.getDefault().post(new MessageEvent(), "gone");

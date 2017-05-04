@@ -39,7 +39,6 @@ import android.widget.ToggleButton;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
-import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.libzxing.zxing.camera.CameraManager;
 import com.dcch.sharebike.libzxing.zxing.decode.DecodeThread;
 import com.dcch.sharebike.libzxing.zxing.utils.BeepManager;
@@ -49,21 +48,13 @@ import com.dcch.sharebike.moudle.login.activity.OpenLockTipAcitivity;
 import com.dcch.sharebike.moudle.user.activity.ManualInputActivity;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.DensityUtils;
-import com.dcch.sharebike.utils.JsonUtils;
-import com.dcch.sharebike.utils.LogUtils;
-import com.dcch.sharebike.utils.ToastUtils;
 import com.google.zxing.Result;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import okhttp3.Call;
 
 
 /**
@@ -203,6 +194,7 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("实验", "onResume+3");
         // CameraManager must be initialized here, not in onCreate(). This is
         // necessary because we don't
         // want to open the camera driver and measure the screen size if we're
@@ -229,6 +221,7 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
 
     @Override
     protected void onPause() {
+        Log.d("实验", "onPause+3");
         if (handler != null) {
             handler.quitSynchronously();
             handler = null;
@@ -282,33 +275,13 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
         inactivityTimer.onActivity();
         beepManager.playBeepSoundAndVibrate();
         final String rawResultText = rawResult.getText();
-        Map<String, String> map = new HashMap<>();
-        map.put("lockremark", rawResultText);
-        map.put("token",mToken);
-        OkHttpUtils.post().url(Api.BASE_URL + Api.CHECKBICYCLENO).params(map).build().execute(new StringCallback() {
-            @Override
-            public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(CaptureActivity.this, "来自Capture：服务器正忙，请稍后再试！");
-            }
-
-            @Override
-            public void onResponse(String response, int id) {
-                LogUtils.d("锁号", response);
-                //{"resultStatus":"0"}
-                if (JsonUtils.isSuccess(response)) {
-                    Intent resultIntent = new Intent();
-                    bundle.putInt("width", mCropRect.width());
-                    bundle.putInt("height", mCropRect.height());
-                    bundle.putString("result", rawResultText);
-                    resultIntent.putExtras(bundle);
-                    CaptureActivity.this.setResult(RESULT_OK, resultIntent);
-                    CaptureActivity.this.finish();
-
-                } else {
-                    ToastUtils.showShort(CaptureActivity.this, "二维码格式有误"+rawResultText+mToken);
-                }
-            }
-        });
+        Intent resultIntent = new Intent();
+        bundle.putInt("width", mCropRect.width());
+        bundle.putInt("height", mCropRect.height());
+        bundle.putString("result", rawResultText);
+        resultIntent.putExtras(bundle);
+        CaptureActivity.this.setResult(RESULT_OK, resultIntent);
+        CaptureActivity.this.finish();
     }
 
     private void initCamera(SurfaceHolder surfaceHolder) {
@@ -428,91 +401,14 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
     }
 
 
-    @OnClick({R.id.back, R.id.help_tip})
+    @OnClick(R.id.back)
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
                 finish();
                 break;
-            case R.id.help_tip:
-                ToastUtils.showShort(CaptureActivity.this, "我是帮助");
-                break;
 
         }
     }
-
-//    /**
-//     * 是否开启了闪光灯
-//     *
-//     * @return
-//     */
-//    public boolean isFlashlightOn() {
-//        if (camera == null) {
-//            camera = Camera.open();
-//        }
-//
-//        Camera.Parameters parameters = camera.getParameters();
-//        String flashMode = parameters.getFlashMode();
-//
-//        if (flashMode.equals(Camera.Parameters.FLASH_MODE_TORCH)) {
-//
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-//
-//    /**
-//     * 闪光灯开关
-//     */
-//    public void flashlightUtils() {
-//        if (camera == null) {
-//            camera = Camera.open();
-//        }
-//
-//        Camera.Parameters parameters = camera.getParameters();
-//        // String flashMode = parameters.getFlashMode();
-//
-//        if (isFlashlightOn()) {
-//
-//            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);// 关闭
-//            camera.setParameters(parameters);
-//            camera.release();
-//            camera = null;
-//            Toast.makeText(context, "关闭手电筒", Toast.LENGTH_SHORT).show();
-//        } else {
-//            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);// 开启
-//            camera.setParameters(parameters);
-//            Toast.makeText(context, "开启手电筒", Toast.LENGTH_SHORT).show();
-//        }
-//
-//    }
-//
-//    /**
-//     * 闪光灯开关2
-//     */
-//    public void flashUtils() {
-//
-//        Camera camera = Camera.open();
-//
-//        Camera.Parameters parameters = camera.getParameters();
-//        String flashMode = parameters.getFlashMode();
-//        if (flashMode.equals(Camera.Parameters.FLASH_MODE_TORCH)) {
-//            camera.stopPreview();
-//            camera.release();
-//            camera = null;
-//
-//        } else {
-//
-//            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-//            camera.setParameters(parameters);
-//            camera.autoFocus(new Camera.AutoFocusCallback() {
-//                public void onAutoFocus(boolean success, Camera camera) {
-//                }
-//            });
-//            camera.startPreview();
-//        }
-//    }
-
 
 }

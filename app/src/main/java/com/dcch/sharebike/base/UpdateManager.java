@@ -235,9 +235,9 @@ public class UpdateManager {
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                 // 获得存储卡的路径
                 String sdpath = Environment.getExternalStorageDirectory() + "/";
-                fileSavePath = sdpath + "download";
+                fileSavePath = sdpath;
                 try {
-                    LogUtils.d("怎麽不走這裏", "1223333++++++" + versionInfo.getLoadUrl());
+                    LogUtils.d("监听", "1223333++++++" + sdpath);
                     URL url = new URL(versionInfo.getLoadUrl());
                     // 创建连接
                     conn = (HttpURLConnection) url.openConnection();

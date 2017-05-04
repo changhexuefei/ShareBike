@@ -231,6 +231,7 @@ public class CycleFailureFragment extends Fragment {
                     map.put("selectFaultDescription", selectResult);
                     map.put("imageFile", mImageResult);
                     map.put("token",mToken);
+                    LogUtils.d("错误",uID+"\n"+bikeNo+"\n"+mToken);
                     OkHttpUtils.post()
                             .url(Api.BASE_URL + Api.ADDTROUBLEORDER)
                             .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)
@@ -252,11 +253,11 @@ public class CycleFailureFragment extends Fragment {
                                         String resultStatus = object.optString("resultStatus");
 
                                         if (resultStatus.equals("1")) {
-                                            ToastUtils.showLong(getActivity(), "上传成功！");
+                                            ToastUtils.showLong(getActivity(), "提交成功！");
                                             startActivity(new Intent(getActivity(), UserGuideActivity.class));
                                             getActivity().finish();
                                         } else if (resultStatus.equals("0")) {
-                                            ToastUtils.showLong(getActivity(), "上传失败！");
+                                            ToastUtils.showLong(getActivity(), "提交失败！");
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();

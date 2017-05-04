@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">麒麟单车</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="recharge">押金充值</string>
+    <string name="recharge">下一步</string>
     <string name="tip2">车费不在押金内扣除，需另外缴费</string>
     <string name="tip1">押金可原路返回</string>
     <string name="weixin">微信</string>
@@ -145,4 +145,5 @@
     <string name="taking_pictures">停车拍照</string>
     <string name="share_schedule">分享行程</string>
     <string name="ride_time">骑行时间</string>
+    <string name="from_deposit">麒麟免押金</string>
 </resources>

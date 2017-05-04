@@ -54,7 +54,6 @@ import permissions.dispatcher.RuntimePermissions;
 
 import static android.app.Activity.RESULT_OK;
 import static com.dcch.sharebike.R.id.tips;
-import static com.dcch.sharebike.utils.PictureProcessingUtils.bitmapToBase64;
 
 
 /**
@@ -186,11 +185,11 @@ public class ReportIllegalParkingFragment extends Fragment {
                                 @Override
                                 public void onResponse(String response, int id) {
                                     if (JsonUtils.isSuccess(response)) {
-                                        ToastUtils.showLong(getActivity(), "上传成功！");
+                                        ToastUtils.showLong(getActivity(), "提交成功！");
                                         startActivity(new Intent(getActivity(), UserGuideActivity.class));
                                         getActivity().finish();
                                     } else {
-                                        ToastUtils.showLong(getActivity(), "上传失败！");
+                                        ToastUtils.showLong(getActivity(), "提交失败！");
                                     }
 
                                 }

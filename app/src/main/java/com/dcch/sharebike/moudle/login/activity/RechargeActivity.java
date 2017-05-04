@@ -77,7 +77,7 @@ public class RechargeActivity extends BaseActivity {
     @Override
     protected void initData() {
         mToolbar.setTitle("");
-        mTitle.setText(getResources().getString(R.string.title_recharge));
+        mTitle.setText(getResources().getString(R.string.from_deposit));
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

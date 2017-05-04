@@ -76,6 +76,7 @@ import com.dcch.sharebike.moudle.login.activity.PropagandaPosterActivity;
 import com.dcch.sharebike.moudle.login.activity.RechargeActivity;
 import com.dcch.sharebike.moudle.search.activity.SeekActivity;
 import com.dcch.sharebike.moudle.user.activity.CustomerServiceActivity;
+import com.dcch.sharebike.moudle.user.activity.RechargeBikeFareActivity;
 import com.dcch.sharebike.moudle.user.activity.RechargeDepositActivity;
 import com.dcch.sharebike.moudle.user.activity.RidingResultActivity;
 import com.dcch.sharebike.moudle.user.activity.UnlockProgressActivity;
@@ -87,6 +88,7 @@ import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.MapUtil;
+import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.dcch.sharebike.view.BikeRentalOrderPopupWindow;
@@ -521,25 +523,34 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                if (SPUtils.isLogin()) {
-                    if (cashStatus == 1 && status == 1 && mToken != null) {
-                        checkAggregate(uID, mToken);
-                    } else if (cashStatus == 0 && status == 0) {
-                        startActivity(new Intent(this, RechargeActivity.class));
-                    } else if (cashStatus == 1 && status == 0) {
-                        startActivity(new Intent(this, IdentityAuthentication.class));
-                    } else if (cashStatus == 0 && status == 1) {
-                        startActivity(new Intent(this, RechargeDepositActivity.class));
-                    }
-                } else {
+                if (NetUtils.isConnected(App.getContext())) {
+                    if (SPUtils.isLogin()) {
+                        if (cashStatus == 1 && status == 1 && mToken != null) {
+                            checkAggregate(uID, mToken);
+                        } else if (cashStatus == 0 && status == 0) {
+                            startActivity(new Intent(this, RechargeActivity.class));
+                        } else if (cashStatus == 1 && status == 0) {
+                            startActivity(new Intent(this, IdentityAuthentication.class));
+                        } else if (cashStatus == 0 && status == 1) {
+                            startActivity(new Intent(this, RechargeDepositActivity.class));
+                        }
+                    } else {
 //                没有登录的情况设置Activity
-                    mBtnMyHelp.setVisibility(View.GONE);
-                    mBtnMyLocation.setVisibility(View.GONE);
-                    mScan.setVisibility(View.GONE);
-                    startActivity(new Intent(MainActivity.this, ClickCameraPopupActivity.class));
+                        mBtnMyHelp.setVisibility(View.GONE);
+                        mBtnMyLocation.setVisibility(View.GONE);
+                        mScan.setVisibility(View.GONE);
+                        startActivity(new Intent(MainActivity.this, ClickCameraPopupActivity.class));
+                    }
+
+                } else {
+                    ToastUtils.showShort(App.getContext(), "网络无法连接，请检查网络连接！");
                 }
+
                 break;
             case R.id.specialOffer:
+                if (ClickUtils.isFastClick()) {
+                    return;
+                }
                 startActivity(new Intent(MainActivity.this, PropagandaPosterActivity.class));
                 break;
         }
@@ -602,7 +613,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 bundle.putSerializable("bikeInfo", bikeInfo);
                 mMarker.setExtraInfo(bundle);
             }
-
         } else {
             ToastUtils.showLong(this, "当前周围没有车辆");
         }
@@ -645,9 +655,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             }
         });
     }
-
-//
-
 
     private void updateBikeInfo(BikeInfo bikeInfo) {
         boolean hasPlanRoute = false;
@@ -1017,9 +1024,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 case 0:
                     if (bundle != null) {
                         result = bundle.getString("result");
-                        openScan(uID, phone, result, mToken);
-                        Intent intent = new Intent(MainActivity.this, UnlockProgressActivity.class);
-                        startActivity(intent);
+                        checkBicycleNo(result, mToken);
                         ToastUtils.showLong(this, result);
                     }
                     break;
@@ -1031,6 +1036,48 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         }
     }
 
+    private void checkBicycleNo(final String result, String token) {
+        Map<String, String> map = new HashMap<>();
+        map.put("lockremark", result);
+        map.put("token", token);
+        OkHttpUtils.post().url(Api.BASE_URL + Api.CHECKBICYCLENO).params(map).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                ToastUtils.showShort(MainActivity.this, "服务器正忙，请稍后再试！");
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                LogUtils.d("锁号", response);
+                //{"resultStatus":"0"}
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String resultStatus = object.optString("resultStatus");
+                    if (resultStatus.equals("0")) {
+                        ToastUtils.showLong(MainActivity.this, "该车辆编号不存在！");
+
+                    } else if (resultStatus.equals("1")) {
+                        openScan(uID, phone, result, mToken);
+                        Intent intent = new Intent(MainActivity.this, UnlockProgressActivity.class);
+                        startActivity(intent);
+                    } else if (resultStatus.equals("3")) {
+                        ToastUtils.showLong(MainActivity.this, "我正在被使用，请找其他麒麟单车使用！");
+                    } else if (resultStatus.equals("4")) {
+                        ToastUtils.showLong(MainActivity.this, "我是故障车，请找其他麒麟单车使用！");
+                    } else if (resultStatus.equals("5")) {
+                        ToastUtils.showLong(MainActivity.this, "我已经被预约，请找其他麒麟单车使用！");
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+    }
+
     //扫码开锁的方法
     private void openScan(final String uID, String phone, final String result, final String mToken) {
         if (phone != null && !phone.equals("") && result != null && !result.equals("")) {
@@ -1040,10 +1087,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             map.put("phone", phone);
             map.put("bicycleNo", result);
             map.put("token", mToken);
-            LogUtils.d("看看数据", mToken + "\n");
-            LogUtils.d("开锁", phone);
-            LogUtils.d("开锁", result);
-            LogUtils.d("开锁", uID);
+            LogUtils.d("看看数据", mToken + "\n" + result + "\n" + phone + "\n" + uID);
             OkHttpUtils.post().url(Api.BASE_URL + Api.OPENSCAN).params(map).build().execute(new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
@@ -1057,68 +1101,83 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 public void onResponse(String response, int id) {
                     Log.d("开锁", response);
                     ToastUtils.showShort(MainActivity.this, response);
-                    if (JsonUtils.isSuccess(response)) {
-                        LogUtils.d("开锁", "什么情况！");
-                        if (timer != null) {
-                            if (userBookingBikePopupWindow != null) {
-                                userBookingBikePopupWindow.dismiss();
-                            }
-                            if (bookBikePopupWindow != null) {
-                                bookBikePopupWindow.dismiss();
-                            }
-                            timer.cancel();
-                            cancelBookingBike(bookingCarId, bicycleNo, uID, mToken);
-                        }
-                        EventBus.getDefault().post(new MessageEvent(), "on");
-                        Map<String, String> map = new HashMap<>();
-                        map.put("userId", uID);
-                        map.put("bicycleNo", result);
-                        map.put("token", mToken);
-                        OkHttpUtils.post().url(Api.BASE_URL + Api.RENTALORDER).params(map).build().execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                LogUtils.e(e.getMessage());
-                                ToastUtils.showShort(MainActivity.this, "服务器忙！！！");
-                            }
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        String resultStatus = object.optString("resultStatus");
+                        if (resultStatus.equals("0")) {
+                            EventBus.getDefault().post(new MessageEvent(), "off");
+                            ToastUtils.showShort(MainActivity.this, "开锁超时，请找其他麒麟单车使用！");
 
-                            @Override
-                            public void onResponse(String response, int id) {
-                                Log.d("骑行订单", response);
-                                if (JsonUtils.isSuccess(response)) {
-                                    mMap.clear();
-                                    isShowRideOrder = true;
-                                    isClick = false;
-                                    Gson gson = new Gson();
-                                    bikeRentalOrderInfo = gson.fromJson(response, BikeRentalOrderInfo.class);
-                                    String bicycleNo = bikeRentalOrderInfo.getBicycleNo();
-                                    String carRentalOrderDate = bikeRentalOrderInfo.getCarRentalOrderDate();
-                                    String carRentalOrderId = bikeRentalOrderInfo.getCarRentalOrderId();
-                                    withServicesMutually(mToken, uID, bicycleNo, carRentalOrderDate, carRentalOrderId);
-                                    mScan.setVisibility(View.INVISIBLE);
-                                    if (menuWindow != null) {
-                                        menuWindow.dismiss();
-                                    }
-                                    if (bookBikePopupWindow != null) {
-                                        bookBikePopupWindow.dismiss();
-                                    }
-                                    if (userBookingBikePopupWindow != null) {
-                                        userBookingBikePopupWindow.dismiss();
-                                    }
-                                    orderPopupWindow = new BikeRentalOrderPopupWindow(MainActivity.this, bikeRentalOrderInfo);
-                                    orderPopupWindow.showAsDropDown(findViewById(R.id.top));
-                                    orderPopupWindow.setOutsideTouchable(false);
-                                    orderPopupWindow.setFocusable(false);
-                                } else {
-                                    ToastUtils.showShort(MainActivity.this, "服务器忙！！！");
+                        } else if (resultStatus.equals("1")) {
+                            LogUtils.d("开锁", "什么情况！");
+                            if (timer != null) {
+                                if (userBookingBikePopupWindow != null) {
+                                    userBookingBikePopupWindow.dismiss();
                                 }
+                                if (bookBikePopupWindow != null) {
+                                    bookBikePopupWindow.dismiss();
+                                }
+                                timer.cancel();
+                                cancelBookingBike(bookingCarId, bicycleNo, uID, mToken);
                             }
-                        });
-                    } else {
-                        EventBus.getDefault().post(new MessageEvent(), "off");
+                            EventBus.getDefault().post(new MessageEvent(), "on");
+
+                        } else if (resultStatus.equals("2")) {
+                            ToastUtils.showShort(MainActivity.this, "您的账号在其他设备上登录，您被迫下线！");
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
             });
         }
+    }
+
+    private void createRidingOrder(final String uID, String result, final String mToken) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", uID);
+        map.put("bicycleNo", result);
+        map.put("token", mToken);
+        OkHttpUtils.post().url(Api.BASE_URL + Api.RENTALORDER).params(map).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                LogUtils.e(e.getMessage());
+                ToastUtils.showShort(MainActivity.this, "服务器忙！！！");
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                Log.d("骑行订单", response);
+                if (JsonUtils.isSuccess(response)) {
+                    mMap.clear();
+                    isShowRideOrder = true;
+                    isClick = false;
+                    Gson gson = new Gson();
+                    bikeRentalOrderInfo = gson.fromJson(response, BikeRentalOrderInfo.class);
+                    String bicycleNo = bikeRentalOrderInfo.getBicycleNo();
+                    String carRentalOrderDate = bikeRentalOrderInfo.getCarRentalOrderDate();
+                    String carRentalOrderId = bikeRentalOrderInfo.getCarRentalOrderId();
+                    withServicesMutually(mToken, uID, bicycleNo, carRentalOrderDate, carRentalOrderId);
+                    mScan.setVisibility(View.INVISIBLE);
+                    if (menuWindow != null) {
+                        menuWindow.dismiss();
+                    }
+                    if (bookBikePopupWindow != null) {
+                        bookBikePopupWindow.dismiss();
+                    }
+                    if (userBookingBikePopupWindow != null) {
+                        userBookingBikePopupWindow.dismiss();
+                    }
+                    orderPopupWindow = new BikeRentalOrderPopupWindow(MainActivity.this, bikeRentalOrderInfo);
+                    orderPopupWindow.showAsDropDown(findViewById(R.id.top));
+                    orderPopupWindow.setOutsideTouchable(false);
+                    orderPopupWindow.setFocusable(false);
+                } else {
+                    ToastUtils.showShort(MainActivity.this, "服务器忙！！！");
+                }
+            }
+        });
+
     }
 
     private void showMenuWindow(BikeInfo bikeInfo) {
@@ -1417,6 +1476,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     startActivityForResult(i4, 0);
                 } else {
                     ToastUtils.showShort(MainActivity.this, "余额不足，请充值后骑行！");
+                    startActivity(new Intent(MainActivity.this, RechargeBikeFareActivity.class));
                 }
             }
         });
@@ -1436,13 +1496,13 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         if (mSearch != null) {
             mSearch.destroy();
         }
-        System.exit(0);
+//        System.exit(0);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("实验", "onResume");
+        Log.d("实验", "onResume+1");
         mMapView.onResume();
         if (SPUtils.isLogin()) {
             mInstructions.setVisibility(View.GONE);
@@ -1463,13 +1523,14 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             mInstructions.setVisibility(View.VISIBLE);
         }
         if (!isBook && !isShowBookOrder && !isShowRideOrder && !isChecked) {
+            LogUtils.d("实验", !isBook + "\n" + !isShowBookOrder + "\n" + !isShowRideOrder + "\n" + !isChecked);
             getBikeInfo(mCurrentLantitude, mCurrentLongitude);
             LogUtils.d("实验", "在哪里" + !isBook + "\n" + !isShowBookOrder + !isShowRideOrder + "\n" + !isChecked);
             setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
             clickBaiduMapMark();
             clickDismissOverlay();
         }
-
+//        getBikeInfo(mCurrentLantitude, mCurrentLongitude);
     }
 
     @Override
@@ -1487,7 +1548,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     protected void onPause() {
         super.onPause();
         mMapView.onPause();
-        Log.d("实验", "onPause");
+        Log.d("实验", "onPause+1");
     }
 
 
@@ -1586,6 +1647,13 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         mBtnMyHelp.setVisibility(View.VISIBLE);
         mBtnMyLocation.setVisibility(View.VISIBLE);
         mScan.setVisibility(View.VISIBLE);
+    }
+
+    //开锁进度条页面发来的消息
+    @Subscriber(tag = "create", mode = ThreadMode.POST)
+    private void receiveFromUnlockProgress(MessageEvent info) {
+        LogUtils.d("实验", info.toString());
+//        createRidingOrder(uID, result, mToken);
     }
 
     //手工输入页面发来的消息

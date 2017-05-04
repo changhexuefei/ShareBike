@@ -48,11 +48,11 @@ public class UnlockProgressActivity extends BaseActivity {
     int num = 0;
     MyHandler handler = new MyHandler(this);
 
-    class MyHandler extends Handler {
+    private class MyHandler extends Handler {
         WeakReference<Activity> weakReference;
 
-        public MyHandler(Activity activity) {
-            weakReference = new WeakReference<Activity>(activity);
+        MyHandler(Activity activity) {
+            weakReference = new WeakReference<>(activity);
         }
 
         @Override
@@ -78,6 +78,7 @@ public class UnlockProgressActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+
         mToolbar.setTitle("");
         mTitle.setText(getResources().getString(R.string.unlock_progress));
         setSupportActionBar(mToolbar);
@@ -92,7 +93,7 @@ public class UnlockProgressActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        Log.d("实验", "onResume+2");
     }
 
     @Override
@@ -137,8 +138,9 @@ public class UnlockProgressActivity extends BaseActivity {
             @Override
             public String onSuccessTextChange(MyProgressBar specialProgressBarView, int max, int progress) {
                 Log.d("实验", "结束了");
-                startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
-                UnlockProgressActivity.this.finish();
+//                startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
+//                EventBus.getDefault().post(new MessageEvent(),"create");
+//                UnlockProgressActivity.this.finish();
                 return "done";
             }
         });
@@ -150,20 +152,25 @@ public class UnlockProgressActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    @Subscriber(tag = "on", mode = ThreadMode.MAIN)
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("实验", "onPause+2");
+    }
+
+    @Subscriber(tag = "on", mode = ThreadMode.POST)
     private void receiveFromMain(MessageEvent info) {
         LogUtils.d("给后台", info.toString());
-        if(info!=null){
+        if (info != null) {
             num = 0;
             mMyProgressBar.beginStarting();//启动开始动画
-        }else{
+        } else {
             startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
             UnlockProgressActivity.this.finish();
         }
-
     }
 
-    @Subscriber(tag = "off", mode = ThreadMode.MAIN)
+    @Subscriber(tag = "off", mode = ThreadMode.POST)
     private void receiveFromMainOther(MessageEvent info) {
         LogUtils.d("给后台", info.toString());
         ToastUtils.showShort(App.getContext(), "开锁失败！");

@@ -122,17 +122,17 @@ public class UnableUnlockFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.scan_code:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 UnableUnlockFragmentPermissionsDispatcher.showCameraWithCheck(this);
                 Intent i4 = new Intent(App.getContext(), CaptureActivity.class);
                 i4.putExtra("msg", "unable");
-                i4.putExtra("token",mToken);
+                i4.putExtra("token", mToken);
                 startActivityForResult(i4, 0);
                 break;
             case R.id.un_confirm:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 bikeNo = bikeCode.getText().toString().trim();
@@ -144,7 +144,7 @@ public class UnableUnlockFragment extends Fragment {
                     map.put("faultDescription", contentText);
                     map.put("selectFaultDescription", "");
                     map.put("imageFile", "");
-                    map.put("token",mToken);
+                    map.put("token", mToken);
                     OkHttpUtils.post()
                             .url(Api.BASE_URL + Api.ADDTROUBLEORDER)
                             .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)
@@ -161,11 +161,11 @@ public class UnableUnlockFragment extends Fragment {
                                 public void onResponse(String response, int id) {
                                     Log.d("上传成功", response);
                                     if (JsonUtils.isSuccess(response)) {
-                                        ToastUtils.showLong(getActivity(), "上传成功！");
+                                        ToastUtils.showLong(getActivity(), "提交成功！");
                                         startActivity(new Intent(getActivity(), UserGuideActivity.class));
                                         getActivity().finish();
                                     } else {
-                                        ToastUtils.showLong(getActivity(), "上传失败！");
+                                        ToastUtils.showLong(getActivity(), "提交失败！");
                                     }
                                 }
                             });
@@ -195,6 +195,7 @@ public class UnableUnlockFragment extends Fragment {
         confirm.setBackgroundColor(getResources().getColor(R.color.colorTitle));
 
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
