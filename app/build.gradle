@@ -4,6 +4,13 @@ android {
     compileSdkVersion 24
     buildToolsVersion "25.0.1"
 
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = new File(output.outputFile.parent, defaultConfig.applicationId + "-" + buildType.name + "-v" +
+                    defaultConfig.versionName + "-" + defaultConfig.versionCode + ".apk" );
+        }
+    }
+
     defaultConfig {
         applicationId "com.dcch.sharebike"
         minSdkVersion 19
@@ -87,7 +94,6 @@ dependencies {
     //stepsview
     compile files('libs/zxing.jar')
     compile files('libs/tbs_sdk_thirdapp_v3.1.0.1034_43100_sharewithdownload_obfs_20170301_182143.jar')
-
     compile 'com.jakewharton:butterknife:8.4.0'
     compile 'com.belerweb:pinyin4j:2.5.1'
     compile 'de.hdodenhof:circleimageview:2.1.0'

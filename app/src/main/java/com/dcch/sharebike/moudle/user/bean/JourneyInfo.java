@@ -86,7 +86,7 @@ public class JourneyInfo {
         private String remark;
         private String resultStatus;
         private String returnBicycleDate;
-        private int rideCost;
+        private float rideCost;
         private int startPos;
         private String startTime;
         private double tripDist;
@@ -256,11 +256,11 @@ public class JourneyInfo {
             this.returnBicycleDate = returnBicycleDate;
         }
 
-        public int getRideCost() {
+        public float getRideCost() {
             return rideCost;
         }
 
-        public void setRideCost(int rideCost) {
+        public void setRideCost(float rideCost) {
             this.rideCost = rideCost;
         }
 

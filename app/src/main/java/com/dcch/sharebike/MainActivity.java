@@ -451,7 +451,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         option.setOpenGps(true);// 打开gps
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);// 设置定位模式
         option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(5000);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
+        option.setScanSpan(10000);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
         option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
         option.setIsNeedLocationDescribe(true);//可选，设置是否需要地址描述
         option.setNeedDeviceDirect(false);//可选，设置是否需要设备方向结果
@@ -887,7 +887,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 public void onResponse(String response, int id) {
                     LogUtils.d("取消", response);
                     if (JsonUtils.isSuccess(response)) {
-                        ToastUtils.showLong(MainActivity.this, "取消成功！");
+//                        ToastUtils.showLong(MainActivity.this, "取消成功！");
                         isBook = false;
                         isChecked = false;
                         isClick = true;
@@ -1025,7 +1025,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     if (bundle != null) {
                         result = bundle.getString("result");
                         checkBicycleNo(result, mToken);
-                        ToastUtils.showLong(this, result);
                     }
                     break;
 
@@ -1050,7 +1049,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             public void onResponse(String response, int id) {
                 LogUtils.d("锁号", response);
                 //{"resultStatus":"0"}
-
                 try {
                     JSONObject object = new JSONObject(response);
                     String resultStatus = object.optString("resultStatus");
@@ -1082,7 +1080,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private void openScan(final String uID, String phone, final String result, final String mToken) {
         if (phone != null && !phone.equals("") && result != null && !result.equals("")) {
             Map<String, String> map = new HashMap<>();
-//            map.clear();
             map.put("userId", uID);
             map.put("phone", phone);
             map.put("bicycleNo", result);
@@ -1100,7 +1097,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 @Override
                 public void onResponse(String response, int id) {
                     Log.d("开锁", response);
-                    ToastUtils.showShort(MainActivity.this, response);
                     try {
                         JSONObject object = new JSONObject(response);
                         String resultStatus = object.optString("resultStatus");
@@ -1149,7 +1145,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             public void onResponse(String response, int id) {
                 Log.d("骑行订单", response);
                 if (JsonUtils.isSuccess(response)) {
-                    mMap.clear();
+
                     isShowRideOrder = true;
                     isClick = false;
                     Gson gson = new Gson();
@@ -1523,14 +1519,15 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             mInstructions.setVisibility(View.VISIBLE);
         }
         if (!isBook && !isShowBookOrder && !isShowRideOrder && !isChecked) {
-            LogUtils.d("实验", !isBook + "\n" + !isShowBookOrder + "\n" + !isShowRideOrder + "\n" + !isChecked);
             getBikeInfo(mCurrentLantitude, mCurrentLongitude);
             LogUtils.d("实验", "在哪里" + !isBook + "\n" + !isShowBookOrder + !isShowRideOrder + "\n" + !isChecked);
             setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
             clickBaiduMapMark();
             clickDismissOverlay();
         }
-//        getBikeInfo(mCurrentLantitude, mCurrentLongitude);
+//        else {
+//            getBikeInfo(mCurrentLantitude, mCurrentLongitude);
+//        }
     }
 
     @Override
@@ -1653,7 +1650,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     @Subscriber(tag = "create", mode = ThreadMode.POST)
     private void receiveFromUnlockProgress(MessageEvent info) {
         LogUtils.d("实验", info.toString());
-//        createRidingOrder(uID, result, mToken);
+        mMap.clear();
+        createRidingOrder(uID, result, mToken);
     }
 
     //手工输入页面发来的消息

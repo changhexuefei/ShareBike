@@ -63,7 +63,7 @@ public class UnlockProgressActivity extends BaseActivity {
                         num++;
                         if (num <= mMyProgressBar.getMax()) {
                             mMyProgressBar.setProgress(num);
-                            handler.sendEmptyMessageDelayed(WHAT, 50);
+                            handler.sendEmptyMessageDelayed(WHAT, 20);
                         }
                         break;
                 }
@@ -118,9 +118,18 @@ public class UnlockProgressActivity extends BaseActivity {
             @Override
             public void onAnimationEnd() {
                 mMyProgressBar.setMax(100);
-//                mMyProgressBar.setProgress(num);//初次进入在动画结束时设置进度
+                mMyProgressBar.setProgress(num);//初次进入在动画结束时设置进度
                 Log.d("实验", "结束了+++++++");
                 handler.sendEmptyMessage(WHAT);
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        //你需要跳转的地方的代码
+                        startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
+                        EventBus.getDefault().post(new MessageEvent(),"create");
+                        UnlockProgressActivity.this.finish();
+                    }
+                }, 6000); //延迟6秒跳转
+
             }
         });
         mMyProgressBar.setOntextChangeListener(new MyProgressBar.OntextChangeListener() {
@@ -138,9 +147,6 @@ public class UnlockProgressActivity extends BaseActivity {
             @Override
             public String onSuccessTextChange(MyProgressBar specialProgressBarView, int max, int progress) {
                 Log.d("实验", "结束了");
-//                startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
-//                EventBus.getDefault().post(new MessageEvent(),"create");
-//                UnlockProgressActivity.this.finish();
                 return "done";
             }
         });

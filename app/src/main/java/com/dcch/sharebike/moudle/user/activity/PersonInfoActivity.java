@@ -212,9 +212,9 @@ public class PersonInfoActivity extends BaseActivity {
                         Log.d("上传头像", response);
                         //{"code":"1"}
                         if (JsonUtils.isSuccess(response)) {
-                            ToastUtils.showShort(PersonInfoActivity.this, "头像上传成功!");
+                            ToastUtils.showShort(PersonInfoActivity.this, "头像更改成功!");
                         } else {
-                            ToastUtils.showShort(PersonInfoActivity.this, "头像上传失败!");
+                            ToastUtils.showShort(PersonInfoActivity.this, "头像更改失败!");
                         }
                     }
                 });
