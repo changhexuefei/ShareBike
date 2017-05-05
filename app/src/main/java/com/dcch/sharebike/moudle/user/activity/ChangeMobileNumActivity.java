@@ -159,7 +159,7 @@ public class ChangeMobileNumActivity extends BaseActivity {
                         ToastUtils.showLong(ChangeMobileNumActivity.this,"更换手机号失败，请重试！");
                     }else if(resultStatus.equals("1")){
                         ToastUtils.showLong(ChangeMobileNumActivity.this,"手机号更换成功！");
-                        
+
                     }else if(resultStatus.equals("2")){
                         ToastUtils.showLong(ChangeMobileNumActivity.this,"您的账号在其他设备登录，您被迫下线！");
                     }else if(resultStatus.equals("3")){
