@@ -111,7 +111,6 @@ public class ChangeMobileNumActivity extends BaseActivity {
             mToken = intent.getStringExtra("token");
             mUserId = intent.getStringExtra("userId");
         }
-
     }
 
 
