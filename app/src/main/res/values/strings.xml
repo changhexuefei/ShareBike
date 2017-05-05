@@ -146,4 +146,12 @@
     <string name="share_schedule">分享行程</string>
     <string name="ride_time">骑行时间</string>
     <string name="from_deposit">麒麟免押金</string>
+    <string name="cell_phone_number">手机号</string>
+    <string name="cell_phone_tip">请输入手机号</string>
+    <string name="security_code">验证码</string>
+    <string name="security_code_tip">请输入验证码</string>
+    <string name="get_code">获取验证码</string>
+    <string name="ensure">确定</string>
+    <string name="change_cell_phone_number">更换手机号</string>
+    <string name="cell_phone_number_new">请输入新的手机号</string>
 </resources>

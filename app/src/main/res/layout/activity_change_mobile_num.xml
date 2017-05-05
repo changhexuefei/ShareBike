@@ -7,9 +7,100 @@
     android:layout_height="match_parent"
     tools:context="com.dcch.sharebike.moudle.user.activity.ChangeMobileNumActivity">
 
+    <include layout="@layout/toolbar"/>
+
+    <LinearLayout
+        android:id="@+id/userName"
+        android:layout_width="330dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="#dad5d5"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/cell_phone_number"
+            android:textColor="#000000"/>
+
+        <EditText
+            android:id="@+id/userNewPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="@string/cell_phone_number_new"
+            android:inputType="phone"
+            android:maxLength="11"
+            android:paddingLeft="20dp"
+            android:textColorHint="#c2baba"
+            android:textCursorDrawable="@null"
+            android:textSize="12sp"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/password"
+        android:layout_width="220dp"
+        android:layout_height="40dp"
+        android:layout_alignStart="@+id/userName"
+        android:layout_below="@+id/userName"
+        android:layout_marginTop="10dp"
+        android:background="#dad5d5">
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="@string/security_code"
+            android:textColor="#000000"/>
+
+        <EditText
+            android:id="@+id/newSecurityCode"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="@string/security_code_tip"
+            android:inputType="number"
+            android:paddingLeft="20dp"
+            android:textColorHint="#c2baba"
+            android:textCursorDrawable="@null"
+            android:textSize="12sp"/>
+    </LinearLayout>
+
+
+
     <TextView
-       android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="这是更换手机号页面"/>
+        android:id="@+id/getNewSecurityCode"
+        android:layout_width="90dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@+id/password"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/password"
+        android:background="@color/btn_bg"
+        android:enabled="false"
+        android:gravity="center"
+        android:text="@string/get_code"
+        android:textColor="@color/sub_title_color"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/change_cell_phone"
+        android:layout_width="330dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/password"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:background="@color/btn_bg"
+        android:enabled="false"
+        android:gravity="center"
+        android:text="@string/change_cell_phone_number"
+        android:textColor="@color/sub_title_color"
+        android:textSize="18sp"/>
 </RelativeLayout>

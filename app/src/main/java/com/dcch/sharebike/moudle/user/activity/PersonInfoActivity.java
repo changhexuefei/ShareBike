@@ -182,6 +182,8 @@ public class PersonInfoActivity extends BaseActivity {
                     Intent mobileNum = new Intent(this, MobileNumActivity.class);
                     mobileNum.putExtra("cashStatus", mUserBundle.getCashStatus());
                     mobileNum.putExtra("phone", mUserBundle.getPhone());
+                    mobileNum.putExtra("token", mToken);
+                    mobileNum.putExtra("userId", uID);
                     startActivity(mobileNum);
                 }
                 break;

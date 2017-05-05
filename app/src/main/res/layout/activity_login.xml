@@ -23,7 +23,7 @@
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="手机号"
+            android:text="@string/cell_phone_number"
             android:textColor="#000000"/>
 
         <EditText
@@ -32,7 +32,7 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:background="@null"
-            android:hint="请输入手机号"
+            android:hint="@string/cell_phone_tip"
             android:inputType="phone"
             android:maxLength="11"
             android:paddingLeft="20dp"
@@ -56,7 +56,7 @@
             android:layout_width="60dp"
             android:layout_height="40dp"
             android:gravity="center"
-            android:text="验证码"
+            android:text="@string/security_code"
             android:textColor="#000000"/>
 
         <EditText
@@ -65,7 +65,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@null"
-            android:hint="请输入验证码"
+            android:hint="@string/security_code_tip"
             android:inputType="number"
             android:paddingLeft="20dp"
             android:textColorHint="#c2baba"
@@ -73,15 +73,7 @@
             android:textSize="12sp"/>
     </LinearLayout>
 
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_below="@+id/verificationCode"-->
-    <!--android:layout_marginLeft="40dp"-->
-    <!--android:layout_marginTop="10dp"-->
-    <!--android:text="收不到短信，试试语音验证码"-->
-    <!--android:textColor="#ea0d0d"-->
-    <!--android:textSize="12sp" />-->
+
 
     <TextView
         android:id="@+id/getSecurityCode"
@@ -94,7 +86,7 @@
         android:background="#c6bfbf"
         android:enabled="false"
         android:gravity="center"
-        android:text="获取验证码"
+        android:text="@string/get_code"
         android:textColor="#ffffff"
         android:textSize="12sp"/>
 
@@ -108,7 +100,7 @@
         android:background="#c6bfbf"
         android:enabled="false"
         android:gravity="center"
-        android:text="确定"
+        android:text="@string/ensure"
         android:textColor="#ffffff"
         android:textSize="18sp"/>
 
