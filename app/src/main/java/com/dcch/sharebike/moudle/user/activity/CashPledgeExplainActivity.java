@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
-import com.tencent.smtt.sdk.WebView;
+import com.dcch.sharebike.view.ProgressWebview;
 
 import butterknife.BindView;
 
@@ -18,7 +18,7 @@ public class CashPledgeExplainActivity extends BaseActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.cashPledge_explain_webView)
-    WebView mCashPledgeExplainWebView;
+    ProgressWebview mCashPledgeExplainWebView;
 
 
     @Override
@@ -45,6 +45,7 @@ public class CashPledgeExplainActivity extends BaseActivity {
                 return false;
             }
         });
+
     }
 
 }

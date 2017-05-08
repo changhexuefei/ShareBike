@@ -1,5 +1,6 @@
 package com.dcch.sharebike.moudle.user.activity;
 
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
@@ -7,9 +8,10 @@ import android.widget.TextView;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
-import com.tencent.smtt.sdk.WebView;
+import com.dcch.sharebike.view.ProgressWebview;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class UserAgreementActivity extends BaseActivity {
 
@@ -19,7 +21,7 @@ public class UserAgreementActivity extends BaseActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.userAgreement_webView)
-    WebView mUserAgreementWebView;
+    ProgressWebview mUserAgreementWebView;
 
 
     @Override
@@ -42,4 +44,10 @@ public class UserAgreementActivity extends BaseActivity {
         mUserAgreementWebView.loadUrl(Api.USERAGREEMENT);
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

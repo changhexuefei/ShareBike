@@ -9,13 +9,13 @@
 
     <include layout="@layout/toolbar"/>
 
-    <com.tencent.smtt.sdk.WebView
+    <com.dcch.sharebike.view.ProgressWebview
         android:id="@+id/refund_explain_web_view"
         android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </com.tencent.smtt.sdk.WebView>
+    </com.dcch.sharebike.view.ProgressWebview>
 
 
 </RelativeLayout>

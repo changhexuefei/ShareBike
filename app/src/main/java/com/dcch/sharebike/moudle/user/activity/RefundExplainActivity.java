@@ -1,5 +1,6 @@
 package com.dcch.sharebike.moudle.user.activity;
 
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
@@ -7,9 +8,10 @@ import android.widget.TextView;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
-import com.tencent.smtt.sdk.WebView;
+import com.dcch.sharebike.view.ProgressWebview;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class RefundExplainActivity extends BaseActivity {
 
@@ -19,7 +21,7 @@ public class RefundExplainActivity extends BaseActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.refund_explain_web_view)
-    WebView mRefundExplainWebView;
+    ProgressWebview mRefundExplainWebView;
 
 
     @Override
@@ -45,5 +47,12 @@ public class RefundExplainActivity extends BaseActivity {
                 return false;
             }
         });
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

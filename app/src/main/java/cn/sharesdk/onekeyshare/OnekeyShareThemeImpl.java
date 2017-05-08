@@ -148,7 +148,7 @@ public abstract class OnekeyShareThemeImpl implements PlatformActionListener, Ca
 		if (formateShareData(platform)) {
 			ShareParams sp = shareDataToShareParams(platform);
 			if (sp != null) {
-				toast("ssdk_oks_sharing");
+//				toast("ssdk_oks_sharing");
 				if (customizeCallback != null) {
 					customizeCallback.onShare(platform, sp);
 				}
