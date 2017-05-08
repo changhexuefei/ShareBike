@@ -79,18 +79,15 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
     @BindView(R.id.openFlashLight)
     ToggleButton mOpenFlashLight;
 
-
     private CameraManager cameraManager;
     private CaptureActivityHandler handler;
     private InactivityTimer inactivityTimer;
     private BeepManager beepManager;
-
     private SurfaceView scanPreview = null;
     private RelativeLayout scanContainer;
     private RelativeLayout scanCropView;
     private ImageView scanLine;
     //ToggleButton
-
     private Rect mCropRect = null;
     private boolean isHasSurface = false;
     private Camera camera = null;
