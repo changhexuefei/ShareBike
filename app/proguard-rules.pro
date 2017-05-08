@@ -79,6 +79,17 @@
     -keepclassmembers class * {
         void *(**On*Event);
     }
+    #mob
+    -keep class cn.sharesdk.**{*;}
+    -keep class com.sina.**{*;}
+    -keep class **.R$* {*;}
+    -keep class **.R{*;}
+    -dontwarn cn.sharesdk.**
+    -dontwarn **.R$*
+    -keep class m.framework.**{*;}
+    -keep class android.net.http.SslError
+    -keep class android.webkit.**{*;}
+    -keep class com.mob.tools.utils
 
     #3.webview
     -keepclassmembers class fqcn.of.javascript.interface.for.webview {
@@ -102,8 +113,9 @@
     -keep class org.simple.** { *; }
     -keep interface org.simple.** { *; }
     -keepclassmembers class * {
-        @org.simple.eventbus.Subscriber;
+        @org.simple.eventbus.Subscriber <methods>;
     }
+    -keepattributes *Annotation*
 #
 #    # 百度地图（jar包换成自己的版本，记得签名要匹配）
     -keep class com.baidu.** {*;}
@@ -114,19 +126,15 @@
     -keep class butterknife.** { *; }
     -dontwarn butterknife.internal.**
     -keep class **$$ViewBinder { *; }
+
     -keepclasseswithmembernames class * {
-        @butterknife.*;
+        @butterknife.* <fields>;
     }
+
     -keepclasseswithmembernames class * {
-        @butterknife.*;
+        @butterknife.* <methods>;
     }
-#
-    # EventBus
-    -keepattributes *Annotation*
-    -keepclassmembers class ** {
-        @org.greenrobot.eventbus.Subscribe;
-    }
-    -keep enum org.greenrobot.eventbus.ThreadMode { *; }
+
 
     # Glide
     -keep public class * implements com.bumptech.glide.module.GlideModule
@@ -182,7 +190,7 @@
     }
 
     # Gson
-    -keepattributes Signature-keepattributes *Annotation*
+    -keepattributes Signature
     -keep class sun.misc.Unsafe { *; }
     -keep class com.google.gson.stream.** { *; }
     # 使用Gson时需要配置Gson的解析对象及变量都不混淆。不然Gson会找不到变量。

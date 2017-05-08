@@ -98,48 +98,48 @@ public class SettingActivity extends BaseActivity {
 //                startActivity(address);
 //                break;
             case R.id.checkVersions:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
-                if(NetUtils.isConnected(this)){
-                    if(NetUtils.isWifi(this)){
+                if (NetUtils.isConnected(this)) {
+                    if (NetUtils.isWifi(this)) {
                         UpdateManager updateManager = new UpdateManager(this);
                         updateManager.checkVersion();
-                    }else{
-                        ToastUtils.showShort(this,"你当前使用的手机网络,请切换成无线网络进行下载");
+                    } else {
+                        ToastUtils.showShort(this, "你当前使用的手机网络,请切换成无线网络进行下载");
                     }
 
-                }else{
-                    ToastUtils.showShort(this,"网络无法连接，请检查网络连接");
+                } else {
+                    ToastUtils.showShort(this, "网络无法连接，请检查网络连接");
                 }
 
                 break;
             case R.id.aboutUs:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 startActivity(new Intent(SettingActivity.this, AboutUsActivity.class));
                 break;
             case userAgreement:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 startActivity(new Intent(SettingActivity.this, UserAgreementActivity.class));
                 break;
             case R.id.cashPledgeExplain:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 startActivity(new Intent(SettingActivity.this, CashPledgeExplainActivity.class));
                 break;
             case R.id.rechargeAgreement:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 startActivity(new Intent(SettingActivity.this, RechargeAgreementActivity.class));
                 break;
             case R.id.signOut:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 new AlertDialog.Builder(this)
@@ -149,7 +149,6 @@ public class SettingActivity extends BaseActivity {
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                ToastUtils.showShort(SettingActivity.this, "" + which);
                                 Intent i1 = new Intent(SettingActivity.this, PersonalCenterActivity.class);
                                 i1.putExtra("name", "unLogin");
                                 //用EventBus发送消息给个人中心

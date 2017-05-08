@@ -224,7 +224,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                             map.put("out_trade_no", mOutTradeNo);
                             map.put("attach", uID);
                             map.put("body", "车费");
-                            map.put("total_price", rechargeNumber);
+                            map.put("total_price", "0.01");
                             map.put("spbill_create_ip", ipAddress);
                             LogUtils.d("微信支付", ipAddress + "\n" + uID + "\n" + mOutTradeNo);
                             OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINPAY).params(map).build().execute(new StringCallback() {

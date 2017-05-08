@@ -23,7 +23,9 @@ import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.http.Api;
+import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
+import com.dcch.sharebike.utils.AES;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.InPutUtils;
 import com.dcch.sharebike.utils.JsonUtils;
@@ -62,6 +64,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     Toolbar mToolbar;
     @BindView(R.id.title)
     TextView mTitle;
+    String ciphertext;
 
     private static final int CODE_ING = 1;   //已发送，倒计时
     private static final int CODE_REPEAT = 2;  //重新发送
@@ -109,6 +112,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onClick(View view) {
                 EventBus.getDefault().post(new MessageEvent(), "show");
+                startActivity(new Intent(LoginActivity.this,MainActivity.class));
                 finish();
             }
         });
@@ -182,6 +186,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     return;
                 }
                 if (NetUtils.isConnected(LoginActivity.this)) {
+
                     getseCode(phone);
                 } else {
                     ToastUtils.showLong(LoginActivity.this, "请检查网络后重试！！");
@@ -251,6 +256,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void registerAndLogin(String phone) {
+        phone = AES.encrypt(phone.getBytes(), MyContent.key);
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone);
         OkHttpUtils.post().url(Api.BASE_URL + Api.SAVEUSER).params(map).build().execute(new StringCallback() {
@@ -293,6 +299,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     public void getSecurityCode(String phone) {
+        phone = AES.encrypt(phone.getBytes(), MyContent.key);
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone);
         OkHttpUtils.post().url(Api.BASE_URL + Api.REGISTER).params(map).build().execute(new StringCallback() {

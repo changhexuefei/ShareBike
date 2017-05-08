@@ -20,10 +20,14 @@ import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.http.Api;
+import com.dcch.sharebike.moudle.home.content.MyContent;
+import com.dcch.sharebike.moudle.login.activity.LoginActivity;
+import com.dcch.sharebike.utils.AES;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.InPutUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.NetUtils;
+import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -129,40 +133,48 @@ public class ChangeMobileNumActivity extends BaseActivity {
                 break;
             case R.id.change_cell_phone:
                 if (mToken != null && mUserId != null) {
-                    changeUserCellPhone(mToken,mUserId,phone);
+                    changeUserCellPhone(mToken, mUserId, phone);
                 }
                 break;
         }
     }
 
     private void changeUserCellPhone(String token, String userId, String phone) {
-        Map<String,String> map = new HashMap<>();
-        map.put("userId",userId);
-        map.put("phone",phone);
-        map.put("token",token);
-        OkHttpUtils.post().url(Api.BASE_URL+Api.EDITUSERPHONE).params(map).build().execute(new StringCallback() {
+        phone = AES.encrypt(phone.getBytes(), MyContent.key);
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("phone", phone);
+        map.put("token", token);
+        OkHttpUtils.post().url(Api.BASE_URL + Api.EDITUSERPHONE).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                LogUtils.e("错误",e.getMessage());
-                ToastUtils.showShort(ChangeMobileNumActivity.this,"服务器忙，请稍后再试！");
+                LogUtils.e("错误", e.getMessage());
+                ToastUtils.showShort(ChangeMobileNumActivity.this, "服务器忙，请稍后再试！");
             }
 
             @Override
             public void onResponse(String response, int id) {
-                LogUtils.d("更换手机号",response);
+                LogUtils.d("更换手机号", response);
                 //{"resultStatus":"1"}
                 try {
                     JSONObject object = new JSONObject(response);
                     String resultStatus = object.optString("resultStatus");
-                    if(resultStatus.equals("0")){
-                        ToastUtils.showLong(ChangeMobileNumActivity.this,"更换手机号失败，请重试！");
-                    }else if(resultStatus.equals("1")){
-                        ToastUtils.showLong(ChangeMobileNumActivity.this,"手机号更换成功！");
-
-                    }else if(resultStatus.equals("2")){
-                        ToastUtils.showLong(ChangeMobileNumActivity.this,"您的账号在其他设备登录，您被迫下线！");
-                    }else if(resultStatus.equals("3")){
-                        ToastUtils.showLong(ChangeMobileNumActivity.this,"该手机号已注册，请重试！");
+                    if (resultStatus.equals("0")) {
+                        ToastUtils.showLong(ChangeMobileNumActivity.this, "更换手机号失败，请重试！");
+                    } else if (resultStatus.equals("1")) {
+                        ToastUtils.showLong(ChangeMobileNumActivity.this, "手机号更换成功！");
+                        //执行退出登录，让用户重新登录
+                        Intent i1 = new Intent(ChangeMobileNumActivity.this, LoginActivity.class);
+                        startActivity(i1);
+                        SPUtils.clear(App.getContext());
+                        SPUtils.put(App.getContext(), "islogin", false);
+                        SPUtils.put(App.getContext(), "isfirst", false);
+                        SPUtils.put(App.getContext(), "isStartGuide", true);
+                        finish();
+                    } else if (resultStatus.equals("2")) {
+                        ToastUtils.showLong(ChangeMobileNumActivity.this, "您的账号在其他设备登录，您被迫下线！");
+                    } else if (resultStatus.equals("3")) {
+                        ToastUtils.showLong(ChangeMobileNumActivity.this, "该手机号已注册，请重试！");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -172,7 +184,6 @@ public class ChangeMobileNumActivity extends BaseActivity {
         });
 
     }
-
 
 
     @Override
@@ -268,6 +279,7 @@ public class ChangeMobileNumActivity extends BaseActivity {
     }
 
     public void getSecurityCode(String phone) {
+        phone = AES.encrypt(phone.getBytes(), MyContent.key);
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone);
         OkHttpUtils.post().url(Api.BASE_URL + Api.REGISTER).params(map).build().execute(new StringCallback() {

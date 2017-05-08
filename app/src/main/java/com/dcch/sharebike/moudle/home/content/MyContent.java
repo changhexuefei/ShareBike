@@ -9,5 +9,7 @@ public class MyContent {
     public static final String[] steps = {"手机验证", "麒麟免押金", "实名认证", "注册成功"};
     // APP_ID 替换为你的应用从官方网站申请到的合法appId
     public static final String APP_ID = "wxd4b5d5e34b0dd095";
+    // **
+    public static final String key = "DitekVIMDHxjOqus";
 
 }

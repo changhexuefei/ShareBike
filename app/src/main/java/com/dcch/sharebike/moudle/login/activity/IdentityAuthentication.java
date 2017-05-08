@@ -22,9 +22,11 @@ import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.home.content.MyContent;
+import com.dcch.sharebike.utils.AES;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.InPutUtils;
 import com.dcch.sharebike.utils.JsonUtils;
+import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -64,6 +66,8 @@ public class IdentityAuthentication extends BaseActivity {
     private String cardNum;
     private String uID;
     private String mToken;
+    private String encryptionName;
+    private String encryptionIDCARD;
 
     @Override
     protected int getLayoutId() {
@@ -170,11 +174,13 @@ public class IdentityAuthentication extends BaseActivity {
     private void verifyRealName(final String uID, final String realName, String cardNum, String token) {
         try {
             String encode = URLEncoder.encode(realName, "utf-8");//"UTF-8"
+            cardNum= AES.encrypt(cardNum.getBytes(),MyContent.key);
             Map<String, String> map = new HashMap<>();
             map.put("userId", uID);
             map.put("name", encode);
             map.put("IDcard", cardNum);
             map.put("token", token);
+            LogUtils.d("参数",uID+"\n"+encode+"\n"+cardNum+"\n"+token);
 
             OkHttpUtils.post().url(Api.BASE_URL + Api.UPDATEUSERSTATUS).params(map).build().execute(new StringCallback() {
                 @Override
@@ -186,7 +192,6 @@ public class IdentityAuthentication extends BaseActivity {
                 @Override
                 public void onResponse(String response, int id) {
                     Log.d("实名认证", response);
-                    //{"code":"1"}
                     if (JsonUtils.isSuccess(response)) {
                         Intent authentication = new Intent(IdentityAuthentication.this, AuthenticationOkActivity.class);
                         startActivity(authentication);
@@ -201,7 +206,6 @@ public class IdentityAuthentication extends BaseActivity {
             e.printStackTrace();
         }
     }
-
 
 
     @Override
