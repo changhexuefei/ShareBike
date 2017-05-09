@@ -25,6 +25,21 @@ public class UnLoginFragment extends Fragment {
     @BindView(R.id.login)
     TextView login;
     private View view;
+//    private static UnLoginFragment uf;
+//
+//    public static UnLoginFragment getUf() {
+//        // 提供一个全局的静态方法
+//        if (uf == null) {
+//            synchronized (UnLoginFragment.class) {
+//                if (uf == null) {
+//                    uf = new UnLoginFragment();
+//                }
+//            }
+//        }
+//        return uf;
+//    }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

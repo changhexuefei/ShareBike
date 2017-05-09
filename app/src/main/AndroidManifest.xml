@@ -376,18 +376,6 @@
         <activity android:name=".moudle.user.activity.RechargeAgreementActivity">
         </activity>
 
-        <receiver
-            android:name=".receiver.InitApkBroadCastReceiver"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED"/>
-                <action android:name="android.intent.action.PACKAGE_REPLACED"/>
-                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
-
-                <data android:scheme="package"/>
-            </intent-filter>
-        </receiver>
-
         <activity
             android:name=".moudle.login.activity.OpenLockTipAcitivity"
             android:theme="@style/translucent">

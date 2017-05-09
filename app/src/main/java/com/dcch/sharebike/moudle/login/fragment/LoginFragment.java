@@ -83,11 +83,22 @@ public class LoginFragment extends Fragment {
     private String uID;
     private String mPhone;
     private String mToken;
-
+//    private static LoginFragment lf;
 
     public LoginFragment() {
-
     }
+
+//    public static LoginFragment getLf() {
+//        // 提供一个全局的静态方法
+//            if (lf == null) {
+//                synchronized (LoginFragment.class) {
+//                    if (lf == null) {
+//                        lf = new LoginFragment();
+//                    }
+//                }
+//            }
+//            return lf;
+//    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

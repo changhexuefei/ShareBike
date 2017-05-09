@@ -40,7 +40,7 @@ public class MobileNumActivity extends BaseActivity {
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                MobileNumActivity.this.finish();
             }
         });
         Intent intent = getIntent();

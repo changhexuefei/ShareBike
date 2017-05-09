@@ -90,13 +90,13 @@ public class SplashActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-        JPushInterface.onResume(this);
+        JPushInterface.onResume(App.getContext());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        JPushInterface.onPause(this);
+        JPushInterface.onPause(App.getContext());
     }
 
     private void goGuide() {

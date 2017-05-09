@@ -29,6 +29,22 @@ public class PersonalCenterActivity extends BaseActivity {
     Toolbar mToolbar;
 //    //记录Fragment的位置
 //    private int position = 0;
+//    private static PersonalCenterActivity pca;
+//
+//    public PersonalCenterActivity() {
+//    }
+//
+//    public static PersonalCenterActivity getInstance() {
+//        // 提供一个全局的静态方法
+//        if (pca == null) {
+//            synchronized (PersonalCenterActivity.class) {
+//                if (pca == null) {
+//                    pca = new PersonalCenterActivity();
+//                }
+//            }
+//        }
+//        return pca;
+//    }
 
     @Override
     protected int getLayoutId() {
@@ -43,9 +59,7 @@ public class PersonalCenterActivity extends BaseActivity {
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent backToLoginMain = new Intent(PersonalCenterActivity.this, MainActivity.class);
-                startActivity(backToLoginMain);
-                finish();
+                goToMain();
             }
         });
         showFragment();
@@ -88,6 +102,10 @@ public class PersonalCenterActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        goToMain();
+    }
+
+    private void goToMain(){
         Intent backToLoginMain = new Intent(PersonalCenterActivity.this, MainActivity.class);
         startActivity(backToLoginMain);
         finish();
@@ -100,17 +118,5 @@ public class PersonalCenterActivity extends BaseActivity {
 
     }
 
-    //    @Override
-//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-//        position = savedInstanceState.getInt("position");
-//        showFragment();
-//        super.onRestoreInstanceState(savedInstanceState);
-//    }
-//
-//    @Override
-//    protected void onSaveInstanceState(Bundle outState) {
-//        //记录当前的position
-//        outState.putInt("position", position);
-//    }
 
 }

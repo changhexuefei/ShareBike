@@ -112,7 +112,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onClick(View view) {
                 EventBus.getDefault().post(new MessageEvent(), "show");
-                startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             }
         });
@@ -182,7 +182,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.getSecurityCode:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 if (NetUtils.isConnected(LoginActivity.this)) {
@@ -194,7 +194,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                 break;
             case R.id.login_confirm:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 //将收到的验证码和手机号提交再次核对
@@ -207,7 +207,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
                 break;
             case R.id.rules:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 Intent intent = new Intent(this, AgreementActivity.class);
@@ -280,9 +280,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     } else if (userInfo.getCashStatus() == 0 && userInfo.getStatus() == 1) {
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     } else if (userInfo.getCashStatus() == 1 && userInfo.getStatus() == 1) {
-                        startActivity(new Intent(LoginActivity.this, PersonalCenterActivity.class));
+                        goToPersonCenter();
                     }
-
                     EventBus.getDefault().post(new MessageEvent(), "gone");
                     LoginActivity.this.finish();
                     //储存用户信息(登录储存一次)
@@ -333,6 +332,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(this,PersonalCenterActivity.class));
+        goToPersonCenter();
+    }
+
+    private void goToPersonCenter() {
+        startActivity(new Intent(LoginActivity.this, PersonalCenterActivity.class));
     }
 }

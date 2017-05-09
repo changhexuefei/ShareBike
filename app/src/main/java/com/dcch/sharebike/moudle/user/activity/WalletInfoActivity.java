@@ -69,6 +69,7 @@ public class WalletInfoActivity extends BaseActivity {
     private String mRefund_fee;
     private String mToken;
     private Map<String, String> mMap;
+    private int mStatus;
 
     @Override
     protected int getLayoutId() {
@@ -83,6 +84,7 @@ public class WalletInfoActivity extends BaseActivity {
             mInfo = (UserInfo) bundle.getSerializable("bundle");
             if (mInfo != null && !mInfo.equals("")) {
                 mCashStatus = mInfo.getCashStatus();
+                mStatus = mInfo.getStatus();
                 remainingSum.setText(String.valueOf(mInfo.getAggregateAmount()));
                 if (mInfo.getCashStatus() == 1) {
                     showArea.setText("押金" + mInfo.getPledgeCash() + "元");
@@ -114,7 +116,7 @@ public class WalletInfoActivity extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                startActivity(new Intent(this, PersonalCenterActivity.class));
+                startActivity(new Intent(WalletInfoActivity.this, PersonalCenterActivity.class));
                 finish();
                 break;
             case R.id.transactionDetail:
@@ -148,10 +150,12 @@ public class WalletInfoActivity extends BaseActivity {
     }
 
     private void choosePrepaid() {
-        if (mCashStatus == 1) {
+        if (mCashStatus == 1 && mStatus == 1) {
             Intent intent = new Intent(WalletInfoActivity.this, RechargeBikeFareActivity.class);
             startActivity(intent);
-        } else if (mCashStatus == 0) {
+        } else if (mCashStatus == 0 && mStatus == 0) {
+            startActivity(new Intent(WalletInfoActivity.this, RechargeDepositActivity.class));
+        } else if (mCashStatus == 0 && mStatus == 1) {
             popupDialog();
         }
     }
@@ -200,7 +204,6 @@ public class WalletInfoActivity extends BaseActivity {
                 case R.id.btn_confirm:
                     //先进行检查余额操作
                     checkAccountBalances(uID, mToken);
-
                     break;
             }
         }

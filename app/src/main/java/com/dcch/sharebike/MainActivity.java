@@ -371,7 +371,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     mMapView.setEnabled(false);
                     isChecked = true;
                 } else if (isShowRideOrder) {
-                    mMap.clear();
+//                    mMap.clear();
                     mMapView.setEnabled(false);
 
                 } else if (isShowBookOrder) {
@@ -471,8 +471,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                Intent personal = new Intent(this, PersonalCenterActivity.class);
-                startActivity(personal);
+                goToPersonCenter();
                 break;
             case btn_my_help:
                 if (ClickUtils.isFastClick()) {
@@ -481,7 +480,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (SPUtils.isLogin()) {
                     popupDialog();
                 } else {
-                    startActivity(new Intent(this, ClickMyHelpActivity.class));
+                    startActivity(new Intent(MainActivity.this, ClickMyHelpActivity.class));
                 }
                 break;
 
@@ -489,8 +488,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                Intent i2 = new Intent(this, PersonalCenterActivity.class);
-                startActivity(i2);
+                goToPersonCenter();
                 break;
 
             case seek:
@@ -498,7 +496,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     return;
                 }
                 if (isClick) {
-                    Intent seek = new Intent(this, SeekActivity.class);
+                    Intent seek = new Intent(MainActivity.this, SeekActivity.class);
                     seek.putExtra("address", address1);
                     startActivityForResult(seek, 1);
                 }
@@ -508,13 +506,12 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 break;
 
             case R.id.btn_my_location:
-                if (routeOverlay != null && !isBook) {
+                if (routeOverlay != null && menuWindow.isShowing() && menuWindow != null) {
                     routeOverlay.removeFromMap();
-                }
-                if (menuWindow != null) {
                     menuWindow.dismiss();
+                    mMap.clear();
+                    addOverlay(bikeInfos);
                 }
-//                addOverlay(bikeInfos);
                 setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
 //                getMyLocation();
                 break;
@@ -555,6 +552,12 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 break;
         }
     }
+
+    private void goToPersonCenter() {
+        Intent personal = new Intent(MainActivity.this, PersonalCenterActivity.class);
+        startActivity(personal);
+    }
+
 
     public void getMyLocation() {
         MyLocationData data = new MyLocationData.Builder()
@@ -625,9 +628,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         mMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(final Marker marker) {
-                if (isChecked) {
-                    return false;
-                }
+//                if (isChecked) {
+//                    return false;
+//                }
                 if (marker.getExtraInfo() != null) {
                     int zIndex = marker.getZIndex();
                     integers.add(zIndex);
@@ -649,8 +652,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     mMapView.setEnabled(false);
                 }
                 mInstructions.setVisibility(View.GONE);
-                mMap.clear();
-                addOverlay(bikeInfos);//
                 return true;
             }
         });
@@ -687,9 +688,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                         if (menuWindow != null && menuWindow.isShowing()) {
                             menuWindow.dismiss();
                         }
-                        mMap.clear();
-                        addOverlay(bikeInfos);
-
                         if (cashStatus == 1 && status == 1) {
                             mInstructions.setVisibility(View.GONE);
                             if (phone != null && !phone.equals("")) {
@@ -1145,7 +1143,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             public void onResponse(String response, int id) {
                 Log.d("骑行订单", response);
                 if (JsonUtils.isSuccess(response)) {
-
                     isShowRideOrder = true;
                     isClick = false;
                     Gson gson = new Gson();
@@ -1333,7 +1330,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
                 if (uID != null && !uID.equals("")) {
                     checkBookingBikeInfoByUserID(uID);
-
                 } else {
                     //根据手机定位地点，得到车辆信息的方法
                     getBikeInfo(mCurrentLantitude, mCurrentLongitude);
@@ -1431,7 +1427,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                             }
                             addOverlay(bikeInfos);
                         }
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -1547,7 +1542,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         mMapView.onPause();
         Log.d("实验", "onPause+1");
     }
-
 
     @Override
     protected void onStart() {
