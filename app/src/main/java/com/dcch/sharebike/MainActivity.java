@@ -1515,14 +1515,12 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             getBikeInfo(mCurrentLantitude, mCurrentLongitude);
             setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
         }
-        if (menuWindow != null && menuWindow.isShowing()) {
-
-
+        if (menuWindow == null && bookBikePopupWindow == null && mShowBikeRentalOrderPopupWindow == null && userBookingBikePopupWindow == null && orderPopupWindow == null) {
+            getBikeInfo(mCurrentLantitude, mCurrentLongitude);
+            setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
         }
         clickBaiduMapMark();
         clickDismissOverlay();
-
-
 //        if (!isBook && !isShowBookOrder && !isShowRideOrder && !isChecked) {
 //            getBikeInfo(mCurrentLantitude, mCurrentLongitude);
 //            LogUtils.d("实验", "在哪里" + !isBook + "\n" + !isShowBookOrder + !isShowRideOrder + "\n" + !isChecked);

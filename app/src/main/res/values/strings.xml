@@ -156,4 +156,6 @@
     <string name="change_cell_phone_number">更换手机号</string>
     <string name="cell_phone_number_new">请输入新的手机号</string>
     <string name="recharge_deposit_tip">骑行单车必须支付押金，押金可退还</string>
+    <string name="coupon_tip_two">网络无法访问，请检查网络连接</string>
+    <string name="my_journey_tips">您还没有骑行记录，快来体验吧</string>
 </resources>

@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ import com.dcch.sharebike.moudle.user.adapter.JourneyInfoAdapter;
 import com.dcch.sharebike.moudle.user.bean.JourneyInfo;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
@@ -50,6 +52,12 @@ public class MyJourneyActivity extends BaseActivity {
     TextView mTitle;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.iv_no_journey)
+    ImageView mIvNoJourney;
+    @BindView(R.id.iv_no_network_linking)
+    ImageView mIvNoNetworkLinking;
+    @BindView(R.id.no_network_linking_tip)
+    TextView mNoNetworkLinkingTip;
     private String mPhone;
     private JourneyInfoAdapter mAdapter;
     private String userDetail;
@@ -57,7 +65,6 @@ public class MyJourneyActivity extends BaseActivity {
     private String uID;
     private JourneyInfo mJourneyInfo;
     private String mToken;
-
 
     @Override
     protected int getLayoutId() {
@@ -95,19 +102,26 @@ public class MyJourneyActivity extends BaseActivity {
         }
     }
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         LogUtils.d("why", "为什么onCreate");
         super.onCreate(savedInstanceState);
-        getJourneyInfo(mPhone,mToken);
+        if (NetUtils.isConnected(App.getContext())) {
+            getJourneyInfo(mPhone, mToken);
+
+        } else {
+            mIvNoJourney.setVisibility(View.GONE);
+            mIvNoJourney.setVisibility(View.GONE);
+            mIvNoNetworkLinking.setVisibility(View.VISIBLE);
+            mNoNetworkLinkingTip.setVisibility(View.VISIBLE);
+        }
     }
 
     private void getJourneyInfo(String phone, final String mToken) {
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone);
-        map.put("token",mToken);
-        LogUtils.d("空空",phone+"\n"+mToken);
+        map.put("token", mToken);
+        LogUtils.d("空空", phone + "\n" + mToken);
         OkHttpUtils.post().url(Api.BASE_URL + Api.GETCARRENTALORDERBYPHONE).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -146,7 +160,7 @@ public class MyJourneyActivity extends BaseActivity {
                                     journeyDetail.putExtra("bicycleNo", bicycleNo);
                                     journeyDetail.putExtra("carRentalOrderId", carRentalOrderId);
                                     journeyDetail.putExtra("userId", uID);
-                                    journeyDetail.putExtra("token",mToken);
+                                    journeyDetail.putExtra("token", mToken);
                                     startActivity(journeyDetail);
                                 }
                             }

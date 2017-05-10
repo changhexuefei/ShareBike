@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_my_journey"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.dcch.sharebike.moudle.user.activity.MyJourneyActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/activity_my_journey"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.dcch.sharebike.moudle.user.activity.MyJourneyActivity">
 
 
     <include layout="@layout/toolbar"/>
@@ -21,25 +21,49 @@
 
     <RelativeLayout
         android:id="@+id/default_show"
-        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    <ImageView
-        android:layout_marginTop="10dp"
-        android:id="@+id/iv_no_journey"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/empty_view_img"
-        android:layout_centerHorizontal="true" />
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/iv_no_journey"
-        android:id="@+id/no_journey"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="您还没有骑行记录，快来体验吧"
-        android:textSize="16sp" />
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/iv_no_journey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/empty_view_img"/>
+
+        <TextView
+            android:id="@+id/no_journey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_no_journey"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:text="@string/my_journey_tips"
+            android:textSize="16sp"/>
+
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/iv_no_network_linking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="90dp"
+            android:src="@mipmap/network_unavailable_img"/>
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/no_network_linking_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_no_network_linking"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:text="@string/coupon_tip_two"
+            android:textSize="16sp"/>
+
+
     </RelativeLayout>
 </RelativeLayout>

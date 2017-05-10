@@ -7,15 +7,14 @@
     android:layout_height="match_parent"
     tools:context="com.dcch.sharebike.moudle.user.activity.CouponRuleActivity">
 
-
     <include layout="@layout/toolbar"/>
 
-    <com.tencent.smtt.sdk.WebView
+    <com.dcch.sharebike.view.ProgressWebview
         android:layout_below="@+id/toolbar"
         android:id="@+id/coupon_rule_explain"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </com.tencent.smtt.sdk.WebView>
+    </com.dcch.sharebike.view.ProgressWebview>
 
 </RelativeLayout>

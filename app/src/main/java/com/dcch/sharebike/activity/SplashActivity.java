@@ -55,8 +55,7 @@ public class SplashActivity extends BaseActivity {
         animation.setDuration(1000);
         animation.setFillAfter(true);
         mRlSplashRoot.startAnimation(animation);
-//        UpdateManager manager = new UpdateManager(this,true);
-//        manager.versionUpdate();
+
         if (SPUtils.isFirst()) {
             handler.sendEmptyMessageDelayed(SWITCH_GUIDACTIVITY, 3000);
         } else {

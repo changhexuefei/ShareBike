@@ -30,6 +30,7 @@ import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.MapUtil;
+import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.google.gson.Gson;
@@ -83,22 +84,11 @@ public class LoginFragment extends Fragment {
     private String uID;
     private String mPhone;
     private String mToken;
-//    private static LoginFragment lf;
+    private String mNickName;
 
     public LoginFragment() {
     }
 
-//    public static LoginFragment getLf() {
-//        // 提供一个全局的静态方法
-//            if (lf == null) {
-//                synchronized (LoginFragment.class) {
-//                    if (lf == null) {
-//                        lf = new LoginFragment();
-//                    }
-//                }
-//            }
-//            return lf;
-//    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -111,6 +101,7 @@ public class LoginFragment extends Fragment {
                     int userId = object.optInt("id");
                     mToken = object.optString("token");
                     uID = String.valueOf(userId);
+                    mNickName = object.optString("nickName");
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -123,7 +114,13 @@ public class LoginFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (uID != null && mToken != null) {
-            getUserInfo(uID, mToken);
+            if (NetUtils.isConnected(App.getContext())) {
+                getUserInfo(uID, mToken);
+            } else {
+                if (mNickName != null && !mNickName.equals("")) {
+                    nickName.setText(mNickName);
+                }
+            }
         }
     }
 

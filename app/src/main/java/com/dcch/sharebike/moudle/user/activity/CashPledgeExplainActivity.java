@@ -20,7 +20,6 @@ public class CashPledgeExplainActivity extends BaseActivity {
     @BindView(R.id.cashPledge_explain_webView)
     ProgressWebview mCashPledgeExplainWebView;
 
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_cash_pledge_explain;

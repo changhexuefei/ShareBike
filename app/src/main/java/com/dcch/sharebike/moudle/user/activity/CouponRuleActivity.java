@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
-import com.tencent.smtt.sdk.WebView;
+import com.dcch.sharebike.view.ProgressWebview;
 
 import butterknife.BindView;
 
@@ -18,7 +18,7 @@ public class CouponRuleActivity extends BaseActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.coupon_rule_explain)
-    WebView mCouponRuleExplain;
+    ProgressWebview mCouponRuleExplain;
 
     @Override
     protected int getLayoutId() {
@@ -27,7 +27,6 @@ public class CouponRuleActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
         mToolbar.setTitle("");
         mTitle.setText(getResources().getString(R.string.coupon_explain));
         setSupportActionBar(mToolbar);
@@ -37,7 +36,6 @@ public class CouponRuleActivity extends BaseActivity {
                 finish();
             }
         });
-
         mCouponRuleExplain.loadUrl(Api.FAVORABLERULE);
         mCouponRuleExplain.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

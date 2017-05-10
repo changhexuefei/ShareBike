@@ -9,6 +9,7 @@ import android.support.v7.widget.OrientationHelper;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
@@ -18,6 +19,7 @@ import com.dcch.sharebike.moudle.user.adapter.CouponInfoAdapter;
 import com.dcch.sharebike.moudle.user.bean.CouponInfo;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
@@ -35,13 +37,13 @@ import okhttp3.Call;
 
 public class CouponListActivity extends BaseActivity {
 
-//    @BindView(R.id.title)
+    //    @BindView(R.id.title)
 //    TextView mTitle;
 //    @BindView(R.id.toolbar)
 //    Toolbar mToolbar;
     @BindView(R.id.coupon_list)
     LRecyclerView mCouponList;
-    @BindView(R.id.iv_no_journey)
+    @BindView(R.id.iv_no_coupon)
     ImageView mIvNoJourney;
     @BindView(R.id.default_show)
     RelativeLayout mDefaultShow;
@@ -49,6 +51,12 @@ public class CouponListActivity extends BaseActivity {
     ImageView mBack;
     @BindView(R.id.coupon_rule)
     ImageView mCouponRule;
+    @BindView(R.id.iv_no_network_linking)
+    ImageView mIvNoNetworkLinking;
+    @BindView(R.id.no_network_linking_tip)
+    TextView mNoNetworkLinkingTip;
+    @BindView(R.id.no_coupon)
+    TextView mNoJourney;
     private String mToken;
     private String mUserId;
     private CouponInfoAdapter mCouponInfoAdapter;
@@ -82,7 +90,14 @@ public class CouponListActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         LogUtils.d("why", "为什么onCreate");
         super.onCreate(savedInstanceState);
-        getCouponListInfo(mUserId, mToken);
+        if (NetUtils.isConnected(App.getContext())) {
+            getCouponListInfo(mUserId, mToken);
+        } else {
+            mIvNoJourney.setVisibility(View.GONE);
+            mNoJourney.setVisibility(View.GONE);
+            mIvNoNetworkLinking.setVisibility(View.VISIBLE);
+            mNoNetworkLinkingTip.setVisibility(View.VISIBLE);
+        }
     }
 
     private void getCouponListInfo(String userId, String token) {
@@ -157,7 +172,7 @@ public class CouponListActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.coupon_rule:
-                startActivity(new Intent(CouponListActivity.this,CouponRuleActivity.class));
+                startActivity(new Intent(CouponListActivity.this, CouponRuleActivity.class));
                 break;
         }
     }
