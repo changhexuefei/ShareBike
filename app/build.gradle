@@ -6,7 +6,7 @@ android {
 
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->
-            output.outputFile = new File(output.outputFile.parent, defaultConfig.applicationId + "-" + "qilinbike" + "-v" +
+            output.outputFile = new File(output.outputFile.parent, defaultConfig.applicationId + "-" + "kirinbike" + "-v" +
                     defaultConfig.versionName + ".apk" );
         }
     }
@@ -16,13 +16,13 @@ android {
         minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName "0.1.0"
         multiDexEnabled true
-        ndk {
-            //选择要添加的对应cpu类型的.so库。
-            abiFilters 'armeabi', 'armeabi-v8a', 'mips', 'mips64'
-            // 还可以添加   , 'x86_64',,'armeabi-v7a', 'x86'
-        }
+//        ndk {
+//            //选择要添加的对应cpu类型的.so库。
+//            abiFilters 'armeabi', 'armeabi-v8a', 'mips', 'mips64'
+//            // 还可以添加   , 'x86_64',,'armeabi-v7a', 'x86'
+//        }
     }
 
     buildTypes {
@@ -32,7 +32,7 @@ android {
             //Zip代码压缩优化
             zipAlignEnabled true
             //移除无用资源
-            shrinkResources false
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 

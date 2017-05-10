@@ -10,7 +10,6 @@
 
     <include layout="@layout/toolbar"/>
 
-
     <RelativeLayout
         android:id="@+id/ra1"
         android:layout_width="match_parent"
@@ -26,25 +25,24 @@
             android:text="金额"/>
 
         <TextView
-            android:textColor="@color/colorTitle"
             android:id="@+id/figure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv10"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
-            android:text="0元"
+            android:text="@string/cash_pledge_num"
+            android:textColor="@color/colorTitle"
             android:textSize="20sp"/>
 
         <TextView
-            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/figure"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="15dp"
             android:layout_marginTop="5dp"
-            android:text="骑行单车必须支付押金，押金可退还"/>
+            android:text="@string/recharge_deposit_tip"/>
 
     </RelativeLayout>
 
@@ -98,9 +96,7 @@
                 android:layout_height="wrap_content"/>
         </RelativeLayout>
 
-
     </LinearLayout>
-
 
     <Button
         android:id="@+id/btn_rd_recharge"

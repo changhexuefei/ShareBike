@@ -52,7 +52,7 @@ public class RidingResultActivity extends BaseActivity {
     @Override
     protected void initData() {
         mToolbar.setTitle("");
-        mTitle.setText(getResources().getString(R.string.agreement));
+        mTitle.setText(getResources().getString(R.string.ride_result));
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

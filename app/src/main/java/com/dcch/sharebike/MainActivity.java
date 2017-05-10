@@ -1512,14 +1512,23 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             }
         } else {
             mInstructions.setVisibility(View.VISIBLE);
-        }
-        if (!isBook && !isShowBookOrder && !isShowRideOrder && !isChecked) {
             getBikeInfo(mCurrentLantitude, mCurrentLongitude);
-            LogUtils.d("实验", "在哪里" + !isBook + "\n" + !isShowBookOrder + !isShowRideOrder + "\n" + !isChecked);
             setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
-            clickBaiduMapMark();
-            clickDismissOverlay();
         }
+        if (menuWindow != null && menuWindow.isShowing()) {
+
+
+        }
+        clickBaiduMapMark();
+        clickDismissOverlay();
+
+
+//        if (!isBook && !isShowBookOrder && !isShowRideOrder && !isChecked) {
+//            getBikeInfo(mCurrentLantitude, mCurrentLongitude);
+//            LogUtils.d("实验", "在哪里" + !isBook + "\n" + !isShowBookOrder + !isShowRideOrder + "\n" + !isChecked);
+//            setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
+//
+//        }
 //        else {
 //            getBikeInfo(mCurrentLantitude, mCurrentLongitude);
 //        }

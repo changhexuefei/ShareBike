@@ -6,9 +6,9 @@
     <string name="tip1">押金可原路返回</string>
     <string name="weixin">微信</string>
     <string name="zhifubao">支付宝</string>
-    <string name="tip">押金（0元）</string>
+    <string name="tip">押金（99元）</string>
     <string name="title_recharge">押金充值</string>
-    <string name="instructions">麒麟单车免押金注册使用说明</string>
+    <string name="instructions">麒麟单车使用说明</string>
     <string name="share_title">麒麟单车</string>
     <string name="people_center">个人中心</string>
     <string name="unlocking">扫码开锁</string>
@@ -19,7 +19,8 @@
     <string name="mobile_tip_two">更换手机号，登录重新交押金</string>
     <string name="mobile_tip_there">车费余额，行程等信息不变</string>
     <string name="mobile_title">手机号</string>
-    <string name="cash_pledge">0</string>
+    <string name="cash_pledge">99</string>
+    <string name="cash_pledge_num">99元</string>
     <string name="findTrouble">发现车辆故障</string>
     <string name="scan_tips">扫描二维码或者手动输入编码</string>
     <string name="scan_tip_one">重新扫码或输入</string>
@@ -145,7 +146,7 @@
     <string name="taking_pictures">停车拍照</string>
     <string name="share_schedule">分享行程</string>
     <string name="ride_time">骑行时间</string>
-    <string name="from_deposit">麒麟免押金</string>
+    <string name="from_deposit">押金充值</string>
     <string name="cell_phone_number">手机号</string>
     <string name="cell_phone_tip">请输入手机号</string>
     <string name="security_code">验证码</string>
@@ -154,4 +155,5 @@
     <string name="ensure">确定</string>
     <string name="change_cell_phone_number">更换手机号</string>
     <string name="cell_phone_number_new">请输入新的手机号</string>
+    <string name="recharge_deposit_tip">骑行单车必须支付押金，押金可退还</string>
 </resources>
