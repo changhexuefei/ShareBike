@@ -68,19 +68,13 @@ public class SplashActivity extends BaseActivity {
         boolean isStartGuide = (boolean) SPUtils.get(App.getContext(), "isStartGuide", false);
         if (SPUtils.isLogin()) {
             LogUtils.e("已经登录...");
-            Intent login = new Intent(App.getContext(), MainActivity.class);
-            startActivity(login);
-//            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-            SplashActivity.this.finish();
+            goMain();
         } else {
             LogUtils.e("没有登录...");
             if (isStartGuide) {
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
-//                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                finish();
+                goMain();
             } else {
-                startActivity(new Intent(SplashActivity.this, GuideActivity.class));
-                finish();
+                goGuide();
             }
         }
     }
@@ -99,7 +93,13 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void goGuide() {
-        Intent intent = new Intent(SplashActivity.this, GuideActivity.class);
+        Intent intent = new Intent(this, GuideActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void goMain() {
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }

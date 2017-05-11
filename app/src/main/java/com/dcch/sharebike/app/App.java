@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.dcch.sharebike.http.HttpUtils;
+import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.squareup.leakcanary.LeakCanary;
 import com.tencent.smtt.sdk.QbSdk;
 import com.zhy.http.okhttp.log.LoggerInterceptor;
@@ -21,7 +22,7 @@ import okhttp3.OkHttpClient;
 
 public class App extends Application {
     private List<Activity> activityList = new LinkedList();
-//    private static App instance;
+    private static App instance;
     private static Context mContext;
     //    private static LocationInfo mLocationInfo;
     public static int code = 0;
@@ -29,13 +30,18 @@ public class App extends Application {
     public App() {
     }
 
-//    //单例模式中获取唯一的Application实例
-//    public static App getInstance() {
-//        if (null == instance) {
-//            instance = new App();
-//        }
-//        return instance;
-//    }
+    //单例模式中获取唯一的Application实例
+    public static App getInstance() {
+        // 提供一个全局的静态方法
+        if (instance == null) {
+            synchronized (PersonalCenterActivity.class) {
+                if (instance == null) {
+                    instance = new App();
+                }
+            }
+        }
+        return instance;
+    }
 
     @Override
     public void onCreate() {
