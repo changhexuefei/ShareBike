@@ -57,9 +57,9 @@ public class SplashActivity extends BaseActivity {
         mRlSplashRoot.startAnimation(animation);
 
         if (SPUtils.isFirst()) {
-            handler.sendEmptyMessageDelayed(SWITCH_GUIDACTIVITY, 3000);
+            handler.sendEmptyMessageDelayed(SWITCH_GUIDACTIVITY, 2000);
         } else {
-            handler.sendEmptyMessageDelayed(SWITCH_MAINACTIVITY, 3000);
+            handler.sendEmptyMessageDelayed(SWITCH_MAINACTIVITY, 2000);
         }
     }
 
@@ -70,16 +70,16 @@ public class SplashActivity extends BaseActivity {
             LogUtils.e("已经登录...");
             Intent login = new Intent(App.getContext(), MainActivity.class);
             startActivity(login);
-            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+//            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             SplashActivity.this.finish();
         } else {
             LogUtils.e("没有登录...");
             if (isStartGuide) {
-                startActivity(new Intent(App.getContext(), MainActivity.class));
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+//                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 finish();
             } else {
-                startActivity(new Intent(App.getContext(), GuideActivity.class));
+                startActivity(new Intent(SplashActivity.this, GuideActivity.class));
                 finish();
             }
         }
@@ -100,8 +100,8 @@ public class SplashActivity extends BaseActivity {
 
     private void goGuide() {
         Intent intent = new Intent(SplashActivity.this, GuideActivity.class);
-        SplashActivity.this.startActivity(intent);
-        SplashActivity.this.finish();
+        startActivity(intent);
+        finish();
     }
 
 }

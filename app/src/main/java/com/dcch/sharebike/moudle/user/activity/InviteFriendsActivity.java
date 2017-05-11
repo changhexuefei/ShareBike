@@ -6,8 +6,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
+import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.utils.ClickUtils;
+import com.dcch.sharebike.utils.NetUtils;
+import com.dcch.sharebike.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -21,10 +24,8 @@ import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.wechat.moments.WechatMoments;
 
 
-
-
 public class InviteFriendsActivity extends BaseActivity {
-//    @BindView(R.id.tv_tip_four)
+    //    @BindView(R.id.tv_tip_four)
 //    TextView mTvTipFour;
 //    @BindView(R.id.updateInvitationCode)
 //    TextView mUpdateInvitationCode;
@@ -59,15 +60,18 @@ public class InviteFriendsActivity extends BaseActivity {
                 finish();
             }
         });
-
+        if (!NetUtils.isConnected(App.getContext())) {
+            ToastUtils.showShort(App.getContext(), "网络无法访问，请检查网络连接！");
+        }
     }
 
     @Override
     protected void initListener() {
         super.initListener();
     }
+
     //R.id.updateInvitationCode,
-    @OnClick( {R.id.shareWeiChat,R.id.shareWeiChatCircle,R.id.shareQQ,R.id.shareQQZONE,R.id.shareSina})
+    @OnClick({R.id.shareWeiChat, R.id.shareWeiChatCircle, R.id.shareQQ, R.id.shareQQZONE, R.id.shareSina})
     public void onClick(View view) {
         switch (view.getId()) {
 //            case R.id.updateInvitationCode:
@@ -75,7 +79,7 @@ public class InviteFriendsActivity extends BaseActivity {
 //                break;
 
             case R.id.shareWeiChat:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 //分享到微信
@@ -83,7 +87,7 @@ public class InviteFriendsActivity extends BaseActivity {
                 showShare(platWeiChat.getName());
                 break;
             case R.id.shareWeiChatCircle:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 //分享到微信朋友圈
@@ -91,7 +95,7 @@ public class InviteFriendsActivity extends BaseActivity {
                 showShare(platWeiChatCircle.getName());
                 break;
             case R.id.shareQQ:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 //比如分享到QQ，其他平台则只需要更换平台类名，例如Wechat.NAME则是微信
@@ -100,7 +104,7 @@ public class InviteFriendsActivity extends BaseActivity {
                 break;
 
             case R.id.shareQQZONE:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 //比如分享到QQ，其他平台则只需要更换平台类名，例如Wechat.NAME则是微信
@@ -109,7 +113,7 @@ public class InviteFriendsActivity extends BaseActivity {
                 break;
 
             case R.id.shareSina:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 //比如分享到QQ，其他平台则只需要更换平台类名，例如Wechat.NAME则是微信

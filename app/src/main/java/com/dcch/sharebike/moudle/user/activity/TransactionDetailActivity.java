@@ -12,12 +12,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
+import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.user.adapter.TransactionDetailInfoAdapter;
 import com.dcch.sharebike.moudle.user.bean.TransactionDetailInfo;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
@@ -47,6 +49,14 @@ public class TransactionDetailActivity extends BaseActivity {
     ImageView mBack;
     @BindView(R.id.refundExplain)
     TextView mRefundExplain;
+    @BindView(R.id.iv_noPay)
+    ImageView mIvNoPay;
+    @BindView(R.id.iv_no_network_linking)
+    ImageView mIvNoNetworkLinking;
+    @BindView(R.id.no_network_linking_tip)
+    TextView mNoNetworkLinkingTip;
+    @BindView(R.id.no_pay_tip)
+    TextView mNoPayTip;
     private String mUserId;
     private TransactionDetailInfo mTransactionDetailInfo;
     private TransactionDetailInfoAdapter mAdapter;
@@ -71,7 +81,14 @@ public class TransactionDetailActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getTransactionDetail(mUserId);
+        if (NetUtils.isConnected(App.getContext())) {
+            getTransactionDetail(mUserId);
+        } else {
+            mNoPayTip.setVisibility(View.GONE);
+            mIvNoPay.setVisibility(View.GONE);
+            mIvNoNetworkLinking.setVisibility(View.VISIBLE);
+            mNoNetworkLinkingTip.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -119,7 +136,7 @@ public class TransactionDetailActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.refundExplain:
-                startActivity(new Intent(this,RefundExplainActivity.class));
+                startActivity(new Intent(this, RefundExplainActivity.class));
                 break;
         }
     }

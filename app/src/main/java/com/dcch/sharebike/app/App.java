@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.dcch.sharebike.http.HttpUtils;
+import com.squareup.leakcanary.LeakCanary;
 import com.tencent.smtt.sdk.QbSdk;
 import com.zhy.http.okhttp.log.LoggerInterceptor;
 
@@ -20,7 +21,7 @@ import okhttp3.OkHttpClient;
 
 public class App extends Application {
     private List<Activity> activityList = new LinkedList();
-    private static App instance;
+//    private static App instance;
     private static Context mContext;
     //    private static LocationInfo mLocationInfo;
     public static int code = 0;
@@ -28,19 +29,25 @@ public class App extends Application {
     public App() {
     }
 
-    //单例模式中获取唯一的Application实例
-    public static App getInstance() {
-        if (null == instance) {
-            instance = new App();
-        }
-        return instance;
-    }
+//    //单例模式中获取唯一的Application实例
+//    public static App getInstance() {
+//        if (null == instance) {
+//            instance = new App();
+//        }
+//        return instance;
+//    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         SDKInitializer.initialize(getApplicationContext());
         mContext = getApplicationContext();
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         ShareSDK.initSDK(this);

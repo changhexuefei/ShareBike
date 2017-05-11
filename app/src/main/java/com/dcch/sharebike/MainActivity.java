@@ -1519,7 +1519,11 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             getBikeInfo(mCurrentLantitude, mCurrentLongitude);
             setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
         }
-        clickBaiduMapMark();
+        if(NetUtils.isConnected(App.getContext())){
+            clickBaiduMapMark();
+        }else{
+            ToastUtils.showShort(MainActivity.this,"网络连接不可用，请检查网络");
+        }
         clickDismissOverlay();
 //        if (!isBook && !isShowBookOrder && !isShowRideOrder && !isChecked) {
 //            getBikeInfo(mCurrentLantitude, mCurrentLongitude);

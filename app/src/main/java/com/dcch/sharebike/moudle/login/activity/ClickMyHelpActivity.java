@@ -15,7 +15,6 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -29,7 +28,7 @@ public class ClickMyHelpActivity extends BaseActivity {
     LinearLayout mLinearDot;
     private ArrayList<View> pageViews;
     private boolean misScrolled;
-    private List<ImageView> mDots;
+    private ArrayList<ImageView> mDots;
 
 
     @Override

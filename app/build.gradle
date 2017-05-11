@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId "com.dcch.sharebike"
-        minSdkVersion 19
+        minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
         versionName "0.1.0"
@@ -69,6 +69,9 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     compile files('libs/baidumapapi_base_v4_2_0.jar')
     compile files('libs/baidumapapi_cloud_v4_2_0.jar')
     compile files('libs/baidumapapi_map_v4_2_0.jar')

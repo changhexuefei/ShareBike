@@ -132,56 +132,10 @@ public class ManualInputActivity extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                Map<String, String> map = new HashMap<>();
-                map.put("lockremark", bikeNo);
-                map.put("token", mToken);
-                LogUtils.d("捕获", bikeNo + "\n" + mToken);
-                OkHttpUtils.post().url(Api.BASE_URL + Api.CHECKBICYCLENO).params(map).build().execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        ToastUtils.showShort(ManualInputActivity.this, "服务器正忙，请稍后再试！");
-                    }
+                if (bikeNo != null && mToken != null) {
+                    ensureBikeNo(bikeNo, mToken);
+                }
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                        LogUtils.d("锁号", response);
-                        //{"resultStatus":"0"}
-                        if (JsonUtils.isSuccess(response)) {
-                            switch (mTag) {
-                                case "main": {
-                                    Intent bikeNoIntent = new Intent(ManualInputActivity.this, UnlockProgressActivity.class);
-                                    EventBus.getDefault().post(new CodeEvent(bikeNo), "bikeNo");
-                                    startActivity(bikeNoIntent);
-                                    break;
-                                }
-                                case "unable": {
-                                    Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
-                                    EventBus.getDefault().post(new CodeEvent(bikeNo), "unable_bikeNo");
-                                    startActivity(bikeNoIntent);
-                                    break;
-                                }
-                                case "reports": {
-                                    Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
-                                    EventBus.getDefault().post(new CodeEvent(bikeNo), "report_bikeNo");
-                                    startActivity(bikeNoIntent);
-                                    break;
-                                }
-                                case "fail": {
-                                    Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
-                                    EventBus.getDefault().post(new CodeEvent(bikeNo), "fail_bikeNo");
-                                    startActivity(bikeNoIntent);
-                                    break;
-                                }
-                            }
-                            finish();
-                        } else {
-                            mManualInputArea.clearText();
-                            mEnsure.setEnabled(false);
-                            mEnsure.setBackgroundColor(Color.parseColor("#6b6b6b"));
-                            ToastUtils.showShort(ManualInputActivity.this, "该车辆编号不存在，请重新输入！");
-                        }
-                    }
-                });
                 break;
 
 
@@ -192,6 +146,60 @@ public class ManualInputActivity extends BaseActivity {
                 startActivity(new Intent(this, OpenLockTipAcitivity.class));
                 break;
         }
+    }
+
+    private void ensureBikeNo(final String bikeNo, String token) {
+        Map<String, String> map = new HashMap<>();
+        map.put("lockremark", bikeNo);
+        map.put("token", mToken);
+        LogUtils.d("捕获", bikeNo + "\n" + mToken);
+        OkHttpUtils.post().url(Api.BASE_URL + Api.CHECKBICYCLENO).params(map).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                ToastUtils.showShort(ManualInputActivity.this, "服务器正忙，请稍后再试！");
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                LogUtils.d("锁号", response);
+                //{"resultStatus":"0"}
+                if (JsonUtils.isSuccess(response)) {
+                    switch (mTag) {
+                        case "main": {
+                            Intent bikeNoIntent = new Intent(ManualInputActivity.this, UnlockProgressActivity.class);
+                            EventBus.getDefault().post(new CodeEvent(bikeNo), "bikeNo");
+                            startActivity(bikeNoIntent);
+                            break;
+                        }
+                        case "unable": {
+                            Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
+                            EventBus.getDefault().post(new CodeEvent(bikeNo), "unable_bikeNo");
+                            startActivity(bikeNoIntent);
+                            break;
+                        }
+                        case "reports": {
+                            Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
+                            EventBus.getDefault().post(new CodeEvent(bikeNo), "report_bikeNo");
+                            startActivity(bikeNoIntent);
+                            break;
+                        }
+                        case "fail": {
+                            Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
+                            EventBus.getDefault().post(new CodeEvent(bikeNo), "fail_bikeNo");
+                            startActivity(bikeNoIntent);
+                            break;
+                        }
+                    }
+                    finish();
+                } else {
+                    mManualInputArea.clearText();
+                    mEnsure.setEnabled(false);
+                    mEnsure.setBackgroundColor(Color.parseColor("#6b6b6b"));
+                    ToastUtils.showShort(ManualInputActivity.this, "该车辆编号不存在，请重新输入！");
+                }
+            }
+        });
+
     }
 
     @Override

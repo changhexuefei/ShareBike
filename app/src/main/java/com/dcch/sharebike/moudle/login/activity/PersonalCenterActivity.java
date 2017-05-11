@@ -27,24 +27,24 @@ public class PersonalCenterActivity extends BaseActivity {
     TextView mTitle;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-//    //记录Fragment的位置
-//    private int position = 0;
-//    private static PersonalCenterActivity pca;
-//
-//    public PersonalCenterActivity() {
-//    }
-//
-//    public static PersonalCenterActivity getInstance() {
-//        // 提供一个全局的静态方法
-//        if (pca == null) {
-//            synchronized (PersonalCenterActivity.class) {
-//                if (pca == null) {
-//                    pca = new PersonalCenterActivity();
-//                }
-//            }
-//        }
-//        return pca;
-//    }
+    //记录Fragment的位置
+    private int position = 0;
+    private static PersonalCenterActivity pca;
+
+    public PersonalCenterActivity() {
+    }
+
+    public static PersonalCenterActivity getInstance() {
+        // 提供一个全局的静态方法
+        if (pca == null) {
+            synchronized (PersonalCenterActivity.class) {
+                if (pca == null) {
+                    pca = new PersonalCenterActivity();
+                }
+            }
+        }
+        return pca;
+    }
 
     @Override
     protected int getLayoutId() {

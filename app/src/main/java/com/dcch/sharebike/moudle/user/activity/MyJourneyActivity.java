@@ -111,7 +111,7 @@ public class MyJourneyActivity extends BaseActivity {
 
         } else {
             mIvNoJourney.setVisibility(View.GONE);
-            mIvNoJourney.setVisibility(View.GONE);
+            noJourney.setVisibility(View.GONE);
             mIvNoNetworkLinking.setVisibility(View.VISIBLE);
             mNoNetworkLinkingTip.setVisibility(View.VISIBLE);
         }

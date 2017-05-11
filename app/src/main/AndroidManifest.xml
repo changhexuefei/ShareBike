@@ -2,10 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.dcch.sharebike">
 
-    <!-- <uses-sdk android:minSdkVersion="7"/> -->
-    <!-- <uses-feature -->
-    <!-- android:name="android.hardware.camera" -->
-    <!-- android:required="true"/> -->
+     <uses-sdk android:minSdkVersion="15"/>
+     <uses-feature
+     android:name="android.hardware.camera"
+     android:required="true"/>
     <!-- 添加屏幕及版本支持 -->
     <supports-screens
         android:anyDensity="true"
