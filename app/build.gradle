@@ -7,7 +7,7 @@ android {
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->
             output.outputFile = new File(output.outputFile.parent, defaultConfig.applicationId + "-" + "kirinbike" + "-v" +
-                    defaultConfig.versionName + ".apk" );
+                    defaultConfig.versionName + ".apk");
         }
     }
 
@@ -72,6 +72,10 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    compile 'com.github.moduth:blockcanary-android:1.2.1'
+// 仅在debug包启用BlockCanary进行卡顿监控和提示的话，可以这么用
+    debugCompile 'com.github.moduth:blockcanary-android:1.2.1'
+    releaseCompile 'com.github.moduth:blockcanary-no-op:1.2.1'
     compile files('libs/baidumapapi_base_v4_2_0.jar')
     compile files('libs/baidumapapi_cloud_v4_2_0.jar')
     compile files('libs/baidumapapi_map_v4_2_0.jar')

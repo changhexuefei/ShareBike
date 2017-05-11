@@ -8,6 +8,7 @@ import android.util.Log;
 import com.baidu.mapapi.SDKInitializer;
 import com.dcch.sharebike.http.HttpUtils;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
+import com.github.moduth.blockcanary.BlockCanary;
 import com.squareup.leakcanary.LeakCanary;
 import com.tencent.smtt.sdk.QbSdk;
 import com.zhy.http.okhttp.log.LoggerInterceptor;
@@ -54,6 +55,7 @@ public class App extends Application {
             return;
         }
         LeakCanary.install(this);
+        BlockCanary.install(this, new AppBlockCanaryContext()).start();
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         ShareSDK.initSDK(this);
