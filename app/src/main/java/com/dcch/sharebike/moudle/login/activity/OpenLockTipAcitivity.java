@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.utils.ClickUtils;
+import com.dcch.sharebike.utils.LogUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -30,5 +31,11 @@ public class OpenLockTipAcitivity extends BaseActivity {
             return;
         }
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LogUtils.d("onDestroy","释放onDestroy");
     }
 }

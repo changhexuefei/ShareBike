@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/pop_order_layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#ffffff">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/pop_order_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffff">
 
     <LinearLayout
         android:id="@+id/my_order_linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
@@ -17,156 +17,173 @@
             android:drawableLeft="@mipmap/bike_info_board_location"
             android:drawablePadding="4dp"
             android:padding="15dp"
-            android:text="手动关锁即可结束计费" />
+            android:text="@string/riding_order_tip"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/lineColor" />
+        <TextView
+            android:id="@+id/close_lock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="4dp"
+            android:padding="15dp"
+            android:text="@string/riding_order_tip_two"
+            android:textColor="@color/colorTitle"/>
 
-        <LinearLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="60dp">
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1">
-
-                <TextView
-                    android:id="@+id/ride_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
-                    android:text="0分钟"
-                    android:textColor="@color/colorTitle" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ride_time"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="2dp"
-                    android:text="骑行时间" />
-
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <TextView
-                    android:id="@+id/ride_distance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
-                    android:text="1.0米"
-                    android:textColor="@color/colorTitle" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ride_distance"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="2dp"
-                    android:text="骑行距离" />
-
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <TextView
-                    android:id="@+id/consume_energy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
-                    android:text="0.0大卡"
-                    android:textColor="@color/colorTitle" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/consume_energy"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="2dp"
-                    android:text="运动燃烧" />
-
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/colorTitle"
-            android:orientation="horizontal">
-
-            <TextView
-                android:textStyle="bold"
-                android:layout_marginLeft="10dp"
-                android:id="@+id/tv_show1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="正在用车"
-                android:textColor="#ffffff"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_marginLeft="5dp"
-                android:textColor="#ffffff"
-                android:layout_centerVertical="true"
-                android:id="@+id/bike_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/tv_show1"
-                android:text="000000000" />
-
-
-            <TextView
-                android:textColor="#ffffff"
-                android:id="@+id/tv_show2"
-                android:layout_marginRight="10dp"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/cost_cycling"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="预计费用"
-                />
-
-            <TextView
-                android:textStyle="bold"
-                android:textSize="15sp"
-                android:textColor="#ffffff"
-                android:id="@+id/cost_cycling"
-                android:layout_marginRight="5dp"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/unit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0.5" />
-            <TextView
-                android:id="@+id/unit"
-                android:layout_alignParentRight="true"
-                android:textColor="#ffffff"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="元" />
-
-        </RelativeLayout>
     </LinearLayout>
-</LinearLayout>
+
+    <View
+        android:id="@+id/line_view"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/my_order_linearLayout"
+        android:background="@color/lineColor"/>
+
+
+    <RelativeLayout
+        android:layout_marginLeft="15dp"
+        android:id="@+id/ride_time_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/line_view"
+        android:gravity="center_vertical"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/ride_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
+            android:text="0分钟"
+            android:textColor="@color/colorTitle"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ride_time"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="2dp"
+            android:gravity="center_vertical"
+            android:text="骑行时间"/>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/ride_distance_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ride_time_area"
+        android:layout_centerHorizontal="true"
+
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/ride_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="1.0米"
+            android:textColor="@color/colorTitle"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ride_distance"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="2dp"
+            android:text="骑行距离"/>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginRight="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/ride_time_area"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/consume_energy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="0.0大卡"
+            android:textColor="@color/colorTitle"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/consume_energy"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="2dp"
+            android:text="运动燃烧"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/ride_time_area"
+        android:background="@color/colorTitle"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_show1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="正在用车"
+            android:textColor="#ffffff"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/bike_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/tv_show1"
+            android:text="000000000"
+            android:textColor="#ffffff"/>
+
+
+        <TextView
+            android:id="@+id/tv_show2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/cost_cycling"
+            android:text="预计费用"
+            android:textColor="#ffffff"
+            />
+
+        <TextView
+            android:id="@+id/cost_cycling"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/unit"
+            android:text="0.5"
+            android:textColor="#ffffff"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:text="元"
+            android:textColor="#ffffff"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

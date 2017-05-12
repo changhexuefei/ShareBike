@@ -1,8 +1,10 @@
 package com.dcch.sharebike.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
@@ -23,8 +25,9 @@ public class ShowBikeRentalOrderPopupWindow extends PopupWindow {
     private TextView bikeNo;
     public TextView costCycling;
     private View mShowBikeRentalOrderView;
+    private TextView closeLock;
 
-    public ShowBikeRentalOrderPopupWindow(Context context, ShowBikeRentalOrderInfo mShowBikeRentalOrderInfo) {
+    public ShowBikeRentalOrderPopupWindow(Context context, ShowBikeRentalOrderInfo mShowBikeRentalOrderInfo,View.OnClickListener itemOnClick) {
         super(context);
         this.mShowBikeRentalOrderInfo = mShowBikeRentalOrderInfo;
 
@@ -40,9 +43,10 @@ public class ShowBikeRentalOrderPopupWindow extends PopupWindow {
         consumeEnergy = (TextView) mShowBikeRentalOrderView.findViewById(R.id.consume_energy);
         bikeNo = (TextView) mShowBikeRentalOrderView.findViewById(R.id.bike_number);
         costCycling = (TextView) mShowBikeRentalOrderView.findViewById(R.id.cost_cycling);
+        closeLock=(TextView)mShowBikeRentalOrderView.findViewById(R.id.close_lock);
 //
 //        // 设置按钮监听
-//        mOrder.setOnClickListener(itemsOnClick);
+        closeLock.setOnClickListener(itemOnClick);
 //          为控件赋值
         if (mShowBikeRentalOrderInfo != null && !mShowBikeRentalOrderInfo.equals("")) {
             rideTime.setText(String.valueOf(mShowBikeRentalOrderInfo.getTripTime()) + "分钟");
@@ -69,21 +73,21 @@ public class ShowBikeRentalOrderPopupWindow extends PopupWindow {
         // 设置SelectPicPopupWindow弹出窗体的背景
         this.setBackgroundDrawable(dw);
         // mMenuView添加OnTouchListener监听判断获取触屏位置如果在选择框外面则销毁弹出框
-//        mBikeRentalOrderView.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            @SuppressLint("ClickableViewAccessibility")
-//            public boolean onTouch(View v, MotionEvent event) {
-//
-//                int height = mBikeRentalOrderView.findViewById(R.id.pop_order_layout).getTop();
-//                int y = (int) event.getY();
-//                if (event.getAction() == MotionEvent.ACTION_UP) {
-//                    if (y < height) {
-//                        dismiss();
-//                    }
-//                }
-//                return true;
-//            }
-//        });
+        mShowBikeRentalOrderView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            @SuppressLint("ClickableViewAccessibility")
+            public boolean onTouch(View v, MotionEvent event) {
+
+                int height = mShowBikeRentalOrderView.findViewById(R.id.pop_order_layout).getTop();
+                int y = (int) event.getY();
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (y < height) {
+                        dismiss();
+                    }
+                }
+                return true;
+            }
+        });
     }
 
 

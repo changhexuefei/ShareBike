@@ -8,6 +8,16 @@
 
     <include layout="@layout/toolbar"/>
 
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:visibility="gone"
+        android:layout_below="@+id/toolbar"
+        android:id="@+id/my_message_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    </com.github.jdsjlzx.recyclerview.LRecyclerView>
+
     <RelativeLayout
         android:id="@+id/no_message"
         android:layout_width="match_parent"

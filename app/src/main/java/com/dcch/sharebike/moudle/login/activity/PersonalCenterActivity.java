@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
+import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.moudle.login.fragment.LoginFragment;
 import com.dcch.sharebike.moudle.login.fragment.UnLoginFragment;
@@ -105,7 +106,7 @@ public class PersonalCenterActivity extends BaseActivity {
         goToMain();
     }
 
-    private void goToMain(){
+    private void goToMain() {
         Intent backToLoginMain = new Intent(PersonalCenterActivity.this, MainActivity.class);
         startActivity(backToLoginMain);
         finish();
@@ -118,5 +119,12 @@ public class PersonalCenterActivity extends BaseActivity {
 
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (pca != null) {
+            pca = null;
+        }
+        App.getRefWatcher().watch(this);
+    }
 }

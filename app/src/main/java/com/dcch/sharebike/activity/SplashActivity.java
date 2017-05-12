@@ -10,12 +10,12 @@ import android.widget.RelativeLayout;
 import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
+import com.dcch.sharebike.base.AppManager;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 
 import butterknife.BindView;
-import cn.jpush.android.api.JPushInterface;
 
 public class SplashActivity extends BaseActivity {
 
@@ -65,7 +65,7 @@ public class SplashActivity extends BaseActivity {
 
 
     private void switchPage() {
-        boolean isStartGuide = (boolean) SPUtils.get(App.getContext(), "isStartGuide", false);
+        boolean isStartGuide = (boolean) SPUtils.get(this, "isStartGuide", false);
         if (SPUtils.isLogin()) {
             LogUtils.e("已经登录...");
             goMain();
@@ -77,19 +77,6 @@ public class SplashActivity extends BaseActivity {
                 goGuide();
             }
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        JPushInterface.onResume(App.getContext());
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        JPushInterface.onPause(App.getContext());
     }
 
     private void goGuide() {
@@ -104,4 +91,12 @@ public class SplashActivity extends BaseActivity {
         finish();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+       handler.removeMessages(SWITCH_MAINACTIVITY);
+       handler.removeMessages(SWITCH_GUIDACTIVITY);
+        AppManager.finishActivity(this);
+        App.getRefWatcher().watch(this);
+    }
 }

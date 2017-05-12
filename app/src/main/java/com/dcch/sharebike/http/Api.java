@@ -69,6 +69,10 @@ public class Api {
     public static final String EDITUSERPHONE = "editUserPhone.do?";
     //微信退款
     public static final String REFUNDWXPAY = "refundWXPay.do?";
+    //关锁未结费
+    public static final String CLOSELOCKOVER = "CloseLockOver.do?";
+    //活动页面（未做）
+    public static final String GETACTIVITYS = "getActivitys.do?";
     //用户协议
     public static final String USERAGREEMENT = "http://www.70bikes.com/MavenSSM/Explain/userAgreement.jsp";
     //退款说明

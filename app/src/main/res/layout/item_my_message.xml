@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="10dp">
+
+    <TextView
+        android:id="@+id/message_theme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="主题"
+        android:textSize="16sp"/>
+
+    <ImageView
+        android:id="@+id/message_image"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/message_theme"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:id="@+id/active_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/message_image"
+        android:layout_marginTop="5dp"
+        android:text="活动时间："
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/start_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/active_time"
+        android:layout_toRightOf="@+id/active_time"/>
+
+    <TextView
+        android:id="@+id/end_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/active_time"
+        android:layout_toRightOf="@+id/start_time"/>
+
+</RelativeLayout>

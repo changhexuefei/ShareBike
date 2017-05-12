@@ -73,7 +73,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private String seCode;
     private String phone;
 
-    Handler handler = new Handler() {
+   private  Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case CODE_ING://已发送,倒计时
@@ -249,9 +249,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 .show();
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        handler.removeMessages(CODE_ING);
+        handler.removeMessages(CODE_REPEAT);
         EventBus.getDefault().unregister(this);
     }
 
@@ -285,11 +288,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     EventBus.getDefault().post(new MessageEvent(), "gone");
                     LoginActivity.this.finish();
                     //储存用户信息(登录储存一次)
-                    SPUtils.clear(App.getContext());
-                    SPUtils.put(App.getContext(), "userDetail", response);
+                    SPUtils.clear(LoginActivity.this);
+                    SPUtils.put(LoginActivity.this, "userDetail", response);
                     LogUtils.d("userDetail", response);
-                    SPUtils.put(App.getContext(), "islogin", true);
-                    SPUtils.put(App.getContext(), "isfirst", false);
+                    SPUtils.put(LoginActivity.this, "islogin", true);
+                    SPUtils.put(LoginActivity.this, "isfirst", false);
                 } else {
                     ToastUtils.showShort(LoginActivity.this, "未知错误！请重试。");
                 }

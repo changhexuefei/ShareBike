@@ -55,6 +55,7 @@ import com.baidu.mapapi.search.route.WalkingRouteLine;
 import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.dcch.sharebike.app.App;
+import com.dcch.sharebike.base.AppManager;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.CodeEvent;
 import com.dcch.sharebike.base.MessageEvent;
@@ -578,7 +579,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     void showCamera() {
     }
 
-    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
+    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE})
     void initPermission() {
 
     }
@@ -765,6 +766,40 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             }
         }
     };
+
+    //点击关锁未结费的监听事件
+    View.OnClickListener userRidingBikeItemsOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.close_lock:
+                    if (result != null) {
+                        LogUtils.d("呵呵","你点我了");
+                        closeLockOver(result);
+                    }
+                    break;
+
+            }
+        }
+    };
+
+    private void closeLockOver(String result) {
+        Map<String,String> map = new HashMap<>();
+        map.put("bicycleNo",result);
+        OkHttpUtils.post().url(Api.BASE_URL+Api.CLOSELOCKOVER).params(map).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                LogUtils.d("关锁",response);
+            }
+        });
+
+    }
+
 
     //根据手机号，查询预约次数
     private void queryBookingNum(String phone) {
@@ -1161,7 +1196,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     if (userBookingBikePopupWindow != null) {
                         userBookingBikePopupWindow.dismiss();
                     }
-                    orderPopupWindow = new BikeRentalOrderPopupWindow(MainActivity.this, bikeRentalOrderInfo);
+                    orderPopupWindow = new BikeRentalOrderPopupWindow(MainActivity.this, bikeRentalOrderInfo, userRidingBikeItemsOnClick);
                     orderPopupWindow.showAsDropDown(findViewById(R.id.top));
                     orderPopupWindow.setOutsideTouchable(false);
                     orderPopupWindow.setFocusable(false);
@@ -1365,7 +1400,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     String carRentalOrderId = mShowBikeRentalOrderInfo.getCarRentalOrderId();
                     withServicesMutually(mToken, uID, bicycleNo, carRentalOrderDate, carRentalOrderId);
                     mScan.setVisibility(View.INVISIBLE);
-                    mShowBikeRentalOrderPopupWindow = new ShowBikeRentalOrderPopupWindow(MainActivity.this, mShowBikeRentalOrderInfo);
+                    mShowBikeRentalOrderPopupWindow = new ShowBikeRentalOrderPopupWindow(MainActivity.this, mShowBikeRentalOrderInfo,userRidingBikeItemsOnClick);
                     mShowBikeRentalOrderPopupWindow.showAsDropDown(findViewById(R.id.top));
                     mShowBikeRentalOrderPopupWindow.setOutsideTouchable(false);
                     mShowBikeRentalOrderPopupWindow.setFocusable(false);
@@ -1483,11 +1518,11 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         Log.d("实验", "onDestroy");
         mMapView.onDestroy();
         mMapView = null;
+
         //释放资源
         if (mSearch != null) {
             mSearch.destroy();
         }
-//        System.exit(0);
     }
 
     @Override
@@ -1516,13 +1551,14 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
         }
         if (menuWindow == null && bookBikePopupWindow == null && mShowBikeRentalOrderPopupWindow == null && userBookingBikePopupWindow == null && orderPopupWindow == null) {
+            mMap.clear();
             getBikeInfo(mCurrentLantitude, mCurrentLongitude);
             setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
         }
-        if(NetUtils.isConnected(App.getContext())){
+        if (NetUtils.isConnected(App.getContext())) {
             clickBaiduMapMark();
-        }else{
-            ToastUtils.showShort(MainActivity.this,"网络连接不可用，请检查网络");
+        } else {
+            ToastUtils.showShort(MainActivity.this, "网络连接不可用，请检查网络");
         }
         clickDismissOverlay();
 //        if (!isBook && !isShowBookOrder && !isShowRideOrder && !isChecked) {
@@ -1620,7 +1656,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
                 mExitTime = System.currentTimeMillis();
             } else {
-                App.getInstance().exit();
+                AppManager.AppExit(this);
                 finish();
             }
             return true;

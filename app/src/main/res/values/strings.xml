@@ -158,4 +158,6 @@
     <string name="recharge_deposit_tip">骑行单车必须支付押金，押金可退还</string>
     <string name="coupon_tip_two">网络无法访问，请检查网络连接</string>
     <string name="my_journey_tips">您还没有骑行记录，快来体验吧</string>
+    <string name="riding_order_tip">手动关锁即可结束计费</string>
+    <string name="riding_order_tip_two">关锁未结费？</string>
 </resources>

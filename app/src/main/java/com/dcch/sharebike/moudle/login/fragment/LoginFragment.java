@@ -21,6 +21,7 @@ import com.dcch.sharebike.moudle.user.activity.CouponListActivity;
 import com.dcch.sharebike.moudle.user.activity.CreditIntegralActivity;
 import com.dcch.sharebike.moudle.user.activity.InviteFriendsActivity;
 import com.dcch.sharebike.moudle.user.activity.MyJourneyActivity;
+import com.dcch.sharebike.moudle.user.activity.MyMessageActivity;
 import com.dcch.sharebike.moudle.user.activity.PersonInfoActivity;
 import com.dcch.sharebike.moudle.user.activity.SettingActivity;
 import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
@@ -254,8 +255,10 @@ public class LoginFragment extends Fragment {
                     return;
                 }
                 ToastUtils.showLong(getContext(), "敬请期待");
-//                Intent myMessage = new Intent(App.getContext(), MyMessageActivity.class);
-//                startActivity(myMessage);
+                Intent myMessage = new Intent(App.getContext(), MyMessageActivity.class);
+                myMessage.putExtra("userId",uID);
+                myMessage.putExtra("token", mToken);
+                startActivity(myMessage);
                 break;
             case R.id.friend:
                 if (ClickUtils.isFastClick()) {

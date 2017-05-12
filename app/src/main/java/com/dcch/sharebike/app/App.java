@@ -1,6 +1,5 @@
 package com.dcch.sharebike.app;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
@@ -8,13 +7,11 @@ import android.util.Log;
 import com.baidu.mapapi.SDKInitializer;
 import com.dcch.sharebike.http.HttpUtils;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
-import com.github.moduth.blockcanary.BlockCanary;
 import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.tencent.smtt.sdk.QbSdk;
 import com.zhy.http.okhttp.log.LoggerInterceptor;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import cn.jpush.android.api.JPushInterface;
@@ -22,14 +19,17 @@ import cn.sharesdk.framework.ShareSDK;
 import okhttp3.OkHttpClient;
 
 public class App extends Application {
-    private List<Activity> activityList = new LinkedList();
+//    private static List<Activity> activityList = Collections
+//            .synchronizedList(new LinkedList<Activity>());
     private static App instance;
     private static Context mContext;
     //    private static LocationInfo mLocationInfo;
     public static int code = 0;
+    private static RefWatcher sRefWatcher;
 
     public App() {
     }
+
 
     //单例模式中获取唯一的Application实例
     public static App getInstance() {
@@ -44,6 +44,7 @@ public class App extends Application {
         return instance;
     }
 
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -54,8 +55,8 @@ public class App extends Application {
             // You should not init your app in this process.
             return;
         }
-        LeakCanary.install(this);
-        BlockCanary.install(this, new AppBlockCanaryContext()).start();
+        sRefWatcher = LeakCanary.install(this);
+//        BlockCanary.install(this, new AppBlockCanaryContext()).start();
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         ShareSDK.initSDK(this);
@@ -82,8 +83,13 @@ public class App extends Application {
             }
         };
         //x5内核初始化接口
-        QbSdk.initX5Environment(getApplicationContext(),cb);
+        QbSdk.initX5Environment(getApplicationContext(), cb);
     }
+
+    public static RefWatcher getRefWatcher() {
+        return sRefWatcher;
+    }
+
 
     /**
      * 获取全局Context变量
@@ -94,34 +100,199 @@ public class App extends Application {
         return mContext;
     }
 
-//    /**
-//     * 获取全局Location对象
-//     *
-//     * @return Location
-//     */
-//    public static LocationInfo getLocation() {
-//        return mLocationInfo;
+
+//    // * get current Activity 获取当前Activity（栈中最后一个压入的）
+//
+//    public static Activity currentActivity() {
+//        if (activityList == null||activityList.isEmpty()) {
+//            return null;
+//        }
+//        Activity activity = activityList.get(activityList.size()-1);
+//        return activity;
 //    }
 //
 //    /**
-//     * 设置Location
-//     *
-//     * @param locationInfo
+//     * 结束当前Activity（栈中最后一个压入的）
 //     */
-//    public static void setLocation(LocationInfo locationInfo) {
-//        mLocationInfo = locationInfo;
+//    public static void finishCurrentActivity() {
+//        if (activityList == null||activityList.isEmpty()) {
+//            return;
+//        }
+//        Activity activity = activityList.get(activityList.size()-1);
+//        finishActivity(activity);
+//    }
+//
+//    /**
+//     * 结束指定的Activity
+//     */
+//    public static void finishActivity(Activity activity) {
+//        if (activityList == null||activityList.isEmpty()) {
+//            return;
+//        }
+//        if (activity != null) {
+//            activityList.remove(activity);
+//            activity.finish();
+//            activity = null;
+//        }
+//    }
+//
+//    /**
+//     * 结束指定类名的Activity
+//     */
+//    public static void finishActivity(Class<?> cls) {
+//        if (activityList == null||activityList.isEmpty()) {
+//            return;
+//        }
+//        for (Activity activity : activityList) {
+//            if (activity.getClass().equals(cls)) {
+//                finishActivity(activity);
+//            }
+//        }
+//    }
+//
+//    /**
+//     * 按照指定类名找到activity
+//     *
+//     * @param cls
+//     * @return
+//     */
+//    public static Activity findActivity(Class<?> cls) {
+//        Activity targetActivity = null;
+//        if (activityList != null) {
+//            for (Activity activity : activityList) {
+//                if (activity.getClass().equals(cls)) {
+//                    targetActivity = activity;
+//                    break;
+//                }
+//            }
+//        }
+//        return targetActivity;
+//    }
+//
+//    /**
+//     * @return 作用说明 ：获取当前最顶部activity的实例
+//     */
+//    public Activity getTopActivity() {
+//        Activity mBaseActivity = null;
+//        synchronized (activityList) {
+//            final int size = activityList.size() - 1;
+//            if (size < 0) {
+//                return null;
+//            }
+//            mBaseActivity = activityList.get(size);
+//        }
+//        return mBaseActivity;
+//
+//    }
+//
+//    /**
+//     * @return 作用说明 ：获取当前最顶部的acitivity 名字
+//     */
+//    public String getTopActivityName() {
+//        Activity mBaseActivity = null;
+//        synchronized (activityList) {
+//            final int size = activityList.size() - 1;
+//            if (size < 0) {
+//                return null;
+//            }
+//            mBaseActivity = activityList.get(size);
+//        }
+//        return mBaseActivity.getClass().getName();
+//    }
+//
+//
+//    //    添加Activity到容器中
+//    public void addActivity(Activity activity) {
+//        activityList.add(activity);
+//    }
+//
+//    /**
+//     * @param activity 作用说明 ：删除一个activity在管理里
+//     */
+//    public void popActivity(Activity activity) {
+//        activityList.remove(activity);
+//        LogUtils.d("activityList:size:" + activityList.size());
+//    }
+//
+//
+//    //遍历所有Activity并finish
+//
+//    public static void exit() {
+//        if (activityList == null) {
+//            return;
+//        }
+//        for (Activity activity : activityList) {
+//            activity.finish();
+//        }
+//        activityList.clear();
+//    }
+//
+//
+//    /**
+//     * 退出应用程序
+//     */
+//    public static void appExit() {
+//        try {
+//            LogUtils.e("app exit");
+//            exit();
+//        } catch (Exception e) {
+//        }
+//    }
+//
+//
+//    private void registerActivityListener() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//            LogUtils.d("东东",Build.VERSION.SDK_INT +"\n"+Build.VERSION_CODES.ICE_CREAM_SANDWICH);
+//            registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+//                @Override
+//                public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+//                    /**
+//                     *  监听到 Activity创建事件 将该 Activity 加入list
+//                     */
+//                    addActivity(activity);
+//
+//                }
+//
+//                @Override
+//                public void onActivityStarted(Activity activity) {
+//
+//                }
+//
+//                @Override
+//                public void onActivityResumed(Activity activity) {
+//
+//                }
+//
+//                @Override
+//                public void onActivityPaused(Activity activity) {
+//
+//                }
+//
+//                @Override
+//                public void onActivityStopped(Activity activity) {
+//
+//                }
+//
+//                @Override
+//                public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+//
+//                }
+//
+//                @Override
+//                public void onActivityDestroyed(Activity activity) {
+//                    if (null == activityList && activityList.isEmpty()) {
+//                        return;
+//                    }
+//                    if (activityList.contains(activity)) {
+//                        /**
+//                         *  监听到 Activity销毁事件 将该Activity 从list中移除
+//                         */
+//                        popActivity(activity);
+//                    }
+//                }
+//            });
+//        }
 //    }
 
-    //添加Activity到容器中
-    public void addActivity(Activity activity) {
-        activityList.add(activity);
-    }
-    //遍历所有Activity并finish
 
-    public void exit() {
-        for (Activity activity : activityList) {
-            activity.finish();
-        }
-        System.exit(0);
-    }
 }
