@@ -579,7 +579,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     void showCamera() {
     }
 
-    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE})
+    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE})
     void initPermission() {
 
     }
@@ -774,7 +774,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             switch (view.getId()) {
                 case R.id.close_lock:
                     if (result != null) {
-                        LogUtils.d("呵呵","你点我了");
+                        LogUtils.d("呵呵", "你点我了");
                         closeLockOver(result);
                     }
                     break;
@@ -784,9 +784,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     };
 
     private void closeLockOver(String result) {
-        Map<String,String> map = new HashMap<>();
-        map.put("bicycleNo",result);
-        OkHttpUtils.post().url(Api.BASE_URL+Api.CLOSELOCKOVER).params(map).build().execute(new StringCallback() {
+        Map<String, String> map = new HashMap<>();
+        map.put("bicycleNo", result);
+        OkHttpUtils.post().url(Api.BASE_URL + Api.CLOSELOCKOVER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
 
@@ -794,7 +794,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
             @Override
             public void onResponse(String response, int id) {
-                LogUtils.d("关锁",response);
+                LogUtils.d("关锁", response);
             }
         });
 
@@ -1280,7 +1280,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         mMap.setOnMarkerClickListener(overlay);
         routeOverlay = overlay;
 
-        if (!overlay.equals("") && overlay != null) {
+        if (!overlay.equals("")) {
             overlay.setData(result.getRouteLines().get(0));
             overlay.addToMap();
             overlay.zoomToSpan();
@@ -1400,7 +1400,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     String carRentalOrderId = mShowBikeRentalOrderInfo.getCarRentalOrderId();
                     withServicesMutually(mToken, uID, bicycleNo, carRentalOrderDate, carRentalOrderId);
                     mScan.setVisibility(View.INVISIBLE);
-                    mShowBikeRentalOrderPopupWindow = new ShowBikeRentalOrderPopupWindow(MainActivity.this, mShowBikeRentalOrderInfo,userRidingBikeItemsOnClick);
+                    mShowBikeRentalOrderPopupWindow = new ShowBikeRentalOrderPopupWindow(MainActivity.this, mShowBikeRentalOrderInfo, userRidingBikeItemsOnClick);
                     mShowBikeRentalOrderPopupWindow.showAsDropDown(findViewById(R.id.top));
                     mShowBikeRentalOrderPopupWindow.setOutsideTouchable(false);
                     mShowBikeRentalOrderPopupWindow.setFocusable(false);
@@ -1518,6 +1518,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         Log.d("实验", "onDestroy");
         mMapView.onDestroy();
         mMapView = null;
+        if (mLocationClient != null) {
+            mLocationClient.unRegisterLocationListener(mMyLocationListener);
+            mLocationClient.stop();
+        }
 
         //释放资源
         if (mSearch != null) {

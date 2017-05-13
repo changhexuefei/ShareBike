@@ -10,7 +10,7 @@ import java.util.Stack;
  * Created by Administrator on 2017/5/12 0012.
  */
 
-public class AppManager {
+    public class AppManager {
     private static Stack<Activity> activityStack = new Stack<Activity>();
 
     /**

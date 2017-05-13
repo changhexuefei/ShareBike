@@ -1,7 +1,10 @@
 package com.dcch.sharebike.moudle.user.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
@@ -35,21 +38,25 @@ public class MessageDetailActivity extends BaseActivity {
         Intent intent = getIntent();
         if (intent != null) {
             mActivityUrl = intent.getStringExtra("activityUrl");
-
             mActivityTheme = intent.getStringExtra("theme");
-            LogUtils.d("网址", mActivityUrl+mActivityTheme);
+            LogUtils.d("傳值", mActivityUrl+mActivityTheme);
         }
-//        mToolbar.setTitle("");
-//        mTitle.setText(mActivityTheme);
-//        setSupportActionBar(mToolbar);
-//        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                finish();
-//            }
-//        });
-//        mMsgWebview.loadUrl(mActivityUrl);
+        mToolbar.setTitle("");
+        mTitle.setText(mActivityTheme);
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
 
     }
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mMsgWebview.loadUrl(mActivityUrl);
+    }
 }

@@ -80,6 +80,9 @@ public class MyMessageActivity extends BaseActivity {
         if (NetUtils.isConnected(App.getContext())) {
             if (mUserId != null && mToken != null) {
                 getMessageInfo(mUserId, mToken);
+            }else{
+                ToastUtils.showShort(this,"网络无法访问，请检查网络连接！");
+
             }
         }
     }
@@ -91,7 +94,7 @@ public class MyMessageActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.GETACTIVITYS).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-
+                ToastUtils.showShort(MyMessageActivity.this,"当前服务器忙，请稍后！");
             }
 
             @Override
@@ -117,13 +120,13 @@ public class MyMessageActivity extends BaseActivity {
                     adapter.setOnItemClickListener(new OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, int position) {
-                            ToastUtils.showShort(MyMessageActivity.this, position + "");
+                            LogUtils.d("网址",position+"");
                             String activityurl = mMessageInfo.getActivitys().get(position).getActivityurl();
                             String activityname = mMessageInfo.getActivitys().get(position).getActivityname();
                             LogUtils.d("网址",activityname+activityurl);
                             if (activityurl != null && activityname != null) {
                                 Intent messageDetail = new Intent(MyMessageActivity.this, MessageDetailActivity.class);
-                                messageDetail.putExtra("activityUrl", messageDetail);
+                                messageDetail.putExtra("activityUrl",activityurl);
                                 messageDetail.putExtra("theme",activityname);
                                 startActivity(messageDetail);
                             }

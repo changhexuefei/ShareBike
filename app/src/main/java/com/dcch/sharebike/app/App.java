@@ -7,6 +7,7 @@ import android.util.Log;
 import com.baidu.mapapi.SDKInitializer;
 import com.dcch.sharebike.http.HttpUtils;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
+import com.github.moduth.blockcanary.BlockCanary;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.tencent.smtt.sdk.QbSdk;
@@ -19,7 +20,7 @@ import cn.sharesdk.framework.ShareSDK;
 import okhttp3.OkHttpClient;
 
 public class App extends Application {
-//    private static List<Activity> activityList = Collections
+    //    private static List<Activity> activityList = Collections
 //            .synchronizedList(new LinkedList<Activity>());
     private static App instance;
     private static Context mContext;
@@ -56,11 +57,10 @@ public class App extends Application {
             return;
         }
         sRefWatcher = LeakCanary.install(this);
-//        BlockCanary.install(this, new AppBlockCanaryContext()).start();
+        BlockCanary.install(this, new AppBlockCanaryContext()).start();
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         ShareSDK.initSDK(this);
-//        LeakCanary.install(this);
         //初始化OkHttp
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(new LoggerInterceptor("HttpUtils"))

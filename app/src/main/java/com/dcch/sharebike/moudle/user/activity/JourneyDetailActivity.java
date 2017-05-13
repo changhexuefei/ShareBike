@@ -53,7 +53,7 @@ public class JourneyDetailActivity extends BaseActivity {
     Toolbar mToolbar;
     private BaiduMap mRouteBaiduMap;
     private BitmapDescriptor startBmp, endBmp;
-    //    private MylocationListener mlistener;
+    private MylocationListener mlistener;
     LocationClient mlocationClient;
     private List<LatLng> mPoints;
 
@@ -80,7 +80,7 @@ public class JourneyDetailActivity extends BaseActivity {
             String carRentalOrderId = intent.getStringExtra("carRentalOrderId");
             String userId = intent.getStringExtra("userId");
             String token = intent.getStringExtra("token");
-            checkTrip(bicycleNo, carRentalOrderId, userId,token);
+            checkTrip(bicycleNo, carRentalOrderId, userId, token);
         }
 
         mPoints = new ArrayList<>();
@@ -109,8 +109,8 @@ public class JourneyDetailActivity extends BaseActivity {
 
     private void initMap() {
         mlocationClient = new LocationClient(this);
-//        mlistener = new MylocationListener();
-//        mlocationClient.registerLocationListener(mlistener);
+        mlistener = new MylocationListener();
+        mlocationClient.registerLocationListener(mlistener);
 
         LocationClientOption mOption = new LocationClientOption();
         //设置坐标类型
@@ -157,15 +157,20 @@ public class JourneyDetailActivity extends BaseActivity {
     public void onDestroy() {
         super.onDestroy();
         mRouteBaiduMap.setMyLocationEnabled(false);
-        mlocationClient.stop();
+        if (mlocationClient != null) {
+            mlocationClient.unRegisterLocationListener(mlistener);
+            mlocationClient.stop();
+        }
+
+
     }
 
-    private void checkTrip(String bicycleNo, String carRentalOrderId, String userId,String token) {
+    private void checkTrip(String bicycleNo, String carRentalOrderId, String userId, String token) {
         Map<String, String> map = new HashMap<>();
         map.put("bicycleNo", bicycleNo);
         map.put("carRentalOrderId", carRentalOrderId);
         map.put("userId", userId);
-        map.put("token",token);
+        map.put("token", token);
         LogUtils.d("参数", bicycleNo + "\n" + carRentalOrderId + "\n" + userId);
         OkHttpUtils.post().url(Api.BASE_URL + Api.TRIPRECORD).params(map).build().execute(new StringCallback() {
             @Override
@@ -177,7 +182,7 @@ public class JourneyDetailActivity extends BaseActivity {
             public void onResponse(String response, int id) {
                 LogUtils.d("卡卡", response);
                 if (JsonUtils.isSuccess(response)) {
-                //{"resultStatus":"1","records":[{"lat":"39.977552","lng":"116.301934"},{"lat":"39.919141","lng":"116.508328"},{"lat":"39.949141","lng":"116.528328"},{"lat":"40.051023","lng":"116.308589"}]}
+                    //{"resultStatus":"1","records":[{"lat":"39.977552","lng":"116.301934"},{"lat":"39.919141","lng":"116.508328"},{"lat":"39.949141","lng":"116.528328"},{"lat":"40.051023","lng":"116.308589"}]}
                     try {
                         JSONObject object = new JSONObject(response);
                         JSONArray records = object.getJSONArray("records");

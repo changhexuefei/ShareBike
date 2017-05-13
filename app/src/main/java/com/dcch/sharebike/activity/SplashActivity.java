@@ -26,7 +26,7 @@ public class SplashActivity extends BaseActivity {
     private final static int SWITCH_GUIDACTIVITY = 1001;
 
 
-    private Handler handler = new Handler() {
+    private  Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case SWITCH_MAINACTIVITY:
