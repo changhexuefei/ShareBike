@@ -42,7 +42,7 @@ public class RouteService extends Service {
     private float mCurrentX;
     //定位图层显示方式
     private MyLocationConfiguration.LocationMode locationMode;
-//    AllInterface.IUpdateLocation iUpdateLocation;
+    //    AllInterface.IUpdateLocation iUpdateLocation;
     public ArrayList<RoutePoint> routPointList = new ArrayList<>();
     public int totalDistance = 0;
     public float totalPrice = 0;
@@ -154,7 +154,10 @@ public class RouteService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mlocationClient.stop();
+        if (mlocationClient != null) {
+            mlocationClient.unRegisterLocationListener(mlistener);
+            mlocationClient.stop();
+        }
         myOrientationListener.stop();
         Log.d("gaolei", "RouteService----0nDestroy---------------");
         Gson gson = new Gson();
@@ -235,9 +238,7 @@ public class RouteService extends Service {
         }
     }
 
-    public static class NetWorkReceiver extends BroadcastReceiver
-
-    {
+    public static class NetWorkReceiver extends BroadcastReceiver {
         public NetWorkReceiver() {
         }
 

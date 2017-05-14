@@ -154,6 +154,12 @@ public class JourneyDetailActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mlocationClient.stop();
+    }
+
     public void onDestroy() {
         super.onDestroy();
         mRouteBaiduMap.setMyLocationEnabled(false);

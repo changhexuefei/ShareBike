@@ -5,11 +5,7 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -168,54 +164,5 @@ public class SettingActivity extends BaseActivity {
         }
     }
 
-    // 获取当前应用的版本号
-    public int getVerCode() {
-        int verCode = -1;
-        try {
-            verCode = getPackageManager().getPackageInfo("com.dcch.sharebike", 0).versionCode;
-        } catch (PackageManager.NameNotFoundException ignored) {
-        }
-        return verCode;
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Intent intent = new Intent();
-//        intent.setAction("com.gao.startService");
-        intent.setPackage(getPackageName());
-        bindService(intent, coon, BIND_AUTO_CREATE);
-        if (IS) {
-            /*String path = Environment.getExternalStorageDirectory() + "/DateApp.apk";
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(Uri.fromFile(new File(path)), "application/vnd.android.package-archive");
-            startActivity(intent);*/
-            IS = false;
-        }
-    }
-
-    /***
-     * 检查是否存在某个App存在
-     * @param pkgName
-     * @return
-     */
-    private boolean isPkgInstalled(String pkgName) {
-        PackageInfo packageInfo;
-        try {
-            packageInfo = this.getPackageManager().getPackageInfo(pkgName, 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            packageInfo = null;
-            e.printStackTrace();
-        }
-        if (packageInfo == null) {
-            return false;
-        } else {
-            return true;
-        }
-    }
 }

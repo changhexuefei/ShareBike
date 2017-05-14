@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
+import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.moudle.login.activity.LoginActivity;
 import com.dcch.sharebike.utils.ClickUtils;
 
@@ -25,21 +26,6 @@ public class UnLoginFragment extends Fragment {
     @BindView(R.id.login)
     TextView login;
     private View view;
-//    private static UnLoginFragment uf;
-//
-//    public static UnLoginFragment getUf() {
-//        // 提供一个全局的静态方法
-//        if (uf == null) {
-//            synchronized (UnLoginFragment.class) {
-//                if (uf == null) {
-//                    uf = new UnLoginFragment();
-//                }
-//            }
-//        }
-//        return uf;
-//    }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,8 +40,15 @@ public class UnLoginFragment extends Fragment {
         if(ClickUtils.isFastClick()){
             return;
         }
-        Intent intent = new Intent(getContext(), LoginActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(getActivity(), LoginActivity.class));
 
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        App.getRefWatcher().watch(this);
+    }
+
+
 }

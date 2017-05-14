@@ -167,6 +167,7 @@ public class LoginFragment extends Fragment {
                         //使用用户自定义的头像
                         Glide.with(App.getContext()).load(userimage)
                                 .error(R.mipmap.avatar_default_login)
+                                .thumbnail(0.1f)// 加载缩略图
                                 .into(userIcon);
                     } else {
                         userIcon.setImageResource(R.mipmap.avatar_default_login);
@@ -199,7 +200,7 @@ public class LoginFragment extends Fragment {
                 mCreditScore = mCreditScore.substring(5, mCreditScore.length());
                 LogUtils.d("积分", mCreditScore);
                 if (mCreditScore != null) {
-                    Intent credit = new Intent(App.getContext(), CreditIntegralActivity.class);
+                    Intent credit = new Intent(getActivity(), CreditIntegralActivity.class);
                     credit.putExtra("score", mCreditScore);
                     startActivity(credit);
                 }
@@ -209,7 +210,7 @@ public class LoginFragment extends Fragment {
                     return;
                 }
                 if (mInfo != null) {
-                    Intent personInfo = new Intent(App.getContext(), PersonInfoActivity.class);
+                    Intent personInfo = new Intent(getActivity(), PersonInfoActivity.class);
                     Bundle mUserBundle = new Bundle();
                     mUserBundle.putSerializable("userBundle", mInfo);
                     personInfo.putExtras(mUserBundle);
@@ -221,7 +222,7 @@ public class LoginFragment extends Fragment {
                     return;
                 }
                 if (mInfo != null) {
-                    Intent walletInfo = new Intent(App.getContext(), WalletInfoActivity.class);
+                    Intent walletInfo = new Intent(getActivity(), WalletInfoActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("bundle", mInfo);
                     walletInfo.putExtras(bundle);
@@ -233,7 +234,7 @@ public class LoginFragment extends Fragment {
                     return;
                 }
                 if (uID != null && mToken != null) {
-                    Intent coupon = new Intent(App.getContext(), CouponListActivity.class);
+                    Intent coupon = new Intent(getActivity(), CouponListActivity.class);
                     coupon.putExtra("userId", uID);
                     coupon.putExtra("token", mToken);
                     startActivity(coupon);
@@ -244,7 +245,7 @@ public class LoginFragment extends Fragment {
                     return;
                 }
                 if (mPhone != null && mToken != null) {
-                    Intent myJourney = new Intent(App.getContext(), MyJourneyActivity.class);
+                    Intent myJourney = new Intent(getActivity(), MyJourneyActivity.class);
                     myJourney.putExtra("phone", mPhone);
                     myJourney.putExtra("token", mToken);
                     startActivity(myJourney);
@@ -255,7 +256,7 @@ public class LoginFragment extends Fragment {
                     return;
                 }
                 ToastUtils.showLong(getContext(), "敬请期待");
-                Intent myMessage = new Intent(App.getContext(), MyMessageActivity.class);
+                Intent myMessage = new Intent(getActivity(), MyMessageActivity.class);
                 myMessage.putExtra("userId",uID);
                 myMessage.putExtra("token", mToken);
                 startActivity(myMessage);
@@ -270,15 +271,20 @@ public class LoginFragment extends Fragment {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                startActivity(new Intent(App.getContext(), UserGuideActivity.class));
+                startActivity(new Intent(getActivity(), UserGuideActivity.class));
                 break;
             case R.id.setting:
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                startActivity(new Intent(App.getContext(), SettingActivity.class));
+                startActivity(new Intent(getActivity(), SettingActivity.class));
                 break;
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        App.getRefWatcher().watch(this);
+    }
 }

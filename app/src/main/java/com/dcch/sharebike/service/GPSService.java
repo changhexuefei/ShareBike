@@ -314,6 +314,7 @@ public class GPSService extends Service {
         Log.d("BDGpsService", "********BDGpsService onDestroy*******");
         Log.d("BDGpsService", "filePath");
         if (locationClient != null && locationClient.isStarted()) {
+            locationClient.unRegisterLocationListener(locationListener);
             locationClient.stop();
             Gson gson = new Gson();
             String routeListStr = gson.toJson(routPointList);

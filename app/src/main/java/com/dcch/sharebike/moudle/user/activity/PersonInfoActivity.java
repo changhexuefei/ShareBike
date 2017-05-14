@@ -104,7 +104,7 @@ public class PersonInfoActivity extends BaseActivity {
                 realName.setText(mUserBundle.getName());
             }
             if (mUserBundle.getUserimage() != null) {
-                Glide.with(App.getContext()).load(mUserBundle.getUserimage()).error(R.mipmap.avatar_default_login).into(userInfoIcon);
+                Glide.with(App.getContext()).load(mUserBundle.getUserimage()).error(R.mipmap.avatar_default_login).thumbnail(0.1f).into(userInfoIcon);
             } else {
                 userInfoIcon.setImageResource(R.mipmap.avatar_default_login);
             }

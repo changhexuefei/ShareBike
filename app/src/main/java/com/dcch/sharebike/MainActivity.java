@@ -59,6 +59,7 @@ import com.dcch.sharebike.base.AppManager;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.CodeEvent;
 import com.dcch.sharebike.base.MessageEvent;
+import com.dcch.sharebike.base.UpdateManager;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.libzxing.zxing.activity.CaptureActivity;
 import com.dcch.sharebike.listener.MyOrientationListener;
@@ -228,6 +229,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         showCamera();
         initPermission();
         bikeInfos = new ArrayList<>();
+        UpdateManager updateManager = new UpdateManager(this);
+        updateManager.checkVersion();
         // 初始化GeoCoder模块，注册事件监听
 //        mSearch = GeoCoder.newInstance();
 //        mSearch.setOnGetGeoCodeResultListener(this);
@@ -1037,9 +1040,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     startActivity(reportIllegalParking);
                 }
                 if (position == 3) {
-                    Intent otherProblem = new Intent(MainActivity.this, CustomerServiceActivity.class);
-                    otherProblem.putExtra("name", "3");
-                    startActivity(otherProblem);
+                    ToastUtils.showShort(MainActivity.this,"敬请期待");
+//                    Intent otherProblem = new Intent(MainActivity.this, CustomerServiceActivity.class);
+//                    otherProblem.putExtra("name", "3");
+//                    startActivity(otherProblem);
                 }
             }
         }).show();

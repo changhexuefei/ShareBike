@@ -13,7 +13,9 @@ import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.AppManager;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
+import com.dcch.sharebike.utils.ToastUtils;
 
 import butterknife.BindView;
 
@@ -26,7 +28,7 @@ public class SplashActivity extends BaseActivity {
     private final static int SWITCH_GUIDACTIVITY = 1001;
 
 
-    private  Handler handler = new Handler() {
+    private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case SWITCH_MAINACTIVITY:
@@ -55,11 +57,15 @@ public class SplashActivity extends BaseActivity {
         animation.setDuration(1000);
         animation.setFillAfter(true);
         mRlSplashRoot.startAnimation(animation);
+        if(NetUtils.isConnected(App.getContext())){
+            if (SPUtils.isFirst()) {
+                handler.sendEmptyMessageDelayed(SWITCH_GUIDACTIVITY, 2000);
+            } else {
+                handler.sendEmptyMessageDelayed(SWITCH_MAINACTIVITY, 2000);
+            }
+        }else{
+            ToastUtils.showLong(this,"无网络连接，请检查网络");
 
-        if (SPUtils.isFirst()) {
-            handler.sendEmptyMessageDelayed(SWITCH_GUIDACTIVITY, 2000);
-        } else {
-            handler.sendEmptyMessageDelayed(SWITCH_MAINACTIVITY, 2000);
         }
     }
 
@@ -94,8 +100,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-       handler.removeMessages(SWITCH_MAINACTIVITY);
-       handler.removeMessages(SWITCH_GUIDACTIVITY);
+        handler.removeCallbacksAndMessages(null);
         AppManager.finishActivity(this);
         App.getRefWatcher().watch(this);
     }
