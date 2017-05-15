@@ -25,18 +25,14 @@ public class BookingBikeInfo {
     private String bookingCarId;
     private String bookingCarNo;
     private int userId;
-    private Object name;
-    private Object phone;
-    private Object nickName;
-    private Object idCard;
     private int bicycleId;
     private String bicycleNo;
     private String bookingCarDate;
     private int bookingCarStatus;
     private String resultStatus;
     private Object remark;
-    private Object longitude;
-    private Object latitude;
+    private String longitude;
+    private String latitude;
     private Object address;
 
     public String getBookingCarId() {
@@ -63,37 +59,6 @@ public class BookingBikeInfo {
         this.userId = userId;
     }
 
-    public Object getName() {
-        return name;
-    }
-
-    public void setName(Object name) {
-        this.name = name;
-    }
-
-    public Object getPhone() {
-        return phone;
-    }
-
-    public void setPhone(Object phone) {
-        this.phone = phone;
-    }
-
-    public Object getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(Object nickName) {
-        this.nickName = nickName;
-    }
-
-    public Object getIdCard() {
-        return idCard;
-    }
-
-    public void setIdCard(Object idCard) {
-        this.idCard = idCard;
-    }
 
     public int getBicycleId() {
         return bicycleId;
@@ -143,19 +108,19 @@ public class BookingBikeInfo {
         this.remark = remark;
     }
 
-    public Object getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Object longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 
-    public Object getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Object latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 

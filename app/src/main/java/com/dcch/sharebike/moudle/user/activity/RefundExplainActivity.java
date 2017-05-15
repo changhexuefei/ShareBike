@@ -13,7 +13,6 @@ import butterknife.BindView;
 
 public class RefundExplainActivity extends BaseActivity {
 
-
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.toolbar)

@@ -104,7 +104,6 @@ public class JourneyDetailActivity extends BaseActivity {
                 .icon(endBmp);
         // 在地图上添加Marker，并显示
         mRouteBaiduMap.addOverlay(options2);
-
     }
 
     private void initMap() {
@@ -167,8 +166,6 @@ public class JourneyDetailActivity extends BaseActivity {
             mlocationClient.unRegisterLocationListener(mlistener);
             mlocationClient.stop();
         }
-
-
     }
 
     private void checkTrip(String bicycleNo, String carRentalOrderId, String userId, String token) {

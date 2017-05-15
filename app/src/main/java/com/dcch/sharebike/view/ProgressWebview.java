@@ -21,7 +21,6 @@ import com.tencent.smtt.sdk.WebViewClient;
 
 public class ProgressWebview extends WebView {
     private ProgressBar progressbar;  //进度条
-
     private int progressHeight = 10;  //进度条的高度，默认10px
 
 
@@ -36,11 +35,19 @@ public class ProgressWebview extends WebView {
 
     }
 
-    private void initView(Context context) {
+    public ProgressWebview(Context context, AttributeSet attributeSet, int i) {
+        super(context, attributeSet, i);
+        initView(context);
+    }
 
+    public ProgressWebview(Context context, AttributeSet attributeSet, int i, boolean b) {
+        super(context, attributeSet, i, b);
+        initView(context);
+    }
+
+    private void initView(Context context) {
         //开启js脚本支持
         getSettings().setJavaScriptEnabled(true);
-
         //创建进度条
         progressbar = new ProgressBar(context, null,
                 android.R.attr.progressBarStyleHorizontal);
@@ -52,7 +59,6 @@ public class ProgressWebview extends WebView {
 
         //添加进度到WebView
         addView(progressbar);
-
         //适配手机大小
         getSettings().setUseWideViewPort(true);
         getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);

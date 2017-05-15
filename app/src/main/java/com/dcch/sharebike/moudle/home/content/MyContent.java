@@ -11,5 +11,9 @@ public class MyContent {
     public static final String APP_ID = "wxd4b5d5e34b0dd095";
     // **
     public static final String key = "DitekVIMDHxjOqus";
+    public static final String HOST = "DitekVIMDHxjOqus";
+    public static final int TCP_PORT = 1;
+
+
 
 }

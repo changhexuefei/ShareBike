@@ -194,6 +194,7 @@ public class UpdateManager {
         // 构造软件下载对话框
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle("正在更新");
+        builder.setCancelable(false);
         LogUtils.d("怎麽不走這裏", "1223333");
         // 给下载对话框增加进度条
         final LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -224,7 +225,6 @@ public class UpdateManager {
      * 下载apk的方法
      */
     private class downloadApkThread extends Thread {
-
         InputStream is;
         HttpURLConnection conn;
 
