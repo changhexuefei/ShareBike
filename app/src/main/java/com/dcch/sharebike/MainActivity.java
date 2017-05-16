@@ -675,12 +675,14 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         if (routeOverlay != null) {
             routeOverlay.removeFromMap();
             mMap.clear();
-            addOverlay(bikeInfos);
-            LogUtils.d("划线", routeOverlay.getOverlayOptions().size() + "");
+            if (menuWindow != null && menuWindow.isShowing()) {
+                addOverlay(bikeInfos);
+            }
         }
         if (endNodeStr != null) {
             Log.d("划线", "changeLatitude-----startNode--------" + startNodeStr.getLocation().latitude);
             Log.d("划线", "changeLongitude-----startNode--------" + startNodeStr.getLocation().longitude);
+            forLocationAddMark(endNodeStr.getLocation().longitude, endNodeStr.getLocation().latitude);
             mRPSearch.walkingSearch((new WalkingRoutePlanOption()).from(startNodeStr).to(endNodeStr));
         }
     }
@@ -691,31 +693,38 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.order:
-                    if (SPUtils.isLogin()) {
-                        if (menuWindow != null && menuWindow.isShowing()) {
-                            menuWindow.dismiss();
-                        }
-                        if (cashStatus == 1 && status == 1) {
-                            mInstructions.setVisibility(View.GONE);
-                            if (phone != null && !phone.equals("")) {
-                                queryBookingNum(phone);
-                            }
-                        } else if (cashStatus == 0 && status == 0) {
-                            startActivity(new Intent(MainActivity.this, RechargeActivity.class));
-                        } else if (cashStatus == 1 && status == 0) {
-                            startActivity(new Intent(MainActivity.this, IdentityAuthentication.class));
-                        } else if (cashStatus == 0 && status == 1) {
-                            startActivity(new Intent(MainActivity.this, RechargeDepositActivity.class));
-                        }
+                    mMapView.setFocusable(false);
+                    mMapView.setEnabled(false);
+                    if (NetUtils.isConnected(App.getContext())) {
+                        if (SPUtils.isLogin()) {
+                            if (menuWindow != null && menuWindow.isShowing()) {
+                                menuWindow.dismiss();
 
+                            }
+                            if (cashStatus == 1 && status == 1) {
+                                mInstructions.setVisibility(View.GONE);
+                                if (phone != null && !phone.equals("")) {
+                                    queryBookingNum(phone);
+                                }
+                            } else if (cashStatus == 0 && status == 0) {
+                                startActivity(new Intent(MainActivity.this, RechargeActivity.class));
+                            } else if (cashStatus == 1 && status == 0) {
+                                startActivity(new Intent(MainActivity.this, IdentityAuthentication.class));
+                            } else if (cashStatus == 0 && status == 1) {
+                                startActivity(new Intent(MainActivity.this, RechargeDepositActivity.class));
+                            }
+
+                        } else {
+                            mInstructions.setVisibility(View.VISIBLE);
+                            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                            menuWindow.setFocusable(true);
+                            menuWindow.dismiss();
+                            mMap.clear();
+                            addOverlay(bikeInfos);
+                            setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
+                        }
                     } else {
-                        mInstructions.setVisibility(View.VISIBLE);
-                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                        menuWindow.setFocusable(true);
-                        menuWindow.dismiss();
-                        mMap.clear();
-                        addOverlay(bikeInfos);
-                        setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
+                        ToastUtils.showShort(MainActivity.this, getString(R.string.no_network_tip));
                     }
             }
         }
@@ -780,7 +789,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         });
 
     }
-
 
     //根据手机号，查询预约次数
     private void queryBookingNum(String phone) {
@@ -1025,7 +1033,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 //                    startActivity(otherProblem);
                 }
             }
-        }).show();
+        })
+                .setCancelable(true, true)
+                .show();
     }
 
     //扫一扫二维码时的回调
@@ -1520,46 +1530,37 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         super.onResume();
         Log.d("实验", "onResume+1");
         mMapView.onResume();
-        if (SPUtils.isLogin()) {
-            mInstructions.setVisibility(View.GONE);
-            String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-            JSONObject object;
-            try {
-                object = new JSONObject(userDetail);
-                int id = object.optInt("id");
-                mToken = object.optString("token");
-                uID = String.valueOf(id);
-                if (uID != null && mToken != null) {
-                    queryUserInfo(uID, mToken);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else {
-            mInstructions.setVisibility(View.VISIBLE);
-            getBikeInfo(mCurrentLantitude, mCurrentLongitude);
-            setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
-        }
-        if (menuWindow == null && bookBikePopupWindow == null && orderPopupWindow == null) {
-            mMap.clear();
-            getBikeInfo(mCurrentLantitude, mCurrentLongitude);
-            setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
-        }
         if (NetUtils.isConnected(App.getContext())) {
+            if (SPUtils.isLogin()) {
+                mInstructions.setVisibility(View.GONE);
+                String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
+                JSONObject object;
+                try {
+                    object = new JSONObject(userDetail);
+                    int id = object.optInt("id");
+                    mToken = object.optString("token");
+                    uID = String.valueOf(id);
+                    if (uID != null && mToken != null) {
+                        queryUserInfo(uID, mToken);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                mInstructions.setVisibility(View.VISIBLE);
+                getBikeInfo(mCurrentLantitude, mCurrentLongitude);
+                setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
+            }
+            if (menuWindow == null && bookBikePopupWindow == null && orderPopupWindow == null) {
+                mMap.clear();
+                getBikeInfo(mCurrentLantitude, mCurrentLongitude);
+                setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
+            }
             clickBaiduMapMark();
         } else {
-            ToastUtils.showShort(MainActivity.this, "网络连接不可用，请检查网络");
+            ToastUtils.showShort(MainActivity.this, getString(R.string.no_network_tip));
         }
         clickDismissOverlay();
-//        if (!isBook && !isShowBookOrder && !isShowRideOrder && !isChecked) {
-//            getBikeInfo(mCurrentLantitude, mCurrentLongitude);
-//            LogUtils.d("实验", "在哪里" + !isBook + "\n" + !isShowBookOrder + !isShowRideOrder + "\n" + !isChecked);
-//            setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
-//
-//        }
-//        else {
-//            getBikeInfo(mCurrentLantitude, mCurrentLongitude);
-//        }
     }
 
     @Override

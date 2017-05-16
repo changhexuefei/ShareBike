@@ -324,7 +324,7 @@ public class UpdateManager {
         i.setDataAndType(Uri.parse("file://" + apkfile.toString()), "application/vnd.android.package-archive");
         mContext.startActivity(i);
         android.os.Process.killProcess(android.os.Process.myPid());
-        uninstallApk(mContext, apkfile.getAbsolutePath());
+//        uninstallApk(mContext, apkfile.getAbsolutePath());
     }
 
 

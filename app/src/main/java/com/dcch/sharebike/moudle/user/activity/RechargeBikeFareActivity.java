@@ -17,7 +17,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alipay.sdk.app.EnvUtils;
 import com.alipay.sdk.app.PayTask;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.alipay.AliPay;
@@ -250,7 +249,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         map.put("outtradeno", outTradeNo);
         map.put("orderbody", orderbody);
         map.put("subject", subject);
-        map.put("money", rechargeNumber);
+        map.put("money", "0.01");
         ToastUtils.showShort(RechargeBikeFareActivity.this, rechargeNumber);
         OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAY).params(map).build().execute(new StringCallback() {
             @Override
@@ -264,7 +263,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                 Runnable payRunnable = new Runnable() {
                     @Override
                     public void run() {
-                        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
+//                        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);沙箱测试
                         PayTask task = new PayTask(RechargeBikeFareActivity.this);
                         Map<String, String> stringStringMap = task.payV2(response, true);
                         Message msg = new Message();

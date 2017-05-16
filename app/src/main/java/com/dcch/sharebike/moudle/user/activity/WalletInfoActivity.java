@@ -132,8 +132,8 @@ public class WalletInfoActivity extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                rechargeBikeFare();
-//                choosePrepaid();
+//                rechargeBikeFare();
+                choosePrepaid();
                 break;
             case R.id.chargeDeposit:
                 if (ClickUtils.isFastClick()) {

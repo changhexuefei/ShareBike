@@ -27,6 +27,7 @@ import com.dcch.sharebike.libzxing.zxing.activity.CaptureActivity;
 import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.PictureProcessingUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
@@ -173,18 +174,17 @@ public class CycleFailureFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.scan_code:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
-               CycleFailureFragmentPermissionsDispatcher.showCameraWithCheck(this);
-                Intent i4 = new Intent(getActivity(), CaptureActivity.class);
-                i4.putExtra("msg","fail");
-                i4.putExtra("token",mToken);
-                startActivityForResult(i4, 0);
+                CycleFailureFragmentPermissionsDispatcher.showCameraWithCheck(this);
+                String msg = "fail";
+                goCapture(msg, mToken);
+
                 break;
 
             case R.id.cycle_photo:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 RxGalleryFinal.with(getActivity())
@@ -211,7 +211,7 @@ public class CycleFailureFragment extends Fragment {
                         }).openGallery();
                 break;
             case R.id.upload:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 bikeNo = mBikeCode.getText().toString().trim();
@@ -222,55 +222,73 @@ public class CycleFailureFragment extends Fragment {
                 } else {
                     selectResult = "";
                 }
+                if (NetUtils.isConnected(App.getContext())) {
+                    if (!uID.equals("") && uID != null && !bikeNo.equals("") && bikeNo != null && mToken != null && !mToken.equals("")) {
+                        upLoad(uID, bikeNo, mToken, contentText, selectResult, mImageResult);
 
-                if (!uID.equals("") && uID != null && !bikeNo.equals("") && bikeNo != null) {
-                    Map<String, String> map = new HashMap<>();
-                    map.put("userId", uID);
-                    map.put("bicycleNo", bikeNo);
-                    map.put("faultDescription", contentText);
-                    map.put("selectFaultDescription", selectResult);
-                    map.put("imageFile", mImageResult);
-                    map.put("token",mToken);
-                    LogUtils.d("错误",uID+"\n"+bikeNo+"\n"+mToken);
-                    OkHttpUtils.post()
-                            .url(Api.BASE_URL + Api.ADDTROUBLEORDER)
-                            .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)
-                            .params(map)
-                            .build()
-                            .execute(new StringCallback() {
-                                @Override
-                                public void onError(Call call, Exception e, int id) {
-                                    Log.d("错误", e.getMessage());
-                                    ToastUtils.showLong(getActivity(), "服务器正忙！");
-                                }
+                    } else {
+                        ToastUtils.showShort(getActivity(), getString(R.string.input_tip));
+                    }
 
-                                @Override
-                                public void onResponse(String response, int id) {
-
-                                    //{"resultStatus":"1"}
-                                    try {
-                                        JSONObject object = new JSONObject(response);
-                                        String resultStatus = object.optString("resultStatus");
-
-                                        if (resultStatus.equals("1")) {
-                                            ToastUtils.showLong(getActivity(), "提交成功！");
-                                            startActivity(new Intent(getActivity(), UserGuideActivity.class));
-                                            getActivity().finish();
-                                        } else if (resultStatus.equals("0")) {
-                                            ToastUtils.showLong(getActivity(), "提交失败！");
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
                 } else {
-                    ToastUtils.showShort(getActivity(), "请输入车辆编号！");
-                    return;
+                    ToastUtils.showShort(getActivity(), getString(R.string.no_network_tip));
                 }
+
                 break;
         }
     }
+
+    private void goCapture(String msg, String token) {
+        Intent i4 = new Intent(getActivity(), CaptureActivity.class);
+        i4.putExtra("msg", msg);
+        i4.putExtra("token", token);
+        startActivityForResult(i4, 0);
+    }
+
+
+    private void upLoad(String uID, String bikeNo, String token, String contentText, String selectResult, String imageResult) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", uID);
+        map.put("bicycleNo", bikeNo);
+        map.put("faultDescription", contentText);
+        map.put("selectFaultDescription", selectResult);
+        map.put("imageFile", imageResult);
+        map.put("token", token);
+        LogUtils.d("错误", uID + "\n" + bikeNo + "\n" + token);
+        OkHttpUtils.post()
+                .url(Api.BASE_URL + Api.ADDTROUBLEORDER)
+                .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)
+                .params(map)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.d("错误", e.getMessage());
+                        ToastUtils.showLong(getActivity(), "服务器正忙！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+
+                        //{"resultStatus":"1"}
+                        try {
+                            JSONObject object = new JSONObject(response);
+                            String resultStatus = object.optString("resultStatus");
+
+                            if (resultStatus.equals("1")) {
+                                ToastUtils.showLong(getActivity(), "提交成功！");
+                                startActivity(new Intent(getActivity(), UserGuideActivity.class));
+                                getActivity().finish();
+                            } else if (resultStatus.equals("0")) {
+                                ToastUtils.showLong(getActivity(), "提交失败！");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -297,7 +315,7 @@ public class CycleFailureFragment extends Fragment {
     //手工输入页面发来的消息
     @Subscriber(tag = "fail_bikeNo", mode = ThreadMode.MAIN)
     private void receiveFromManual(CodeEvent info) {
-        if(info!=null){
+        if (info != null) {
             LogUtils.d("自行车", info.getBikeNo());
             result = info.getBikeNo();
             mBikeCode.setText(result);
@@ -305,6 +323,7 @@ public class CycleFailureFragment extends Fragment {
         }
 
     }
+
     private void changeStatus() {
         mTips.setVisibility(View.VISIBLE);
         upload.setEnabled(true);

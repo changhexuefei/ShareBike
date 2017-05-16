@@ -25,6 +25,7 @@ import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.PictureProcessingUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
@@ -120,17 +121,17 @@ public class ReportIllegalParkingFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.scan_code:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 ReportIllegalParkingFragmentPermissionsDispatcher.showCameraWithCheck(this);
-                Intent i4 = new Intent(App.getContext(), CaptureActivity.class);
-                i4.putExtra("msg", "reports");
-                i4.putExtra("token", mToken);
-                startActivityForResult(i4, 0);
+                String msg = "reports";
+                if (mToken != null) {
+                    goCapture(msg, mToken);
+                }
                 break;
             case R.id.select_photo:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 RxGalleryFinal.with(getActivity())
@@ -157,48 +158,64 @@ public class ReportIllegalParkingFragment extends Fragment {
                         }).openGallery();
                 break;
             case R.id.mconfirm:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 bikeNo = mBikeCode.getText().toString().trim();
                 contentText = mQuestionDesc.getContentText().trim();
-                if (!uID.equals("") && uID != null && !bikeNo.equals("") && bikeNo != null) {
-                    Map<String, String> map = new HashMap<>();
-                    map.put("userId", uID);
-                    map.put("bicycleNo", bikeNo);
-                    map.put("faultDescription", contentText);
-                    map.put("selectFaultDescription", "");
-                    map.put("imageFile", mImageResult);
-                    map.put("token",mToken);
-                    OkHttpUtils.post()
-                            .url(Api.BASE_URL + Api.ADDTROUBLEORDER)
-                            .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)
-                            .params(map)
-                            .build()
-                            .execute(new StringCallback() {
-                                @Override
-                                public void onError(Call call, Exception e, int id) {
-                                    Log.d("错误", e.getMessage());
-                                    ToastUtils.showLong(getActivity(), "服务器正忙！");
-                                }
-
-                                @Override
-                                public void onResponse(String response, int id) {
-                                    if (JsonUtils.isSuccess(response)) {
-                                        ToastUtils.showLong(getActivity(), "提交成功！");
-                                        startActivity(new Intent(getActivity(), UserGuideActivity.class));
-                                        getActivity().finish();
-                                    } else {
-                                        ToastUtils.showLong(getActivity(), "提交失败！");
-                                    }
-
-                                }
-                            });
+                if (NetUtils.isConnected(App.getContext())) {
+                    if (!uID.equals("") && uID != null && !bikeNo.equals("") && bikeNo != null && mToken != null && !mToken.equals("")) {
+                        String selectResult = "";
+                        upLoad(uID, bikeNo, mToken, contentText, selectResult, mImageResult);
+                    } else {
+                        ToastUtils.showShort(getActivity(), getString(R.string.input_tip));
+                    }
                 } else {
-                    ToastUtils.showShort(getActivity(), "请填写自行车编号！");
+                    ToastUtils.showShort(getActivity(), getString(R.string.no_network_tip));
                 }
                 break;
         }
+    }
+
+    private void goCapture(String msg, String token) {
+        Intent i4 = new Intent(App.getContext(), CaptureActivity.class);
+        i4.putExtra("msg", msg);
+        i4.putExtra("token", token);
+        startActivityForResult(i4, 0);
+    }
+
+    private void upLoad(String uID, String bikeNo, String token, String contentText, String selectResult, String imageResult) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", uID);
+        map.put("bicycleNo", bikeNo);
+        map.put("faultDescription", contentText);
+        map.put("selectFaultDescription", selectResult);
+        map.put("imageFile", mImageResult);
+        map.put("token", mToken);
+        OkHttpUtils.post()
+                .url(Api.BASE_URL + Api.ADDTROUBLEORDER)
+                .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)
+                .params(map)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.d("错误", e.getMessage());
+                        ToastUtils.showLong(getActivity(), "服务器正忙！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (JsonUtils.isSuccess(response)) {
+                            ToastUtils.showLong(getActivity(), "提交成功！");
+                            startActivity(new Intent(getActivity(), UserGuideActivity.class));
+                            getActivity().finish();
+                        } else {
+                            ToastUtils.showLong(getActivity(), "提交失败！");
+                        }
+
+                    }
+                });
     }
 
     @Override

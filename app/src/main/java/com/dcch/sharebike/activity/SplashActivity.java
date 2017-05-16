@@ -1,8 +1,10 @@
 package com.dcch.sharebike.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.widget.RelativeLayout;
@@ -15,7 +17,6 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
-import com.dcch.sharebike.utils.ToastUtils;
 
 import butterknife.BindView;
 
@@ -64,11 +65,32 @@ public class SplashActivity extends BaseActivity {
                 handler.sendEmptyMessageDelayed(SWITCH_MAINACTIVITY, 2000);
             }
         }else{
-            ToastUtils.showLong(this,"无网络连接，请检查网络");
-
+            AlertDialog alertDialog = new AlertDialog.Builder(this)
+                    .setTitle("")
+                    .setMessage(getString(R.string.no_network_tip))
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                            AppManager.finishCurrentActivity();
+                        }
+                    })
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            NetUtils.openSetting(SplashActivity.this);
+                        }
+                    })
+                    .setCancelable(false)
+                    .show();
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        LogUtils.d("设置",data.toString());
+    }
 
     private void switchPage() {
         boolean isStartGuide = (boolean) SPUtils.get(this, "isStartGuide", false);

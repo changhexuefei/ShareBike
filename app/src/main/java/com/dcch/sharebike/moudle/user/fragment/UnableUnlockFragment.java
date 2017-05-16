@@ -21,8 +21,8 @@ import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.libzxing.zxing.activity.CaptureActivity;
 import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
 import com.dcch.sharebike.utils.ClickUtils;
-import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.louisgeek.multiedittextviewlib.MultiEditInputView;
@@ -126,10 +126,11 @@ public class UnableUnlockFragment extends Fragment {
                     return;
                 }
                 UnableUnlockFragmentPermissionsDispatcher.showCameraWithCheck(this);
-                Intent i4 = new Intent(App.getContext(), CaptureActivity.class);
-                i4.putExtra("msg", "unable");
-                i4.putExtra("token", mToken);
-                startActivityForResult(i4, 0);
+                String msg = "unable";
+                if (mToken != null) {
+                    goCapture(msg, mToken);
+                }
+
                 break;
             case R.id.un_confirm:
                 if (ClickUtils.isFastClick()) {
@@ -137,44 +138,71 @@ public class UnableUnlockFragment extends Fragment {
                 }
                 bikeNo = bikeCode.getText().toString().trim();
                 contentText = questionDesc.getContentText().trim();
-                if (!uID.equals("") && uID != null && !bikeNo.equals("") && bikeNo != null) {
-                    Map<String, String> map = new HashMap<>();
-                    map.put("userId", uID);
-                    map.put("bicycleNo", bikeNo);
-                    map.put("faultDescription", contentText);
-                    map.put("selectFaultDescription", "");
-                    map.put("imageFile", "");
-                    map.put("token", mToken);
-                    OkHttpUtils.post()
-                            .url(Api.BASE_URL + Api.ADDTROUBLEORDER)
-                            .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)
-                            .params(map)
-                            .build()
-                            .execute(new StringCallback() {
-                                @Override
-                                public void onError(Call call, Exception e, int id) {
-                                    Log.d("错误", e.getMessage());
-                                    ToastUtils.showLong(getActivity(), "上传失败！");
-                                }
-
-                                @Override
-                                public void onResponse(String response, int id) {
-                                    Log.d("上传成功", response);
-                                    if (JsonUtils.isSuccess(response)) {
-                                        ToastUtils.showLong(getActivity(), "提交成功！");
-                                        startActivity(new Intent(getActivity(), UserGuideActivity.class));
-                                        getActivity().finish();
-                                    } else {
-                                        ToastUtils.showLong(getActivity(), "提交失败！");
-                                    }
-                                }
-                            });
+                if (NetUtils.isConnected(App.getContext())) {
+                    if (!uID.equals("") && uID != null && !bikeNo.equals("") && bikeNo != null && mToken != null && !mToken.equals("")) {
+                        String selectResult = "";
+                        String mImageResult = "";
+                        upLoad(uID, bikeNo, mToken, contentText, selectResult, mImageResult);
+                    } else {
+                        ToastUtils.showShort(getActivity(), getString(R.string.input_tip));
+                    }
                 } else {
-                    ToastUtils.showShort(getActivity(), "请输入车辆编号！");
+                    ToastUtils.showShort(getActivity(), getString(R.string.no_network_tip));
                 }
                 break;
         }
     }
+
+    private void goCapture(String msg, String token) {
+        Intent i4 = new Intent(App.getContext(), CaptureActivity.class);
+        i4.putExtra("msg", msg);
+        i4.putExtra("token", token);
+        startActivityForResult(i4, 0);
+    }
+
+    private void upLoad(String uID, String bikeNo, String token, String contentText, String selectResult, String imageResult) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", uID);
+        map.put("bicycleNo", bikeNo);
+        map.put("faultDescription", contentText);
+        map.put("selectFaultDescription", selectResult);
+        map.put("imageFile", imageResult);
+        map.put("token", token);
+        LogUtils.d("错误", uID + "\n" + bikeNo + "\n" + token);
+        OkHttpUtils.post()
+                .url(Api.BASE_URL + Api.ADDTROUBLEORDER)
+                .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)
+                .params(map)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.d("错误", e.getMessage());
+                        ToastUtils.showLong(getActivity(), "服务器正忙！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+
+                        //{"resultStatus":"1"}
+                        try {
+                            JSONObject object = new JSONObject(response);
+                            String resultStatus = object.optString("resultStatus");
+
+                            if (resultStatus.equals("1")) {
+                                ToastUtils.showLong(getActivity(), "提交成功！");
+                                startActivity(new Intent(getActivity(), UserGuideActivity.class));
+                                getActivity().finish();
+                            } else if (resultStatus.equals("0")) {
+                                ToastUtils.showLong(getActivity(), "提交失败！");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

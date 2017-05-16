@@ -12,7 +12,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alipay.sdk.app.EnvUtils;
 import com.alipay.sdk.app.PayTask;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.alipay.AliPay;
@@ -159,12 +158,12 @@ public class RechargeDepositActivity extends BaseActivity {
     private void weiXinPayWay(String outTradeNo, String subject, String userID, String ipAddress, String moneySum) {
         final IWXAPI msgApi = WXAPIFactory.createWXAPI(this, MyContent.APP_ID);
         Map<String, String> map = new HashMap<>();
-        map.put("out_trade_no", mOutTradeNo);
+        map.put("out_trade_no", outTradeNo);
         map.put("body", "押金");
         map.put("attach", userID);
         map.put("total_price", moneySum);
         map.put("spbill_create_ip", ipAddress);
-        LogUtils.d("微信支付", mOutTradeNo + "\n" + ipAddress);
+        LogUtils.d("微信支付", outTradeNo + "\n" + ipAddress);
         OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINCASHPAY).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -201,8 +200,8 @@ public class RechargeDepositActivity extends BaseActivity {
         map.put("outtradeno", outTradeNo);
         map.put("orderbody", orderbody);
         map.put("subject", subject);
-        map.put("money", moneySum);
-        OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAY).params(map).build().execute(new StringCallback() {
+        map.put("money", "0.01");
+        OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAYCASH).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
                 LogUtils.d(e.getMessage());
@@ -214,7 +213,7 @@ public class RechargeDepositActivity extends BaseActivity {
                 Runnable payRunnable = new Runnable() {
                     @Override
                     public void run() {
-                        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
+//                        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
                         PayTask task = new PayTask(RechargeDepositActivity.this);
                         Map<String, String> stringStringMap = task.payV2(response, true);
                         Message msg = new Message();

@@ -13,7 +13,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alipay.sdk.app.EnvUtils;
 import com.alipay.sdk.app.PayTask;
 import com.anton46.stepsview.StepsView;
 import com.dcch.sharebike.MainActivity;
@@ -232,8 +231,8 @@ public class RechargeActivity extends BaseActivity {
         map.put("outtradeno", outTradeNo);
         map.put("orderbody", orderbodydesc);
         map.put("subject", subjectdes);
-        map.put("money", moneySum);
-        OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAY).params(map).build().execute(new StringCallback() {
+        map.put("money", "0.01");
+        OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAYCASH).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
                 LogUtils.d(e.getMessage());
@@ -245,7 +244,7 @@ public class RechargeActivity extends BaseActivity {
                 Runnable payRunnable = new Runnable() {
                     @Override
                     public void run() {
-                        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
+//                        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
                         PayTask task = new PayTask(RechargeActivity.this);
                         Map<String, String> stringStringMap = task.payV2(response, true);
                         Message msg = new Message();

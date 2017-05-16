@@ -57,11 +57,18 @@ public class NetUtils {
 	 * 打开网络设置界面
 	 */
 	public static void openSetting(Activity activity) {
-		Intent intent = new Intent("/");
+		LogUtils.d("设置","1233333333333");
+		Intent intent = new Intent();
+		LogUtils.d("设置","qqqqqqqq");
 		ComponentName cm = new ComponentName("com.android.settings",
 				"com.android.settings.WirelessSettings");
+		LogUtils.d("设置","trtrtrt");
 		intent.setComponent(cm);
+		LogUtils.d("设置","wwwwww");
 		intent.setAction("android.intent.action.VIEW");
+		LogUtils.d("设置","eeeeee");
+//		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		LogUtils.d("设置","yyyyy");
 		activity.startActivityForResult(intent, 0);
 	}
 

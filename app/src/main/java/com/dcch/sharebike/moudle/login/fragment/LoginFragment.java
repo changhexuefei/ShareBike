@@ -135,7 +135,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onError(Call call, Exception e, int id) {
 //                Log.e("获取用户信息", e.getMessage());
-                ToastUtils.showShort(App.getContext(), "服务器正忙");
+                ToastUtils.showShort(getActivity(), "服务器正忙");
             }
 
             @Override
@@ -154,11 +154,9 @@ public class LoginFragment extends Fragment {
                         creditScore.setText("信用积分 " + String.valueOf(mInfo.getIntegral()));
                     }
                     remainSum.setText(String.valueOf(mInfo.getAggregateAmount()));
-
-//              骑行距离
+                    //骑行距离
                     person_distance.setText(String.valueOf(mInfo.getMileage()));
-
-//              运动成就
+                    //运动成就
                     sportsAchievement.setText(String.valueOf(MapUtil.changeOneDouble(mInfo.getCalorie())));
                     //用户头像
                     String userimage = mInfo.getUserimage();
@@ -200,9 +198,7 @@ public class LoginFragment extends Fragment {
                 mCreditScore = mCreditScore.substring(5, mCreditScore.length());
                 LogUtils.d("积分", mCreditScore);
                 if (mCreditScore != null) {
-                    Intent credit = new Intent(getActivity(), CreditIntegralActivity.class);
-                    credit.putExtra("score", mCreditScore);
-                    startActivity(credit);
+                    goCreditIntegral(mCreditScore);
                 }
                 break;
             case R.id.userIcon:
@@ -210,56 +206,50 @@ public class LoginFragment extends Fragment {
                     return;
                 }
                 if (mInfo != null) {
-                    Intent personInfo = new Intent(getActivity(), PersonInfoActivity.class);
-                    Bundle mUserBundle = new Bundle();
-                    mUserBundle.putSerializable("userBundle", mInfo);
-                    personInfo.putExtras(mUserBundle);
-                    startActivity(personInfo);
+                    goPersonInfo(mInfo);
                 }
                 break;
             case R.id.wallet:
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                if (mInfo != null) {
-                    Intent walletInfo = new Intent(getActivity(), WalletInfoActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("bundle", mInfo);
-                    walletInfo.putExtras(bundle);
-                    startActivity(walletInfo);
+                if (NetUtils.isConnected(App.getContext())) {
+                    if (mInfo != null) {
+                        goWalletInfo(mInfo);
+                    }
+                } else {
+                    ToastUtils.showShort(getActivity(), getString(R.string.no_network_tip));
                 }
+
                 break;
             case R.id.favorable:
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
                 if (uID != null && mToken != null) {
-                    Intent coupon = new Intent(getActivity(), CouponListActivity.class);
-                    coupon.putExtra("userId", uID);
-                    coupon.putExtra("token", mToken);
-                    startActivity(coupon);
+                    goCouponList(uID, mToken);
                 }
                 break;
             case R.id.journey:
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                if (mPhone != null && mToken != null) {
-                    Intent myJourney = new Intent(getActivity(), MyJourneyActivity.class);
-                    myJourney.putExtra("phone", mPhone);
-                    myJourney.putExtra("token", mToken);
-                    startActivity(myJourney);
+                if (NetUtils.isConnected(App.getContext())) {
+                    if (mPhone != null && mToken != null) {
+                        goMyJourney(mPhone, mToken);
+                    }
+                } else {
+                    ToastUtils.showShort(getActivity(), getString(R.string.no_network_tip));
                 }
                 break;
             case R.id.message:
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                ToastUtils.showLong(getContext(), "敬请期待");
-                Intent myMessage = new Intent(getActivity(), MyMessageActivity.class);
-                myMessage.putExtra("userId",uID);
-                myMessage.putExtra("token", mToken);
-                startActivity(myMessage);
+                if (uID != null && mToken != null) {
+                    goMyMessage(uID, mToken);
+                }
+
                 break;
             case R.id.friend:
                 if (ClickUtils.isFastClick()) {
@@ -280,6 +270,49 @@ public class LoginFragment extends Fragment {
                 startActivity(new Intent(getActivity(), SettingActivity.class));
                 break;
         }
+    }
+
+    private void goMyMessage(String uID, String token) {
+        Intent myMessage = new Intent(getActivity(), MyMessageActivity.class);
+        myMessage.putExtra("userId", uID);
+        myMessage.putExtra("token", token);
+        startActivity(myMessage);
+    }
+
+    private void goMyJourney(String phone, String token) {
+        Intent myJourney = new Intent(getActivity(), MyJourneyActivity.class);
+        myJourney.putExtra("phone", phone);
+        myJourney.putExtra("token", token);
+        startActivity(myJourney);
+    }
+
+    private void goCouponList(String uID, String token) {
+        Intent coupon = new Intent(getActivity(), CouponListActivity.class);
+        coupon.putExtra("userId", uID);
+        coupon.putExtra("token", token);
+        startActivity(coupon);
+    }
+
+    private void goWalletInfo(UserInfo info) {
+        Intent walletInfo = new Intent(getActivity(), WalletInfoActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("bundle", info);
+        walletInfo.putExtras(bundle);
+        startActivity(walletInfo);
+    }
+
+    private void goPersonInfo(UserInfo info) {
+        Intent personInfo = new Intent(getActivity(), PersonInfoActivity.class);
+        Bundle mUserBundle = new Bundle();
+        mUserBundle.putSerializable("userBundle", info);
+        personInfo.putExtras(mUserBundle);
+        startActivity(personInfo);
+    }
+
+    private void goCreditIntegral(String mCreditScore) {
+        Intent credit = new Intent(getActivity(), CreditIntegralActivity.class);
+        credit.putExtra("score", mCreditScore);
+        startActivity(credit);
     }
 
     @Override
