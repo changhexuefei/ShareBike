@@ -673,13 +673,14 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     private void drawPlanRoute(PlanNode endNodeStr) {
         if (routeOverlay != null) {
-            LogUtils.d("划线", routeOverlay.getOverlayOptions()+"");
             routeOverlay.removeFromMap();
-            LogUtils.d("划线", routeOverlay.getOverlayOptions().size()+"");
+            mMap.clear();
+            addOverlay(bikeInfos);
+            LogUtils.d("划线", routeOverlay.getOverlayOptions().size() + "");
         }
         if (endNodeStr != null) {
-            Log.d("gao", "changeLatitude-----startNode--------" + startNodeStr.getLocation().latitude);
-            Log.d("gao", "changeLongitude-----startNode--------" + startNodeStr.getLocation().longitude);
+            Log.d("划线", "changeLatitude-----startNode--------" + startNodeStr.getLocation().latitude);
+            Log.d("划线", "changeLongitude-----startNode--------" + startNodeStr.getLocation().longitude);
             mRPSearch.walkingSearch((new WalkingRoutePlanOption()).from(startNodeStr).to(endNodeStr));
         }
     }
@@ -1508,6 +1509,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         //释放资源
         if (mSearch != null) {
             mSearch.destroy();
+        }
+        if (mRPSearch != null) {
+            mRPSearch.destroy();
         }
     }
 

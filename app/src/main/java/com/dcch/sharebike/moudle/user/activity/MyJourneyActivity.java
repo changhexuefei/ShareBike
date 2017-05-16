@@ -108,7 +108,6 @@ public class MyJourneyActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         if (NetUtils.isConnected(App.getContext())) {
             getJourneyInfo(mPhone, mToken);
-
         } else {
             mIvNoJourney.setVisibility(View.GONE);
             noJourney.setVisibility(View.GONE);
@@ -152,7 +151,6 @@ public class MyJourneyActivity extends BaseActivity {
                         adapter.setOnItemClickListener(new OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                ToastUtils.showShort(MyJourneyActivity.this, position + "");
                                 String bicycleNo = mJourneyInfo.getCarrOrders().get(position).getBicycleNo();
                                 String carRentalOrderId = mJourneyInfo.getCarrOrders().get(position).getCarRentalOrderId();
                                 if (bicycleNo != null && !bicycleNo.equals("") && !carRentalOrderId.equals("") && carRentalOrderId != null && uID != null && !uID.equals("")) {
