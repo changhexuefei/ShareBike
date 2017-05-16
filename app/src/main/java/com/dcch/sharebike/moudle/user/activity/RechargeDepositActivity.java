@@ -1,5 +1,6 @@
 package com.dcch.sharebike.moudle.user.activity;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.Toolbar;
@@ -243,6 +244,8 @@ public class RechargeDepositActivity extends BaseActivity {
                     if (TextUtils.equals(resultStatus, "9000")) {
                         Toast.makeText(RechargeDepositActivity.this, "支付成功",
                                 Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(RechargeDepositActivity.this, WalletInfoActivity.class));
+                        finish();
 //                        updateUserCashstatus(userID);
 //                        returnData(mMoneySum);
                     } else {
