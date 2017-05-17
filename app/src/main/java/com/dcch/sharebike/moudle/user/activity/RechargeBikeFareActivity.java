@@ -309,7 +309,6 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
 
         }
     }
-
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -343,4 +342,13 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
             }
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacksAndMessages(null);
+        if(handler!=null){
+            handler=null;
+        }
+    }
 }
