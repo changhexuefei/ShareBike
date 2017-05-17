@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
-import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.moudle.login.activity.LoginActivity;
 import com.dcch.sharebike.utils.ClickUtils;
 
@@ -47,7 +46,7 @@ public class UnLoginFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        App.getRefWatcher().watch(this);
+//        App.getRefWatcher().watch(this);
     }
 
 

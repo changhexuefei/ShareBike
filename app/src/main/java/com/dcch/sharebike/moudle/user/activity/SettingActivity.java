@@ -102,11 +102,11 @@ public class SettingActivity extends BaseActivity {
                         UpdateManager updateManager = new UpdateManager(this);
                         updateManager.checkVersion();
                     } else {
-                        ToastUtils.showShort(this, "你当前使用的手机网络,请切换成无线网络进行下载");
+                        ToastUtils.showShort(this, getString(R.string.switching_network_tip));
                     }
 
                 } else {
-                    ToastUtils.showShort(this, "网络无法连接，请检查网络连接");
+                    ToastUtils.showShort(this, getString(R.string.no_network_tip));
                 }
 
                 break;

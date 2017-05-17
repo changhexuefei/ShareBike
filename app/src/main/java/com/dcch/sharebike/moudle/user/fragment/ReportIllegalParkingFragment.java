@@ -168,17 +168,17 @@ public class ReportIllegalParkingFragment extends Fragment {
                         String selectResult = "";
                         upLoad(uID, bikeNo, mToken, contentText, selectResult, mImageResult);
                     } else {
-                        ToastUtils.showShort(getActivity(), getString(R.string.input_tip));
+                        ToastUtils.showShort(getContext(), getString(R.string.input_tip));
                     }
                 } else {
-                    ToastUtils.showShort(getActivity(), getString(R.string.no_network_tip));
+                    ToastUtils.showShort(getContext(), getString(R.string.no_network_tip));
                 }
                 break;
         }
     }
 
     private void goCapture(String msg, String token) {
-        Intent i4 = new Intent(App.getContext(), CaptureActivity.class);
+        Intent i4 = new Intent(getActivity(), CaptureActivity.class);
         i4.putExtra("msg", msg);
         i4.putExtra("token", token);
         startActivityForResult(i4, 0);
@@ -201,17 +201,17 @@ public class ReportIllegalParkingFragment extends Fragment {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         Log.d("错误", e.getMessage());
-                        ToastUtils.showLong(getActivity(), "服务器正忙！");
+                        ToastUtils.showLong(getContext(), "服务器正忙！");
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         if (JsonUtils.isSuccess(response)) {
-                            ToastUtils.showLong(getActivity(), "提交成功！");
+                            ToastUtils.showLong(getContext(), "提交成功！");
                             startActivity(new Intent(getActivity(), UserGuideActivity.class));
                             getActivity().finish();
                         } else {
-                            ToastUtils.showLong(getActivity(), "提交失败！");
+                            ToastUtils.showLong(getContext(), "提交失败！");
                         }
 
                     }

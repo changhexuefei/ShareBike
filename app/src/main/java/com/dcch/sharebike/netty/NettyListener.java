@@ -8,11 +8,11 @@ import io.netty.buffer.ByteBuf;
 
 public interface NettyListener {
 
-    public final static byte STATUS_CONNECT_SUCCESS = 1;
+    byte STATUS_CONNECT_SUCCESS = 1;
 
-    public final static byte STATUS_CONNECT_CLOSED = 0;
+    byte STATUS_CONNECT_CLOSED = 0;
 
-    public final static byte STATUS_CONNECT_ERROR = 0;
+    byte STATUS_CONNECT_ERROR = 0;
 
 
     /**
@@ -23,6 +23,6 @@ public interface NettyListener {
     /**
      * 当服务状态发生变化时触发
      */
-    public void onServiceStatusConnectChanged(int statusCode);
+    void onServiceStatusConnectChanged(int statusCode);
 
 }

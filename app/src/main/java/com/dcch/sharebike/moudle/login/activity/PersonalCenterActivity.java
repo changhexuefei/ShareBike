@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
-import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.moudle.login.fragment.LoginFragment;
 import com.dcch.sharebike.moudle.login.fragment.UnLoginFragment;
@@ -125,6 +124,6 @@ public class PersonalCenterActivity extends BaseActivity {
         if (pca != null) {
             pca = null;
         }
-        App.getRefWatcher().watch(this);
+//        App.getRefWatcher().watch(this);
     }
 }

@@ -143,14 +143,14 @@ public class RechargeDepositActivity extends BaseActivity {
                             ipAddress = weixinPay.getIpAddress();
                         }
                         mOutTradeNo = weixinPay.getOutTradeNo();
-                        if (userID != null && mOutTradeNo != null && moneySum != null) {
+                        if (userID != null && mOutTradeNo != null && moneySum != null && ipAddress != null) {
                             weiXinPayWay(mOutTradeNo, subject, userID, ipAddress, moneySum);
                         } else {
                             ToastUtils.showShort(App.getContext(), "服务忙，请稍后重试");
                         }
-                    } else {
-                        ToastUtils.showShort(RechargeDepositActivity.this, "网络环境差，请稍后重试");
                     }
+                } else {
+                    ToastUtils.showShort(RechargeDepositActivity.this, getString(R.string.no_network_tip));
                 }
                 break;
         }

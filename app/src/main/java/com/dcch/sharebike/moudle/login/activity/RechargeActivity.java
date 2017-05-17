@@ -178,7 +178,7 @@ public class RechargeActivity extends BaseActivity {
                         }
                     }
                 } else {
-                    ToastUtils.showShort(RechargeActivity.this, "当前网络环境差，请稍后重试");
+                    ToastUtils.showShort(RechargeActivity.this, getString(R.string.no_network_tip));
                 }
                 break;
         }

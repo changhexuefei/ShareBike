@@ -69,10 +69,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.github.moduth:blockcanary-android:1.2.1'
     // 仅在debug包启用BlockCanary进行卡顿监控和提示的话，可以这么用
-//    debugCompile 'com.github.moduth:blockcanary-android:1.2.1'
-//    releaseCompile 'com.github.moduth:blockcanary-no-op:1.2.1'
     compile files('libs/baidumapapi_base_v4_2_0.jar')
     compile files('libs/baidumapapi_cloud_v4_2_0.jar')
     compile files('libs/baidumapapi_map_v4_2_0.jar')
@@ -98,6 +95,7 @@ dependencies {
     //stepsview
     compile files('libs/zxing.jar')
     compile files('libs/tbs_sdk_thirdapp_v3.1.0.1034_43100_sharewithdownload_obfs_20170301_182143.jar')
+//    compile 'com.github.moduth:blockcanary-android:1.2.1'
     compile 'com.jakewharton:butterknife:8.4.0'
     compile 'com.belerweb:pinyin4j:2.5.1'
     compile 'de.hdodenhof:circleimageview:2.1.0'
@@ -117,11 +115,13 @@ dependencies {
     compile 'com.anton46:stepsview:0.0.2'
     compile 'com.zhy:base-rvadapter:3.0.3'
     compile 'com.android.support:percent:22.2.0'
+    compile 'io.netty:netty-all:5.0.0.Alpha2'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.0'
+    debugCompile 'com.github.moduth:blockcanary-android:1.2.1'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    releaseCompile 'com.github.moduth:blockcanary-no-op:1.2.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
-    compile 'io.netty:netty-all:5.0.0.Alpha2'
 }

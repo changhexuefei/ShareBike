@@ -60,9 +60,9 @@ public class SplashActivity extends BaseActivity {
         mRlSplashRoot.startAnimation(animation);
         if(NetUtils.isConnected(App.getContext())){
             if (SPUtils.isFirst()) {
-                handler.sendEmptyMessageDelayed(SWITCH_GUIDACTIVITY, 2000);
+                handler.sendEmptyMessageDelayed(SWITCH_GUIDACTIVITY, 1000);
             } else {
-                handler.sendEmptyMessageDelayed(SWITCH_MAINACTIVITY, 2000);
+                handler.sendEmptyMessageDelayed(SWITCH_MAINACTIVITY, 1000);
             }
         }else{
             AlertDialog alertDialog = new AlertDialog.Builder(this)
@@ -123,7 +123,10 @@ public class SplashActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         handler.removeCallbacksAndMessages(null);
+        if (handler != null) {
+            handler = null;
+        }
         AppManager.finishActivity(this);
-        App.getRefWatcher().watch(this);
+//        App.getRefWatcher().watch(this);
     }
 }

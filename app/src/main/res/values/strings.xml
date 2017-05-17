@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">麒麟单车</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="recharge">下一步</string>
+    <string name="recharge">押金充值</string>
     <string name="tip2">车费不在押金内扣除，需另外缴费</string>
     <string name="tip1">押金可原路返回</string>
     <string name="weixin">微信</string>
@@ -15,7 +15,7 @@
     <string name="all">全部单车</string>
     <string name="one">一类车</string>
     <string name="two">二类车</string>
-    <string name="mobile_tip_one">原手机号退押金(2-7个工作日到帐)</string>
+    <string name="mobile_tip_one">原手机号退押金(1-7个工作日到帐)</string>
     <string name="mobile_tip_two">更换手机号，登录重新交押金</string>
     <string name="mobile_tip_there">车费余额，行程等信息不变</string>
     <string name="mobile_title">手机号</string>
@@ -166,6 +166,7 @@
     <string name="no_has_bikeNo">该车辆编号不存在，请重新输入！</string>
     <string name="forced_to_logoff">您的账号在其他设备上登录，您被迫下线！</string>
     <string name="being_use">我正在被使用！</string>
-    <string name="trouble">我是故障车!</string>
+    <string name="trouble">我是故障车！</string>
     <string name="preengaged">我已经被预约！</string>
+    <string name="switching_network_tip">你当前使用的手机网络,请切换到无线网络进行下载</string>
 </resources>

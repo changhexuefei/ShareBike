@@ -36,5 +36,4 @@ public class NettyClientInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(new NettyClientHandler(listener));
     }
 
-
 }

@@ -17,8 +17,8 @@ public class CouponRuleActivity extends BaseActivity {
     TextView mTitle;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.coupon_rule_explain)
-    ProgressWebview mCouponRuleExplain;
+    @BindView(R.id.coupon_rule_webView)
+    ProgressWebview mCouponRuleWebView;
 
     @Override
     protected int getLayoutId() {
@@ -36,13 +36,16 @@ public class CouponRuleActivity extends BaseActivity {
                 finish();
             }
         });
-        mCouponRuleExplain.loadUrl(Api.FAVORABLERULE);
-        mCouponRuleExplain.setOnLongClickListener(new View.OnLongClickListener() {
+        mCouponRuleWebView.loadUrl(Api.FAVORABLERULE);
+        mCouponRuleWebView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 return false;
             }
         });
+
+
     }
+
 
 }

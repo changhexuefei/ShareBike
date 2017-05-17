@@ -87,7 +87,7 @@ public class Api {
     //充值协议
     public static final String RECHARGEAGREEMENT = "http://www.70bikes.com/MavenSSM/Explain/rechargeAgreement.jsp";
     //优惠券使用规则
-    public static final String FAVORABLERULE = "http://www.70bikes.com/MavenSSM/Explain/couponAgreement.jsp";
+    public static final String FAVORABLERULE = "http://www.70bikes.com/MavenSSM/Explain/couAgreement.jsp";
     //
     public static final String VERSION = "http://www.70bikes.com/MavenSSM/version/version.xml";
 }

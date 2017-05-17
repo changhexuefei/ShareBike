@@ -101,8 +101,7 @@
             android:name=".MainActivity"
             android:launchMode="singleTask">
         </activity>
-        <activity
-            android:name=".activity.SplashActivity">
+        <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -346,12 +345,11 @@
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.VIEW"/> -->
-            <!-- <category android:name="android.intent.category.DEFAULT"/> -->
-            <!-- <data android:scheme="wxd4b5d5e34b0dd095"/> -->
-            <!-- </intent-filter> -->
+             <intent-filter>
+             <action android:name="android.intent.action.VIEW"/>
+             <category android:name="android.intent.category.DEFAULT"/>
+             <data android:scheme="wxd4b5d5e34b0dd095"/>
+             </intent-filter>
         </activity>
 
         <service android:name=".service.DownService"/>
@@ -383,9 +381,12 @@
         <activity
             android:name=".moudle.login.activity.PropagandaPosterActivity"
             android:theme="@style/translucent"/>
-        <activity android:name=".moudle.user.activity.CouponRuleActivity">
-        </activity>
         <activity android:name=".moudle.user.activity.MessageDetailActivity">
+        </activity>
+
+        <service android:name=".service.InitializeService"/>
+
+        <activity android:name=".moudle.user.activity.CouponRuleActivity">
         </activity>
     </application>
 

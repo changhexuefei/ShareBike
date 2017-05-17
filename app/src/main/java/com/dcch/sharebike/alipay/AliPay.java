@@ -10,6 +10,7 @@ import java.util.Random;
 
 public class AliPay {
     private Activity activity;
+
     public AliPay(Activity activity) {
         this.activity = activity;
     }
@@ -22,7 +23,6 @@ public class AliPay {
                 Locale.getDefault());
         Date date = new Date();
         String key = format.format(date);
-
         Random r = new Random();
         key = key + r.nextInt();
         key = key.substring(0, 15);

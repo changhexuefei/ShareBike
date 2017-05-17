@@ -92,7 +92,6 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
     @BindView(R.id.recharge_agreement)
     TextView mRechargeAgreement;
     //    private String mOutTradeNo;
-    private IWXAPI mMsgApi;
     private String orderbody = "交车费";
     private String subject = "车费";
 
@@ -182,9 +181,8 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                         }
                     } else if (rbfWeixinCheckbox.isChecked()) {
                         //调取微信的支付方式
-                        mMsgApi = WXAPIFactory.createWXAPI(this, MyContent.APP_ID);
-                        WeixinPay weixinPay = new WeixinPay(this);
 
+                        WeixinPay weixinPay = new WeixinPay(this);
                         if (NetUtils.isWifi(App.getContext())) {
                             ipAddress = weixinPay.getLocalIpAddress();
                         } else {
@@ -196,15 +194,16 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                         } else {
                             ToastUtils.showShort(App.getContext(), "服务忙，请稍后重试");
                         }
-                    } else {
-                        ToastUtils.showShort(RechargeBikeFareActivity.this, "网络环境差，请稍后重试");
                     }
+                } else {
+                    ToastUtils.showShort(RechargeBikeFareActivity.this, getString(R.string.no_network_tip));
                 }
                 break;
         }
     }
 
     private void weiXinPayWay(String mOutTradeNo, String subject, String uID, String ipAddress, String rechargeNumber) {
+        final IWXAPI mMsgApi = WXAPIFactory.createWXAPI(this, MyContent.APP_ID);
         Map<String, String> map = new HashMap<>();
         map.put("out_trade_no", mOutTradeNo);
         map.put("attach", uID);

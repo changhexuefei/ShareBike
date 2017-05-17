@@ -81,8 +81,8 @@ public class WalletInfoActivity extends BaseActivity {
         if (SPUtils.isLogin()) {
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras();//"bundle"
-            mInfo = (UserInfo) bundle.getSerializable("bundle");
-            if (mInfo != null && !mInfo.equals("")) {
+            if (bundle != null) {
+                mInfo = (UserInfo) bundle.getSerializable("bundle");
                 mCashStatus = mInfo.getCashStatus();
                 mStatus = mInfo.getStatus();
                 remainingSum.setText(String.valueOf(mInfo.getAggregateAmount()));
