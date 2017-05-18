@@ -1,10 +1,8 @@
 package com.dcch.sharebike.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AlertDialog;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.widget.RelativeLayout;
@@ -17,6 +15,7 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
+import com.dcch.sharebike.utils.ToastUtils;
 
 import butterknife.BindView;
 
@@ -60,29 +59,31 @@ public class SplashActivity extends BaseActivity {
         mRlSplashRoot.startAnimation(animation);
         if(NetUtils.isConnected(App.getContext())){
             if (SPUtils.isFirst()) {
-                handler.sendEmptyMessageDelayed(SWITCH_GUIDACTIVITY, 1000);
+                handler.sendEmptyMessageDelayed(SWITCH_GUIDACTIVITY, 2000);
             } else {
-                handler.sendEmptyMessageDelayed(SWITCH_MAINACTIVITY, 1000);
+                handler.sendEmptyMessageDelayed(SWITCH_MAINACTIVITY, 2000);
             }
         }else{
-            AlertDialog alertDialog = new AlertDialog.Builder(this)
-                    .setTitle("")
-                    .setMessage(getString(R.string.no_network_tip))
-                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                            AppManager.finishCurrentActivity();
-                        }
-                    })
-                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            NetUtils.openSetting(SplashActivity.this);
-                        }
-                    })
-                    .setCancelable(false)
-                    .show();
+            ToastUtils.showLong(SplashActivity.this,getString(R.id.no_network_linking_tip));
+//
+//            AlertDialog alertDialog = new AlertDialog.Builder(this)
+//                    .setTitle("")
+//                    .setMessage(getString(R.string.no_network_tip))
+//                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            dialogInterface.dismiss();
+//                            AppManager.finishCurrentActivity();
+//                        }
+//                    })
+//                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            NetUtils.openSetting(SplashActivity.this);
+//                        }
+//                    })
+//                    .setCancelable(false)
+//                    .show();
         }
     }
 
@@ -123,9 +124,6 @@ public class SplashActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         handler.removeCallbacksAndMessages(null);
-        if (handler != null) {
-            handler = null;
-        }
         AppManager.finishActivity(this);
 //        App.getRefWatcher().watch(this);
     }

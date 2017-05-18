@@ -21,6 +21,8 @@ import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.home.bean.VersionInfo;
 import com.dcch.sharebike.moudle.home.parse.ParseXmlService;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.NetUtils;
+import com.dcch.sharebike.utils.ToastUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,6 +30,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+
 
 public class UpdateManager {
     private Context mContext;
@@ -175,7 +179,11 @@ public class UpdateManager {
                 dialog.dismiss();
                 // 显示下载对话框
                 //5:
-                showDownloadDialog();
+                if(NetUtils.isWifi(mContext)){
+                    showDownloadDialog();
+                }else{
+                    ToastUtils.showShort(mContext,"当前为手机网络，请切换到无线网络进行下载！");
+                }
             }
         });
         // 稍后更新

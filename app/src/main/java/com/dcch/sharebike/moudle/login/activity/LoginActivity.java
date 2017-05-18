@@ -73,7 +73,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private String seCode;
     private String phone;
 
-   private  Handler handler = new Handler() {
+    private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case CODE_ING://已发送,倒计时
@@ -134,7 +134,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
             @Override
             public void afterTextChanged(Editable s) {
-
                 if (!s.equals("") && s != null) {
                     phone = s.toString().trim();
                     if (TextUtils.isEmpty(phone)) {
@@ -253,8 +252,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        handler.removeMessages(CODE_ING);
-        handler.removeMessages(CODE_REPEAT);
+        handler.removeCallbacksAndMessages(null);
         EventBus.getDefault().unregister(this);
     }
 

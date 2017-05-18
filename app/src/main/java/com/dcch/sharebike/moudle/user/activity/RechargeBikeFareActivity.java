@@ -306,7 +306,6 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                 String s4 = rbRg2100.getText().toString().trim();
                 rechargeNumber = s4.substring(1, s4.length());
                 break;
-
         }
     }
     Handler handler = new Handler() {
