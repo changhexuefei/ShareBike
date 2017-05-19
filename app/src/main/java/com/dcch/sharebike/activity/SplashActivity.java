@@ -64,7 +64,7 @@ public class SplashActivity extends BaseActivity {
                 handler.sendEmptyMessageDelayed(SWITCH_MAINACTIVITY, 2000);
             }
         }else{
-            ToastUtils.showLong(SplashActivity.this,getString(R.id.no_network_linking_tip));
+            ToastUtils.showLong(SplashActivity.this,getString(R.string.coupon_tip_two));
 //
 //            AlertDialog alertDialog = new AlertDialog.Builder(this)
 //                    .setTitle("")

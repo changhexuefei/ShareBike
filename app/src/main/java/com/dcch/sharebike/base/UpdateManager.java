@@ -14,7 +14,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.http.Api;
@@ -74,7 +73,7 @@ public class UpdateManager {
             //4:
             showUpdateVersionDialog();
         } else {
-            Toast.makeText(mContext, "已经是最新版本", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext, "已经是最新版本", Toast.LENGTH_SHORT).show();
         }
     }
 

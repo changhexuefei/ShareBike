@@ -231,7 +231,7 @@ public class RechargeActivity extends BaseActivity {
         map.put("outtradeno", outTradeNo);
         map.put("orderbody", orderbodydesc);
         map.put("subject", subjectdes);
-        map.put("money", "0.01");
+        map.put("money", moneySum);
         OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAYCASH).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {

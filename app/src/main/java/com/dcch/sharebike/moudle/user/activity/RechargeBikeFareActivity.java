@@ -51,8 +51,8 @@ import butterknife.OnClick;
 import okhttp3.Call;
 
 public class RechargeBikeFareActivity extends BaseActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
-    @BindView(R.id.moneySum)
-    EditText moneySum;
+    @BindView(R.id.input_moneySum)
+    EditText input_moneySum;
     @BindView(R.id.rb_rg1_10)
     RadioButton rbRg110;
     @BindView(R.id.rb_rg1_20)
@@ -101,9 +101,9 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
     }
 
     @Override
-    protected void initData() {
+        protected void initData() {
         mToolbar.setTitle("");
-        mTitle.setText(getResources().getString(R.string.recharge_bike_fare));
+        mTitle.setText(getString(R.string.recharge_bike_fare));
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -208,7 +208,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         map.put("out_trade_no", mOutTradeNo);
         map.put("attach", uID);
         map.put("body", subject);
-        map.put("total_price", "0.01");
+        map.put("total_price", rechargeNumber);
         map.put("spbill_create_ip", ipAddress);
         LogUtils.d("微信支付", ipAddress + "\n" + uID + "\n" + mOutTradeNo);
         OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINPAY).params(map).build().execute(new StringCallback() {
@@ -248,7 +248,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         map.put("outtradeno", outTradeNo);
         map.put("orderbody", orderbody);
         map.put("subject", subject);
-        map.put("money", "0.01");
+        map.put("money", rechargeNumber);
         ToastUtils.showShort(RechargeBikeFareActivity.this, rechargeNumber);
         OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAY).params(map).build().execute(new StringCallback() {
             @Override

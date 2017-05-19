@@ -6,6 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="com.dcch.sharebike.moudle.user.activity.RechargeBikeFareActivity">
 
     <include layout="@layout/toolbar"/>
@@ -22,7 +24,9 @@
         android:textColor="#716F76"/>
 
     <EditText
-        android:id="@+id/moneySum"
+        android:visibility="gone"
+        android:inputType="number"
+        android:id="@+id/input_moneySum"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_below="@+id/tv20"
@@ -30,15 +34,13 @@
         android:layout_marginRight="15dp"
         android:background="#e1dede"
         android:gravity="center"
-        android:hint="按需输入充值金额，最低一元"
-        android:textSize="12sp"
-        android:visibility="gone"/>
+        android:hint="@string/recharge_bikefare"
+        android:textSize="12sp"/>
 
     <RadioGroup
         android:id="@+id/rg_rec_rg1"
         style="@style/rg_money"
-        android:layout_below="@+id/moneySum">
-
+        android:layout_below="@+id/input_moneySum">
         <RadioButton
             android:id="@+id/rb_rg1_10"
             style="@style/rb_money_check"
@@ -78,7 +80,7 @@
         android:id="@+id/pay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/rg_rec_rg2"
         android:layout_marginTop="10dp"
         android:background="#ffffff"

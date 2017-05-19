@@ -59,7 +59,6 @@ import com.dcch.sharebike.base.AppManager;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.CodeEvent;
 import com.dcch.sharebike.base.MessageEvent;
-import com.dcch.sharebike.base.UpdateManager;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.libzxing.zxing.activity.CaptureActivity;
 import com.dcch.sharebike.listener.MyOrientationListener;
@@ -224,8 +223,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         showCamera();
         initPermission();
         bikeInfos = new ArrayList<>();
-        UpdateManager updateManager = new UpdateManager(this);
-        updateManager.checkVersion();
+
         // 初始化GeoCoder模块，注册事件监听
 //        mSearch = GeoCoder.newInstance();
 //        mSearch.setOnGetGeoCodeResultListener(this);
@@ -1049,6 +1047,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 case 0:
                     if (bundle != null) {
                         result = bundle.getString("result");
+                        LogUtils.d("锁号",result);
                         checkBicycleNo(result, mToken);
                     }
                     break;
@@ -1206,7 +1205,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             menuWindow = new SelectPicPopupWindow(MainActivity.this, bikeInfo, itemsOnClick);
         }
         menuWindow.setFocusable(false);
-        menuWindow.setOutsideTouchable(false);
+        menuWindow.setOutsideTouchable(true);
         menuWindow.showAsDropDown(findViewById(R.id.top));
         if (SPUtils.isLogin()) {
             if (cashStatus == 1 && status == 1) {
@@ -1221,7 +1220,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         } else {
             menuWindow.mOrder.setText("立即登录即可骑单车");
         }
-
     }
 
     @Override
@@ -1556,10 +1554,12 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
             }
             clickBaiduMapMark();
+            clickDismissOverlay();
         } else {
             ToastUtils.showShort(MainActivity.this, getString(R.string.no_network_tip));
+            clickDismissOverlay();
         }
-        clickDismissOverlay();
+
     }
 
     @Override

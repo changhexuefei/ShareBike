@@ -55,12 +55,6 @@ public class WalletInfoActivity extends BaseActivity {
     @BindView(R.id.showArea)
     TextView showArea;
     private RefundPopuwindow refundPopuwindow;
-    private final String msg = "骑行单车必须支付押金，押金可退还。";
-    private final String tipThere = "押金退款";
-    private final String tipFour = "充押金";
-    private final String Title = "提示";
-    private final String ToCharge = "充押金";
-    private final String goToDeposit = "去充值";
     private String uID;
     private UserInfo mInfo;
     private int mCashStatus;
@@ -87,11 +81,14 @@ public class WalletInfoActivity extends BaseActivity {
                 mStatus = mInfo.getStatus();
                 remainingSum.setText(String.valueOf(mInfo.getAggregateAmount()));
                 if (mInfo.getCashStatus() == 1) {
-                    showArea.setText("押金" + mInfo.getPledgeCash() + "元");
-                    chargeDeposit.setText(tipThere);
+                    mTotal_fee = String.valueOf(mInfo.getPledgeCash());
+                    mRefund_fee = mTotal_fee;
+                    showArea.setText("押金" + mTotal_fee + "元");
+                    chargeDeposit.setText(getString(R.string.tipThere));
                 } else if (mInfo.getCashStatus() == 0) {
-                    showArea.setText("押金" + mInfo.getPledgeCash() + "元");
-                    chargeDeposit.setText(tipFour);
+                    mTotal_fee = String.valueOf(mInfo.getPledgeCash());
+                    showArea.setText("押金" + mTotal_fee + "元");
+                    chargeDeposit.setText(getString(R.string.tipFour));
                 }
             }
 
@@ -136,13 +133,15 @@ public class WalletInfoActivity extends BaseActivity {
                 choosePrepaid();
                 break;
             case R.id.chargeDeposit:
+                LogUtils.d("呵呵","我是充押金");
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                if (chargeDeposit.getText().equals(tipFour)) {
+                if (chargeDeposit.getText().equals(getString(R.string.tipFour))) {
+
                     Intent rechargeDeposit = new Intent(WalletInfoActivity.this, RechargeDepositActivity.class);
                     startActivity(rechargeDeposit);
-                } else if (chargeDeposit.getText().equals(tipThere)) {
+                } else if (chargeDeposit.getText().equals(getString(R.string.tipThere))) {
                     showRefundPopuwindow();
                 }
                 break;
@@ -176,15 +175,15 @@ public class WalletInfoActivity extends BaseActivity {
 
     private void popupDialog() {
         new AlertDialog.Builder(this)
-                .setTitle(Title)
-                .setMessage(msg)
-                .setNegativeButton(ToCharge, new DialogInterface.OnClickListener() {
+                .setTitle(getString(R.string.title))
+                .setMessage(getString(R.string.recharge_deposit_tip))
+                .setNegativeButton(getString(R.string.toCharge), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         startActivity(new Intent(WalletInfoActivity.this, RechargeDepositActivity.class));
                     }
                 })
-                .setPositiveButton(goToDeposit, new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.goToDeposit), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         startActivity(new Intent(WalletInfoActivity.this, RechargeBikeFareActivity.class));
@@ -228,13 +227,13 @@ public class WalletInfoActivity extends BaseActivity {
                     if (object.optString("resultStatus").equals("1")) {
                         WeixinPay weixinPay = new WeixinPay(WalletInfoActivity.this);
                         mOutRefundNo = weixinPay.getOutRefundNo();
-                        refundPledgeCash(uID, mOutRefundNo, mToken);
+                        refundPledgeCash(uID, mOutRefundNo, mToken, mTotal_fee, mRefund_fee);
                     } else if (object.optString("resultStatus").equals("0")) {
                         ToastUtils.showShort(WalletInfoActivity.this, "您的账户车费余额不足，请先充值后再进行退款操作！");
                         startActivity(new Intent(WalletInfoActivity.this, RechargeBikeFareActivity.class));
                     } else if (object.optString("resultStatus").equals("2")) {
                         ToastUtils.showShort(App.getContext(), "您的账户在其他设备上登录，您被迫下线！");
-                        startActivity(new Intent(App.getContext(), LoginActivity.class));
+                        startActivity(new Intent(WalletInfoActivity.this, LoginActivity.class));
                         WalletInfoActivity.this.finish();
                     }
                 } catch (JSONException e) {
@@ -246,12 +245,12 @@ public class WalletInfoActivity extends BaseActivity {
 
     }
 
-    private void refundPledgeCash(String uID, String outRefundNo, String mToken) {
+    private void refundPledgeCash(String uID, String outRefundNo, String mToken, String mTotal_fee, String mRefund_fee) {
         mMap = new HashMap<>();
         mMap.put("userId", uID);
         mMap.put("out_refund_no", outRefundNo);
-        mMap.put("total_fee", "0.01");
-        mMap.put("refund_fee", "0.01");
+        mMap.put("total_fee", mTotal_fee);
+        mMap.put("refund_fee", mRefund_fee);
         mMap.put("token", mToken);
         OkHttpUtils.post().url(Api.BASE_URL + Api.REFUNDWXPAY).params(mMap).build().execute(new StringCallback() {
             @Override
@@ -304,12 +303,12 @@ public class WalletInfoActivity extends BaseActivity {
                     if (mCashStatus == 0) {
                         remainingSum.setText(String.valueOf(mInfo.getAggregateAmount()));
                         showArea.setText("押金" + String.valueOf(mInfo.getPledgeCash()) + "元");
-                        chargeDeposit.setText(tipFour);
+                        chargeDeposit.setText(R.string.tipFour);
 
                     } else if (mCashStatus == 1) {
                         remainingSum.setText(String.valueOf(mInfo.getAggregateAmount()));
                         showArea.setText("押金" + String.valueOf(mInfo.getPledgeCash()) + "元");
-                        chargeDeposit.setText(tipThere);
+                        chargeDeposit.setText(R.string.tipThere);
                     }
                 }
             }

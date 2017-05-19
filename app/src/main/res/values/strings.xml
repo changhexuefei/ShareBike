@@ -7,6 +7,11 @@
     <string name="weixin">微信</string>
     <string name="zhifubao">支付宝</string>
     <string name="tip">押金（98元）</string>
+    <string name="toCharge">充押金</string>
+    <string name="goToDeposit">去充值</string>
+    <string name="title">提示</string>
+    <string name="tipThere">押金退款</string>
+    <string name="tipFour">充押金</string>
     <string name="title_recharge">押金充值</string>
     <string name="instructions">麒麟单车使用说明</string>
     <string name="share_title">麒麟单车</string>
@@ -169,4 +174,5 @@
     <string name="trouble">我是故障车！</string>
     <string name="preengaged">我已经被预约！</string>
     <string name="switching_network_tip">你当前使用的手机网络,请切换到无线网络进行下载</string>
+    <string name="recharge_bikefare">按需输入充值金额，最低1元</string>
 </resources>
