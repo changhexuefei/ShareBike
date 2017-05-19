@@ -59,6 +59,7 @@ import com.dcch.sharebike.base.AppManager;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.CodeEvent;
 import com.dcch.sharebike.base.MessageEvent;
+import com.dcch.sharebike.base.UpdateManager;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.libzxing.zxing.activity.CaptureActivity;
 import com.dcch.sharebike.listener.MyOrientationListener;
@@ -1600,6 +1601,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         EventBus.getDefault().register(this);
         AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         lr = new LocationReceiver();
+        UpdateManager updateManager = new UpdateManager(this);
+        updateManager.checkVersion();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("NEW LOCATION SENT");
         registerReceiver(lr, intentFilter);
