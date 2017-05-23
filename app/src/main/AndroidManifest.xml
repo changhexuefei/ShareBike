@@ -96,6 +96,29 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- 讯飞 -->
+        <meta-data
+            android:name="IFLYTEK_APPKEY"
+            android:value="'591ec095'" />
+        <!--<meta-data-->
+            <!--android:name="IFLYTEK_CHANNEL"-->
+            <!--android:value="${UMENG_CHANNEL}" />-->
+
+        <activity
+            android:name="com.iflytek.autoupdate.IFlytekUpdateDialog"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+
+        <!-- 下载基础服务 -->
+        <service
+            android:name="com.iflytek.autoupdate.IFlytekDownloadService"
+            android:enabled="true"
+            android:process=":IFlytekDownloadService" />
+
         <activity android:name=".libzxing.zxing.activity.CaptureActivity"/>
         <activity
             android:name=".MainActivity"
@@ -352,7 +375,7 @@
              </intent-filter>
         </activity>
 
-        <service android:name=".service.DownService"/>
+        <!--<service android:name=".service.DownService"/>-->
 
         <receiver
             android:name=".receiver.AppRegister"

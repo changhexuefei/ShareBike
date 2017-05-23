@@ -24,7 +24,6 @@
         android:textColor="#716F76"/>
 
     <EditText
-        android:visibility="gone"
         android:inputType="number"
         android:id="@+id/input_moneySum"
         android:layout_width="match_parent"

@@ -15,7 +15,6 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
-import com.dcch.sharebike.utils.ToastUtils;
 
 import butterknife.BindView;
 
@@ -57,40 +56,23 @@ public class SplashActivity extends BaseActivity {
         animation.setDuration(1000);
         animation.setFillAfter(true);
         mRlSplashRoot.startAnimation(animation);
-        if(NetUtils.isConnected(App.getContext())){
+        LogUtils.d("网络", NetUtils.isConnected(App.getContext()) + "");
+        if (NetUtils.isConnected(App.getContext())) {
             if (SPUtils.isFirst()) {
                 handler.sendEmptyMessageDelayed(SWITCH_GUIDACTIVITY, 2000);
             } else {
                 handler.sendEmptyMessageDelayed(SWITCH_MAINACTIVITY, 2000);
             }
-        }else{
-            ToastUtils.showLong(SplashActivity.this,getString(R.string.coupon_tip_two));
-//
-//            AlertDialog alertDialog = new AlertDialog.Builder(this)
-//                    .setTitle("")
-//                    .setMessage(getString(R.string.no_network_tip))
-//                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            dialogInterface.dismiss();
-//                            AppManager.finishCurrentActivity();
-//                        }
-//                    })
-//                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            NetUtils.openSetting(SplashActivity.this);
-//                        }
-//                    })
-//                    .setCancelable(false)
-//                    .show();
+        } else {
+//            ToastUtils.showLong(SplashActivity.this, getString(R.string.coupon_tip_two));
+            NetUtils.checkNetwork(this);
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        LogUtils.d("设置",data.toString());
+        LogUtils.d("设置", data.toString());
     }
 
     private void switchPage() {

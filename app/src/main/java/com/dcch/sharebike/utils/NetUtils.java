@@ -3,9 +3,14 @@ package com.dcch.sharebike.utils;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
+
+import com.dcch.sharebike.base.AppManager;
 
 /**
  * 跟网络相关的工具类
@@ -13,63 +18,88 @@ import android.net.NetworkInfo;
  * @author zhy
  */
 public class NetUtils {
-	private NetUtils() {
-		/* cannot be instantiated */
-		throw new UnsupportedOperationException("cannot be instantiated");
-	}
+    private NetUtils() {
+        /* cannot be instantiated */
+        throw new UnsupportedOperationException("cannot be instantiated");
+    }
 
-	/**
-	 * 判断网络是否连接
-	 * @param context
-	 * @return
-	 */
-	public static boolean isConnected(Context context) {
+    /**
+     * 判断网络是否连接
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isConnected(Context context) {
 
-		ConnectivityManager connectivity = (ConnectivityManager) context
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivity = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
 
-		if (null != connectivity) {
+        if (null != connectivity) {
 
-			NetworkInfo info = connectivity.getActiveNetworkInfo();
-			if (null != info && info.isConnected()) {
-				if (info.getState() == NetworkInfo.State.CONNECTED) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+            NetworkInfo info = connectivity.getActiveNetworkInfo();
+            if (null != info && info.isConnected()) {
+                if (info.getState() == NetworkInfo.State.CONNECTED) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-	/**
-	 * 判断是否是wifi连接
-	 */
-	public static boolean isWifi(Context context) {
-		ConnectivityManager cm = (ConnectivityManager) context
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
+    /**
+     * 判断是否是wifi连接
+     */
+    public static boolean isWifi(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
 
-		if (cm == null)
-			return false;
-		return cm.getActiveNetworkInfo().getType() == ConnectivityManager.TYPE_WIFI;
+        if (cm == null)
+            return false;
+        return cm.getActiveNetworkInfo().getType() == ConnectivityManager.TYPE_WIFI;
 
-	}
+    }
 
-	/**
-	 * 打开网络设置界面
-	 */
-	public static void openSetting(Activity activity) {
-		LogUtils.d("设置","1233333333333");
-		Intent intent = new Intent();
-		LogUtils.d("设置","qqqqqqqq");
-		ComponentName cm = new ComponentName("com.android.settings",
-				"com.android.settings.WirelessSettings");
-		LogUtils.d("设置","trtrtrt");
-		intent.setComponent(cm);
-		LogUtils.d("设置","wwwwww");
-		intent.setAction("android.intent.action.VIEW");
-		LogUtils.d("设置","eeeeee");
-//		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		LogUtils.d("设置","yyyyy");
-		activity.startActivityForResult(intent, 0);
-	}
+    /**
+     * 打开网络设置界面
+     */
+    public static void openSetting(Activity activity) {
+
+        Intent intent = new Intent();
+        ComponentName cm = new ComponentName("com.android.settings",
+                "com.android.settings.WirelessSettings");
+
+        intent.setComponent(cm);
+
+        intent.setAction("android.intent.action.VIEW");
+
+        activity.startActivityForResult(intent, 0);
+    }
+
+    // 如果没有网络，则弹出网络设置对话框
+    public static void checkNetwork(final Activity activity) {
+        if (!NetUtils.isConnected(activity)) {
+            AlertDialog alertDialog = new AlertDialog.Builder(activity)
+                    .setTitle("")
+                    .setMessage("网络无法访问，请检查网络连接")
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                            AppManager.finishCurrentActivity();
+                        }
+                    })
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // 跳转到设置界面
+                            activity.startActivityForResult(new Intent(Settings.ACTION_SETTINGS), 0);
+                        }
+                    })
+                    .setCancelable(false)
+                    .show();
+        }
+        return;
+    }
+
 
 }

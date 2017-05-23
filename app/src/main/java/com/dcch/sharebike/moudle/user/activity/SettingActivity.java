@@ -1,11 +1,8 @@
 package com.dcch.sharebike.moudle.user.activity;
 
 import android.app.AlertDialog;
-import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -16,13 +13,19 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
-import com.dcch.sharebike.base.ServiceAndroidContact;
 import com.dcch.sharebike.base.UpdateManager;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.utils.ClickUtils;
+import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
+import com.iflytek.autoupdate.IFlytekUpdate;
+import com.iflytek.autoupdate.IFlytekUpdateListener;
+import com.iflytek.autoupdate.UpdateConstants;
+import com.iflytek.autoupdate.UpdateErrorCode;
+import com.iflytek.autoupdate.UpdateInfo;
+import com.iflytek.autoupdate.UpdateType;
 
 import org.simple.eventbus.EventBus;
 
@@ -53,18 +56,6 @@ public class SettingActivity extends BaseActivity {
     Toolbar mToolbar;
 
     public static Boolean IS = false;
-    private ServiceAndroidContact serviceAndroidContact = new ServiceAndroidContact();
-
-    ServiceConnection coon = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            serviceAndroidContact.Log();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-        }
-    };
 
 
     @Override
@@ -97,6 +88,9 @@ public class SettingActivity extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
+                ToastUtils.showShort(this, "正在检查更新");
+                checkUpDate();
+
                 if (NetUtils.isConnected(this)) {
                     if (NetUtils.isWifi(this)) {
                         UpdateManager updateManager = new UpdateManager(this);
@@ -164,5 +158,36 @@ public class SettingActivity extends BaseActivity {
         }
     }
 
+    private void checkUpDate() {
+        //初始化自动更新对象
+        final IFlytekUpdate updManager = IFlytekUpdate.getInstance(this);
+        //开启调试模式，默认不开启
+        updManager.setDebugMode(true);
+        //开启wifi环境下检测更新，仅对自动更新有效，强制更新则生效
+        updManager.setParameter(UpdateConstants.EXTRA_WIFIONLY, "true");
+        //设置通知栏使用应用icon，详情请见示例
+        updManager.setParameter(UpdateConstants.EXTRA_NOTI_ICON, "true");
+        //设置更新提示类型，默认为通知栏提示
+        updManager.setParameter(UpdateConstants.EXTRA_STYLE, UpdateConstants.UPDATE_UI_DIALOG);
+        //自动更新回调方法，详情参考demo
+        IFlytekUpdateListener updateListener = new IFlytekUpdateListener() {
+            @Override
+            public void onResult(int errorcode, UpdateInfo result) {
+                if (errorcode == UpdateErrorCode.OK && result != null) {
+                    if (result.getUpdateType() == UpdateType.NoNeed) {
+                        LogUtils.d("版本","已经是最新版本！");
+                        ToastUtils.showShort(SettingActivity.this, "已经是最新版本！");
+                        return;
+                    }
+                    updManager.showUpdateInfo(SettingActivity.this, result);
+                    LogUtils.d("版本",result.getUpdateVersionCode());
+                } else {
+                    ToastUtils.showShort(SettingActivity.this, "请求更新失败！");
+                }
+            }
+        };
+        // 启动自动更新
+        updManager.autoUpdate(this, updateListener);
+    }
 
 }

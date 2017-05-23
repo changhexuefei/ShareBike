@@ -81,7 +81,6 @@ import com.dcch.sharebike.moudle.user.activity.RechargeDepositActivity;
 import com.dcch.sharebike.moudle.user.activity.RidingResultActivity;
 import com.dcch.sharebike.moudle.user.activity.UnlockProgressActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
-import com.dcch.sharebike.netty.NettyClient;
 import com.dcch.sharebike.overlayutil.OverlayManager;
 import com.dcch.sharebike.overlayutil.WalkingRouteOverlay;
 import com.dcch.sharebike.service.GPSService;
@@ -100,6 +99,11 @@ import com.google.gson.Gson;
 import com.hss01248.dialog.StyledDialog;
 import com.hss01248.dialog.bottomsheet.BottomSheetBean;
 import com.hss01248.dialog.interfaces.MyItemDialogListener;
+import com.iflytek.autoupdate.IFlytekUpdate;
+import com.iflytek.autoupdate.IFlytekUpdateListener;
+import com.iflytek.autoupdate.UpdateConstants;
+import com.iflytek.autoupdate.UpdateErrorCode;
+import com.iflytek.autoupdate.UpdateInfo;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -126,6 +130,8 @@ import permissions.dispatcher.RuntimePermissions;
 import static com.dcch.sharebike.R.id.btn_my_help;
 import static com.dcch.sharebike.R.id.seek;
 import static com.dcch.sharebike.utils.MapUtil.stringToInt;
+
+//import com.dcch.sharebike.netty.NettyClient;
 
 
 @RuntimePermissions
@@ -208,7 +214,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     Marker mMarker = null;
     private String mToken;
-    private NettyClient mClient;
+//    private NettyClient mClient;
     private boolean mHasPlanRoute;
 
     @Override
@@ -244,7 +250,33 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         // 初始化传感器
         initOritationListener();
 //        setMarkerInfo();
+
     }
+
+    private void updataApp() {
+        //初始化自动更新对象
+        final IFlytekUpdate updManager = IFlytekUpdate.getInstance(this);
+        //开启调试模式，默认不开启
+        updManager.setDebugMode(false);
+        //开启wifi环境下检测更新，仅对自动更新有效，强制更新则生效
+        updManager.setParameter(UpdateConstants.EXTRA_WIFIONLY, "true");
+        //设置通知栏使用应用icon，详情请见示例
+        updManager.setParameter(UpdateConstants.EXTRA_NOTI_ICON, "true");
+        //设置更新提示类型，默认为通知栏提示
+        updManager.setParameter(UpdateConstants.EXTRA_STYLE, UpdateConstants.UPDATE_UI_DIALOG);
+        //自动更新回调方法，详情参考demo
+        IFlytekUpdateListener updateListener = new IFlytekUpdateListener() {
+            @Override
+            public void onResult(int errorcode, UpdateInfo result) {
+                if (errorcode == UpdateErrorCode.OK && result != null) {
+                    updManager.showUpdateInfo(MainActivity.this, result);
+                }
+            }
+        };
+        // 启动自动更新
+        updManager.autoUpdate(this, updateListener);
+    }
+
 
     private void queryUserInfo(String uID, String token) {
         Map<String, String> map = new HashMap<>();
@@ -1103,7 +1135,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     //扫码开锁的方法
     private void openScan(final String uID, String phone, final String result, final String mToken) {
-        mClient = NettyClient.getInstance();
+//        mClient = NettyClient.getInstance();
         if (phone != null && !phone.equals("") && result != null && !result.equals("")) {
             Map<String, String> map = new HashMap<>();
             map.put("userId", uID);
@@ -1603,6 +1635,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         lr = new LocationReceiver();
         UpdateManager updateManager = new UpdateManager(this);
         updateManager.checkVersion();
+        updataApp();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("NEW LOCATION SENT");
         registerReceiver(lr, intentFilter);

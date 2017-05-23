@@ -47,7 +47,7 @@
         android:id="@+id/password"
         android:layout_width="220dp"
         android:layout_height="40dp"
-        android:layout_alignStart="@+id/userName"
+        android:layout_alignLeft="@+id/userName"
         android:layout_below="@+id/userName"
         android:layout_marginTop="10dp"
         android:background="#dad5d5">

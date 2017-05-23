@@ -115,7 +115,6 @@ dependencies {
     compile 'com.anton46:stepsview:0.0.2'
     compile 'com.zhy:base-rvadapter:3.0.3'
     compile 'com.android.support:percent:22.2.0'
-    compile 'io.netty:netty-all:5.0.0.Alpha2'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
@@ -125,4 +124,5 @@ dependencies {
     releaseCompile 'com.github.moduth:blockcanary-no-op:1.2.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     compile files('libs/AutoUpdate_SDK.jar')
+    compile files('libs/netty-all-4.1.11.Final.jar')
 }
