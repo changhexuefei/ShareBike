@@ -133,12 +133,10 @@ public class WalletInfoActivity extends BaseActivity {
                 choosePrepaid();
                 break;
             case R.id.chargeDeposit:
-                LogUtils.d("呵呵","我是充押金");
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
                 if (chargeDeposit.getText().equals(getString(R.string.tipFour))) {
-
                     Intent rechargeDeposit = new Intent(WalletInfoActivity.this, RechargeDepositActivity.class);
                     startActivity(rechargeDeposit);
                 } else if (chargeDeposit.getText().equals(getString(R.string.tipThere))) {

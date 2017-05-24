@@ -376,7 +376,7 @@
         </activity>
 
         <!--<service android:name=".service.DownService"/>-->
-
+        <service android:name=".service.NettyService" />
         <receiver
             android:name=".receiver.AppRegister"
             android:permission="com.tencent.mm.plugin.permission.SEND">

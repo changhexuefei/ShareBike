@@ -103,7 +103,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
     }
 
     @Override
-        protected void initData() {
+    protected void initData() {
         mToolbar.setTitle("");
         mTitle.setText(getString(R.string.recharge_bike_fare));
         setSupportActionBar(mToolbar);
@@ -115,9 +115,9 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         });
 
         rbfWeixinCheckbox.setChecked(true);
-        rbRg110.setChecked(true);
-        String s1 = rbRg110.getText().toString().trim();
-        rechargeNumber = s1.substring(1, s1.length());
+//        rbRg110.setChecked(true);
+//        String s1 = rbRg110.getText().toString().trim();
+//        rechargeNumber = s1.substring(1, s1.length());
         if (SPUtils.isLogin()) {
             String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
             Log.d("ooooo", userDetail);
@@ -139,6 +139,9 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
     protected void initListener() {
         rgRecRg1.setOnCheckedChangeListener(this);
         rgRecRg2.setOnCheckedChangeListener(this);
+        input_moneySum.setFocusable(true);
+        input_moneySum.setFocusableInTouchMode(true);
+        input_moneySum.requestFocus();
         input_moneySum.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -152,7 +155,17 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                if (s.toString().trim() != null && !s.toString().trim().equals("")) {
+                    if (Integer.valueOf(s.toString().trim()) > 0) {
+                        rbRg110.setChecked(false);
+                        rbRg120.setChecked(false);
+                        rbRg250.setChecked(false);
+                        rbRg2100.setChecked(false);
+                        rechargeNumber = s.toString().trim();
+                    } else {
+                        ToastUtils.showShort(RechargeBikeFareActivity.this, "请输入正确的数值");
+                    }
+                }
             }
         });
     }
@@ -232,6 +245,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINPAY).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                LogUtils.e("错误", e.getMessage());
                 ToastUtils.showShort(RechargeBikeFareActivity.this, "服务器正忙请稍后！");
             }
 
@@ -267,7 +281,6 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         map.put("orderbody", orderbody);
         map.put("subject", subject);
         map.put("money", rechargeNumber);
-        ToastUtils.showShort(RechargeBikeFareActivity.this, rechargeNumber);
         OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAY).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -301,12 +314,20 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         switch (checkedId) {
             case R.id.rb_rg1_10:
                 rgRecRg2.clearCheck();
+                input_moneySum.setText("");
+                rbRg110.setFocusable(true);
+                rbRg110.setFocusableInTouchMode(false);
+                rbRg110.requestFocus();
                 radioGroup.check(R.id.rb_rg1_10);
                 String s1 = rbRg110.getText().toString().trim();
                 rechargeNumber = s1.substring(1, s1.length());
                 break;
             case R.id.rb_rg1_20:
                 rgRecRg2.clearCheck();
+                input_moneySum.setText("");
+                rbRg120.setFocusable(true);
+                rbRg110.setFocusableInTouchMode(false);
+                rbRg120.requestFocus();
                 radioGroup.check(R.id.rb_rg1_20);
                 String s2 = rbRg120.getText().toString().trim();
                 rechargeNumber = s2.substring(1, s2.length());
@@ -314,18 +335,27 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
 
             case R.id.rb_rg2_50:
                 rgRecRg1.clearCheck();
+                input_moneySum.setText("");
+                rbRg250.setFocusable(true);
+                rbRg110.setFocusableInTouchMode(false);
+                rbRg250.requestFocus();
                 radioGroup.check(R.id.rb_rg2_50);
                 String s3 = rbRg250.getText().toString().trim();
                 rechargeNumber = s3.substring(1, s3.length());
                 break;
             case R.id.rb_rg2_100:
                 rgRecRg1.clearCheck();
+                input_moneySum.setText("");
+                rbRg2100.setFocusable(true);
+                rbRg110.setFocusableInTouchMode(false);
+                rbRg2100.requestFocus();
                 radioGroup.check(R.id.rb_rg2_100);
                 String s4 = rbRg2100.getText().toString().trim();
                 rechargeNumber = s4.substring(1, s4.length());
                 break;
         }
     }
+
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -364,8 +394,8 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
     protected void onDestroy() {
         super.onDestroy();
         handler.removeCallbacksAndMessages(null);
-        if(handler!=null){
-            handler=null;
+        if (handler != null) {
+            handler = null;
         }
     }
 }

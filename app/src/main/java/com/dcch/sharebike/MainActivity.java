@@ -84,6 +84,7 @@ import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.overlayutil.OverlayManager;
 import com.dcch.sharebike.overlayutil.WalkingRouteOverlay;
 import com.dcch.sharebike.service.GPSService;
+import com.dcch.sharebike.service.NettyService;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
@@ -1538,6 +1539,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         EventBus.getDefault().unregister(this);
         unregisterReceiver(lr);
         unregisterReceiver(mResultReceiver);
+        stopService(new Intent(this, NettyService.class));
         Log.d("实验", "onDestroy");
         mMapView.onDestroy();
         mMapView = null;
@@ -1632,6 +1634,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         //注册EventBus
         EventBus.getDefault().register(this);
         AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        startService(new Intent(this, NettyService.class));
         lr = new LocationReceiver();
         UpdateManager updateManager = new UpdateManager(this);
         updateManager.checkVersion();
