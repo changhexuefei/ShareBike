@@ -96,6 +96,7 @@ public class NettyClient {
     public boolean sendMsgToServer(byte[] data, ChannelFutureListener listener) {
         boolean flag = channel != null && isConnect;
         if (flag) {
+
             ByteBuf buf = Unpooled.copiedBuffer(data);
             LogUtils.d("netty", "flag"+flag+"\n"+data.toString());
             channel.writeAndFlush(buf).addListener(listener);
