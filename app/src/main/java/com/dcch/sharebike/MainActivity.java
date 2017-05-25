@@ -1647,7 +1647,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         //注册EventBus
         EventBus.getDefault().register(this);
         AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        startService(new Intent(this, NettyService.class));
+//        startService(new Intent(this, NettyService.class));
         lr = new LocationReceiver();
         UpdateManager updateManager = new UpdateManager(this);
         updateManager.checkVersion();
