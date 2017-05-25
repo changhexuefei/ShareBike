@@ -175,4 +175,5 @@
     <string name="preengaged">我已经被预约！</string>
     <string name="switching_network_tip">你当前使用的手机网络,请切换到无线网络进行下载</string>
     <string name="recharge_bikefare">按需输入充值金额，最低1元</string>
+    <string name="transaction_tip_two">交易成功</string>
 </resources>

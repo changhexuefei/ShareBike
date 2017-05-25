@@ -40,6 +40,8 @@ public class RefundPopuwindow extends PopupWindow {
         // 设置按钮监听
         btn_confirm.setOnClickListener(refundViewOnClick);
         btn_cancle.setOnClickListener(refundViewOnClick);
+
+
         // 设置SelectPicPopupWindow的View
         this.setContentView(refundView);
         // 设置SelectPicPopupWindow的View
@@ -47,7 +49,7 @@ public class RefundPopuwindow extends PopupWindow {
         // 设置SelectPicPopupWindow弹出窗体的宽
         this.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         // 设置SelectPicPopupWindow弹出窗体的高
-        this.setHeight(800);
+        this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         // 设置SelectPicPopupWindow弹出窗体可点击
         this.setFocusable(true);
 //             设置SelectPicPopupWindow弹出窗体动画效果

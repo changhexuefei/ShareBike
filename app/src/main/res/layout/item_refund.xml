@@ -1,45 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:id="@+id/refund_area"
-    android:background="@drawable/dialog_refund_bg"
-    android:layout_height="450dp"
-    android:orientation="vertical">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/refund_area"
+                android:background="#ffffff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
+    <ImageView
+        android:id="@+id/refund_image"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/dialog_refund_bg"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
     <TextView
-        android:layout_above="@+id/btn_area"
-        android:gravity="center"
-        android:padding="20dp"
+        android:layout_below="@+id/refund_image"
         android:id="@+id/tv_tip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/refund_tips" />
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/refund_tips"/>
+
     <LinearLayout
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@+id/tv_tip"
         android:id="@+id/btn_area"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <Button
-            android:background="@color/color_ff"
-            android:layout_marginLeft="20dp"
             android:id="@+id/btn_cancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:layout_weight="1"
-            android:text="@string/refund_cancel" />
+            android:background="@color/color_ff"
+            android:text="@string/refund_cancel"/>
 
         <Button
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="20dp"
-            android:textColor="#ffffff"
-            android:background="@color/colorTitle"
             android:id="@+id/btn_confirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
             android:layout_weight="1"
-            android:text="@string/refund_cash_pledge" />
+            android:background="@color/colorTitle"
+            android:text="@string/refund_cash_pledge"
+            android:textColor="#ffffff"/>
     </LinearLayout>
 </RelativeLayout>

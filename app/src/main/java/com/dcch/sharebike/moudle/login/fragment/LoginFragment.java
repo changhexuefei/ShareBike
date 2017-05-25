@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -81,6 +82,10 @@ public class LoginFragment extends Fragment {
     RelativeLayout setting;
     @BindView(R.id.remainSum)
     TextView remainSum;
+    @BindView(R.id.achievement_show)
+    LinearLayout mAchievementShow;
+    @BindView(R.id.no_network_tip)
+    LinearLayout mNoNetworkTip;
     private UserInfo mInfo;
     private String uID;
     private String mPhone;
@@ -114,13 +119,20 @@ public class LoginFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (uID != null && mToken != null) {
-            if (NetUtils.isConnected(App.getContext())) {
+        if (NetUtils.isConnected(App.getContext())) {
+            if (uID != null && mToken != null) {
                 getUserInfo(uID, mToken);
             } else {
                 if (mNickName != null && !mNickName.equals("")) {
                     nickName.setText(mNickName);
                 }
+            }
+            mAchievementShow.setVisibility(View.VISIBLE);
+            mNoNetworkTip.setVisibility(View.GONE);
+        } else {
+            mAchievementShow.setVisibility(View.GONE);
+            if (mNoNetworkTip != null) {
+                mNoNetworkTip.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -187,7 +199,7 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
-    @OnClick({R.id.creditScore, R.id.userIcon, R.id.wallet, R.id.favorable, R.id.journey, R.id.message, R.id.friend, R.id.guide, R.id.setting})
+    @OnClick({R.id.no_network_tip, R.id.creditScore, R.id.userIcon, R.id.wallet, R.id.favorable, R.id.journey, R.id.message, R.id.friend, R.id.guide, R.id.setting})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.creditScore:
@@ -269,6 +281,17 @@ public class LoginFragment extends Fragment {
                 }
                 startActivity(new Intent(getActivity(), SettingActivity.class));
                 break;
+
+            case R.id.no_network_tip:
+                if (ClickUtils.isFastClick()) {
+                    return;
+                }
+                if (NetUtils.isConnected(getContext())) {
+                    onResume();
+                } else {
+                    ToastUtils.showShort(getActivity(), getString(R.string.no_network_tip));
+                }
+                break;
         }
     }
 
@@ -320,4 +343,5 @@ public class LoginFragment extends Fragment {
         super.onDestroy();
 //        App.getRefWatcher().watch(this);
     }
+
 }

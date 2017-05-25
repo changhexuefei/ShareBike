@@ -196,9 +196,15 @@ public class WalletInfoActivity extends BaseActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.btn_cancel:
+                    if (ClickUtils.isFastClick()) {
+                        return;
+                    }
                     refundPopuwindow.dismiss();
                     break;
                 case R.id.btn_confirm:
+                    if (ClickUtils.isFastClick()) {
+                        return;
+                    }
                     //先进行检查余额操作
                     checkAccountBalances(uID, mToken);
                     break;

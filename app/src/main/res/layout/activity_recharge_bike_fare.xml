@@ -24,6 +24,7 @@
         android:textColor="#716F76"/>
 
     <EditText
+        android:visibility="gone"
         android:inputType="number"
         android:id="@+id/input_moneySum"
         android:layout_width="match_parent"
@@ -35,11 +36,31 @@
         android:gravity="center"
         android:hint="@string/recharge_bikefare"
         android:textSize="12sp"/>
+    <RadioGroup
+        android:id="@+id/rg_rec_rg"
+        style="@style/rg_money"
+        android:layout_below="@+id/input_moneySum">
+        <RadioButton
+            android:id="@+id/rb_rg_1"
+            style="@style/rb_money_check"
+            android:text="￥1.00"/>
+
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="match_parent"/>
+
+        <RadioButton
+            android:id="@+id/rb_rg_5"
+            style="@style/rb_money_check"
+            android:text="￥5.00"/>
+    </RadioGroup>
+
+
 
     <RadioGroup
         android:id="@+id/rg_rec_rg1"
         style="@style/rg_money"
-        android:layout_below="@+id/input_moneySum">
+        android:layout_below="@+id/rg_rec_rg">
         <RadioButton
             android:id="@+id/rb_rg1_10"
             style="@style/rb_money_check"

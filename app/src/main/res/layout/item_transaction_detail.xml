@@ -13,7 +13,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
-        android:text="支付成功"
+        android:text="@string/transaction_tip_two"
         android:textColor="#000000"
         android:textSize="16sp"/>
 
@@ -36,7 +36,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/dealResult"
         android:layout_marginRight="20dp"
-        android:text="199元"
+        android:text="1元"
         android:textColor="@color/colorTitle"
         android:textSize="16sp"/>
 

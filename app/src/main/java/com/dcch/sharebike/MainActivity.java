@@ -72,10 +72,10 @@ import com.dcch.sharebike.moudle.login.activity.ClickMyHelpActivity;
 import com.dcch.sharebike.moudle.login.activity.IdentityAuthentication;
 import com.dcch.sharebike.moudle.login.activity.LoginActivity;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
-import com.dcch.sharebike.moudle.login.activity.PropagandaPosterActivity;
 import com.dcch.sharebike.moudle.login.activity.RechargeActivity;
 import com.dcch.sharebike.moudle.search.activity.SeekActivity;
 import com.dcch.sharebike.moudle.user.activity.CustomerServiceActivity;
+import com.dcch.sharebike.moudle.user.activity.MyMessageActivity;
 import com.dcch.sharebike.moudle.user.activity.RechargeBikeFareActivity;
 import com.dcch.sharebike.moudle.user.activity.RechargeDepositActivity;
 import com.dcch.sharebike.moudle.user.activity.RidingResultActivity;
@@ -215,7 +215,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     Marker mMarker = null;
     private String mToken;
-//    private NettyClient mClient;
+    //    private NettyClient mClient;
     private boolean mHasPlanRoute;
 
     @Override
@@ -581,9 +581,19 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                startActivity(new Intent(MainActivity.this, PropagandaPosterActivity.class));
+                if (uID != null && mToken != null) {
+                    goToMessageList(uID, mToken);
+                }
+//                startActivity(new Intent(MainActivity.this, PropagandaPosterActivity.class));
                 break;
         }
+    }
+
+    private void goToMessageList(String uID, String token) {
+        Intent myMessage = new Intent(MainActivity.this, MyMessageActivity.class);
+        myMessage.putExtra("userId", uID);
+        myMessage.putExtra("token", token);
+        startActivity(myMessage);
     }
 
     private void goToPersonCenter() {
@@ -787,7 +797,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     break;
 
                 case R.id.forBellIcon:
-                    ToastUtils.showShort(MainActivity.this, "寻车铃");
+                    if (ClickUtils.isFastClick()) {
+                        return;
+                    }
                     bookBikePopupWindow.forBellIcon.setImageResource(R.drawable.frame);
                     AnimationDrawable anim = (AnimationDrawable) bookBikePopupWindow.forBellIcon.getDrawable();
                     anim.start();
@@ -1081,7 +1093,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 case 0:
                     if (bundle != null) {
                         result = bundle.getString("result");
-                        LogUtils.d("锁号",result);
+                        result = result.substring(result.length() - 11, result.length());
+                        LogUtils.d("锁号", result);
                         checkBicycleNo(result, mToken);
                     }
                     break;

@@ -7,6 +7,9 @@ import com.baidu.mapapi.SDKInitializer;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.service.InitializeService;
 
+import timber.log.BuildConfig;
+import timber.log.Timber;
+
 public class App extends Application {
     //    private static List<Activity> activityList = Collections
 //            .synchronizedList(new LinkedList<Activity>());
@@ -73,6 +76,12 @@ public class App extends Application {
 //        };
 //        //x5内核初始化接口
 //        QbSdk.initX5Environment(getApplicationContext(), cb);
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
+
+
     }
 
 //    public static RefWatcher getRefWatcher() {
