@@ -53,7 +53,6 @@ public class NettyClient {
                     public void operationComplete(ChannelFuture channelFuture) throws Exception {
                         if (channelFuture.isSuccess()) {
                             LogUtils.d("netty", "chenggong"+MyContent.HOST+"\n"+MyContent.TCP_PORT);
-
                             isConnect = true;
                             channel = channelFuture.channel();
                         } else {
@@ -68,6 +67,9 @@ public class NettyClient {
                 LogUtils.d("netty", "yichang"+e.getMessage());
                 listener.onServiceStatusConnectChanged(NettyListener.STATUS_CONNECT_ERROR);
                 reconnect();
+            }finally {
+                //关闭，释放线程资源
+//                group.shutdownGracefully();
             }
         }
         return this;
@@ -96,9 +98,13 @@ public class NettyClient {
     public boolean sendMsgToServer(byte[] data, ChannelFutureListener listener) {
         boolean flag = channel != null && isConnect;
         if (flag) {
-
             ByteBuf buf = Unpooled.copiedBuffer(data);
-            LogUtils.d("netty", "flag"+flag+"\n"+data.toString());
+            byte b = buf.readByte();
+//            LogUtils.d("netty", "flag"+flag+"\n");
+            String s = new String(data);
+            LogUtils.d("netty", "flag"+flag+"\n"+data);
+            LogUtils.d("netty", "flag"+flag+"\n"+s);
+
             channel.writeAndFlush(buf).addListener(listener);
         }
         return flag;

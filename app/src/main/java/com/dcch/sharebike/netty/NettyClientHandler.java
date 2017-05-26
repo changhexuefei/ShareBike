@@ -13,16 +13,19 @@ import io.netty.channel.SimpleChannelInboundHandler;
 public class NettyClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     private NettyListener listener;
-    public NettyClientHandler(NettyListener listener){
+
+    public NettyClientHandler(NettyListener listener) {
         this.listener = listener;
     }
 
+    //连接成功
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         NettyClient.getInstance().setConnectStatus(true);
         listener.onServiceStatusConnectChanged(NettyListener.STATUS_CONNECT_SUCCESS);
     }
 
+    //断开连接
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         NettyClient.getInstance().setConnectStatus(false);
@@ -30,9 +33,10 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
         NettyClient.getInstance().reconnect();
     }
 
+    //连接成功，接收数据
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf) throws Exception {
-        LogUtils.d("netty", "channelRead0"+byteBuf.toString());
+        LogUtils.d("netty", "channelRead0" + byteBuf.toString());
         listener.onMessageResponse(byteBuf);
     }
 

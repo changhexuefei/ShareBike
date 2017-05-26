@@ -67,6 +67,7 @@ import com.dcch.sharebike.moudle.home.bean.BikeInfo;
 import com.dcch.sharebike.moudle.home.bean.BikeRentalOrderInfo;
 import com.dcch.sharebike.moudle.home.bean.BookingBikeInfo;
 import com.dcch.sharebike.moudle.home.bean.RidingInfo;
+import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.moudle.login.activity.ClickCameraPopupActivity;
 import com.dcch.sharebike.moudle.login.activity.ClickMyHelpActivity;
 import com.dcch.sharebike.moudle.login.activity.IdentityAuthentication;
@@ -81,6 +82,7 @@ import com.dcch.sharebike.moudle.user.activity.RechargeDepositActivity;
 import com.dcch.sharebike.moudle.user.activity.RidingResultActivity;
 import com.dcch.sharebike.moudle.user.activity.UnlockProgressActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
+import com.dcch.sharebike.netty.SimpleClient;
 import com.dcch.sharebike.overlayutil.OverlayManager;
 import com.dcch.sharebike.overlayutil.WalkingRouteOverlay;
 import com.dcch.sharebike.service.GPSService;
@@ -1648,7 +1650,23 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         //注册EventBus
         EventBus.getDefault().register(this);
         AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        startService(new Intent(this, NettyService.class));
+//        startService(new Intent(this, NettyService.class));
+
+
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    SimpleClient simpleClient = new SimpleClient();
+                    try {
+                    simpleClient.connect(MyContent.HOST,MyContent.TCP_PORT);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+
+
         lr = new LocationReceiver();
         UpdateManager updateManager = new UpdateManager(this);
         updateManager.checkVersion();

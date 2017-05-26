@@ -13,12 +13,10 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import com.dcch.sharebike.netty.NettyClient;
 import com.dcch.sharebike.netty.NettyListener;
-import com.dcch.sharebike.utils.AuthModel;
 import com.dcch.sharebike.utils.Blowfish;
 import com.dcch.sharebike.utils.ByteUtil;
 import com.dcch.sharebike.utils.CRC32Util;
 import com.dcch.sharebike.utils.LogUtils;
-import com.dcch.sharebike.utils.RequestUtil;
 import com.dcch.sharebike.utils.WriteLogUtil;
 
 import org.json.JSONException;
@@ -54,7 +52,6 @@ public class NettyService extends Service implements NettyListener {
     @Override
     public void onCreate() {
         super.onCreate();
-
         receiver = new NetworkReceiver();
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
@@ -64,11 +61,15 @@ public class NettyService extends Service implements NettyListener {
         mScheduledExecutorService.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                byte[] requestBody = {(byte) 0xFE, (byte) 0xED, (byte) 0xFE, 5};
-                LogUtils.d("netty", "开始发送");
+//                byte[] requestBody = {(byte) 0xFE, (byte) 0xED, (byte) 0xFE, 5};
+                String s = new String("123");
+                byte[] requestBody = s.getBytes();
+                LogUtils.d("netty", "开始发送"+requestBody);
                 NettyClient.getInstance().sendMsgToServer(requestBody, new ChannelFutureListener() {    //3
                     @Override
+
                     public void operationComplete(ChannelFuture future) {
+                        LogUtils.d("netty", "执行成功");
                         if (future.isSuccess()) {                //4
                             LogUtils.d("netty", "发送心跳成功");
                             Timber.d("Write heartbeat successful");
@@ -76,7 +77,7 @@ public class NettyService extends Service implements NettyListener {
                         } else {
                             LogUtils.d("netty", "发送心跳失败");
                             Timber.e("Write heartbeat error");
-                            WriteLogUtil.writeLogByThread("heartbeat error");
+//                            WriteLogUtil.writeLogByThread("heartbeat error");
                         }
                     }
                 });
@@ -87,7 +88,7 @@ public class NettyService extends Service implements NettyListener {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         NettyClient.getInstance().setListener(this);
-        LogUtils.d("netty", "测试");
+        LogUtils.d("netty", "服务开启");
         connect();
         return START_NOT_STICKY;
     }
@@ -97,13 +98,11 @@ public class NettyService extends Service implements NettyListener {
         Timber.tag("gogogo");
         Timber.d("connect status:%d", statusCode);
         if (statusCode == NettyListener.STATUS_CONNECT_SUCCESS) {
-            LogUtils.d("netty", "测试链接"+"\n"+statusCode);
-            authenticData();
-            LogUtils.d("netty", "测试链接123");
-        } else {
-
-            LogUtils.d("netty", "链接失败");
-            LogUtils.d("netty", "测试失败"+"\n"+statusCode);
+            LogUtils.d("netty", "测试链接" + "\n" + statusCode);
+//            authenticData();
+        }
+        else {
+            LogUtils.d("netty", "测试失败" + "\n" + statusCode);
             WriteLogUtil.writeLogByThread("tcp connect error");
         }
     }
@@ -112,18 +111,19 @@ public class NettyService extends Service implements NettyListener {
      * 认证数据请求
      */
     private void authenticData() {
-        AuthModel auth = new AuthModel();
-        auth.setI(102);
-        auth.setU("222222");
-        auth.setN("111111");
-        auth.setF("51");
+//        AuthModel auth = new AuthModel();
+//        auth.setI(102);
+//        auth.setU("222222");
+//        auth.setN("111111");
+//        auth.setF("51");
 //        auth.setT((int) (System.currentTimeMillis() / 1000));
 //        byte[] content = RequestUtil.getEncryptBytes(auth);
-        byte[] content = auth.toString().getBytes();
-        LogUtils.d("netty", "链接认证");
-        byte[] requestHeader = RequestUtil.getRequestHeader(content, 1, 1001);
-        byte[] requestBody = RequestUtil.getRequestBody(requestHeader, content);
-        LogUtils.d("netty", "发送消息的监听");
+////        byte[] content = auth.toString().getBytes();
+//        byte[] requestHeader = RequestUtil.getRequestHeader(content, 1, 1001);
+//        byte[] requestBody = RequestUtil.getRequestBody(requestHeader, content);
+        String s = new String("123");
+        byte[] requestBody = s.getBytes();
+        LogUtils.d("netty",requestBody+"");
         NettyClient.getInstance().sendMsgToServer(requestBody, new ChannelFutureListener() {    //3
             @Override
             public void operationComplete(ChannelFuture future) {
@@ -152,7 +152,6 @@ public class NettyService extends Service implements NettyListener {
                 int len = byteBuf.writerIndex();
                 // 接收到的数据有可能会粘包，只需要判断数据的长度大于或者等于真实的长度即可
                 if (len >= realLen) {
-
                     int word = ByteUtil.bytesToShort(ByteUtil.subBytes(bytes, 3, 2));
                     if (word == 1001) {
                         byte[] data = new byte[cardinal];
@@ -219,7 +218,7 @@ public class NettyService extends Service implements NettyListener {
                                 int i = jsonObject.getInt("i");
                                 if (sessionId == null) {
                                     WriteLogUtil.writeLogByThread("sessionId is null");
-                                    authenticData();
+//                                    authenticData();
                                     handle(word, i, 0);
                                     return;
                                 }
@@ -273,9 +272,8 @@ public class NettyService extends Service implements NettyListener {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    LogUtils.d("netty", "测试链接服务器");
                     NettyClient.getInstance().connect();//连接服务器
-                    LogUtils.d("netty", "测试链接服务器123");
+                    LogUtils.d("netty", "开始链接服务器");
                 }
             }).start();
         }
@@ -309,5 +307,4 @@ public class NettyService extends Service implements NettyListener {
             }
         }
     }
-
 }

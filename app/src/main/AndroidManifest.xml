@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.dcch.sharebike">
 
-    <uses-sdk android:minSdkVersion="15"/>
+    <!--<uses-sdk android:minSdkVersion="15"/>-->
 
     <uses-feature
         android:name="android.hardware.camera"
