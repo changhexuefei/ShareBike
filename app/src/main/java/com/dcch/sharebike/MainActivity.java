@@ -132,7 +132,7 @@ import static com.dcch.sharebike.R.id.btn_my_help;
 import static com.dcch.sharebike.R.id.seek;
 import static com.dcch.sharebike.utils.MapUtil.stringToInt;
 
-//import com.dcch.sharebike.netty.NettyClient;
+
 
 
 @RuntimePermissions
@@ -998,7 +998,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                         Gson gson = new Gson();
                         bookingBikeInfo = gson.fromJson(response, BookingBikeInfo.class);
 //                        mMap.clear();
-                        mMarker.remove();
+                        LogUtils.d("marker",mMarker.toString());
+//                        mMarker.remove();
+//                        LogUtils.d("marker",mMarker.toString());
                         mMapView.setFocusable(false);
                         mMapView.setEnabled(false);
                         forLocationAddMark(clickLon, clickLat);
@@ -1143,8 +1145,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 }
             }
         });
-
-
     }
 
     //扫码开锁的方法
@@ -1554,6 +1554,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         unregisterReceiver(mResultReceiver);
         stopService(new Intent(this, NettyService.class));
         Log.d("实验", "onDestroy");
+//        mMap.setMyLocationEnabled(false);
         mMapView.onDestroy();
         mMapView = null;
         if (mLocationClient != null) {
@@ -1647,7 +1648,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         //注册EventBus
         EventBus.getDefault().register(this);
         AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-//        startService(new Intent(this, NettyService.class));
+        startService(new Intent(this, NettyService.class));
         lr = new LocationReceiver();
         UpdateManager updateManager = new UpdateManager(this);
         updateManager.checkVersion();
