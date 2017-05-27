@@ -1175,6 +1175,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
                         } else if (resultStatus.equals("1")) {
                             LogUtils.d("开锁", "什么情况！");
+                            EventBus.getDefault().post(new MessageEvent(), "on");
                             if (timer != null) {
 //                                if (userBookingBikePopupWindow != null) {
 //                                    userBookingBikePopupWindow.dismiss();
@@ -1185,7 +1186,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                                 timer.cancel();
                                 cancelBookingBike(bookingCarId, bicycleNo, uID, mToken);
                             }
-                            EventBus.getDefault().post(new MessageEvent(), "on");
+
 
                         } else if (resultStatus.equals("2")) {
                             ToastUtils.showShort(MainActivity.this, "您的账号在其他设备上登录，您被迫下线！");
@@ -1646,19 +1647,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         EventBus.getDefault().register(this);
         AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         startService(new Intent(MainActivity.this, NettyService.class));
-//
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    SimpleClient simpleClient = new SimpleClient();
-//                    try {
-//                    simpleClient.connect(MyContent.HOST,MyContent.TCP_PORT);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                }
-//            }).start();
         lr = new LocationReceiver();
         UpdateManager updateManager = new UpdateManager(this);
         updateManager.checkVersion();

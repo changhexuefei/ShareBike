@@ -14,11 +14,9 @@ import android.widget.TextView;
 
 import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
-import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.utils.LogUtils;
-import com.dcch.sharebike.utils.ToastUtils;
 import com.dcch.sharebike.view.MyProgressBar;
 
 import org.simple.eventbus.EventBus;
@@ -170,6 +168,7 @@ public class UnlockProgressActivity extends BaseActivity {
         if (info != null) {
             num = 0;
             mMyProgressBar.beginStarting();//启动开始动画
+
         } else {
             startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
             UnlockProgressActivity.this.finish();
@@ -179,7 +178,6 @@ public class UnlockProgressActivity extends BaseActivity {
     @Subscriber(tag = "off", mode = ThreadMode.POST)
     private void receiveFromMainOther(MessageEvent info) {
         LogUtils.d("给后台", info.toString());
-        ToastUtils.showShort(App.getContext(), "开锁失败！");
         mMyProgressBar.setError();//进度失败 发生错误
         startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
         UnlockProgressActivity.this.finish();

@@ -62,14 +62,12 @@ public class NettyService extends Service implements NettyListener {
             @Override
             public void run() {
 //                byte[] requestBody = {(byte) 0xFE, (byte) 0xED, (byte) 0xFE, 5};
-                String s = new String("091700001");
+                String s = new String("hello server");
                 byte[] requestBody = s.getBytes();
-                LogUtils.d("netty", "开始发送"+requestBody.length);
                 NettyClient.getInstance().sendMsgToServer(requestBody, new ChannelFutureListener() {    //3
                     @Override
 
                     public void operationComplete(ChannelFuture future) {
-                        LogUtils.d("netty", "执行成功");
                         if (future.isSuccess()) {                //4
                             LogUtils.d("netty", "发送心跳成功");
                             Timber.d("Write heartbeat successful");
@@ -77,7 +75,7 @@ public class NettyService extends Service implements NettyListener {
                         } else {
                             LogUtils.d("netty", "发送心跳失败");
                             Timber.e("Write heartbeat error");
-//                            WriteLogUtil.writeLogByThread("heartbeat error");
+                            WriteLogUtil.writeLogByThread("heartbeat error");
                         }
                     }
                 });
@@ -122,9 +120,8 @@ public class NettyService extends Service implements NettyListener {
 ////        byte[] content = auth.toString().getBytes();
 //        byte[] requestHeader = RequestUtil.getRequestHeader(content, 1, 1001);
 //        byte[] requestBody = RequestUtil.getRequestBody(requestHeader, content);
-        String s = new String("091700001");
+        String s = new String("hello server");
         byte[] requestBody = s.getBytes();
-        LogUtils.d("netty",requestBody.length+"");
         NettyClient.getInstance().sendMsgToServer(requestBody, new ChannelFutureListener() {    //3
             @Override
             public void operationComplete(ChannelFuture future) {
@@ -219,7 +216,7 @@ public class NettyService extends Service implements NettyListener {
                                 int i = jsonObject.getInt("i");
                                 if (sessionId == null) {
                                     WriteLogUtil.writeLogByThread("sessionId is null");
-//                                    authenticData();
+                                    authenticData();
                                     handle(word, i, 0);
                                     return;
                                 }
@@ -274,7 +271,6 @@ public class NettyService extends Service implements NettyListener {
                 @Override
                 public void run() {
                     NettyClient.getInstance().connect();//连接服务器
-                    LogUtils.d("netty", "开始链接服务器");
                 }
             }).start();
         }
