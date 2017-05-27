@@ -67,7 +67,6 @@ import com.dcch.sharebike.moudle.home.bean.BikeInfo;
 import com.dcch.sharebike.moudle.home.bean.BikeRentalOrderInfo;
 import com.dcch.sharebike.moudle.home.bean.BookingBikeInfo;
 import com.dcch.sharebike.moudle.home.bean.RidingInfo;
-import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.moudle.login.activity.ClickCameraPopupActivity;
 import com.dcch.sharebike.moudle.login.activity.ClickMyHelpActivity;
 import com.dcch.sharebike.moudle.login.activity.IdentityAuthentication;
@@ -82,7 +81,6 @@ import com.dcch.sharebike.moudle.user.activity.RechargeDepositActivity;
 import com.dcch.sharebike.moudle.user.activity.RidingResultActivity;
 import com.dcch.sharebike.moudle.user.activity.UnlockProgressActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
-import com.dcch.sharebike.netty.SimpleClient;
 import com.dcch.sharebike.overlayutil.OverlayManager;
 import com.dcch.sharebike.overlayutil.WalkingRouteOverlay;
 import com.dcch.sharebike.service.GPSService;
@@ -133,8 +131,6 @@ import permissions.dispatcher.RuntimePermissions;
 import static com.dcch.sharebike.R.id.btn_my_help;
 import static com.dcch.sharebike.R.id.seek;
 import static com.dcch.sharebike.utils.MapUtil.stringToInt;
-
-
 
 
 @RuntimePermissions
@@ -279,7 +275,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         // 启动自动更新
         updManager.autoUpdate(this, updateListener);
     }
-
 
     private void queryUserInfo(String uID, String token) {
         Map<String, String> map = new HashMap<>();
@@ -1000,7 +995,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                         Gson gson = new Gson();
                         bookingBikeInfo = gson.fromJson(response, BookingBikeInfo.class);
 //                        mMap.clear();
-                        LogUtils.d("marker",mMarker.toString());
+                        LogUtils.d("marker", mMarker.toString());
 //                        mMarker.remove();
 //                        LogUtils.d("marker",mMarker.toString());
                         mMapView.setFocusable(false);
@@ -1097,7 +1092,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 case 0:
                     if (bundle != null) {
                         result = bundle.getString("result");
-                        result = result.substring(result.length() - 11, result.length());
+                        result = result.substring(result.length() - 9, result.length());
                         LogUtils.d("锁号", result);
                         checkBicycleNo(result, mToken);
                     }
@@ -1556,7 +1551,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         unregisterReceiver(mResultReceiver);
         stopService(new Intent(this, NettyService.class));
         Log.d("实验", "onDestroy");
-//        mMap.setMyLocationEnabled(false);
+        mMap.setMyLocationEnabled(false);
         mMapView.onDestroy();
         mMapView = null;
         if (mLocationClient != null) {
@@ -1650,23 +1645,20 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         //注册EventBus
         EventBus.getDefault().register(this);
         AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-//        startService(new Intent(this, NettyService.class));
-
-
-
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    SimpleClient simpleClient = new SimpleClient();
-                    try {
-                    simpleClient.connect(MyContent.HOST,MyContent.TCP_PORT);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
-
-
+        startService(new Intent(MainActivity.this, NettyService.class));
+//
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    SimpleClient simpleClient = new SimpleClient();
+//                    try {
+//                    simpleClient.connect(MyContent.HOST,MyContent.TCP_PORT);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//            }).start();
         lr = new LocationReceiver();
         UpdateManager updateManager = new UpdateManager(this);
         updateManager.checkVersion();

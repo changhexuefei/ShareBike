@@ -33,7 +33,7 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
         NettyClient.getInstance().reconnect();
     }
 
-    //连接成功，接收数据
+    //连接成功后，接收服务器端发来的数据
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf) throws Exception {
         LogUtils.d("netty", "channelRead0" + byteBuf.toString());

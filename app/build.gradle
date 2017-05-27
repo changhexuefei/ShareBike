@@ -11,12 +11,15 @@ android {
         }
     }
 
+    aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false
+
     defaultConfig {
         applicationId "com.dcch.sharebike"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 4
-        versionName "0.3.1"
+        versionCode 5
+        versionName "0.3.2"
         multiDexEnabled true
         ndk {
             //选择要添加的对应cpu类型的.so库。
@@ -126,4 +129,5 @@ dependencies {
     compile files('libs/AutoUpdate_SDK.jar')
     compile files('libs/netty-all-4.1.11.Final.jar')
     compile 'com.jakewharton.timber:timber:4.1.2'
+    compile files('libs/netty-all-4.1.6.Final.jar')
 }

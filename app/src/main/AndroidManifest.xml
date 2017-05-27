@@ -101,9 +101,6 @@
         <meta-data
             android:name="IFLYTEK_APPKEY"
             android:value="'591ec095'" />
-        <!--<meta-data-->
-            <!--android:name="IFLYTEK_CHANNEL"-->
-            <!--android:value="${UMENG_CHANNEL}" />-->
 
         <activity
             android:name="com.iflytek.autoupdate.IFlytekUpdateDialog"

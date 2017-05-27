@@ -86,7 +86,6 @@ public class UpdateManager {
         // 获取当前软件版本
         int currentVersionCode = getVersionCode(mContext);
         serverVersionCode = getServerVersionCode();
-        LogUtils.d("版本", currentVersionCode + "\n" + serverVersionCode);
         // 版本判断
         if (serverVersionCode > currentVersionCode) {
             return true;

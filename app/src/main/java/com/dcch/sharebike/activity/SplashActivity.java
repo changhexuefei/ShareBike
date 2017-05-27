@@ -57,7 +57,7 @@ public class SplashActivity extends BaseActivity {
         animation.setFillAfter(true);
         mRlSplashRoot.startAnimation(animation);
         LogUtils.d("网络", NetUtils.isConnected(App.getContext()) + "");
-        if (NetUtils.isConnected(App.getContext())) {
+        if (NetUtils.netState(App.getContext())) {
             if (SPUtils.isFirst()) {
                 handler.sendEmptyMessageDelayed(SWITCH_GUIDACTIVITY, 2000);
             } else {
@@ -67,13 +67,9 @@ public class SplashActivity extends BaseActivity {
 //            ToastUtils.showLong(SplashActivity.this, getString(R.string.coupon_tip_two));
             NetUtils.checkNetwork(this);
         }
+
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        LogUtils.d("设置", data.toString());
-    }
 
     private void switchPage() {
         boolean isStartGuide = (boolean) SPUtils.get(this, "isStartGuide", false);
@@ -100,6 +96,13 @@ public class SplashActivity extends BaseActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
     }
 
     @Override

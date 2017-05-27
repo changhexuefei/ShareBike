@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/activity_main"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -90,10 +91,10 @@
     <TextView
         android:id="@+id/scan"
         android:layout_width="150dp"
-        android:layout_height="50dp"
+        android:layout_height="58dp"
         android:layout_alignBottom="@+id/btn_my_location"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/shape_scan"
+        android:background="@drawable/selector_scan"
         android:drawableLeft="@mipmap/scan"
         android:drawablePadding="20dp"
         android:enabled="true"

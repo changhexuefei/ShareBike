@@ -13,11 +13,8 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
-import com.dcch.sharebike.base.UpdateManager;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.utils.ClickUtils;
-import com.dcch.sharebike.utils.LogUtils;
-import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.iflytek.autoupdate.IFlytekUpdate;
@@ -55,7 +52,7 @@ public class SettingActivity extends BaseActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    public static Boolean IS = false;
+    private IFlytekUpdate updManager;
 
 
     @Override
@@ -91,17 +88,17 @@ public class SettingActivity extends BaseActivity {
                 ToastUtils.showShort(this, "正在检查更新");
                 checkUpDate();
 
-                if (NetUtils.isConnected(this)) {
-                    if (NetUtils.isWifi(this)) {
-                        UpdateManager updateManager = new UpdateManager(this);
-                        updateManager.checkVersion();
-                    } else {
-                        ToastUtils.showShort(this, getString(R.string.switching_network_tip));
-                    }
-
-                } else {
-                    ToastUtils.showShort(this, getString(R.string.no_network_tip));
-                }
+//                if (NetUtils.isConnected(this)) {
+//                    if (NetUtils.isWifi(this)) {
+//                        UpdateManager updateManager = new UpdateManager(this);
+//                        updateManager.checkVersion();
+//                    } else {
+//                        ToastUtils.showShort(this, getString(R.string.switching_network_tip));
+//                    }
+//
+//                } else {
+//                    ToastUtils.showShort(this, getString(R.string.no_network_tip));
+//                }
 
                 break;
             case R.id.aboutUs:
@@ -132,30 +129,36 @@ public class SettingActivity extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                new AlertDialog.Builder(this)
-                        .setTitle("退出登录")
-                        .setMessage("确定退出登录吗？")
-                        .setNegativeButton("取消", null)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent i1 = new Intent(SettingActivity.this, PersonalCenterActivity.class);
-                                i1.putExtra("name", "unLogin");
-                                //用EventBus发送消息给个人中心
-                                EventBus.getDefault().post(new MessageEvent(), "unLogin");
-                                //给主页发送消息
-                                EventBus.getDefault().post(new MessageEvent(), "visible");
-                                startActivity(i1);
-                                SPUtils.clear(App.getContext());
-                                SPUtils.put(App.getContext(), "islogin", false);
-                                SPUtils.put(App.getContext(), "isfirst", false);
-                                SPUtils.put(App.getContext(), "isStartGuide", true);
-                                finish();
-                            }
-                        }).create()
-                        .show();
+                signout();
                 break;
         }
+    }
+
+    private void signout() {
+        new AlertDialog.Builder(this)
+                .setTitle("退出登录")
+                .setMessage("确定退出登录吗？")
+                .setNegativeButton("取消", null)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i1 = new Intent(SettingActivity.this, PersonalCenterActivity.class);
+                        i1.putExtra("name", "unLogin");
+                        //用EventBus发送消息给个人中心
+                        EventBus.getDefault().post(new MessageEvent(), "unLogin");
+                        //给主页发送消息
+                        EventBus.getDefault().post(new MessageEvent(), "visible");
+                        startActivity(i1);
+                        SPUtils.clear(App.getContext());
+                        SPUtils.put(App.getContext(), "islogin", false);
+                        SPUtils.put(App.getContext(), "isfirst", false);
+                        SPUtils.put(App.getContext(), "isStartGuide", true);
+                        finish();
+                    }
+                }).create()
+                .show();
+
+
     }
 
     private void checkUpDate() {
@@ -172,22 +175,29 @@ public class SettingActivity extends BaseActivity {
         //自动更新回调方法，详情参考demo
         IFlytekUpdateListener updateListener = new IFlytekUpdateListener() {
             @Override
-            public void onResult(int errorcode, UpdateInfo result) {
+            public void onResult(int errorcode, final UpdateInfo result) {
+
                 if (errorcode == UpdateErrorCode.OK && result != null) {
                     if (result.getUpdateType() == UpdateType.NoNeed) {
-                        LogUtils.d("版本","已经是最新版本！");
-                        ToastUtils.showShort(SettingActivity.this, "已经是最新版本！");
+                        showTip("当前为最新版本");
                         return;
                     }
                     updManager.showUpdateInfo(SettingActivity.this, result);
-                    LogUtils.d("版本",result.getUpdateVersionCode());
                 } else {
-                    ToastUtils.showShort(SettingActivity.this, "请求更新失败！");
+                    showTip("请求更新失败！更新错误码：" + errorcode);
                 }
             }
         };
-        // 启动自动更新
-        updManager.autoUpdate(this, updateListener);
-    }
+// 启动自动更新
+         updManager.autoUpdate(this, updateListener);
 
+    }
+    private void showTip(final String str) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ToastUtils.showLong(SettingActivity.this,str);
+            }
+        });
+    }
 }

@@ -55,16 +55,16 @@ public class NettyService extends Service implements NettyListener {
         receiver = new NetworkReceiver();
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
-
+        LogUtils.d("实验","onCreate()");
         // 自定义心跳，每隔20秒向服务器发送心跳包
         mScheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         mScheduledExecutorService.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
 //                byte[] requestBody = {(byte) 0xFE, (byte) 0xED, (byte) 0xFE, 5};
-                String s = new String("123");
+                String s = new String("091700001");
                 byte[] requestBody = s.getBytes();
-                LogUtils.d("netty", "开始发送"+requestBody);
+                LogUtils.d("netty", "开始发送"+requestBody.length);
                 NettyClient.getInstance().sendMsgToServer(requestBody, new ChannelFutureListener() {    //3
                     @Override
 
@@ -88,6 +88,7 @@ public class NettyService extends Service implements NettyListener {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         NettyClient.getInstance().setListener(this);
+        LogUtils.d("实验","onStartCommand");
         LogUtils.d("netty", "服务开启");
         connect();
         return START_NOT_STICKY;
@@ -99,7 +100,7 @@ public class NettyService extends Service implements NettyListener {
         Timber.d("connect status:%d", statusCode);
         if (statusCode == NettyListener.STATUS_CONNECT_SUCCESS) {
             LogUtils.d("netty", "测试链接" + "\n" + statusCode);
-//            authenticData();
+            authenticData();
         }
         else {
             LogUtils.d("netty", "测试失败" + "\n" + statusCode);
@@ -121,9 +122,9 @@ public class NettyService extends Service implements NettyListener {
 ////        byte[] content = auth.toString().getBytes();
 //        byte[] requestHeader = RequestUtil.getRequestHeader(content, 1, 1001);
 //        byte[] requestBody = RequestUtil.getRequestBody(requestHeader, content);
-        String s = new String("123");
+        String s = new String("091700001");
         byte[] requestBody = s.getBytes();
-        LogUtils.d("netty",requestBody+"");
+        LogUtils.d("netty",requestBody.length+"");
         NettyClient.getInstance().sendMsgToServer(requestBody, new ChannelFutureListener() {    //3
             @Override
             public void operationComplete(ChannelFuture future) {
