@@ -816,7 +816,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                         closeLockOver(result);
                     }
                     break;
-
             }
         }
     };
@@ -1126,16 +1125,14 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                         ToastUtils.showLong(MainActivity.this, "该车辆编号不存在！");
 
                     } else if (resultStatus.equals("1")) {
+
                         openScan(uID, phone, result, mToken);
-                        Intent intent = new Intent(MainActivity.this, UnlockProgressActivity.class);
-                        startActivity(intent);
                     } else if (resultStatus.equals("3")) {
                         ToastUtils.showLong(MainActivity.this, "我正在被使用，请找其他麒麟单车使用！");
                     } else if (resultStatus.equals("4")) {
                         ToastUtils.showLong(MainActivity.this, "我是故障车，请找其他麒麟单车使用！");
                     } else if (resultStatus.equals("5")) {
                         ToastUtils.showLong(MainActivity.this, "我已经被预约，请找其他麒麟单车使用！");
-
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1170,12 +1167,14 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                         JSONObject object = new JSONObject(response);
                         String resultStatus = object.optString("resultStatus");
                         if (resultStatus.equals("0")) {
-                            EventBus.getDefault().post(new MessageEvent(), "off");
-                            ToastUtils.showShort(MainActivity.this, "开锁超时，请找其他麒麟单车使用！");
+                            EventBus.getDefault().clear();
+                            EventBus.getDefault().postSticky(new MessageEvent(), "off");
+//                            ToastUtils.showShort(MainActivity.this, "开锁超时，请找其他麒麟单车使用！");
 
                         } else if (resultStatus.equals("1")) {
+                            EventBus.getDefault().clear();
+                            EventBus.getDefault().postSticky(new MessageEvent(), "on");
                             LogUtils.d("开锁", "什么情况！");
-                            EventBus.getDefault().post(new MessageEvent(), "on");
                             if (timer != null) {
 //                                if (userBookingBikePopupWindow != null) {
 //                                    userBookingBikePopupWindow.dismiss();
@@ -1186,8 +1185,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                                 timer.cancel();
                                 cancelBookingBike(bookingCarId, bicycleNo, uID, mToken);
                             }
-
-
+                            Intent intent = new Intent(MainActivity.this, UnlockProgressActivity.class);
+                            startActivity(intent);
                         } else if (resultStatus.equals("2")) {
                             ToastUtils.showShort(MainActivity.this, "您的账号在其他设备上登录，您被迫下线！");
                         }
@@ -1215,6 +1214,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             public void onResponse(String response, int id) {
                 Log.d("骑行订单", response);
                 if (JsonUtils.isSuccess(response)) {
+
                     isShowRideOrder = true;
                     isClick = false;
                     Gson gson = new Gson();
@@ -1230,9 +1230,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     if (bookBikePopupWindow != null) {
                         bookBikePopupWindow.dismiss();
                     }
-//                    if (userBookingBikePopupWindow != null) {
-//                        userBookingBikePopupWindow.dismiss();
-//                    }
+                    mMap.clear();
                     orderPopupWindow = new BikeRentalOrderPopupWindow(MainActivity.this, bikeRentalOrderInfo, userRidingBikeItemsOnClick);
                     orderPopupWindow.showAsDropDown(findViewById(R.id.top));
                     orderPopupWindow.setOutsideTouchable(false);
@@ -1617,7 +1615,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         // 关闭方向传感器
         myOrientationListener.stop();
         super.onStop();
-        Log.d("实验", "onStop");
+        Log.d("实验", "onStop+1");
     }
 
     @Override
@@ -1729,7 +1727,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     }
 
     //开锁进度条页面发来的消息
-    @Subscriber(tag = "create", mode = ThreadMode.POST)
+    @Subscriber(tag = "create", mode = ThreadMode.MAIN)
     private void receiveFromUnlockProgress(MessageEvent info) {
         LogUtils.d("实验", info.toString());
         mMap.clear();

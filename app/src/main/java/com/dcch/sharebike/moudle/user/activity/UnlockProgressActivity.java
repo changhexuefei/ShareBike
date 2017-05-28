@@ -97,7 +97,7 @@ public class UnlockProgressActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
+        EventBus.getDefault().registerSticky(this);
         mMyProgressBar.setEndSuccessBackgroundColor(Color.parseColor("#66A269"))//设置进度完成时背景颜色
                 .setEndSuccessDrawable(R.drawable.ic_done_white_36dp, null)//设置进度完成时背景图片
                 .setCanEndSuccessClickable(false)//设置进度完成后是否可以再次点击开始
@@ -117,16 +117,16 @@ public class UnlockProgressActivity extends BaseActivity {
             public void onAnimationEnd() {
                 mMyProgressBar.setMax(100);
                 mMyProgressBar.setProgress(num);//初次进入在动画结束时设置进度
-                Log.d("实验", "结束了+++++++");
+                Log.d("实验", "结束了+++++++" + "onCreate");
                 handler.sendEmptyMessage(WHAT);
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         //你需要跳转的地方的代码
                         startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
-                        EventBus.getDefault().post(new MessageEvent(),"create");
+                        EventBus.getDefault().post(new MessageEvent(), "create");
                         UnlockProgressActivity.this.finish();
                     }
-                }, 6000); //延迟6秒跳转
+                }, 6000); //延迟5秒跳转
 
             }
         });
@@ -154,17 +154,20 @@ public class UnlockProgressActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Log.d("实验", "onPause+2");
+
     }
 
     @Subscriber(tag = "on", mode = ThreadMode.POST)
     private void receiveFromMain(MessageEvent info) {
-        LogUtils.d("给后台", info.toString());
+        LogUtils.d("主页给的数据", "成功" + info.toString());
+
         if (info != null) {
             num = 0;
             mMyProgressBar.beginStarting();//启动开始动画
@@ -173,14 +176,16 @@ public class UnlockProgressActivity extends BaseActivity {
             startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
             UnlockProgressActivity.this.finish();
         }
+        EventBus.getDefault().removeStickyEvent(MessageEvent.class);
     }
 
     @Subscriber(tag = "off", mode = ThreadMode.POST)
     private void receiveFromMainOther(MessageEvent info) {
-        LogUtils.d("给后台", info.toString());
+        LogUtils.d("主页给的数据", "失败" + info.toString());
         mMyProgressBar.setError();//进度失败 发生错误
         startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
         UnlockProgressActivity.this.finish();
+        EventBus.getDefault().removeStickyEvent(MessageEvent.class);
     }
 
 }

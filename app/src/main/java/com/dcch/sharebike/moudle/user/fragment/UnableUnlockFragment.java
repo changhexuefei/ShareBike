@@ -210,6 +210,7 @@ public class UnableUnlockFragment extends Fragment {
             Bundle bundle = data.getExtras();
             if (bundle != null) {
                 result = bundle.getString("result");
+                result = result.substring(result.length() - 9, result.length());
                 bikeCode.setText(result);
                 changeStatus();
 

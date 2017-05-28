@@ -237,6 +237,7 @@ public class ReportIllegalParkingFragment extends Fragment {
             Bundle bundle = data.getExtras();
             if (bundle != null) {
                 result = bundle.getString("result");
+                result = result.substring(result.length() - 9, result.length());
                 mBikeCode.setText(result);
                 changeStatus();
             }

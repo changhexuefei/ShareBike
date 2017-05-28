@@ -147,7 +147,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onError(Call call, Exception e, int id) {
 //                Log.e("获取用户信息", e.getMessage());
-                ToastUtils.showShort(getContext(), "服务器正忙");
+//                ToastUtils.showShort(getContext(), "服务器正忙");
             }
 
             @Override

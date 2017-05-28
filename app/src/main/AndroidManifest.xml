@@ -100,7 +100,7 @@
         <!-- 讯飞 -->
         <meta-data
             android:name="IFLYTEK_APPKEY"
-            android:value="'591ec095'" />
+            android:value="'591ec095'"/>
 
         <activity
             android:name="com.iflytek.autoupdate.IFlytekUpdateDialog"
@@ -114,7 +114,7 @@
         <service
             android:name="com.iflytek.autoupdate.IFlytekDownloadService"
             android:enabled="true"
-            android:process=":IFlytekDownloadService" />
+            android:process=":IFlytekDownloadService"/>
 
         <activity android:name=".libzxing.zxing.activity.CaptureActivity"/>
         <activity
@@ -198,7 +198,10 @@
         <activity android:name=".moudle.user.activity.UsualAddressActivity"/>
         <activity android:name=".moudle.user.activity.ChangeUserNickNameActivity"/>
         <activity android:name=".moudle.user.activity.MyJourneyActivity"/>
-        <activity android:name=".moudle.user.activity.UserGuideActivity"/>
+        <activity
+            android:name=".moudle.user.activity.UserGuideActivity"
+            android:launchMode="singleTask"
+            />
         <activity android:name=".moudle.user.activity.MyMessageActivity"/>
         <activity android:name=".moudle.login.activity.AuthenticationOkActivity"/>
         <activity
@@ -360,20 +363,23 @@
         <activity
             android:name=".moudle.user.activity.RidingResultActivity"
             android:launchMode="singleTask"/>
-        <activity android:name=".moudle.user.activity.UnlockProgressActivity"/>
+        <activity
+            android:name=".moudle.user.activity.UnlockProgressActivity"
+            android:launchMode="singleTask"
+            />
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop">
-             <intent-filter>
-             <action android:name="android.intent.action.VIEW"/>
-             <category android:name="android.intent.category.DEFAULT"/>
-             <data android:scheme="wxd4b5d5e34b0dd095"/>
-             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="wxd4b5d5e34b0dd095"/>
+            </intent-filter>
         </activity>
 
         <!--<service android:name=".service.DownService"/>-->
-        <service android:name=".service.NettyService" />
+        <service android:name=".service.NettyService"/>
         <receiver
             android:name=".receiver.AppRegister"
             android:permission="com.tencent.mm.plugin.permission.SEND">

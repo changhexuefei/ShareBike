@@ -44,7 +44,6 @@ public class BikeRentalOrderPopupWindow extends PopupWindow {
         bikeNo = (TextView) mBikeRentalOrderView.findViewById(R.id.bike_number);
         costCycling = (TextView) mBikeRentalOrderView.findViewById(R.id.cost_cycling);
         closeLock=(TextView)mBikeRentalOrderView.findViewById(R.id.close_lock);
-//
 //        // 设置按钮监听
         closeLock.setOnClickListener(itemOnClick);
 //          为控件赋值
@@ -54,7 +53,6 @@ public class BikeRentalOrderPopupWindow extends PopupWindow {
             bikeNo.setText(bikeRentalOrderInfo.getBicycleNo());
             costCycling.setText(String.valueOf(bikeRentalOrderInfo.getRideCost()));
         }
-
         // 设置SelectPicPopupWindow的View
         this.setContentView(mBikeRentalOrderView);
 

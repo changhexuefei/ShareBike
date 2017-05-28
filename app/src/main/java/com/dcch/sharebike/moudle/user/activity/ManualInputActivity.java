@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
@@ -175,27 +176,27 @@ public class ManualInputActivity extends BaseActivity {
                     if (resultStatus.equals("1")) {
                         switch (mTag) {
                             case "main": {
-                                Intent bikeNoIntent = new Intent(ManualInputActivity.this, UnlockProgressActivity.class);
-                                EventBus.getDefault().post(new CodeEvent(bikeNo), "bikeNo");
+                                Intent bikeNoIntent = new Intent(ManualInputActivity.this, MainActivity.class);
                                 startActivity(bikeNoIntent);
+                                EventBus.getDefault().post(new CodeEvent(bikeNo), "bikeNo");
                                 break;
                             }
                             case "unable": {
                                 Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
-                                EventBus.getDefault().post(new CodeEvent(bikeNo), "unable_bikeNo");
                                 startActivity(bikeNoIntent);
+                                EventBus.getDefault().post(new CodeEvent(bikeNo), "unable_bikeNo");
                                 break;
                             }
                             case "reports": {
                                 Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
-                                EventBus.getDefault().post(new CodeEvent(bikeNo), "report_bikeNo");
                                 startActivity(bikeNoIntent);
+                                EventBus.getDefault().post(new CodeEvent(bikeNo), "report_bikeNo");
                                 break;
                             }
                             case "fail": {
                                 Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
-                                EventBus.getDefault().post(new CodeEvent(bikeNo), "fail_bikeNo");
                                 startActivity(bikeNoIntent);
+                                EventBus.getDefault().post(new CodeEvent(bikeNo), "fail_bikeNo");
                                 break;
                             }
                         }

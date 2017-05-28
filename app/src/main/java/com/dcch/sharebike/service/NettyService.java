@@ -55,7 +55,6 @@ public class NettyService extends Service implements NettyListener {
         receiver = new NetworkReceiver();
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
-        LogUtils.d("实验","onCreate()");
         // 自定义心跳，每隔20秒向服务器发送心跳包
         mScheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         mScheduledExecutorService.scheduleAtFixedRate(new Runnable() {

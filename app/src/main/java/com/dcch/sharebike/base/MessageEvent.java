@@ -5,4 +5,5 @@ package com.dcch.sharebike.base;
  */
 
 public class MessageEvent {
+
 }
