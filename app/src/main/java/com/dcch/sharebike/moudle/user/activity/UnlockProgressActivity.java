@@ -3,7 +3,6 @@ package com.dcch.sharebike.moudle.user.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.Toolbar;
@@ -86,18 +85,7 @@ public class UnlockProgressActivity extends BaseActivity {
                 finish();
             }
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d("实验", "onResume+2");
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EventBus.getDefault().registerSticky(this);
+        EventBus.getDefault().register(this);
         mMyProgressBar.setEndSuccessBackgroundColor(Color.parseColor("#66A269"))//设置进度完成时背景颜色
                 .setEndSuccessDrawable(R.drawable.ic_done_white_36dp, null)//设置进度完成时背景图片
                 .setCanEndSuccessClickable(false)//设置进度完成后是否可以再次点击开始
@@ -119,6 +107,7 @@ public class UnlockProgressActivity extends BaseActivity {
                 mMyProgressBar.setProgress(num);//初次进入在动画结束时设置进度
                 Log.d("实验", "结束了+++++++" + "onCreate");
                 handler.sendEmptyMessage(WHAT);
+//                EventBus.getDefault().post(new MessageEvent(), "create");
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         //你需要跳转的地方的代码
@@ -126,7 +115,7 @@ public class UnlockProgressActivity extends BaseActivity {
                         EventBus.getDefault().post(new MessageEvent(), "create");
                         UnlockProgressActivity.this.finish();
                     }
-                }, 6000); //延迟5秒跳转
+                }, 5000); //延迟5秒跳转
 
             }
         });
@@ -144,16 +133,21 @@ public class UnlockProgressActivity extends BaseActivity {
 
             @Override
             public String onSuccessTextChange(MyProgressBar specialProgressBarView, int max, int progress) {
-                Log.d("实验", "结束了");
                 return "done";
             }
         });
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("实验", "onResume+2");
+    }
+
+    @Override
     protected void onDestroy() {
-        super.onDestroy();
         EventBus.getDefault().unregister(this);
+        super.onDestroy();
 
     }
 
@@ -164,28 +158,29 @@ public class UnlockProgressActivity extends BaseActivity {
 
     }
 
-    @Subscriber(tag = "on", mode = ThreadMode.POST)
+    @Subscriber(tag = "on", mode = ThreadMode.MAIN)
     private void receiveFromMain(MessageEvent info) {
         LogUtils.d("主页给的数据", "成功" + info.toString());
 
         if (info != null) {
             num = 0;
             mMyProgressBar.beginStarting();//启动开始动画
-
-        } else {
-            startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
-            UnlockProgressActivity.this.finish();
         }
-        EventBus.getDefault().removeStickyEvent(MessageEvent.class);
+
+//        } else {
+//            startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
+//            UnlockProgressActivity.this.finish();
+//        }
+//        EventBus.getDefault().removeStickyEvent(MessageEvent.class);
     }
 
-    @Subscriber(tag = "off", mode = ThreadMode.POST)
+    @Subscriber(tag = "off", mode = ThreadMode.MAIN)
     private void receiveFromMainOther(MessageEvent info) {
         LogUtils.d("主页给的数据", "失败" + info.toString());
         mMyProgressBar.setError();//进度失败 发生错误
-        startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
-        UnlockProgressActivity.this.finish();
-        EventBus.getDefault().removeStickyEvent(MessageEvent.class);
+//        startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
+//        UnlockProgressActivity.this.finish();
+//        EventBus.getDefault().removeStickyEvent(MessageEvent.class);
     }
 
 }

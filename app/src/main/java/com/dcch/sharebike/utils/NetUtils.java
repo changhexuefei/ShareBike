@@ -47,6 +47,21 @@ public class NetUtils {
         return false;
     }
 
+    // network available cannot ensure Internet is available
+    public static boolean isNetWorkAvailable(final Context context) {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process pingProcess = runtime.exec("/system/bin/ping -c 1 www.baidu.com");
+            int exitCode = pingProcess.waitFor();
+            return (exitCode == 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+
     /**
      * 判断是否是wifi连接
      */
@@ -108,26 +123,31 @@ public class NetUtils {
      * @param context  上下文
      * @return false 表示没有网络 true 表示有网络
      */
-    public static boolean isNetworkAvalible(Context context) {
-        // 获得网络状态管理器
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    // check all network connect, WIFI or mobile
+    public static boolean isNetworkAvailable(final Context context) {
+        boolean hasWifoCon = false;
+        boolean hasMobileCon = false;
 
-        if (connectivityManager == null) {
-            return false;
-        } else {
-            // 建立网络数组
-            NetworkInfo[] net_info = connectivityManager.getAllNetworkInfo();
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfos = cm.getAllNetworkInfo();
+        for (NetworkInfo net : netInfos) {
+            String type = net.getTypeName();
+            if (type.equalsIgnoreCase("WIFI")) {
+              LogUtils.i("get Wifi connection");
+                if (net.isConnected()) {
+                    hasWifoCon = true;
+                }
+            }
 
-            if (net_info != null) {
-                for (int i = 0; i < net_info.length; i++) {
-                    // 判断获得的网络状态是否是处于连接状态
-                    if (net_info[i].getState() == NetworkInfo.State.CONNECTED) {
-                        return true;
-                    }
+            if (type.equalsIgnoreCase("MOBILE")) {
+                LogUtils.i("get Mobile connection");
+                if (net.isConnected()) {
+                    hasMobileCon = true;
                 }
             }
         }
-        return false;
+        return hasWifoCon || hasMobileCon;
+
     }
     /**
      * 判断网络是否连接

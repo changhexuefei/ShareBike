@@ -44,13 +44,13 @@ public class BookBikePopupWindow extends PopupWindow {
         mCancel = (Button) mCancelBookBikeWindow.findViewById(R.id.cancel_book);
         forBellIcon = (ImageView) mCancelBookBikeWindow.findViewById(R.id.forBellIcon);
         //为控件赋值
-            String address = String.valueOf(bookingBikeInfo.getAddress());
-            if (address!=null) {
-                mBookBikeLocationInfo.setText(address);
-            } else {
-                mBookBikeLocationInfo.setText("未知地址");
-            }
-            mBikeNumber.setText(String.valueOf(bookingBikeInfo.getBicycleNo()));
+        String address = String.valueOf(bookingBikeInfo.getAddress());
+        if (address != null) {
+            mBookBikeLocationInfo.setText(address);
+        } else {
+            mBookBikeLocationInfo.setText("未知地址");
+        }
+        mBikeNumber.setText(String.valueOf(bookingBikeInfo.getBicycleNo()));
 
         // 设置按钮监听
         mCancel.setOnClickListener(bookBikeItemsOnClick);
@@ -63,8 +63,9 @@ public class BookBikePopupWindow extends PopupWindow {
         this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         // 设置SelectPicPopupWindow弹出窗体的高
         this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        this.setOutsideTouchable(false);
         // 设置SelectPicPopupWindow弹出窗体可点击
-//            this.setFocusable(false);
+        this.setFocusable(false);
 ////             设置SelectPicPopupWindow弹出窗体动画效果
 //            this.setAnimationStyle(R.style.PopupWindowAnimation);
         // 实例化一个ColorDrawable颜色为半透明

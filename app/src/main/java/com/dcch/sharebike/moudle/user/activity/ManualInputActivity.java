@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
@@ -176,9 +175,11 @@ public class ManualInputActivity extends BaseActivity {
                     if (resultStatus.equals("1")) {
                         switch (mTag) {
                             case "main": {
-                                Intent bikeNoIntent = new Intent(ManualInputActivity.this, MainActivity.class);
-                                startActivity(bikeNoIntent);
+                                Intent bikeNoIntent = new Intent(ManualInputActivity.this, UnlockProgressActivity.class);
                                 EventBus.getDefault().post(new CodeEvent(bikeNo), "bikeNo");
+                                startActivity(bikeNoIntent);
+                                LogUtils.d("hao",bikeNo);
+
                                 break;
                             }
                             case "unable": {

@@ -75,7 +75,9 @@ public class Api {
     //微信退款
     public static final String REFUNDWXPAY = "refundWXPay.do?";
     //关锁未结费
-    public static final String CLOSELOCKOVER = "CloseLockOver.do?";
+    public static final String CLOSELOCK = "CloseLock.do?";
+    //寻车铃
+    public static final String FINDBIKERING = "FindBikeRing.do?";
     //活动页面（未做）
     public static final String GETACTIVITYS = "getActivitys.do?";
     //用户协议

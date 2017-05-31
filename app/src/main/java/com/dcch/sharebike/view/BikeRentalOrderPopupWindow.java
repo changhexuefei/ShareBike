@@ -1,10 +1,8 @@
 package com.dcch.sharebike.view;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
@@ -71,21 +69,21 @@ public class BikeRentalOrderPopupWindow extends PopupWindow {
         // 设置SelectPicPopupWindow弹出窗体的背景
         this.setBackgroundDrawable(dw);
         // mMenuView添加OnTouchListener监听判断获取触屏位置如果在选择框外面则销毁弹出框
-        mBikeRentalOrderView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            @SuppressLint("ClickableViewAccessibility")
-            public boolean onTouch(View v, MotionEvent event) {
-
-                int height = mBikeRentalOrderView.findViewById(R.id.pop_order_layout).getTop();
-                int y = (int) event.getY();
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (y < height) {
-                        dismiss();
-                    }
-                }
-                return true;
-            }
-        });
+//        mBikeRentalOrderView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            @SuppressLint("ClickableViewAccessibility")
+//            public boolean onTouch(View v, MotionEvent event) {
+//
+//                int height = mBikeRentalOrderView.findViewById(R.id.pop_order_layout).getTop();
+//                int y = (int) event.getY();
+//                if (event.getAction() == MotionEvent.ACTION_UP) {
+//                    if (y < height) {
+//                        dismiss();
+//                    }
+//                }
+//                return true;
+//            }
+//        });
     }
 
 
