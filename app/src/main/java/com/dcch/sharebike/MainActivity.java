@@ -826,8 +826,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     private void ringDown(String result, String time) {
         Map<String, String> map = new HashMap<>();
-        map.put("LockKey", "091700001");
-        map.put("time", time);
+        map.put("bicycleNo", "091700001");
+        map.put("Count", time);
         OkHttpUtils.post().url(Api.BASE_URL + Api.FINDBIKERING).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -993,7 +993,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             OkHttpUtils.post().url(Api.BASE_URL + Api.CANCELBOOK).params(map).build().execute(new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
-                    Log.e("错误", e.getMessage());
                     ToastUtils.showShort(MainActivity.this, "抱歉，服务器正忙！");
                 }
 
@@ -1200,12 +1199,21 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private void openScan(final String uID, String phone, final String result, final String mToken) {
 //        mClient = NettyClient.getInstance();
         if (phone != null && !phone.equals("") && result != null && !result.equals("")) {
+
             Map<String, String> map = new HashMap<>();
             map.put("userId", uID);
             map.put("phone", phone);
             map.put("bicycleNo", result);
             map.put("token", mToken);
-            LogUtils.d("看看数据", mToken + "\n" + result + "\n" + phone + "\n" + uID);
+//            byte[] encryptBytes = RequestUtil.getEncryptBytes(map);
+//
+//            LogUtils.d("看看数据", mToken + "\n" + result + "\n" + phone + "\n" + uID);
+//            NettyClient.getInstance().sendMsgToServer(encryptBytes, new ChannelFutureListener() {
+//                @Override
+//                public void operationComplete(ChannelFuture future) throws Exception {
+//
+//                }
+//            });
             OkHttpUtils.post().url(Api.BASE_URL + Api.OPENSCAN).params(map).build().execute(new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
@@ -1250,7 +1258,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         }
     }
 
-    private void createRidingOrder(final String uID, String result, final String mToken) {
+    private void createRidingOrder(final String uID, final String result, final String mToken) {
         Map<String, String> map = new HashMap<>();
         map.put("userId", uID);
         map.put("bicycleNo", result);
@@ -1271,10 +1279,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     isClick = false;
                     Gson gson = new Gson();
                     bikeRentalOrderInfo = gson.fromJson(response, BikeRentalOrderInfo.class);
-                    String bicycleNo = bikeRentalOrderInfo.getBicycleNo();
+//                    result = bikeRentalOrderInfo.getBicycleNo();
                     String carRentalOrderDate = bikeRentalOrderInfo.getCarRentalOrderDate();
                     String carRentalOrderId = bikeRentalOrderInfo.getCarRentalOrderId();
-                    withServicesMutually(mToken, uID, bicycleNo, carRentalOrderDate, carRentalOrderId);
+                    withServicesMutually(mToken, uID, result, carRentalOrderDate, carRentalOrderId);
                     mScan.setVisibility(View.INVISIBLE);
                     if (menuWindow != null) {
                         menuWindow.dismiss();
@@ -1480,10 +1488,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     mMap.clear();
                     Gson gson = new Gson();
                     bikeRentalOrderInfo = gson.fromJson(response, BikeRentalOrderInfo.class);
-                    String bicycleNo = bikeRentalOrderInfo.getBicycleNo();
+                    result = bikeRentalOrderInfo.getBicycleNo();
                     String carRentalOrderDate = bikeRentalOrderInfo.getCarRentalOrderDate();
                     String carRentalOrderId = bikeRentalOrderInfo.getCarRentalOrderId();
-                    withServicesMutually(mToken, uID, bicycleNo, carRentalOrderDate, carRentalOrderId);
+                    withServicesMutually(mToken, uID, result, carRentalOrderDate, carRentalOrderId);
                     mScan.setVisibility(View.INVISIBLE);
                     orderPopupWindow = new BikeRentalOrderPopupWindow(MainActivity.this, bikeRentalOrderInfo, userRidingBikeItemsOnClick);
                     orderPopupWindow.showAsDropDown(findViewById(R.id.top));
@@ -1498,12 +1506,11 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     }
 
     //与services交互的方法
-    private void withServicesMutually(String token, String uID, String bicycleNo, String carRentalOrderDate, String carRentalOrderId) {
+    private void withServicesMutually(String token, String uID, String result, String carRentalOrderDate, String carRentalOrderId) {
         mServiceIntent = new Intent(MainActivity.this, GPSService.class);
-        ToastUtils.showShort(MainActivity.this, bicycleNo);
         mServiceIntent.putExtra("token", token);
         mServiceIntent.putExtra("userId", uID);
-        mServiceIntent.putExtra("bicycleNo", bicycleNo);
+        mServiceIntent.putExtra("bicycleNo", result);
         mServiceIntent.putExtra("carRentalOrderDate", carRentalOrderDate);
         mServiceIntent.putExtra("carRentalOrderId", carRentalOrderId);
         startService(mServiceIntent);
@@ -1791,7 +1798,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     mMap.clear();
                     orderPopupWindow.rideDistance.setText(s);
                     orderPopupWindow.rideTime.setText(String.valueOf(ridingInfo.getTripTime()) + "分钟");
-                    orderPopupWindow.consumeEnergy.setText(String.valueOf(calorie) + "大卡");
+                    orderPopupWindow.consumeEnergy.setText(MapUtil.changeDouble(calorie) + "大卡");
                     orderPopupWindow.costCycling.setText(String.valueOf(ridingInfo.getRideCost()));
                 }
             }

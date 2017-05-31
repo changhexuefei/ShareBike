@@ -32,7 +32,6 @@ import com.dcch.sharebike.moudle.home.bean.RoutePoint;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.MapUtil;
-import com.dcch.sharebike.utils.ToastUtils;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -407,7 +406,7 @@ public class GPSService extends Service {
                     @Override
                     public void onError(Call call, Exception e, int id) {
 //                        LogUtils.d("后台",e.getMessage());
-                        ToastUtils.showShort(App.getContext(), "服务正忙！");
+//                        ToastUtils.showShort(App.getContext(), "服务正忙！");
                     }
 
                     @Override

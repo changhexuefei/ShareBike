@@ -40,7 +40,6 @@ public class NettyClient {
 
     public synchronized NettyClient connect() {
         if (!isConnect) {
-            LogUtils.d("netty", "测试链接1111111111");
             group = new NioEventLoopGroup();
             Bootstrap bootstrap = new Bootstrap().group(group)
                     .option(ChannelOption.SO_KEEPALIVE,true)

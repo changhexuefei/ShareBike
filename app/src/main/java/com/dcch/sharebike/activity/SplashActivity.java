@@ -56,7 +56,7 @@ public class SplashActivity extends BaseActivity {
         animation.setDuration(1000);
         animation.setFillAfter(true);
         mRlSplashRoot.startAnimation(animation);
-        LogUtils.d("网络", NetUtils.isConnected(App.getContext()) + "");
+        LogUtils.d("网络", NetUtils.isNetworkAvailable(App.getContext()) + "");
         if (NetUtils.isNetworkAvailable(App.getContext())) {
             if (SPUtils.isFirst()) {
                 handler.sendEmptyMessageDelayed(SWITCH_GUIDACTIVITY, 2000);
