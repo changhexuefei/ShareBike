@@ -18,7 +18,6 @@ import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.user.adapter.MessageInfoAdapter;
 import com.dcch.sharebike.moudle.user.bean.MessageInfo;
 import com.dcch.sharebike.utils.JsonUtils;
-import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
@@ -26,6 +25,7 @@ import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.view.CommonFooter;
 import com.google.gson.Gson;
+import com.hss01248.dialog.StyledDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -36,7 +36,6 @@ import butterknife.BindView;
 import okhttp3.Call;
 
 public class MyMessageActivity extends BaseActivity {
-
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.toolbar)
@@ -71,6 +70,7 @@ public class MyMessageActivity extends BaseActivity {
             mUserId = intent.getStringExtra("userId");
             mToken = intent.getStringExtra("token");
         }
+
     }
 
     @Override
@@ -80,8 +80,9 @@ public class MyMessageActivity extends BaseActivity {
         if (NetUtils.isConnected(App.getContext())) {
             if (mUserId != null && mToken != null) {
                 getMessageInfo(mUserId, mToken);
-            }else{
-                ToastUtils.showShort(this,"网络无法访问，请检查网络连接！");
+                StyledDialog.buildLoading(MyMessageActivity.this, "正在加载..", false, false).setMsgColor(R.color.color_ff).show();
+            } else {
+                ToastUtils.showShort(this, "网络无法访问，请检查网络连接！");
 
             }
         }
@@ -94,13 +95,13 @@ public class MyMessageActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.GETACTIVITYS).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(MyMessageActivity.this,"当前服务器忙，请稍后！");
+                ToastUtils.showShort(MyMessageActivity.this, "当前服务器忙，请稍后！");
             }
 
             @Override
             public void onResponse(String response, int id) {
-                LogUtils.d("活动", response);
                 if (JsonUtils.isSuccess(response)) {
+                    StyledDialog.dismissLoading();
                     Gson gson = new Gson();
                     mMessageInfo = gson.fromJson(response, MessageInfo.class);
                     mNoMessage.setVisibility(View.GONE);
@@ -120,14 +121,12 @@ public class MyMessageActivity extends BaseActivity {
                     adapter.setOnItemClickListener(new OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, int position) {
-                            LogUtils.d("网址",position+"");
                             String activityurl = mMessageInfo.getActivitys().get(position).getActivityurl();
                             String activityname = mMessageInfo.getActivitys().get(position).getActivityname();
-                            LogUtils.d("网址",activityname+activityurl);
                             if (activityurl != null && activityname != null) {
                                 Intent messageDetail = new Intent(MyMessageActivity.this, MessageDetailActivity.class);
-                                messageDetail.putExtra("activityUrl",activityurl);
-                                messageDetail.putExtra("theme",activityname);
+                                messageDetail.putExtra("activityUrl", activityurl);
+                                messageDetail.putExtra("theme", activityname);
                                 startActivity(messageDetail);
                             }
                         }
@@ -135,5 +134,11 @@ public class MyMessageActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 }

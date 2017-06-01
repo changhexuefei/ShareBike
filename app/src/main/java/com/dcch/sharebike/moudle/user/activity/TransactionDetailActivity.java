@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
@@ -24,6 +23,7 @@ import com.dcch.sharebike.utils.ToastUtils;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.google.gson.Gson;
+import com.hss01248.dialog.StyledDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -43,8 +43,7 @@ public class TransactionDetailActivity extends BaseActivity {
 
     @BindView(R.id.transact_list)
     LRecyclerView mTransactList;
-    @BindView(R.id.default_transaction_show)
-    RelativeLayout mDefaultTransactionShow;
+
     @BindView(R.id.back)
     ImageView mBack;
     @BindView(R.id.refundExplain)
@@ -83,6 +82,7 @@ public class TransactionDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         if (NetUtils.isConnected(App.getContext())) {
             getTransactionDetail(mUserId);
+            StyledDialog.buildLoading(TransactionDetailActivity.this, "正在加载..", false, false).setMsgColor(R.color.color_ff).show();
         } else {
             mNoPayTip.setVisibility(View.GONE);
             mIvNoPay.setVisibility(View.GONE);
@@ -106,24 +106,26 @@ public class TransactionDetailActivity extends BaseActivity {
             public void onResponse(String response, int id) {
                 LogUtils.d("充值", response);
                 if (JsonUtils.isSuccess(response)) {
-                    mDefaultTransactionShow.setVisibility(View.GONE);
+                    StyledDialog.dismissLoading();
                     mTransactList.setVisibility(View.VISIBLE);
                     Gson gson = new Gson();
                     mTransactionDetailInfo = gson.fromJson(response, TransactionDetailInfo.class);
                     LogUtils.d("几条", mTransactionDetailInfo.getPayBills().size() + "");
-                    mTransactList.setLayoutManager(new LinearLayoutManager(TransactionDetailActivity.this, OrientationHelper.VERTICAL, false));
-                    mAdapter = new TransactionDetailInfoAdapter(TransactionDetailActivity.this, R.layout.item_transaction_detail, mTransactionDetailInfo.getPayBills());
-                    LRecyclerViewAdapter adapter = new LRecyclerViewAdapter(mAdapter);
-                    //添加分割线
-                    mTransactList.addItemDecoration(new DividerItemDecoration(TransactionDetailActivity.this, DividerItemDecoration.VERTICAL));
-                    mTransactList.setAdapter(adapter);
-                    //禁用下拉刷新功能
-                    mTransactList.setPullRefreshEnabled(false);
-                    //禁用自动加载更多功能
-                    mTransactList.setLoadMoreEnabled(false);
-
-                } else {
-                    mDefaultTransactionShow.setVisibility(View.VISIBLE);
+                    if (mTransactionDetailInfo.getPayBills().size() > 0) {
+                        mTransactList.setLayoutManager(new LinearLayoutManager(TransactionDetailActivity.this, OrientationHelper.VERTICAL, false));
+                        mAdapter = new TransactionDetailInfoAdapter(TransactionDetailActivity.this, R.layout.item_transaction_detail, mTransactionDetailInfo.getPayBills());
+                        LRecyclerViewAdapter adapter = new LRecyclerViewAdapter(mAdapter);
+                        //添加分割线
+                        mTransactList.addItemDecoration(new DividerItemDecoration(TransactionDetailActivity.this, DividerItemDecoration.VERTICAL));
+                        mTransactList.setAdapter(adapter);
+                        //禁用下拉刷新功能
+                        mTransactList.setPullRefreshEnabled(false);
+                        //禁用自动加载更多功能
+                        mTransactList.setLoadMoreEnabled(false);
+                    } else {
+                        mNoPayTip.setVisibility(View.VISIBLE);
+                        mIvNoPay.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });

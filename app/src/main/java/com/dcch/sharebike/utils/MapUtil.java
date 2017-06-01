@@ -10,6 +10,8 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -46,6 +48,7 @@ public class MapUtil {
             return total + "公里";
         }
     }
+
     public static String getDateFromMillisecond(Long millisecond) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date(millisecond);
@@ -79,6 +82,7 @@ public class MapUtil {
         int intgeo = Integer.parseInt(str);
         return intgeo;
     }
+
     //获取系统的北京时间
     public static String getStringDate() {
         Date currentTime = new Date();
@@ -87,9 +91,10 @@ public class MapUtil {
         String dateString = formatter.format(currentTime);
         return dateString;
     }
+
     //计算系统时间和车辆预定时间的时间差
     public static long countTime(String stringDate, String bookingCarDate) {
-         long diff = 0;
+        long diff = 0;
         try {
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date date1 = df.parse(stringDate);
@@ -107,6 +112,19 @@ public class MapUtil {
     }
 
 
-
-
+    /**
+     * 方法名称:transMapToString
+     * 传入参数:map
+     * 返回值:String 形如 username:chenziwen;password:1234
+     */
+    public static String transMapToString(Map map) {
+        java.util.Map.Entry entry;
+        StringBuffer sb = new StringBuffer();
+        for (Iterator iterator = map.entrySet().iterator(); iterator.hasNext(); ) {
+            entry = (java.util.Map.Entry) iterator.next();
+            sb.append(entry.getKey().toString()).append(":").append(null == entry.getValue() ? "" :
+                    entry.getValue().toString()).append(iterator.hasNext() ? ";" : "");
+        }
+        return sb.toString();
+    }
 }

@@ -69,14 +69,6 @@ public class BikeRentalOrderInfo {
         this.userId = userId;
     }
 
-
-
-
-
-
-
-
-
     public int getBicycleId() {
         return bicycleId;
     }

@@ -106,9 +106,14 @@ public class SplashActivity extends BaseActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        handler.removeCallbacksAndMessages(null);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        handler.removeCallbacksAndMessages(null);
         AppManager.finishActivity(this);
 //        App.getRefWatcher().watch(this);
     }

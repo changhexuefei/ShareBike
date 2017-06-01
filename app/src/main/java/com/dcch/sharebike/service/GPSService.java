@@ -405,7 +405,7 @@ public class GPSService extends Service {
                 OkHttpUtils.post().url(Api.BASE_URL + Api.ORDERCAST).params(map).build().execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-//                        LogUtils.d("后台",e.getMessage());
+                        LogUtils.d("后台",e.getMessage());
 //                        ToastUtils.showShort(App.getContext(), "服务正忙！");
                     }
 

@@ -94,7 +94,6 @@ public class NettyClient {
         if (flag) {
             ByteBuf buf = Unpooled.copiedBuffer(data);
             String s = new String(buf.array());
-            LogUtils.d("netty", "flag"+flag+"\n");
             LogUtils.d("netty", "flag"+flag+"\n"+s.length());
             channel.writeAndFlush(buf).addListener(listener);
         }

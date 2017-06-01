@@ -163,7 +163,7 @@ public class SettingActivity extends BaseActivity {
 
     private void checkUpDate() {
         //初始化自动更新对象
-        final IFlytekUpdate updManager = IFlytekUpdate.getInstance(this);
+        final IFlytekUpdate updManager = IFlytekUpdate.getInstance(App.getContext());
         //开启调试模式，默认不开启
         updManager.setDebugMode(true);
         //开启wifi环境下检测更新，仅对自动更新有效，强制更新则生效

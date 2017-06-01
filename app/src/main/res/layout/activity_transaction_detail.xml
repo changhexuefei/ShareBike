@@ -64,7 +64,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/recharge_history_empty_img"/>
+            android:src="@drawable/recharge_history_empty_img"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/no_pay_tip"
@@ -73,7 +74,8 @@
             android:layout_below="@+id/iv_noPay"
             android:layout_centerHorizontal="true"
             android:text="@string/transaction_tip"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/iv_no_network_linking"

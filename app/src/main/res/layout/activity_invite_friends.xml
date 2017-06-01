@@ -16,7 +16,7 @@
         android:scaleType="fitXY"
         android:src="@drawable/menu_bg"
         android:layout_below="@+id/toolbar"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentLeft="true"/>
 
     <TextView
         android:id="@+id/tv_tip_one"

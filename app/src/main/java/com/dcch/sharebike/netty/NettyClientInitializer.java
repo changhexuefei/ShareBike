@@ -28,6 +28,10 @@ public class NettyClientInitializer extends ChannelInitializer<SocketChannel> {
 //                .trustManager(InsecureTrustManagerFactory.INSTANCE).build();
 //
         ChannelPipeline pipeline = ch.pipeline();
+//        // 客户端接收到的是httpResponse响应，所以要使用HttpResponseDecoder进行解码
+//        ch.pipeline().addLast(new HttpResponseDecoder());
+//        // 客户端发送的是httprequest，所以要使用HttpRequestEncoder进行编码
+//        ch.pipeline().addLast(new HttpRequestEncoder());
 //        pipeline.addLast(sslCtx.newHandler(ch.alloc()));    // 开启SSL
         pipeline.addLast(new LoggingHandler(LogLevel.INFO));    // 开启日志，可以设置日志等级
 //        pipeline.addLast(new IdleStateHandler(30, 60, 100));

@@ -79,7 +79,7 @@ public class NettyService extends Service implements NettyListener {
                     }
                 });
             }
-        }, 20, 20, TimeUnit.SECONDS);
+        }, 20, 150, TimeUnit.SECONDS);
     }
 
     @Override
@@ -116,7 +116,6 @@ public class NettyService extends Service implements NettyListener {
 //        auth.setF("51");
 //        auth.setT((int) (System.currentTimeMillis() / 1000));
 //        byte[] content = RequestUtil.getEncryptBytes(auth);
-////        byte[] content = auth.toString().getBytes();
 //        byte[] requestHeader = RequestUtil.getRequestHeader(content, 1, 1001);
 //        byte[] requestBody = RequestUtil.getRequestBody(requestHeader, content);
         String s = new String("hello server");
@@ -167,6 +166,7 @@ public class NettyService extends Service implements NettyListener {
                         Blowfish blowfish = new Blowfish();
                         String result = new String(blowfish.decryptByte(data));
                         Timber.d(result);
+                        LogUtils.d("netty返回",result);
                         try {
                             JSONObject jsonObject = new JSONObject(result);
                             handle(word, jsonObject.getInt("i"), jsonObject.getInt("r"));

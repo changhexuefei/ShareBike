@@ -9,7 +9,6 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
@@ -28,6 +27,7 @@ import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.view.CommonFooter;
 import com.google.gson.Gson;
+import com.hss01248.dialog.StyledDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -46,8 +46,6 @@ public class MyJourneyActivity extends BaseActivity {
     LRecyclerView journeyList;
     @BindView(R.id.no_journey)
     TextView noJourney;
-    @BindView(R.id.default_show)
-    RelativeLayout mDefaultShow;
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.toolbar)
@@ -100,6 +98,7 @@ public class MyJourneyActivity extends BaseActivity {
             mPhone = intent.getStringExtra("phone");
             mToken = intent.getStringExtra("token");
         }
+
     }
 
     @Override
@@ -108,6 +107,7 @@ public class MyJourneyActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         if (NetUtils.isConnected(App.getContext())) {
             getJourneyInfo(mPhone, mToken);
+            StyledDialog.buildLoading(MyJourneyActivity.this,"正在加载..",false,false).setMsgColor(R.color.color_ff).show();
         } else {
             mIvNoJourney.setVisibility(View.GONE);
             noJourney.setVisibility(View.GONE);
@@ -134,7 +134,9 @@ public class MyJourneyActivity extends BaseActivity {
                     Gson gson = new Gson();
                     mJourneyInfo = gson.fromJson(response, JourneyInfo.class);
                     if (mJourneyInfo.getCarrOrders().size() > 0) {
-                        mDefaultShow.setVisibility(View.GONE);
+
+                        LogUtils.d("记录",mJourneyInfo.getCarrOrders().size()+"");
+                        StyledDialog.dismissLoading();
                         journeyList.setVisibility(View.VISIBLE);
                         mAdapter = new JourneyInfoAdapter(MyJourneyActivity.this, R.layout.item_my_journey, mJourneyInfo.getCarrOrders());
                         journeyList.setLayoutManager(new LinearLayoutManager(MyJourneyActivity.this, OrientationHelper.VERTICAL, false));
@@ -186,7 +188,8 @@ public class MyJourneyActivity extends BaseActivity {
                         });
 
                     } else {
-                        mDefaultShow.setVisibility(View.VISIBLE);
+                        mIvNoJourney.setVisibility(View.VISIBLE);
+                        noJourney.setVisibility(View.VISIBLE);
                     }
                 }
             }
