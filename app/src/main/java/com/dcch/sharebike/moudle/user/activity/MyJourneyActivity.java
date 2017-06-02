@@ -107,7 +107,7 @@ public class MyJourneyActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         if (NetUtils.isConnected(App.getContext())) {
             getJourneyInfo(mPhone, mToken);
-            StyledDialog.buildLoading(MyJourneyActivity.this,"正在加载..",false,false).setMsgColor(R.color.color_ff).show();
+            StyledDialog.buildLoading(MyJourneyActivity.this, "正在加载..", true, false).setMsgColor(R.color.color_ff).show();
         } else {
             mIvNoJourney.setVisibility(View.GONE);
             noJourney.setVisibility(View.GONE);
@@ -135,7 +135,7 @@ public class MyJourneyActivity extends BaseActivity {
                     mJourneyInfo = gson.fromJson(response, JourneyInfo.class);
                     if (mJourneyInfo.getCarrOrders().size() > 0) {
 
-                        LogUtils.d("记录",mJourneyInfo.getCarrOrders().size()+"");
+                        LogUtils.d("记录", mJourneyInfo.getCarrOrders().size() + "");
                         StyledDialog.dismissLoading();
                         journeyList.setVisibility(View.VISIBLE);
                         mAdapter = new JourneyInfoAdapter(MyJourneyActivity.this, R.layout.item_my_journey, mJourneyInfo.getCarrOrders());
@@ -155,38 +155,24 @@ public class MyJourneyActivity extends BaseActivity {
                             public void onItemClick(View view, int position) {
                                 String bicycleNo = mJourneyInfo.getCarrOrders().get(position).getBicycleNo();
                                 String carRentalOrderId = mJourneyInfo.getCarrOrders().get(position).getCarRentalOrderId();
-                                if (bicycleNo != null && !bicycleNo.equals("") && !carRentalOrderId.equals("") && carRentalOrderId != null && uID != null && !uID.equals("")) {
+                                String nickName = mJourneyInfo.getCarrOrders().get(position).getNickName();
+                                double calorie = mJourneyInfo.getCarrOrders().get(position).getCalorie();
+                                double tripDist = mJourneyInfo.getCarrOrders().get(position).getTripDist();
+                                int tripTime = mJourneyInfo.getCarrOrders().get(position).getTripTime();
+                                if (mToken != null && bicycleNo != null && carRentalOrderId != null && nickName != null && uID != null && calorie >= 0 && tripDist >= 0) {
                                     Intent journeyDetail = new Intent(MyJourneyActivity.this, JourneyDetailActivity.class);
                                     journeyDetail.putExtra("bicycleNo", bicycleNo);
                                     journeyDetail.putExtra("carRentalOrderId", carRentalOrderId);
                                     journeyDetail.putExtra("userId", uID);
                                     journeyDetail.putExtra("token", mToken);
+                                    journeyDetail.putExtra("nickname", nickName);
+                                    journeyDetail.putExtra("calorie", calorie);
+                                    journeyDetail.putExtra("tripDist", tripDist);
+                                    journeyDetail.putExtra("tripTime", tripTime);
                                     startActivity(journeyDetail);
                                 }
                             }
                         });
-                        journeyList.setLScrollListener(new LRecyclerView.LScrollListener() {
-                            @Override
-                            public void onScrollUp() {
-
-                            }
-
-                            @Override
-                            public void onScrollDown() {
-
-                            }
-
-                            @Override
-                            public void onScrolled(int distanceX, int distanceY) {
-
-                            }
-
-                            @Override
-                            public void onScrollStateChanged(int state) {
-
-                            }
-                        });
-
                     } else {
                         mIvNoJourney.setVisibility(View.VISIBLE);
                         noJourney.setVisibility(View.VISIBLE);
@@ -201,6 +187,11 @@ public class MyJourneyActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        LogUtils.d("why", "为什么onResume");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        StyledDialog.dismiss();
     }
 }

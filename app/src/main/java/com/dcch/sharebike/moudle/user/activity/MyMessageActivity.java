@@ -80,7 +80,7 @@ public class MyMessageActivity extends BaseActivity {
         if (NetUtils.isConnected(App.getContext())) {
             if (mUserId != null && mToken != null) {
                 getMessageInfo(mUserId, mToken);
-                StyledDialog.buildLoading(MyMessageActivity.this, "正在加载..", false, false).setMsgColor(R.color.color_ff).show();
+                StyledDialog.buildLoading(MyMessageActivity.this, "正在加载..", true, false).setMsgColor(R.color.color_ff).show();
             } else {
                 ToastUtils.showShort(this, "网络无法访问，请检查网络连接！");
 
@@ -140,5 +140,11 @@ public class MyMessageActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        StyledDialog.dismiss();
     }
 }

@@ -23,14 +23,14 @@
         android:id="@+id/detail_desc"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4">
+        android:layout_weight="3">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/icon"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="8dp"
             android:src="@drawable/sharebike"
             app:civ_border_color="#fff"
             app:civ_border_width="2dp"/>
@@ -45,57 +45,105 @@
             android:text="123"
             android:textStyle="bold"/>
 
-        <TextView
-            android:id="@+id/bikeNO"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/time_riding"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/name"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
-            android:text="自行车编号："/>
+            android:gravity="center">
 
-        <TextView
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="自行车编号："/>
+
+            <TextView
+                android:id="@+id/bikeNO"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="091700001"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/name"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
-            android:layout_toRightOf="@+id/bikeNO"
-            android:text="091700001"/>
+            android:layout_below="@+id/time_riding"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/ridetime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/my_trip_item_duration_img"
+                    android:drawablePadding="5dp"
+                    android:text="100"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="骑行时间(min)"/>
+            </LinearLayout>
 
 
-        <TextView
-            android:layout_marginTop="10dp"
-            android:id="@+id/ridetime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/bikeNO"
-            android:layout_marginLeft="15dp"
-            android:drawableLeft="@mipmap/my_trip_item_duration_img"
-            android:text="100"
-            android:textStyle="bold"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/distanceshow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/ridetime"
-            android:layout_below="@+id/name"
-            android:layout_centerHorizontal="true"
-            android:layout_toRightOf="@+id/ridetime"
-            android:drawableLeft="@mipmap/riding"
-            android:text="10"/>
+                <TextView
+                    android:id="@+id/distanceshow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/riding"
+                    android:drawablePadding="5dp"
+                    android:text="10"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
 
-        <TextView
-            android:id="@+id/kCal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/ridetime"
-            android:layout_below="@+id/name"
-            android:layout_centerHorizontal="true"
-            android:layout_toRightOf="@+id/distanceshow"
-            android:drawableLeft="@mipmap/kcal"
-            android:text="400"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="骑行距离(km)"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/kCal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/kcal"
+                    android:drawablePadding="5dp"
+                    android:text="400"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="卡路里(kCal)"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </RelativeLayout>
 

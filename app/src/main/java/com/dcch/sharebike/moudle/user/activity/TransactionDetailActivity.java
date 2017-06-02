@@ -82,7 +82,7 @@ public class TransactionDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         if (NetUtils.isConnected(App.getContext())) {
             getTransactionDetail(mUserId);
-            StyledDialog.buildLoading(TransactionDetailActivity.this, "正在加载..", false, false).setMsgColor(R.color.color_ff).show();
+            StyledDialog.buildLoading(TransactionDetailActivity.this, "正在加载..", true, false).setMsgColor(R.color.color_ff).show();
         } else {
             mNoPayTip.setVisibility(View.GONE);
             mIvNoPay.setVisibility(View.GONE);
@@ -141,5 +141,11 @@ public class TransactionDetailActivity extends BaseActivity {
                 startActivity(new Intent(this, RefundExplainActivity.class));
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        StyledDialog.dismiss();
     }
 }

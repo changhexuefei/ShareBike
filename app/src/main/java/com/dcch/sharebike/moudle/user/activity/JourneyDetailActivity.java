@@ -15,12 +15,11 @@ import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MarkerOptions;
-import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.route.BikingRouteLine;
+import com.baidu.mapapi.search.route.BikingRoutePlanOption;
 import com.baidu.mapapi.search.route.BikingRouteResult;
 import com.baidu.mapapi.search.route.DrivingRouteResult;
 import com.baidu.mapapi.search.route.IndoorRouteResult;
@@ -38,6 +37,8 @@ import com.dcch.sharebike.overlayutil.BikingRouteOverlay;
 import com.dcch.sharebike.overlayutil.OverlayManager;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.MapUtil;
+import com.hss01248.dialog.StyledDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -51,6 +52,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 
 public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePlanResultListener {
@@ -62,6 +64,18 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
     TextView mTitle;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.icon)
+    CircleImageView mIcon;
+    @BindView(R.id.name)
+    TextView mName;
+    @BindView(R.id.bikeNO)
+    TextView mBikeNO;
+    @BindView(R.id.ridetime)
+    TextView mRidetime;
+    @BindView(R.id.distanceshow)
+    TextView mDistanceshow;
+    @BindView(R.id.kCal)
+    TextView mKCal;
     private BaiduMap mRouteBaiduMap;
     private BitmapDescriptor startBmp, endBmp;
     //    private MylocationListener mlistener;
@@ -93,6 +107,15 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
             String carRentalOrderId = intent.getStringExtra("carRentalOrderId");
             String userId = intent.getStringExtra("userId");
             String token = intent.getStringExtra("token");
+            String nickname = intent.getStringExtra("nickname");
+            double calorie = intent.getDoubleExtra("calorie", 0);
+            int tripTime = intent.getIntExtra("tripTime", 0);
+            double tripDist = intent.getDoubleExtra("tripDist", 0);
+            mBikeNO.setText(bicycleNo);
+            mName.setText(nickname);
+            mRidetime.setText(String.valueOf(tripTime));
+            mDistanceshow.setText(String.valueOf(MapUtil.changeDouble(tripDist)));
+            mKCal.setText(String.valueOf(MapUtil.changeDouble(calorie)));
             checkTrip(bicycleNo, carRentalOrderId, userId, token);
         }
 
@@ -104,6 +127,7 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
         startBmp = BitmapDescriptorFactory.fromResource(R.mipmap.route_start);
         endBmp = BitmapDescriptorFactory.fromResource(R.mipmap.route_end);
         initMap();
+        StyledDialog.buildLoading(JourneyDetailActivity.this, "正在加载..", true, false).setMsgColor(R.color.color_ff).show();
     }
 
     private void addOverLayout(LatLng startPosition, LatLng endPosition) {
@@ -233,6 +257,7 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
         mRouteBaiduMap.setMyLocationEnabled(false);
         mJourneyMapView.onDestroy();
         mJourneyMapView = null;
+        StyledDialog.dismiss();
 //        if (mlocationClient != null) {
 //            mlocationClient.unRegisterLocationListener(mlistener);
 //            mlocationClient.stop();
@@ -270,6 +295,7 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
             public void onResponse(String response, int id) {
                 LogUtils.d("卡卡", response);
                 if (JsonUtils.isSuccess(response)) {
+                    StyledDialog.dismissLoading();
                     //{"resultStatus":"1","records":[{"lat":"39.977552","lng":"116.301934"},{"lat":"39.919141","lng":"116.508328"},{"lat":"39.949141","lng":"116.528328"},{"lat":"40.051023","lng":"116.308589"}]}
                     try {
                         JSONObject object = new JSONObject(response);
@@ -292,19 +318,20 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
                             mPoints.add(latLng);
                         }
                         if (mPoints.size() > 2) {
-                            OverlayOptions ooPolyline = new PolylineOptions().width(10).color(0xFF36D19D).points(mPoints);
-                            mRouteBaiduMap.addOverlay(ooPolyline);
+
+//                            OverlayOptions ooPolyline = new PolylineOptions().width(10).color(0xFF36D19D).points(mPoints);
+//                            mRouteBaiduMap.addOverlay(ooPolyline);
                             RoutePoint startPoint = routePoints.get(0);
-//                            startNodeStr = PlanNode.withLocation(new LatLng(startPoint.getRouteLat(), startPoint.getRouteLng()));
+                            startNodeStr = PlanNode.withLocation(new LatLng(startPoint.getRouteLat(), startPoint.getRouteLng()));
                             LatLng startPosition = new LatLng(startPoint.getRouteLat(), startPoint.getRouteLng());
                             MapStatus.Builder builder = new MapStatus.Builder();
                             builder.target(startPosition).zoom(18.0f);
                             mRouteBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
                             RoutePoint endPoint = routePoints.get(routePoints.size() - 1);
-//                            endNodeStr = PlanNode.withLocation(new LatLng(endPoint.getRouteLat(), endPoint.getRouteLng()));
+                            endNodeStr = PlanNode.withLocation(new LatLng(endPoint.getRouteLat(), endPoint.getRouteLng()));
                             LatLng endPosition = new LatLng(endPoint.getRouteLat(), endPoint.getRouteLng());
-//                            mRPSearch.bikingSearch((new BikingRoutePlanOption()).from(startNodeStr).to(endNodeStr));
-                            addOverLayout(startPosition, endPosition);
+                            mRPSearch.bikingSearch((new BikingRoutePlanOption()).from(startNodeStr).to(endNodeStr));
+//                            addOverLayout(startPosition, endPosition);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -313,5 +340,4 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
             }
         });
     }
-
 }

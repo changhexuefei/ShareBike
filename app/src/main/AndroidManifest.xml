@@ -116,7 +116,9 @@
             android:enabled="true"
             android:process=":IFlytekDownloadService"/>
 
-        <activity android:name=".libzxing.zxing.activity.CaptureActivity"/>
+        <activity
+            android:name=".libzxing.zxing.activity.CaptureActivity"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask">

@@ -8,10 +8,9 @@ import java.util.List;
 
 public class JourneyInfo {
 
-
     /**
      * resultStatus : 1
-     * carrOrders : [{"aggregateAmount":0,"bicycleId":0,"bicycleNo":"1101000001","calorie":0,"carRentalOrderDate":"2017-03-24 20:03:54","carRentalOrderId":"6bbe2cb927cf45e2bd36c0646f5497b5","carRentalOrderNo":"carrental201703242003548255288","carRentalOrderStatus":"","endTime":"","idCard":"","integral":0,"name":"111","nickName":"","organization_ID":0,"organization_Name":"","organization_No":"","phone":"","remark":"","resultStatus":"","returnBicycleDate":"","rideCost":1,"startPos":0,"startTime":"","tripDist":0.01,"tripTime":1,"userAddress":"","userAge":0,"userId":0,"userSex":0},{"aggregateAmount":0,"bicycleId":0,"bicycleNo":"1101000001","calorie":0,"carRentalOrderDate":"2017-03-24 19:59:42","carRentalOrderId":"2d178256607644499976e2f86e6b1171","carRentalOrderNo":"carrental201703241959429671337","carRentalOrderStatus":"","endTime":"","idCard":"","integral":0,"name":"111","nickName":"","organization_ID":0,"organization_Name":"","organization_No":"","phone":"","remark":"","resultStatus":"","returnBicycleDate":"","rideCost":142,"startPos":0,"startTime":"","tripDist":0,"tripTime":8461,"userAddress":"","userAge":0,"userId":0,"userSex":0},{"aggregateAmount":0,"bicycleId":0,"bicycleNo":"1101000001","calorie":0,"carRentalOrderDate":"2017-03-31 18:09:23","carRentalOrderId":"3a3f12689f74428fb714a0064b0ae149","carRentalOrderNo":"carrental201703311809239357158","carRentalOrderStatus":"","endTime":"","idCard":"","integral":0,"name":"111","nickName":"","organization_ID":0,"organization_Name":"","organization_No":"","phone":"","remark":"","resultStatus":"","returnBicycleDate":"","rideCost":1,"startPos":0,"startTime":"","tripDist":0,"tripTime":0,"userAddress":"","userAge":0,"userId":0,"userSex":0},{"aggregateAmount":0,"bicycleId":0,"bicycleNo":"1101000001","calorie":0,"carRentalOrderDate":"2017-03-31 17:57:43","carRentalOrderId":"3a42e7b4d9c14e83947dce2173b8354d","carRentalOrderNo":"carrental201703311757435465640","carRentalOrderStatus":"","endTime":"","idCard":"","integral":0,"name":"111","nickName":"","organization_ID":0,"organization_Name":"","organization_No":"","phone":"","remark":"","resultStatus":"","returnBicycleDate":"","rideCost":1,"startPos":0,"startTime":"","tripDist":0,"tripTime":0,"userAddress":"","userAge":0,"userId":0,"userSex":0},{"aggregateAmount":0,"bicycleId":0,"bicycleNo":"1101000001","calorie":0,"carRentalOrderDate":"2017-03-31 18:24:42","carRentalOrderId":"49c2d7484ba1402bbc73fb2c6cd5bca4","carRentalOrderNo":"carrental201703311824425412227","carRentalOrderStatus":"","endTime":"","idCard":"","integral":0,"name":"111","nickName":"","organization_ID":0,"organization_Name":"","organization_No":"","phone":"","remark":"","resultStatus":"","returnBicycleDate":"","rideCost":1,"startPos":0,"startTime":"","tripDist":0,"tripTime":0,"userAddress":"","userAge":0,"userId":0,"userSex":0},{"aggregateAmount":0,"bicycleId":0,"bicycleNo":"1101000001","calorie":0,"carRentalOrderDate":"2017-03-31 17:13:46","carRentalOrderId":"50e972a45c2a4e82aebce1343cd2dba6","carRentalOrderNo":"carrental201703311713466102005","carRentalOrderStatus":"","endTime":"","idCard":"","integral":0,"name":"111","nickName":"","organization_ID":0,"organization_Name":"","organization_No":"","phone":"","remark":"","resultStatus":"","returnBicycleDate":"","rideCost":1,"startPos":0,"startTime":"","tripDist":0,"tripTime":0,"userAddress":"","userAge":0,"userId":0,"userSex":0},{"aggregateAmount":0,"bicycleId":0,"bicycleNo":"1101000001","calorie":0,"carRentalOrderDate":"2017-03-31 18:26:40","carRentalOrderId":"5fead6aad40c4b21ab945aeb92a748c7","carRentalOrderNo":"carrental201703311826405714370","carRentalOrderStatus":"","endTime":"","idCard":"","integral":0,"name":"111","nickName":"","organization_ID":0,"organization_Name":"","organization_No":"","phone":"","remark":"","resultStatus":"","returnBicycleDate":"","rideCost":1,"startPos":0,"startTime":"","tripDist":0,"tripTime":0,"userAddress":"","userAge":0,"userId":0,"userSex":0}]
+     * carrOrders : [{"aggregateAmount":0,"bicycleId":0,"bicycleNo":"091700001","calorie":0.23158978,"carRentalOrderDate":"2017-06-02 13:13:25","carRentalOrderId":"d9197cfa49534183b2650cfd8a3aab83","carRentalOrderNo":"carrental201706021313252363124","carRentalOrderStatus":"","couponno":"","endTime":"","idCard":"","integral":0,"lockRemark":"","name":"123456","nickName":"测试","organization_ID":0,"organization_Name":"","organization_No":"","phone":"","remark":"","resultStatus":"","returnBicycleDate":"","rideCost":1.5,"startPos":0,"startTime":"","tripDist":0.01,"tripTime":84,"userAddress":"","userAge":0,"userId":0,"userImage":"/userImage/201705241456082709989one.jpg","userSex":0},{"aggregateAmount":0,"bicycleId":0,"bicycleNo":"091700001","calorie":1.9217808,"carRentalOrderDate":"2017-06-01 22:04:42","carRentalOrderId":"d233d2cc4bc348b6b2874e735ad8719c","carRentalOrderNo":"carrental201706012204424668449","carRentalOrderStatus":"","couponno":"","endTime":"","idCard":"","integral":0,"lockRemark":"","name":"123456","nickName":"测试","organization_ID":0,"organization_Name":"","organization_No":"","phone":"","remark":"","resultStatus":"","returnBicycleDate":"","rideCost":11,"startPos":0,"startTime":"","tripDist":0.07,"tripTime":643,"userAddress":"","userAge":0,"userId":0,"userImage":"/userImage/201705241456082709989one.jpg","userSex":0},{"aggregateAmount":0,"bicycleId":0,"bicycleNo":"091700001","calorie":36.569004,"carRentalOrderDate":"2017-06-01 19:22:12","carRentalOrderId":"bb2712af583f465ebf5b524132fe0882","carRentalOrderNo":"carrental201706011922120524406","carRentalOrderStatus":"","couponno":"","endTime":"","idCard":"","integral":0,"lockRemark":"","name":"123456","nickName":"测试","organization_ID":0,"organization_Name":"","organization_No":"","phone":"","remark":"","resultStatus":"","returnBicycleDate":"","rideCost":0.5,"startPos":0,"startTime":"","tripDist":1.26,"tripTime":13,"userAddress":"","userAge":0,"userId":0,"userImage":"/userImage/201705241456082709989one.jpg","userSex":0}]
      */
 
     private String resultStatus;
@@ -37,17 +36,19 @@ public class JourneyInfo {
         /**
          * aggregateAmount : 0
          * bicycleId : 0
-         * bicycleNo : 1101000001
-         * calorie : 0
-         * carRentalOrderDate : 2017-03-24 20:03:54
-         * carRentalOrderId : 6bbe2cb927cf45e2bd36c0646f5497b5
-         * carRentalOrderNo : carrental201703242003548255288
+         * bicycleNo : 091700001
+         * calorie : 0.23158978
+         * carRentalOrderDate : 2017-06-02 13:13:25
+         * carRentalOrderId : d9197cfa49534183b2650cfd8a3aab83
+         * carRentalOrderNo : carrental201706021313252363124
          * carRentalOrderStatus :
+         * couponno :
          * endTime :
          * idCard :
          * integral : 0
-         * name : 111
-         * nickName :
+         * lockRemark :
+         * name : 123456
+         * nickName : 测试
          * organization_ID : 0
          * organization_Name :
          * organization_No :
@@ -55,54 +56,39 @@ public class JourneyInfo {
          * remark :
          * resultStatus :
          * returnBicycleDate :
-         * rideCost : 1
+         * rideCost : 1.5
          * startPos : 0
          * startTime :
          * tripDist : 0.01
-         * tripTime : 1
+         * tripTime : 84
          * userAddress :
          * userAge : 0
          * userId : 0
+         * userImage : /userImage/201705241456082709989one.jpg
          * userSex : 0
          */
 
-        private int aggregateAmount;
         private int bicycleId;
         private String bicycleNo;
-        private int calorie;
+        private double calorie;
         private String carRentalOrderDate;
         private String carRentalOrderId;
         private String carRentalOrderNo;
         private String carRentalOrderStatus;
+        private String couponno;
         private String endTime;
         private String idCard;
-        private int integral;
         private String name;
         private String nickName;
-        private int organization_ID;
-        private String organization_Name;
-        private String organization_No;
         private String phone;
-        private String remark;
         private String resultStatus;
-        private String returnBicycleDate;
-        private float rideCost;
+        private double rideCost;
         private int startPos;
-        private String startTime;
         private double tripDist;
         private int tripTime;
-        private String userAddress;
-        private int userAge;
         private int userId;
-        private int userSex;
+        private String userImage;
 
-        public int getAggregateAmount() {
-            return aggregateAmount;
-        }
-
-        public void setAggregateAmount(int aggregateAmount) {
-            this.aggregateAmount = aggregateAmount;
-        }
 
         public int getBicycleId() {
             return bicycleId;
@@ -120,11 +106,11 @@ public class JourneyInfo {
             this.bicycleNo = bicycleNo;
         }
 
-        public int getCalorie() {
+        public double getCalorie() {
             return calorie;
         }
 
-        public void setCalorie(int calorie) {
+        public void setCalorie(double calorie) {
             this.calorie = calorie;
         }
 
@@ -160,6 +146,14 @@ public class JourneyInfo {
             this.carRentalOrderStatus = carRentalOrderStatus;
         }
 
+        public String getCouponno() {
+            return couponno;
+        }
+
+        public void setCouponno(String couponno) {
+            this.couponno = couponno;
+        }
+
         public String getEndTime() {
             return endTime;
         }
@@ -174,14 +168,6 @@ public class JourneyInfo {
 
         public void setIdCard(String idCard) {
             this.idCard = idCard;
-        }
-
-        public int getIntegral() {
-            return integral;
-        }
-
-        public void setIntegral(int integral) {
-            this.integral = integral;
         }
 
         public String getName() {
@@ -200,44 +186,12 @@ public class JourneyInfo {
             this.nickName = nickName;
         }
 
-        public int getOrganization_ID() {
-            return organization_ID;
-        }
-
-        public void setOrganization_ID(int organization_ID) {
-            this.organization_ID = organization_ID;
-        }
-
-        public String getOrganization_Name() {
-            return organization_Name;
-        }
-
-        public void setOrganization_Name(String organization_Name) {
-            this.organization_Name = organization_Name;
-        }
-
-        public String getOrganization_No() {
-            return organization_No;
-        }
-
-        public void setOrganization_No(String organization_No) {
-            this.organization_No = organization_No;
-        }
-
         public String getPhone() {
             return phone;
         }
 
         public void setPhone(String phone) {
             this.phone = phone;
-        }
-
-        public String getRemark() {
-            return remark;
-        }
-
-        public void setRemark(String remark) {
-            this.remark = remark;
         }
 
         public String getResultStatus() {
@@ -248,19 +202,11 @@ public class JourneyInfo {
             this.resultStatus = resultStatus;
         }
 
-        public String getReturnBicycleDate() {
-            return returnBicycleDate;
-        }
-
-        public void setReturnBicycleDate(String returnBicycleDate) {
-            this.returnBicycleDate = returnBicycleDate;
-        }
-
-        public float getRideCost() {
+        public double getRideCost() {
             return rideCost;
         }
 
-        public void setRideCost(float rideCost) {
+        public void setRideCost(double rideCost) {
             this.rideCost = rideCost;
         }
 
@@ -270,14 +216,6 @@ public class JourneyInfo {
 
         public void setStartPos(int startPos) {
             this.startPos = startPos;
-        }
-
-        public String getStartTime() {
-            return startTime;
-        }
-
-        public void setStartTime(String startTime) {
-            this.startTime = startTime;
         }
 
         public double getTripDist() {
@@ -296,22 +234,6 @@ public class JourneyInfo {
             this.tripTime = tripTime;
         }
 
-        public String getUserAddress() {
-            return userAddress;
-        }
-
-        public void setUserAddress(String userAddress) {
-            this.userAddress = userAddress;
-        }
-
-        public int getUserAge() {
-            return userAge;
-        }
-
-        public void setUserAge(int userAge) {
-            this.userAge = userAge;
-        }
-
         public int getUserId() {
             return userId;
         }
@@ -320,12 +242,13 @@ public class JourneyInfo {
             this.userId = userId;
         }
 
-        public int getUserSex() {
-            return userSex;
+        public String getUserImage() {
+            return userImage;
         }
 
-        public void setUserSex(int userSex) {
-            this.userSex = userSex;
+        public void setUserImage(String userImage) {
+            this.userImage = userImage;
         }
+
     }
 }

@@ -1578,7 +1578,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     if (uID != null && mToken != null) {
                         queryUserInfo(uID, mToken);
 //                        LogUtils.d("这里","4");
-//                        getBikeInfo(mCurrentLantitude, mCurrentLongitude);
+//
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1643,6 +1643,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         unregisterReceiver(mResultReceiver);
         stopService(new Intent(this, NettyService.class));
         Log.d("实验", "onDestroy");
+        StyledDialog.dismiss();
         mMap.setMyLocationEnabled(false);
         mMapView.onDestroy();
         mMapView = null;
