@@ -5,7 +5,6 @@ import java.nio.ByteOrder;
 
 /**
  * 处理各种类型转换
- * Created by LiuSaibao on 5/23/2016.
  */
 public class ByteUtil {
 

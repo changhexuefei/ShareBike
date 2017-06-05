@@ -81,10 +81,11 @@ public class MyMessageActivity extends BaseActivity {
             if (mUserId != null && mToken != null) {
                 getMessageInfo(mUserId, mToken);
                 StyledDialog.buildLoading(MyMessageActivity.this, "正在加载..", true, false).setMsgColor(R.color.color_ff).show();
-            } else {
-                ToastUtils.showShort(this, "网络无法访问，请检查网络连接！");
-
             }
+        } else {
+            mNoMessage.setVisibility(View.VISIBLE);
+            ToastUtils.showShort(this, "网络无法访问，请检查网络连接！");
+
         }
     }
 
@@ -104,33 +105,38 @@ public class MyMessageActivity extends BaseActivity {
                     StyledDialog.dismissLoading();
                     Gson gson = new Gson();
                     mMessageInfo = gson.fromJson(response, MessageInfo.class);
-                    mNoMessage.setVisibility(View.GONE);
-                    mMyMessageList.setVisibility(View.VISIBLE);
-                    mMessageInfoAdapter = new MessageInfoAdapter(MyMessageActivity.this, R.layout.item_my_message, mMessageInfo.getActivitys());
-                    mMyMessageList.setLayoutManager(new LinearLayoutManager(MyMessageActivity.this, OrientationHelper.VERTICAL, false));
-                    LRecyclerViewAdapter adapter = new LRecyclerViewAdapter(mMessageInfoAdapter);
-                    //添加分割线
-                    mMyMessageList.addItemDecoration(new DividerItemDecoration(MyMessageActivity.this, DividerItemDecoration.VERTICAL));
-                    mMyMessageList.setAdapter(adapter);
-                    CommonFooter footerView = new CommonFooter(MyMessageActivity.this, R.layout.footer);
-                    adapter.addFooterView(footerView);
-                    //禁用下拉刷新功能
-                    mMyMessageList.setPullRefreshEnabled(false);
-                    //禁用自动加载更多功能
-                    mMyMessageList.setLoadMoreEnabled(false);
-                    adapter.setOnItemClickListener(new OnItemClickListener() {
-                        @Override
-                        public void onItemClick(View view, int position) {
-                            String activityurl = mMessageInfo.getActivitys().get(position).getActivityurl();
-                            String activityname = mMessageInfo.getActivitys().get(position).getActivityname();
-                            if (activityurl != null && activityname != null) {
-                                Intent messageDetail = new Intent(MyMessageActivity.this, MessageDetailActivity.class);
-                                messageDetail.putExtra("activityUrl", activityurl);
-                                messageDetail.putExtra("theme", activityname);
-                                startActivity(messageDetail);
+                    if (mMessageInfo.getActivitys().size() > 0) {
+                        mNoMessage.setVisibility(View.GONE);
+                        mMyMessageList.setVisibility(View.VISIBLE);
+                        mMessageInfoAdapter = new MessageInfoAdapter(MyMessageActivity.this, R.layout.item_my_message, mMessageInfo.getActivitys());
+                        mMyMessageList.setLayoutManager(new LinearLayoutManager(MyMessageActivity.this, OrientationHelper.VERTICAL, false));
+                        LRecyclerViewAdapter adapter = new LRecyclerViewAdapter(mMessageInfoAdapter);
+                        //添加分割线
+                        mMyMessageList.addItemDecoration(new DividerItemDecoration(MyMessageActivity.this, DividerItemDecoration.VERTICAL));
+                        mMyMessageList.setAdapter(adapter);
+                        CommonFooter footerView = new CommonFooter(MyMessageActivity.this, R.layout.footer);
+                        adapter.addFooterView(footerView);
+                        //禁用下拉刷新功能
+                        mMyMessageList.setPullRefreshEnabled(false);
+                        //禁用自动加载更多功能
+                        mMyMessageList.setLoadMoreEnabled(false);
+                        adapter.setOnItemClickListener(new OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                String activityurl = mMessageInfo.getActivitys().get(position).getActivityurl();
+                                String activityname = mMessageInfo.getActivitys().get(position).getActivityname();
+                                if (activityurl != null && activityname != null) {
+                                    Intent messageDetail = new Intent(MyMessageActivity.this, MessageDetailActivity.class);
+                                    messageDetail.putExtra("activityUrl", activityurl);
+                                    messageDetail.putExtra("theme", activityname);
+                                    startActivity(messageDetail);
+                                }
                             }
-                        }
-                    });
+                        });
+                    }else{
+                        mNoMessage.setVisibility(View.VISIBLE);
+                        mMyMessageList.setVisibility(View.GONE);
+                    }
                 }
             }
         });

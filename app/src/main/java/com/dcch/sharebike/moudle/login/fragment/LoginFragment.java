@@ -2,6 +2,8 @@ package com.dcch.sharebike.moudle.login.fragment;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.FutureTarget;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.http.Api;
@@ -42,8 +46,10 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -91,6 +97,7 @@ public class LoginFragment extends Fragment {
     private String mPhone;
     private String mToken;
     private String mNickName;
+    private String mUserimage;
 
     public LoginFragment() {
     }
@@ -130,6 +137,7 @@ public class LoginFragment extends Fragment {
             mAchievementShow.setVisibility(View.VISIBLE);
             mNoNetworkTip.setVisibility(View.GONE);
         } else {
+
             mAchievementShow.setVisibility(View.GONE);
             if (mNoNetworkTip != null) {
                 mNoNetworkTip.setVisibility(View.VISIBLE);
@@ -171,14 +179,29 @@ public class LoginFragment extends Fragment {
                     //运动成就
                     sportsAchievement.setText(String.valueOf(MapUtil.changeOneDouble(mInfo.getCalorie())));
                     //用户头像
-                    String userimage = mInfo.getUserimage();
-                    if (userimage != null) {
-                        Log.d("用户头像路径", userimage);
+                    mUserimage = mInfo.getUserimage();
+                    if (mUserimage != null) {
+                        Log.d("用户头像路径", mUserimage);
                         //使用用户自定义的头像
-                        Glide.with(App.getContext()).load(userimage)
+                        Glide.with(App.getContext()).load(mUserimage)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .error(R.mipmap.avatar_default_login)
                                 .thumbnail(0.1f)// 加载缩略图
                                 .into(userIcon);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                final String imgPathFromCache = getImgPathFromCache(mUserimage);
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        LogUtils.d("图片路径", imgPathFromCache);
+                                        Bitmap bitmap = BitmapFactory.decodeFile(imgPathFromCache);
+                                        userIcon.setImageBitmap(bitmap);
+                                    }
+                                });
+                            }
+                        }).start();
                     } else {
                         userIcon.setImageResource(R.mipmap.avatar_default_login);
                     }
@@ -225,6 +248,7 @@ public class LoginFragment extends Fragment {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
+                LogUtils.d("点击", "钱包");
                 if (NetUtils.isConnected(App.getContext())) {
                     if (mInfo != null) {
                         goWalletInfo(mInfo);
@@ -246,6 +270,7 @@ public class LoginFragment extends Fragment {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
+                LogUtils.d("点击", "行程");
                 if (NetUtils.isConnected(App.getContext())) {
                     if (mPhone != null && mToken != null) {
                         goMyJourney(mPhone, mToken);
@@ -258,6 +283,7 @@ public class LoginFragment extends Fragment {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
+                LogUtils.d("点击", "消息");
                 if (uID != null && mToken != null) {
                     goMyMessage(uID, mToken);
                 }
@@ -343,5 +369,24 @@ public class LoginFragment extends Fragment {
         super.onDestroy();
 //        App.getRefWatcher().watch(this);
     }
+
+    private String getImgPathFromCache(String url) {
+
+        FutureTarget<File> future = Glide.with(getContext())
+                .load(url)
+                .downloadOnly(100, 100);
+        try {
+            File cacheFile = future.get();
+            String path = cacheFile.getAbsolutePath();
+
+            return path;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }

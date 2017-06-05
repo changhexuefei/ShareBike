@@ -402,6 +402,7 @@
         </activity>
         <activity
             android:name=".moudle.login.activity.OpenLockTipAcitivity"
+            android:launchMode="singleTask"
             android:theme="@style/translucent">
         </activity>
         <activity android:name=".moudle.user.activity.CouponListActivity">

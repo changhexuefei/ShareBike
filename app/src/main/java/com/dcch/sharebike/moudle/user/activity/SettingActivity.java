@@ -15,6 +15,7 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.utils.ClickUtils;
+import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.iflytek.autoupdate.IFlytekUpdate;
@@ -86,19 +87,16 @@ public class SettingActivity extends BaseActivity {
                     return;
                 }
                 ToastUtils.showShort(this, "正在检查更新");
-                checkUpDate();
+                if (NetUtils.isConnected(this)) {
+                    if (NetUtils.isWifi(this)) {
+                        checkUpDate();
+                    } else {
+                        ToastUtils.showShort(this, getString(R.string.switching_network_tip));
+                    }
 
-//                if (NetUtils.isConnected(this)) {
-//                    if (NetUtils.isWifi(this)) {
-//                        UpdateManager updateManager = new UpdateManager(this);
-//                        updateManager.checkVersion();
-//                    } else {
-//                        ToastUtils.showShort(this, getString(R.string.switching_network_tip));
-//                    }
-//
-//                } else {
-//                    ToastUtils.showShort(this, getString(R.string.no_network_tip));
-//                }
+                } else {
+                    ToastUtils.showShort(this, getString(R.string.no_network_tip));
+                }
 
                 break;
             case R.id.aboutUs:
@@ -189,14 +187,15 @@ public class SettingActivity extends BaseActivity {
             }
         };
 // 启动自动更新
-         updManager.autoUpdate(this, updateListener);
+        updManager.autoUpdate(this, updateListener);
 
     }
+
     private void showTip(final String str) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ToastUtils.showLong(SettingActivity.this,str);
+                ToastUtils.showLong(SettingActivity.this, str);
             }
         });
     }

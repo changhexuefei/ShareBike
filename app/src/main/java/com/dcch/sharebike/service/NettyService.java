@@ -55,7 +55,7 @@ public class NettyService extends Service implements NettyListener {
         receiver = new NetworkReceiver();
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
-        // 自定义心跳，每隔20秒向服务器发送心跳包
+        // 自定义心跳，每隔150秒向服务器发送心跳包
         mScheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         mScheduledExecutorService.scheduleAtFixedRate(new Runnable() {
             @Override
@@ -85,7 +85,7 @@ public class NettyService extends Service implements NettyListener {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         NettyClient.getInstance().setListener(this);
-        LogUtils.d("实验","onStartCommand");
+        LogUtils.d("实验", "onStartCommand");
         LogUtils.d("netty", "服务开启");
         connect();
         return START_NOT_STICKY;
@@ -98,8 +98,7 @@ public class NettyService extends Service implements NettyListener {
         if (statusCode == NettyListener.STATUS_CONNECT_SUCCESS) {
             LogUtils.d("netty", "测试链接" + "\n" + statusCode);
             authenticData();
-        }
-        else {
+        } else {
             LogUtils.d("netty", "测试失败" + "\n" + statusCode);
             WriteLogUtil.writeLogByThread("tcp connect error");
         }
@@ -138,7 +137,10 @@ public class NettyService extends Service implements NettyListener {
     @Override
     public void onMessageResponse(ByteBuf byteBuf) {
         byte[] bytes = byteBuf.array();
+        byte b = byteBuf.readByte();
         Timber.d("tcp receive data:%s", ByteUtil.bytesToHex(bytes));
+        String s = new String(bytes);
+        LogUtils.d("netty", b + "");
         // 接收
         if (0xED == ByteUtil.unsignedByteToInt(bytes[0])
                 && 0xFE == ByteUtil.unsignedByteToInt(bytes[1])) {
@@ -166,7 +168,7 @@ public class NettyService extends Service implements NettyListener {
                         Blowfish blowfish = new Blowfish();
                         String result = new String(blowfish.decryptByte(data));
                         Timber.d(result);
-                        LogUtils.d("netty返回",result);
+                        LogUtils.d("netty返回", result);
                         try {
                             JSONObject jsonObject = new JSONObject(result);
                             handle(word, jsonObject.getInt("i"), jsonObject.getInt("r"));

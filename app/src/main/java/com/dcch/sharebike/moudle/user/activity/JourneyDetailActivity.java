@@ -205,13 +205,17 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
 //                    result.getSuggestAddrInfo();
             return;
         }
-        BikingRouteLine bikingRouteLine = bikingRouteResult.getRouteLines().get(0);
-        BikingRouteOverlay overlay = new BikingRouteOverlay(mRouteBaiduMap);
-        routeOverlay = overlay;
-        if (!overlay.equals("")) {
-            overlay.setData(bikingRouteResult.getRouteLines().get(0));
-            overlay.addToMap();
-            overlay.zoomToSpan();
+        if (bikingRouteResult.error == SearchResult.ERRORNO.NO_ERROR) {
+            if (bikingRouteResult.getRouteLines().size() > 0) {
+                BikingRouteLine bikingRouteLine = bikingRouteResult.getRouteLines().get(0);
+                BikingRouteOverlay overlay = new BikingRouteOverlay(mRouteBaiduMap);
+                routeOverlay = overlay;
+                if (!overlay.equals("")) {
+                    overlay.setData(bikingRouteResult.getRouteLines().get(0));
+                    overlay.addToMap();
+                    overlay.zoomToSpan();
+                }
+            }
         }
     }
 

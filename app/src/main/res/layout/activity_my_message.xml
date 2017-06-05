@@ -19,6 +19,7 @@
     </com.github.jdsjlzx.recyclerview.LRecyclerView>
 
     <RelativeLayout
+        android:visibility="gone"
         android:id="@+id/no_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

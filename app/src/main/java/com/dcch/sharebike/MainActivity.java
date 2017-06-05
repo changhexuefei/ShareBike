@@ -506,6 +506,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         option.setIsNeedLocationPoiList(true);//可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
         option.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
         mLocationClient.setLocOption(option);
+        clickBaiduMapMark();
+        clickDismissOverlay();
     }
 
 
@@ -683,6 +685,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         mMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(final Marker marker) {
+                StyledDialog.buildMdLoading(MainActivity.this, "路线规划中..", true, false).show();
                 if (isChecked) {
                     return false;
                 }
@@ -738,6 +741,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             Log.d("划线", "changeLatitude-----startNode--------" + startNodeStr.getLocation().latitude);
             Log.d("划线", "changeLongitude-----startNode--------" + startNodeStr.getLocation().longitude);
             forLocationAddMark(endNodeStr.getLocation().longitude, endNodeStr.getLocation().latitude);
+
             mRPSearch.walkingSearch((new WalkingRoutePlanOption()).from(startNodeStr).to(endNodeStr));
         }
     }
@@ -847,7 +851,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             switch (view.getId()) {
                 case R.id.close_lock:
                     if (result != null) {
-                        LogUtils.d("呵呵", "你点我了");
                         closeLock(result);
                     }
                     break;
@@ -1309,32 +1312,35 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         if (result.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
             //起终点或途经点地址有岐义，通过以下接口获取建议查询信息
 //                    result.getSuggestAddrInfo();
-            return;
         }
-
         if (result.error == SearchResult.ERRORNO.NO_ERROR) {
-            WalkingRouteLine walkingRouteLine = result.getRouteLines().get(0);
-            int distance = walkingRouteLine.getDistance();
-            int walkTime = walkingRouteLine.getDuration() / 60;
+            if (result.getRouteLines().size() > 0) {
+                WalkingRouteLine walkingRouteLine = result.getRouteLines().get(0);
+                int distance = walkingRouteLine.getDistance();
+                int walkTime = walkingRouteLine.getDuration() / 60;
 //            mWalkTime = distance / 60;
-            String distance1 = MapUtil.distanceFormatter(distance);
-            String castTime = String.valueOf(walkTime);
-            if (!distance1.equals("")) {
-                menuWindow.mDistance.setText(distance1);
-            }
-            if (!castTime.equals("")) {
-                menuWindow.mArrivalTime.setText(castTime + "分钟");
-            }
+                String distance1 = MapUtil.distanceFormatter(distance);
+                String castTime = String.valueOf(walkTime);
+                if (!distance1.equals("")) {
+                    menuWindow.mDistance.setText(distance1);
+                }
+                if (!castTime.equals("")) {
+                    menuWindow.mArrivalTime.setText(castTime + "分钟");
+                }
 
-        }
-        WalkingRouteOverlay overlay = new MyWalkingRouteOverlay(mMap);
-        mMap.setOnMarkerClickListener(overlay);
-        routeOverlay = overlay;
+            }
+            WalkingRouteOverlay overlay = new MyWalkingRouteOverlay(mMap);
+            mMap.setOnMarkerClickListener(overlay);
+            routeOverlay = overlay;
 
-        if (!overlay.equals("") && overlay != null) {
-            overlay.setData(result.getRouteLines().get(0));
-            overlay.addToMap();
-            overlay.zoomToSpan();
+            if (!overlay.equals("") && overlay != null) {
+                StyledDialog.dismissLoading();
+                overlay.setData(result.getRouteLines().get(0));
+                overlay.addToMap();
+                overlay.zoomToSpan();
+            }
+            return;
+
         }
     }
 
@@ -1577,8 +1583,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     uID = String.valueOf(id);
                     if (uID != null && mToken != null) {
                         queryUserInfo(uID, mToken);
-//                        LogUtils.d("这里","4");
-//
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1595,8 +1599,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 getBikeInfo(mCurrentLantitude, mCurrentLongitude);
                 setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
             }
-            clickBaiduMapMark();
-            clickDismissOverlay();
         } else {
             ToastUtils.showShort(MainActivity.this, getString(R.string.no_network_tip));
             clickDismissOverlay();
@@ -1651,7 +1653,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             mLocationClient.unRegisterLocationListener(mMyLocationListener);
             mLocationClient.stop();
         }
-
         //释放资源
         if (mSearch != null) {
             mSearch.destroy();
@@ -1695,6 +1696,11 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     //点击手机上的返回键退出App的方法
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+//        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+//                menuWindow.dismiss();
+//                return true;
+//            }
 
         //按下的如果是BACK键，同时没有重复
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
