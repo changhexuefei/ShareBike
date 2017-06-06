@@ -3,8 +3,10 @@ package com.dcch.sharebike.moudle.user.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
@@ -85,7 +87,7 @@ public class UnlockProgressActivity extends BaseActivity {
                 finish();
             }
         });
-        EventBus.getDefault().register(this);
+
         mMyProgressBar.setEndSuccessBackgroundColor(Color.parseColor("#66A269"))//设置进度完成时背景颜色
                 .setEndSuccessDrawable(R.drawable.ic_done_white_36dp, null)//设置进度完成时背景图片
                 .setCanEndSuccessClickable(false)//设置进度完成后是否可以再次点击开始
@@ -136,6 +138,13 @@ public class UnlockProgressActivity extends BaseActivity {
                 return "done";
             }
         });
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        LogUtils.d("实验","我已经创建好了");
+        EventBus.getDefault().register(this);
     }
 
     @Override

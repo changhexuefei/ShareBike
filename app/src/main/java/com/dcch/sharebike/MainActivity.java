@@ -673,9 +673,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 bundle.putSerializable("bikeInfo", bikeInfo);
                 mMarker.setExtraInfo(bundle);
             }
-        } else {
-            ToastUtils.showLong(this, "当前周围没有车辆");
         }
+//        else {
+//            ToastUtils.showLong(this, "当前周围没有车辆");
+//        }
 
     }
 
@@ -1186,9 +1187,11 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                         JSONObject object = new JSONObject(response);
                         String resultStatus = object.optString("resultStatus");
                         if (resultStatus.equals("0")) {
+                            LogUtils.d("实验","我要传关闭命令了");
                             EventBus.getDefault().post(new MessageEvent(), "off");
 //                            ToastUtils.showShort(MainActivity.this, "开锁超时，请找其他麒麟单车使用！");
                         } else if (resultStatus.equals("1")) {
+                            LogUtils.d("实验","我要传开始命令了");
                             EventBus.getDefault().post(new MessageEvent(), "on");
                             LogUtils.d("开锁", "什么情况！");
                             if (timer != null) {
@@ -1587,12 +1590,13 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             } else {
                 mInstructions.setVisibility(View.VISIBLE);
                 LogUtils.d("这里", "5");
-                getBikeInfo(mCurrentLantitude, mCurrentLongitude);
+                addOverlays(bikeInfos);
+//                getBikeInfo(mCurrentLantitude, mCurrentLongitude);
                 setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
             }
             if (menuWindow == null && bookBikePopupWindow == null && orderPopupWindow == null) {
                 LogUtils.d("这里", "6");
-                getBikeInfo(mCurrentLantitude, mCurrentLongitude);
+                addOverlays(bikeInfos);
                 setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
             }
         } else {

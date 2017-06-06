@@ -117,4 +117,9 @@ public class SplashActivity extends BaseActivity {
         AppManager.finishActivity(this);
 //        App.getRefWatcher().watch(this);
     }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+    }
 }
