@@ -159,6 +159,7 @@ public class MyJourneyActivity extends BaseActivity {
                                 double calorie = mJourneyInfo.getCarrOrders().get(position).getCalorie();
                                 double tripDist = mJourneyInfo.getCarrOrders().get(position).getTripDist();
                                 int tripTime = mJourneyInfo.getCarrOrders().get(position).getTripTime();
+                                String image = mJourneyInfo.getCarrOrders().get(position).getUserImage();
                                 if (mToken != null && bicycleNo != null && carRentalOrderId != null && nickName != null && uID != null && calorie >= 0 && tripDist >= 0) {
                                     Intent journeyDetail = new Intent(MyJourneyActivity.this, JourneyDetailActivity.class);
                                     journeyDetail.putExtra("bicycleNo", bicycleNo);
@@ -169,6 +170,7 @@ public class MyJourneyActivity extends BaseActivity {
                                     journeyDetail.putExtra("calorie", calorie);
                                     journeyDetail.putExtra("tripDist", tripDist);
                                     journeyDetail.putExtra("tripTime", tripTime);
+                                    journeyDetail.putExtra("image", image);
                                     startActivity(journeyDetail);
                                 }
                             }

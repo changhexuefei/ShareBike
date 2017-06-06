@@ -29,7 +29,9 @@ import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
+import com.bumptech.glide.Glide;
 import com.dcch.sharebike.R;
+import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.home.bean.RoutePoint;
@@ -108,6 +110,7 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
             String userId = intent.getStringExtra("userId");
             String token = intent.getStringExtra("token");
             String nickname = intent.getStringExtra("nickname");
+            String image = intent.getStringExtra("image");
             double calorie = intent.getDoubleExtra("calorie", 0);
             int tripTime = intent.getIntExtra("tripTime", 0);
             double tripDist = intent.getDoubleExtra("tripDist", 0);
@@ -116,6 +119,8 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
             mRidetime.setText(String.valueOf(tripTime));
             mDistanceshow.setText(String.valueOf(MapUtil.changeDouble(tripDist)));
             mKCal.setText(String.valueOf(MapUtil.changeDouble(calorie)));
+            Glide.with(App.getContext()).load(image).error(R.drawable.sharebike).into(mIcon);
+
             checkTrip(bicycleNo, carRentalOrderId, userId, token);
         }
 
@@ -262,6 +267,8 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
         mJourneyMapView.onDestroy();
         mJourneyMapView = null;
         StyledDialog.dismiss();
+        Glide.with(App.getContext()).pauseRequests();
+
 //        if (mlocationClient != null) {
 //            mlocationClient.unRegisterLocationListener(mlistener);
 //            mlocationClient.stop();

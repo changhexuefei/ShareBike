@@ -43,6 +43,9 @@ public class App extends Application {
         mContext = getApplicationContext();
         InitializeService.start(this);
         SDKInitializer.initialize(getApplicationContext());
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
 //        if (LeakCanary.isInAnalyzerProcess(this)) {
 //            // This process is dedicated to LeakCanary for heap analysis.
 //            // You should not init your app in this process.
@@ -76,12 +79,6 @@ public class App extends Application {
 //        };
 //        //x5内核初始化接口
 //        QbSdk.initX5Environment(getApplicationContext(), cb);
-
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
-        }
-
-
     }
 
 //    public static RefWatcher getRefWatcher() {

@@ -65,6 +65,8 @@ public class Api {
     public static final String GETCARRENTALORDERBYPHONE = "getCarRentalOrderByPhone.do?";
     //获取优惠券列表
     public static final String GETCOUPON = "getCoupon.do?";
+    //骑行结束结算页面
+    public static final String ORDERBALANCE = "orderBalance.do?";
     //单个行程
     public static final String TRIPRECORD = "positionRecord.do?";
 //    public static final String TRIPRECORD = "tripRecord.do?";

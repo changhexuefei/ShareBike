@@ -2,8 +2,6 @@ package com.dcch.sharebike.moudle.login.fragment;
 
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -183,25 +181,11 @@ public class LoginFragment extends Fragment {
                     if (mUserimage != null) {
                         Log.d("用户头像路径", mUserimage);
                         //使用用户自定义的头像
-                        Glide.with(App.getContext()).load(mUserimage)
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .error(R.mipmap.avatar_default_login)
-                                .thumbnail(0.1f)// 加载缩略图
-                                .into(userIcon);
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                final String imgPathFromCache = getImgPathFromCache(mUserimage);
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        LogUtils.d("图片路径", imgPathFromCache);
-                                        Bitmap bitmap = BitmapFactory.decodeFile(imgPathFromCache);
-                                        userIcon.setImageBitmap(bitmap);
-                                    }
-                                });
-                            }
-                        }).start();
+                            Glide.with(App.getContext()).load(mUserimage)
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .error(R.mipmap.avatar_default_login)
+                                    .thumbnail(0.1f)// 加载缩略图
+                                    .into(userIcon);
                     } else {
                         userIcon.setImageResource(R.mipmap.avatar_default_login);
                     }
@@ -368,6 +352,8 @@ public class LoginFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
 //        App.getRefWatcher().watch(this);
+        Glide.with(App.getContext()).pauseRequests();
+
     }
 
     private String getImgPathFromCache(String url) {
