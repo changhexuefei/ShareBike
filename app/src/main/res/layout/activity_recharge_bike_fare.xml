@@ -5,27 +5,27 @@
     android:id="@+id/activity_recharge_bike_fare"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:orientation="vertical"
     tools:context="com.dcch.sharebike.moudle.user.activity.RechargeBikeFareActivity">
 
-    <include layout="@layout/toolbar"/>
+    <include
+        layout="@layout/toolbar"/>
 
     <TextView
         android:id="@+id/tv20"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_below="@+id/toolbar"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:background="#F9F9F9"
         android:gravity="center_vertical"
-        android:paddingLeft="20dp"
         android:text="充值金额"
         android:textColor="#716F76"/>
 
     <EditText
-        android:visibility="gone"
-        android:inputType="number"
         android:id="@+id/input_moneySum"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -35,11 +35,15 @@
         android:background="#e1dede"
         android:gravity="center"
         android:hint="@string/recharge_bikefare"
-        android:textSize="12sp"/>
+        android:inputType="number"
+        android:textSize="12sp"
+        android:visibility="gone"/>
+
     <RadioGroup
         android:id="@+id/rg_rec_rg"
         style="@style/rg_money"
         android:layout_below="@+id/input_moneySum">
+
         <RadioButton
             android:id="@+id/rb_rg_1"
             style="@style/rb_money_check"
@@ -56,11 +60,11 @@
     </RadioGroup>
 
 
-
     <RadioGroup
         android:id="@+id/rg_rec_rg1"
         style="@style/rg_money"
         android:layout_below="@+id/rg_rec_rg">
+
         <RadioButton
             android:id="@+id/rb_rg1_10"
             style="@style/rb_money_check"
@@ -109,7 +113,9 @@
         <RelativeLayout
             android:id="@+id/rbf_weixinArea"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="56dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
 
             <TextView
                 android:id="@+id/weixin"
@@ -121,7 +127,7 @@
                 android:id="@+id/rbf_weixin_checkbox"
                 style="@style/checkbox"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="match_parent"/>
         </RelativeLayout>
 
         <View
@@ -132,7 +138,9 @@
         <RelativeLayout
             android:id="@+id/rbf_aliArea"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="56dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
 
             <TextView
                 android:id="@+id/ali"
@@ -144,7 +152,7 @@
                 android:id="@+id/rbf_ali_checkbox"
                 style="@style/checkbox"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="match_parent"/>
         </RelativeLayout>
 
     </LinearLayout>

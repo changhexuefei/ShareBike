@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.dcch.sharebike.moudle.user.activity.UnlockBillPageActivity">
+
+    <include layout="@layout/toolbar"/>
+
+    <com.louisgeek.multiedittextviewlib.MultiEditInputView
+        android:id="@+id/unlockDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="30dp"
+        android:padding="5dp"
+        app:contentHeight="100dp"
+        app:hintText="@string/question_input_tip"
+        app:maxCount="140"/>
+
+    <RelativeLayout
+        android:id="@+id/select_photo_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/unlockDesc"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/select_photo_two"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="20dp"
+            android:src="@mipmap/report_violation_default"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/select_photo_two"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/select_photo_two"
+            android:text="@string/uploadimage_tip"
+            android:textSize="10sp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/select_bikefare"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/select_photo_area"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/tv20"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#F9F9F9"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:text="@string/inputbikefare_tip"
+            android:textColor="#716F76"/>
+
+        <EditText
+            android:id="@+id/input_moneySum"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/tv20"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="#e1dede"
+            android:gravity="center"
+            android:hint="@string/recharge_bikefare"
+            android:inputType="number"
+            android:textSize="12sp"
+            android:visibility="gone"/>
+
+        <RadioGroup
+            android:id="@+id/rg_rec_rg_1"
+            style="@style/rg_money"
+            android:layout_below="@+id/tv20">
+
+            <RadioButton
+                android:id="@+id/rb_rg_1"
+                style="@style/rb_money_check"
+                android:text="@string/_0_5"/>
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent"/>
+
+            <RadioButton
+                android:id="@+id/rb_rg_2"
+                style="@style/rb_money_check"
+                android:text="@string/_1_0"/>
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent"/>
+
+            <RadioButton
+                android:id="@+id/rb_rg_3"
+                style="@style/rb_money_check"
+                android:text="@string/_1_5"/>
+        </RadioGroup>
+
+
+        <RadioGroup
+            android:id="@+id/rg_rec_rg_2"
+            style="@style/rg_money"
+            android:layout_below="@+id/rg_rec_rg_1">
+
+            <RadioButton
+                android:id="@+id/rb_rg1_4"
+                style="@style/rb_money_check"
+                android:text="@string/_2_0"/>
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent"/>
+
+            <RadioButton
+                android:id="@+id/rb_rg1_5"
+                style="@style/rb_money_check"
+                android:text="@string/_2_5"/>
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent"/>
+
+            <RadioButton
+                android:id="@+id/rb_rg1_6"
+                style="@style/rb_money_check"
+                android:text="@string/_3_0"/>
+        </RadioGroup>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/mbikefareconfirm"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:background="#c6bfbf"
+        android:enabled="false"
+        android:gravity="center"
+        android:text="@string/upload"
+        android:textColor="#ffffff"
+        android:textSize="18sp"/>
+
+</RelativeLayout>

@@ -168,28 +168,19 @@ public class UnlockProgressActivity extends BaseActivity {
     }
 
     @Subscriber(tag = "on", mode = ThreadMode.MAIN)
-    private void receiveFromMain(MessageEvent info) {
+    private void receiveFromNettyService(MessageEvent info) {
         LogUtils.d("主页给的数据", "成功" + info.toString());
-
         if (info != null) {
             num = 0;
             mMyProgressBar.beginStarting();//启动开始动画
         }
-
-//        } else {
-//            startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
-//            UnlockProgressActivity.this.finish();
-//        }
-//        EventBus.getDefault().removeStickyEvent(MessageEvent.class);
     }
 
     @Subscriber(tag = "off", mode = ThreadMode.MAIN)
-    private void receiveFromMainOther(MessageEvent info) {
+    private void receiveFromNettyServiceOther(MessageEvent info) {
         LogUtils.d("主页给的数据", "失败" + info.toString());
         mMyProgressBar.setError();//进度失败 发生错误
-//        startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
-//        UnlockProgressActivity.this.finish();
-//        EventBus.getDefault().removeStickyEvent(MessageEvent.class);
+        this.finish();
     }
 
 }

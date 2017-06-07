@@ -11,9 +11,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -160,108 +158,80 @@ public class GPSService extends Service {
         return START_REDELIVER_INTENT;
     }
 
-    public class RouteRecordThread implements Runnable {
-
-        @Override
-        public void run() {
-            while (true) {
-                try {
-                    Thread.sleep(minTime);
-                    Message message = new Message();
-                    message.what = 1;
-                    recordHandler.sendMessage(message);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    final Handler recordHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 1:
-//                    startRecordRoute();
-            }
-            super.handleMessage(msg);
-        }
-    };
-
-//    private void startRecordRoute() {
-//        // 获取设备经纬度
-//        if (!isEncrypt) {
-//            routeLat = getDeviceLocation(DeviceLocType.LATITUDE);
-//            routeLng = getDeviceLocation(DeviceLocType.LONGITUDE);
-//            if (isDebug)
-//                Toast.makeText(getApplicationContext(),
-//                        "Device Loc:" + routeLat + "," + routeLng,
-//                        Toast.LENGTH_SHORT).show();
-//        }
+//    public class RouteRecordThread implements Runnable {
 //
-//        RoutePoint routePoint = new RoutePoint();
-//        if (routeLng != 5.55 && routeLat != 5.55) {
-//            if (routPointList.size() > 0
-//                    && routPointList.get(routPointList.size() - 1).getRouteLat() == routeLat
-//                    && (routPointList.get(routPointList.size() - 1).getRouteLng() == routeLng)) {
-//                if (isDebug) {
-//                     Toast.makeText(getApplicationContext(),
-//                            "Route not change",
-//                            Toast.LENGTH_SHORT).show();
+//        @Override
+//        public void run() {
+//            while (true) {
+//                try {
+//                    Thread.sleep(minTime);
+//                    Message message = new Message();
+//                    message.what = 1;
+////                    recordHandler.sendMessage(message);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
 //                }
-//            } else {
-//                routePoint.setId(startId++);
-//                routePoint.setRouteLng(routeLng);
-//                routePoint.setRouteLat(routeLat);
-//                routPointList.add(routePoint);
 //            }
 //        }
 //    }
 
+//    final Handler recordHandler = new Handler() {
+//        public void handleMessage(Message msg) {
+//            switch (msg.what) {
+//                case 1:
+////                    startRecordRoute();
+//            }
+//            super.handleMessage(msg);
+//        }
+//    };
+
+
+
 // *获取设备提供的经纬度，Network或GPS
 
-    private double getDeviceLocation(DeviceLocType type) {
-        double deviceLat = ERROR_CODE;
-        double deviceLng = ERROR_CODE;
-
-        mLocationManager = (LocationManager) getSystemService(getApplicationContext().LOCATION_SERVICE);
-        if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-
-            Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (location != null) {
-                deviceLat = location.getLatitude();
-                deviceLng = location.getLongitude();
-            } else {
-                mLocationManager.requestLocationUpdates(
-                        LocationManager.NETWORK_PROVIDER, 1000, 0, new deviceLocationListener());
-                Location location1 = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                if (location1 != null) {
-                    deviceLat = location1.getLatitude(); // 经度
-                    deviceLng = location1.getLongitude(); // 纬度
-                }
-            }
-        } else {
-            mLocationManager.requestLocationUpdates(
-                    LocationManager.NETWORK_PROVIDER, 1000, 0, new deviceLocationListener());
-
-            Location location = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            if (location != null) {
-                deviceLat = location.getLatitude(); // 经度
-                deviceLng = location.getLongitude(); // 纬度
-            }
-        }
-        if (type == DeviceLocType.LATITUDE)
-            return deviceLat;
-        else if (type == DeviceLocType.LONGITUDE)
-            return deviceLng;
-        else
-            return ERROR_CODE;
-    }
+//    private double getDeviceLocation(DeviceLocType type) {
+//        double deviceLat = ERROR_CODE;
+//        double deviceLng = ERROR_CODE;
+//
+//        mLocationManager = (LocationManager) getSystemService(getApplicationContext().LOCATION_SERVICE);
+//        if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+//
+//            Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//            if (location != null) {
+//                deviceLat = location.getLatitude();
+//                deviceLng = location.getLongitude();
+//            } else {
+//                mLocationManager.requestLocationUpdates(
+//                        LocationManager.NETWORK_PROVIDER, 1000, 0, new deviceLocationListener());
+//                Location location1 = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//                if (location1 != null) {
+//                    deviceLat = location1.getLatitude(); // 经度
+//                    deviceLng = location1.getLongitude(); // 纬度
+//                }
+//            }
+//        } else {
+//            mLocationManager.requestLocationUpdates(
+//                    LocationManager.NETWORK_PROVIDER, 1000, 0, new deviceLocationListener());
+//
+//            Location location = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//            if (location != null) {
+//                deviceLat = location.getLatitude(); // 经度
+//                deviceLng = location.getLongitude(); // 纬度
+//            }
+//        }
+//        if (type == DeviceLocType.LATITUDE)
+//            return deviceLat;
+//        else if (type == DeviceLocType.LONGITUDE)
+//            return deviceLng;
+//        else
+//            return ERROR_CODE;
+//    }
 
 
       //* 设备位置监听器
       private class deviceLocationListener implements LocationListener {
 
-        // Provider的状态在可用、暂时不可用和无服务三个状态直接切换时触发此函数
+        // Provider的状态在可用、暂时不可用和无务三个状态直接切换时触发此函数
         public void onStatusChanged(String provider, int status, Bundle extras) {
         }
 
@@ -343,13 +313,13 @@ public class GPSService extends Service {
         }
 
         //发送广播，提示跳转到结束界面
-        private void sendToRidingResult(Bundle bundle) {
-            Log.d("AAAAA", bundle + "");
-            Intent intent = new Intent();
-            intent.putExtras(bundle);
-            intent.setAction("RESULT SENT");
-            sendBroadcast(intent);
-        }
+//        private void sendToRidingResult(Bundle bundle) {
+//            Log.d("AAAAA", bundle + "");
+//            Intent intent = new Intent();
+//            intent.putExtras(bundle);
+//            intent.setAction("RESULT SENT");
+//            sendBroadcast(intent);
+//        }
 
         @Override
         public void onReceiveLocation(BDLocation location) {
@@ -402,7 +372,17 @@ public class GPSService extends Service {
                 map.put("lat", mRouteLat + "");
                 map.put("mile", totalDistance / 1000 + "");
                 LogUtils.d("看看数据",mToken+"\n"+mCarRentalOrderDate+"\n"+mBicycleNo+"\n"+mCarRentalOrderId+"\n"+mUserId);
-
+//                byte[] encryptBytes = MapUtil.transMapToString(map).getBytes();
+//                NettyClient.getInstance().sendMsgToServer(encryptBytes, new ChannelFutureListener() {
+//                    @Override
+//                    public void operationComplete(ChannelFuture future) throws Exception {
+//                        if (future.isSuccess()) {
+//                            LogUtils.d("netty", "Write successful");
+//                        } else {
+//                            LogUtils.d("netty", "Write failed");
+//                        }
+//                    }
+//                });
                 OkHttpUtils.post().url(Api.BASE_URL + Api.ORDERCAST).params(map).build().execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
@@ -423,9 +403,9 @@ public class GPSService extends Service {
                                             sendToActivity(bundle);
                                         }
                                     } else if(ridingInfo.getStatus()==1){
-                                        Bundle bundle = new Bundle();
-                                        bundle.putSerializable("ridingInfo", ridingInfo);
-                                        sendToRidingResult(bundle);
+//                                        Bundle bundle = new Bundle();
+//                                        bundle.putSerializable("ridingInfo", ridingInfo);
+//                                        sendToRidingResult(bundle);
                                         stopSelf();
                                 }
                         }

@@ -107,6 +107,7 @@
     </style>
 
     <style name="checkbox">
+        <item name="android:gravity">center_vertical</item>
         <item name="android:clickable">false</item>
         <item name="android:scaleY">0.5</item>
         <item name="android:scaleX">0.5</item>
@@ -160,8 +161,8 @@
         <item name="android:layout_height">48dp</item>
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
     </style>
 
     <!-- item name="android:windowBackground"         设置背景透明度及其颜色值 -->

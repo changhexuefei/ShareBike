@@ -172,7 +172,7 @@ public class DrivingRouteOverlay extends OverlayManager {
     }
     public List<BitmapDescriptor> getCustomTextureList() {
         ArrayList<BitmapDescriptor> list = new ArrayList<BitmapDescriptor>();
-        list.add(BitmapDescriptorFactory.fromAsset("Icon_road_blue_arrow.png"));
+        list.add(BitmapDescriptorFactory.fromAsset("icon_road_blue_arrow.png"));
         list.add(BitmapDescriptorFactory.fromAsset("Icon_road_green_arrow.png"));
         list.add(BitmapDescriptorFactory.fromAsset("Icon_road_yellow_arrow.png"));
         list.add(BitmapDescriptorFactory.fromAsset("Icon_road_red_arrow.png"));

@@ -5,7 +5,6 @@ import java.io.Serializable;
 
 public class RidingInfo implements Serializable {
 
-
     /**
      * carRentalOrderId : 786c5908ca1941ee9919cb9e8551697f
      * tripDist : 0.008730947
@@ -21,6 +20,7 @@ public class RidingInfo implements Serializable {
      * orderCast : 0
      * finalCast : 0
      */
+    //{"resultStatus":"1","carRentalInfo":{"amount":0,"bicycleNo":"","calorie":0,"carRentalOrderId":"c109794e26e640c7bf1c37cc75e99a0b","couponAmount":0,"couponno":"nocoupon","finalCast":0.5,"orderCast":0,"resultStatus":"","rideCost":0.5,"status":0,"tripDist":0,"tripTime":1}}
 
     private String carRentalOrderId;
     private double tripDist;

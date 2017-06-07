@@ -80,7 +80,7 @@ public class Api {
     public static final String CLOSELOCK = "CloseLock.do?";
     //寻车铃
     public static final String FINDBIKERING = "FindBikeRing.do?";
-    //活动页面（未做）
+    //活动页面
     public static final String GETACTIVITYS = "getActivitys.do?";
     //用户协议
     public static final String USERAGREEMENT = "http://www.70bikes.com/MavenSSM/Explain/userAgreement.jsp";

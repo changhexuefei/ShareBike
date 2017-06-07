@@ -51,6 +51,7 @@
     <string name="realName_identity">实名认证</string>
     <string name="deposit_pay">押金交纳</string>
     <string name="phone_verification">手机验证</string>
+    <string name="unlock_fare">关锁不结束计费</string>
     <string name="agreement">用车服务条款</string>
     <string name="ride_result">骑行结束页</string>
     <string name="bike_service_regulations">用车服务条例</string>
@@ -68,6 +69,7 @@
     <string name="publicity">绿色出行，麒乐无穷</string>
     <string name="company_name">北京迪辰创和科技有限责任公司</string>
     <string name="my_wallet">我的钱包</string>
+    <string name="expenditure">骑行花费</string>
     <string name="my_favorable">我的优惠</string>
     <string name="my_journey">我的行程</string>
     <string name="my_coupon">我的优惠</string>
@@ -116,6 +118,8 @@
     <string name="refund_cancel">取消</string>
     <string name="refund_cash_pledge">退押金</string>
     <string name="journey_detail">行程详情</string>
+    <string name="ride_disance">骑行距离</string>
+    <string name="consumption">热量消耗</string>
     <string name="splash_tip_one">绿色出行</string>
     <string name="splash_tip_two">麒乐无穷</string>
     <string name="cashPledge_explain">押金说明</string>
@@ -176,4 +180,14 @@
     <string name="switching_network_tip">你当前使用的手机网络,请切换到无线网络进行下载</string>
     <string name="recharge_bikefare">按需输入充值金额，最低1元</string>
     <string name="transaction_tip_two">交易成功</string>
+    <string name="inputbikefare_tip">请选择你真实的用车费用</string>
+    <string name="uploadimage_tip">上传照片</string>
+    <string name="question_input_tip">请描述遇到的问题和建议</string>
+    <string name="_0_5">0.5元</string>
+    <string name="_1_0">1.0元</string>
+    <string name="_1_5">1.5元</string>
+    <string name="_2_0">2.0元</string>
+    <string name="_2_5">2.5元</string>
+    <string name="_3_0">3.0元</string>
+    <string name="pay_now">立即支付</string>
 </resources>

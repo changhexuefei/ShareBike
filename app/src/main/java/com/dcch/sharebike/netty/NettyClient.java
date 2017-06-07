@@ -42,6 +42,7 @@ public class NettyClient {
         if (!isConnect) {
             group = new NioEventLoopGroup();
             Bootstrap bootstrap = new Bootstrap().group(group)
+//                    .option(ChannelOption.SO_TIMEOUT,10)
                     .option(ChannelOption.SO_KEEPALIVE,true)
                     .channel(NioSocketChannel.class)
                     .handler(new NettyClientInitializer(listener));
@@ -94,7 +95,8 @@ public class NettyClient {
         if (flag) {
             ByteBuf buf = Unpooled.copiedBuffer(data);
             String s = new String(buf.array());
-            LogUtils.d("netty", "flag"+flag+"\n"+s.length());
+            LogUtils.d("netty", "flag"+flag+"\n"+"发送数据："+buf+"\n"+ s.toString());
+
             channel.writeAndFlush(buf).addListener(listener);
         }
         return flag;

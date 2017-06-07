@@ -11,11 +11,14 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 
+import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.netty.NettyClient;
 import com.dcch.sharebike.netty.NettyListener;
 import com.dcch.sharebike.utils.ByteUtil;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.WriteLogUtil;
+
+import org.simple.eventbus.EventBus;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -56,8 +59,8 @@ public class NettyService extends Service implements NettyListener {
             @Override
             public void run() {
 //                byte[] requestBody = {(byte) 0xFE, (byte) 0xED, (byte) 0xFE, 5};
-//                String s = new String("hello server");
-                String s = new String("");
+                String s = new String("hello server");
+//                String s = new String("");
                 byte[] requestBody = s.getBytes();
                 NettyClient.getInstance().sendMsgToServer(requestBody, new ChannelFutureListener() {    //3
                     @Override
@@ -75,7 +78,7 @@ public class NettyService extends Service implements NettyListener {
                     }
                 });
             }
-        }, 20, 150, TimeUnit.SECONDS);
+        }, 150, 150, TimeUnit.SECONDS);
     }
 
     @Override
@@ -113,8 +116,8 @@ public class NettyService extends Service implements NettyListener {
 //        byte[] content = RequestUtil.getEncryptBytes(auth);
 //        byte[] requestHeader = RequestUtil.getRequestHeader(content, 1, 1001);
 //        byte[] requestBody = RequestUtil.getRequestBody(requestHeader, content);
-//        String s = new String("hello server");
-        String s = new String("");
+        String s = new String("hello server");
+//        String s = new String("");
         byte[] requestBody = s.getBytes();
         NettyClient.getInstance().sendMsgToServer(requestBody, new ChannelFutureListener() {    //3
             @Override
@@ -136,9 +139,18 @@ public class NettyService extends Service implements NettyListener {
         byte[] bytes = byteBuf.array();
         Timber.d("tcp receive data:%s", ByteUtil.bytesToHex(bytes));
         String s = new String(bytes);
-        LogUtils.d("netty",s.trim());
-        //根据不同的返回值，来执行相应的方法
+        int len = byteBuf.writerIndex();
+        LogUtils.d("netty", s.trim() + "\n" + len);
+        //根据不同的返回值，来执行相应的操作
+        if (s.trim().equals("SERVER RECEIVED!")) {
 
+        } else if (s.trim().equals("OpenSuccess")) {
+            EventBus.getDefault().post(new MessageEvent(), "on");
+        } else if (s.trim().equals("OpenFailure")) {
+            EventBus.getDefault().post(new MessageEvent(), "off");
+        } else if (s.trim().equals("CloseSuccess")) {
+            EventBus.getDefault().post(new MessageEvent(), "close");
+        }
 
 //        // 接收
 //        if (0xED == ByteUtil.unsignedByteToInt(bytes[0])
@@ -263,9 +275,9 @@ public class NettyService extends Service implements NettyListener {
 //        }
     }
 
-    private void handle(int t, int i, int f) {
-        // TODO 实现自己的业务逻辑
-    }
+//    private void handle(int t, int i, int f) {
+//        // TODO 实现自己的业务逻辑
+//    }
 
     private void connect() {
         if (!NettyClient.getInstance().getConnectStatus()) {
