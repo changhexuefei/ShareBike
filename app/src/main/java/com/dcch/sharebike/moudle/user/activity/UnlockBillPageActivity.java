@@ -1,5 +1,6 @@
 package com.dcch.sharebike.moudle.user.activity;
 
+import android.support.annotation.IdRes;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
@@ -11,12 +12,13 @@ import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.utils.LogUtils;
 import com.louisgeek.multiedittextviewlib.MultiEditInputView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class UnlockBillPageActivity extends BaseActivity {
+public class UnlockBillPageActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
 
     @BindView(R.id.title)
     TextView mTitle;
@@ -52,6 +54,7 @@ public class UnlockBillPageActivity extends BaseActivity {
     RadioButton mRbRg16;
     @BindView(R.id.mbikefareconfirm)
     TextView mMbikefareconfirm;
+    private String rechargeNumber="";
 
     @Override
     protected int getLayoutId() {
@@ -69,15 +72,68 @@ public class UnlockBillPageActivity extends BaseActivity {
                 finish();
             }
         });
-
     }
 
+    @Override
+    protected void initListener() {
+        super.initListener();
+        mRgRecRg1.setOnCheckedChangeListener(this);
+        mRgRecRg2.setOnCheckedChangeListener(this);
+    }
 
     @OnClick(R.id.mbikefareconfirm)
     public void onViewClicked() {
-
-
+        String contentText = mUnlockDesc.getContentText();
     }
 
 
+    @Override
+    public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+        switch (checkedId) {
+            case R.id.rb_rg_1:
+                mRgRecRg2.clearCheck();
+                mRgRecRg1.check(R.id.rb_rg_1);
+                String s1 = mRbRg1.getText().toString().trim();
+                rechargeNumber = s1.substring(0, s1.length()-1);
+                LogUtils.d("你是谁",rechargeNumber);
+                break;
+            case R.id.rb_rg_2:
+                mRgRecRg2.clearCheck();
+                mRgRecRg1.check(R.id.rb_rg_2);
+                String s2 = mRbRg2.getText().toString().trim();
+                rechargeNumber = s2.substring(0, s2.length()-1);
+                LogUtils.d("你是谁",rechargeNumber);
+                break;
+
+            case R.id.rb_rg_3:
+                mRgRecRg2.clearCheck();
+                mRgRecRg1.check(R.id.rb_rg_3);
+                String s3 = mRbRg3.getText().toString().trim();
+                rechargeNumber = s3.substring(0, s3.length()-1);
+                LogUtils.d("你是谁",rechargeNumber);
+                break;
+            case R.id.rb_rg1_4:
+                mRgRecRg1.clearCheck();
+                mRgRecRg2.check(R.id.rb_rg1_4);
+                String s4 = mRbRg14.getText().toString().trim();
+                rechargeNumber = s4.substring(0, s4.length()-1);
+                LogUtils.d("你是谁",rechargeNumber);
+                break;
+
+            case R.id.rb_rg1_5:
+                mRgRecRg1.clearCheck();
+                mRgRecRg2.check(R.id.rb_rg1_5);
+                String s5 = mRbRg15.getText().toString().trim();
+                rechargeNumber = s5.substring(0, s5.length()-1);
+                LogUtils.d("你是谁",rechargeNumber);
+                break;
+            case R.id.rb_rg1_6:
+                mRgRecRg1.clearCheck();
+                mRgRecRg2.check(R.id.rb_rg1_6);
+                String s6 = mRbRg16.getText().toString().trim();
+                rechargeNumber = s6.substring(0, s6.length()-1);
+                LogUtils.d("你是谁",rechargeNumber);
+                break;
+        }
+    }
 }

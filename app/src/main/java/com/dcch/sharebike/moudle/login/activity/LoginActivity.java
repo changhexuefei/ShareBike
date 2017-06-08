@@ -25,6 +25,7 @@ import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
+import com.dcch.sharebike.service.NettyService;
 import com.dcch.sharebike.utils.AES;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.InPutUtils;
@@ -282,6 +283,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     } else if (userInfo.getCashStatus() == 1 && userInfo.getStatus() == 1) {
                         goToPersonCenter();
+                    }
+                    String userId = String.valueOf(userInfo.getId());
+                    String userPhone = userInfo.getPhone();
+                    if (userId != null && userPhone != null) {
+                        Intent nettyService = new Intent(LoginActivity.this, NettyService.class);
+                        nettyService.putExtra("userId", userId);
+                        nettyService.putExtra("phone", userPhone);
+                        startService(nettyService);
                     }
                     EventBus.getDefault().post(new MessageEvent(), "gone");
                     LoginActivity.this.finish();

@@ -39,6 +39,8 @@ public class NettyService extends Service implements NettyListener {
     private static String sessionId = null;
 
     private ScheduledExecutorService mScheduledExecutorService;
+    private String mUserId;
+    private String mPhone;
 
     private void shutdown() {
         if (mScheduledExecutorService != null) {
@@ -84,6 +86,8 @@ public class NettyService extends Service implements NettyListener {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         NettyClient.getInstance().setListener(this);
+        mUserId = intent.getStringExtra("userId");
+        mPhone = intent.getStringExtra("phone");
         LogUtils.d("实验", "onStartCommand");
         LogUtils.d("netty", "服务开启");
         connect();
@@ -116,7 +120,7 @@ public class NettyService extends Service implements NettyListener {
 //        byte[] content = RequestUtil.getEncryptBytes(auth);
 //        byte[] requestHeader = RequestUtil.getRequestHeader(content, 1, 1001);
 //        byte[] requestBody = RequestUtil.getRequestBody(requestHeader, content);
-        String s = new String("hello server");
+        String s = mPhone + "_" + mUserId;
 //        String s = new String("");
         byte[] requestBody = s.getBytes();
         NettyClient.getInstance().sendMsgToServer(requestBody, new ChannelFutureListener() {    //3

@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -79,7 +80,6 @@ import com.dcch.sharebike.moudle.user.activity.RechargeDepositActivity;
 import com.dcch.sharebike.moudle.user.activity.RidingResultActivity;
 import com.dcch.sharebike.moudle.user.activity.UnlockBillPageActivity;
 import com.dcch.sharebike.moudle.user.activity.UnlockProgressActivity;
-import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.netty.NettyClient;
 import com.dcch.sharebike.overlayutil.OverlayManager;
 import com.dcch.sharebike.overlayutil.WalkingRouteOverlay;
@@ -99,6 +99,7 @@ import com.dcch.sharebike.view.SelectPicPopupWindow;
 import com.google.gson.Gson;
 import com.hss01248.dialog.StyledDialog;
 import com.hss01248.dialog.bottomsheet.BottomSheetBean;
+import com.hss01248.dialog.interfaces.MyDialogListener;
 import com.hss01248.dialog.interfaces.MyItemDialogListener;
 import com.iflytek.autoupdate.IFlytekUpdate;
 import com.iflytek.autoupdate.IFlytekUpdateListener;
@@ -172,7 +173,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     private int mXDirection;//方向传感器X方向的值
     private GeoCoder mSearch = null;
-    //    private Address locationDescribe;
+    // private Address locationDescribe;
     //POI搜索相关
     // public PoiSearch mPoiSearch = null;
     private SelectPicPopupWindow menuWindow = null; // 自定义弹出框
@@ -180,7 +181,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private List<BikeInfo> bikeInfos;
     private BikeInfo bikeInfo;
     private BookBikePopupWindow bookBikePopupWindow = null;
-
     private int cashStatus;
     private int status;
     private String bookingCarId;
@@ -204,17 +204,12 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private BikeRentalOrderInfo bikeRentalOrderInfo = null;
     private BikeRentalOrderPopupWindow orderPopupWindow = null;
     private LocationReceiver lr;
-    //    private PendingIntent pi;
-    //    private static final String LOCSTART = "START_LOCATING";
     PlanNode startNodeStr, endNodeStr;
-    //    WalkingRouteResult nowResultwalk = null;
-//    RouteLine routeLine = null;
     RoutePlanSearch mRPSearch = null;    // 搜索模块，也可去掉地图模块独立使用
     private Intent mServiceIntent;
     //    ResultReceiver mResultReceiver;
     Marker mMarker = null;
     private String mToken;
-    //    private NettyClient mClient;
     private boolean mHasPlanRoute;
     private ProgressDialog mDialog;
 
@@ -249,11 +244,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         initMyLocation();
         // 初始化传感器
         initOritationListener();
-//        setMarkerInfo();
         //注册EventBus
         EventBus.getDefault().register(this);
         AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        startService(new Intent(MainActivity.this, NettyService.class));
         lr = new LocationReceiver();
 //        UpdateManager updateManager = new UpdateManager(this);
 //        updateManager.checkVersion();
@@ -291,32 +284,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         };
         // 启动自动更新
         updManager.autoUpdate(this, updateListener);
-    }
-
-    private void queryUserInfo(String uID, String token) {
-        Map<String, String> map = new HashMap<>();
-        map.put("userId", uID);
-        map.put("token", token);
-
-        OkHttpUtils.post().url(Api.BASE_URL + Api.INFOUSER).params(map).build().execute(new StringCallback() {
-            @Override
-            public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(MainActivity.this, "服务器忙，请重试");
-            }
-
-            @Override
-            public void onResponse(String response, int id) {
-                Log.d("个人信息", response);
-                if (JsonUtils.isSuccess(response)) {
-                    Gson gson = new Gson();
-                    UserInfo userInfo = gson.fromJson(response, UserInfo.class);
-                    status = userInfo.getStatus();
-                    cashStatus = userInfo.getCashStatus();
-                    phone = userInfo.getPhone();
-                    LogUtils.d("个人信息", status + "\n" + cashStatus + "\n" + phone);
-                }
-            }
-        });
     }
 
     //进入主页面检查客户是否有预约订单的方法
@@ -508,7 +475,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         clickDismissOverlay();
     }
 
-
     @OnClick({R.id.MyCenter, R.id.btn_my_location, R.id.scan, seek, R.id.instructions, btn_my_help, R.id.specialOffer})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -567,14 +533,16 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 }
                 if (NetUtils.isConnected(App.getContext())) {
                     if (SPUtils.isLogin()) {
-                        if (cashStatus == 1 && status == 1 && mToken != null) {
-                            checkAggregate(uID, mToken);
-                        } else if (cashStatus == 0 && status == 0) {
-                            startActivity(new Intent(this, RechargeActivity.class));
-                        } else if (cashStatus == 1 && status == 0) {
-                            startActivity(new Intent(this, IdentityAuthentication.class));
-                        } else if (cashStatus == 0 && status == 1) {
-                            startActivity(new Intent(this, RechargeDepositActivity.class));
+                        if (mToken != null) {
+                            if (cashStatus == 1 && status == 1) {
+                                checkAggregate(uID, mToken);
+                            } else if (cashStatus == 0 && status == 0) {
+                                startActivity(new Intent(this, RechargeActivity.class));
+                            } else if (cashStatus == 1 && status == 0) {
+                                startActivity(new Intent(this, IdentityAuthentication.class));
+                            } else if (cashStatus == 0 && status == 1) {
+                                startActivity(new Intent(this, RechargeDepositActivity.class));
+                            }
                         }
                     } else {
 //                没有登录的情况设置Activity
@@ -587,7 +555,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 } else {
                     ToastUtils.showShort(App.getContext(), "网络无法连接，请检查网络连接！");
                 }
-
                 break;
             case R.id.specialOffer:
                 if (ClickUtils.isFastClick()) {
@@ -601,6 +568,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         }
     }
 
+    //去消息列表的方法
     private void goToMessageList(String uID, String token) {
         Intent myMessage = new Intent(MainActivity.this, MyMessageActivity.class);
         myMessage.putExtra("userId", uID);
@@ -620,7 +588,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 .longitude(mCurrentLongitude).build();
         mMap.setMyLocationData(data);
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -727,6 +694,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         }
     }
 
+    //画规划路线的方法
     private void drawPlanRoute(PlanNode endNodeStr) {
         if (routeOverlay != null) {
             routeOverlay.removeFromMap();
@@ -786,6 +754,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         }
     };
 
+    //清除覆盖物的方法
     private void clearDrawingOverlay() {
         mMap.clear();
         addOverlays(bikeInfos);
@@ -848,7 +817,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             switch (view.getId()) {
                 case R.id.close_lock:
                     if (result != null) {
-                        closeLock(result);
+//                        closeLock(result);
                         startActivity(new Intent(MainActivity.this, UnlockBillPageActivity.class));
                     }
                     break;
@@ -1072,10 +1041,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     startActivity(reportIllegalParking);
                 }
                 if (position == 3) {
-                    ToastUtils.showShort(MainActivity.this, "敬请期待");
-//                    Intent otherProblem = new Intent(MainActivity.this, CustomerServiceActivity.class);
-//                    otherProblem.putExtra("name", "3");
-//                    startActivity(otherProblem);
+//                    ToastUtils.showShort(MainActivity.this, "敬请期待");
+                    Intent otherProblem = new Intent(MainActivity.this, CustomerServiceActivity.class);
+                    otherProblem.putExtra("name", "3");
+                    startActivity(otherProblem);
                 }
             }
         })
@@ -1109,6 +1078,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         }
     }
 
+    //检查车辆编号的是否可用
     private void checkBicycleNo(final String result, String token) {
         Map<String, String> map = new HashMap<>();
         map.put("lockremark", result);
@@ -1157,7 +1127,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             map.put("token", mToken);
 //            byte[] encryptBytes = RequestUtil.getEncryptBytes(map);
             byte[] encryptBytes = MapUtil.transMapToString(map).getBytes();
-//            LogUtils.d("看看数据", mToken + "\n" + result + "\n" + phone + "\n" + uID);
             NettyClient.getInstance().sendMsgToServer(encryptBytes, new ChannelFutureListener() {
                 @Override
                 public void operationComplete(ChannelFuture future) throws Exception {
@@ -1168,48 +1137,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     }
                 }
             });
-//            OkHttpUtils.post().url(Api.BASE_URL + Api.OPENSCAN).params(map).build().execute(new StringCallback() {
-//                @Override
-//                public void onError(Call call, Exception e, int id) {
-//                    if (!e.equals("") && e != null) {
-//                        LogUtils.e(e.getMessage());
-//                    }
-//                    ToastUtils.showShort(MainActivity.this, "服务器忙，请稍后重试");
-//                }
-//
-//                @Override
-//                public void onResponse(String response, int id) {
-//                    Log.d("开锁", response);
-//                    try {
-//                        JSONObject object = new JSONObject(response);
-//                        String resultStatus = object.optString("resultStatus");
-//                        if (resultStatus.equals("0")) {
-//                            LogUtils.d("实验","我要传关闭命令了");
-//                            EventBus.getDefault().post(new MessageEvent(), "off");
-////                            ToastUtils.showShort(MainActivity.this, "开锁超时，请找其他麒麟单车使用！");
-//                        } else if (resultStatus.equals("1")) {
-//                            LogUtils.d("实验","我要传开始命令了");
-//                            EventBus.getDefault().post(new MessageEvent(), "on");
-//                            LogUtils.d("开锁", "什么情况！");
-//                            if (timer != null) {
-//                                if (bookBikePopupWindow != null) {
-//                                    bookBikePopupWindow.dismiss();
-//                                }
-//                                timer.cancel();
-//                                cancelBookingBike(bookingCarId, bicycleNo, uID, mToken);
-//                            }
-//
-//                        } else if (resultStatus.equals("2")) {
-//                            ToastUtils.showShort(MainActivity.this, "您的账号在其他设备上登录，您被迫下线！");
-//                        }
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            });
         }
     }
 
+    //创建骑行订单
     private void createRidingOrder(final String uID, final String result, final String mToken) {
         Map<String, String> map = new HashMap<>();
         map.put("userId", uID);
@@ -1258,6 +1189,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         });
     }
 
+    //显示车辆预约窗口
     private void showMenuWindow(BikeInfo bikeInfo) {
         if (menuWindow == null) {
             menuWindow = new SelectPicPopupWindow(MainActivity.this, bikeInfo, itemsOnClick);
@@ -1287,14 +1219,12 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     @Override
     public void onMapStatusChange(MapStatus mapStatus) {
-//        mMap.clear();
     }
 
     @Override
     public void onMapStatusChangeFinish(MapStatus mapStatus) {
         LatLng target = mapStatus.target;
         LogUtils.d("移动", target.latitude + "\n" + target.longitude);
-//
 //        getBikeInfo(target.latitude, target.longitude);
 //        setUserMapCenter(target.latitude,target.longitude);
     }
@@ -1426,6 +1356,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         }
     }
 
+    //检查用户订单信息
     private void checkOrderInfoByUserID(final String uID) {
         Map<String, String> map = new HashMap<>();
         map.put("userId", uID);
@@ -1467,7 +1398,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         });
     }
 
-    //与services交互的方法
+    //与GPSservices交互的方法
     private void withServicesMutually(String token, String uID, String result, String carRentalOrderDate, String carRentalOrderId) {
         mServiceIntent = new Intent(MainActivity.this, GPSService.class);
         mServiceIntent.putExtra("token", token);
@@ -1567,6 +1498,39 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         super.onResume();
         Log.d("实验", "onResume+1");
         mMapView.onResume();
+        if (SPUtils.isLogin()) {
+            mInstructions.setVisibility(View.GONE);
+            String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
+            JSONObject object;
+            try {
+                object = new JSONObject(userDetail);
+                int id = object.optInt("id");
+                mToken = object.optString("token");
+                uID = String.valueOf(id);
+                phone = object.optString("phone");
+                status = object.optInt("status");
+                cashStatus = object.optInt("cashStatus");
+                LogUtils.d("hehe", uID + "\n" + mToken + "\n" + status + "\n" + cashStatus);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            mInstructions.setVisibility(View.VISIBLE);
+            LogUtils.d("这里", "5");
+            addOverlays(bikeInfos);
+//                getBikeInfo(mCurrentLantitude, mCurrentLongitude);
+//                setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
+        }
+        if (menuWindow == null && bookBikePopupWindow == null && orderPopupWindow == null) {
+            LogUtils.d("这里", "6");
+            addOverlays(bikeInfos);
+//          setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
+        }
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         if (NetUtils.isConnected(App.getContext())) {
             if (SPUtils.isLogin()) {
                 mInstructions.setVisibility(View.GONE);
@@ -1575,10 +1539,13 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 try {
                     object = new JSONObject(userDetail);
                     int id = object.optInt("id");
-                    mToken = object.optString("token");
                     uID = String.valueOf(id);
-                    if (uID != null && mToken != null) {
-                        queryUserInfo(uID, mToken);
+                    phone = object.optString("phone");
+                    if (uID != null && phone != null) {
+                        Intent nettyService = new Intent(MainActivity.this, NettyService.class);
+                        nettyService.putExtra("userId", uID);
+                        nettyService.putExtra("phone", phone);
+                        startService(nettyService);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1587,19 +1554,11 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 mInstructions.setVisibility(View.VISIBLE);
                 LogUtils.d("这里", "5");
                 addOverlays(bikeInfos);
-//                getBikeInfo(mCurrentLantitude, mCurrentLongitude);
-//                setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
-            }
-            if (menuWindow == null && bookBikePopupWindow == null && orderPopupWindow == null) {
-                LogUtils.d("这里", "6");
-                addOverlays(bikeInfos);
-//                setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
             }
         } else {
             ToastUtils.showShort(MainActivity.this, getString(R.string.no_network_tip));
             clickDismissOverlay();
         }
-
     }
 
     @Override
@@ -1638,7 +1597,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         //反注册EventBus
         EventBus.getDefault().unregister(this);
         unregisterReceiver(lr);
-//        unregisterReceiver(mResultReceiver);
         stopService(new Intent(this, NettyService.class));
         Log.d("实验", "onDestroy");
         StyledDialog.dismiss();
@@ -1692,11 +1650,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-//        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-//                menuWindow.dismiss();
-//                return true;
-//            }
-
         //按下的如果是BACK键，同时没有重复
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
             if ((System.currentTimeMillis() - mExitTime) > 2000) {
@@ -1716,6 +1669,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private void receiveFromSetting(MessageEvent info) {
         LogUtils.e(info.toString());
         mInstructions.setVisibility(View.VISIBLE);
+        stopService(new Intent(this, NettyService.class));
     }
 
     //登录成功页面发来的消息，将mInstructions控件隐藏
@@ -1725,7 +1679,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         mInstructions.setVisibility(View.GONE);
     }
 
-    //登录成功页面发来的消息，将mInstructions控件隐藏
+    //点击扫码后页面发来的消息，将底部三个控件显示
     @Subscriber(tag = "allShow", mode = ThreadMode.MAIN)
     private void receiveFromClickCamera(MessageEvent info) {
         LogUtils.e(info.toString());
@@ -1755,6 +1709,23 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         }
     }
 
+    //接收到开锁失败命令UnlockProgress发来的消息
+    @Subscriber(tag = "lose", mode = ThreadMode.MAIN)
+    private void receivefailFromUnlockProgress(MessageEvent info) {
+        LogUtils.d("输入", info.toString());
+        StyledDialog.buildIosAlert(MainActivity.this, "提示", "开锁失败，请找其他麒麟单车使用！", new MyDialogListener() {
+            @Override
+            public void onFirst() {
+                StyledDialog.dismiss();
+            }
+
+            @Override
+            public void onSecond() {
+                StyledDialog.dismiss();
+            }
+        }).show();
+    }
+
     //接收到关锁成功命令Nettyservice发来的消息
     @Subscriber(tag = "close", mode = ThreadMode.MAIN)
     private void receiveFromNettyService(MessageEvent info) {
@@ -1770,7 +1741,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         getBikeInfo(mCurrentLantitude, mCurrentLongitude);
         mScan.setVisibility(View.VISIBLE);
     }
-
 
     class LocationReceiver extends BroadcastReceiver {
         @Override
@@ -1792,47 +1762,5 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             }
         }
     }
-
-//    class ResultReceiver extends BroadcastReceiver {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            RidingInfo ridingInfo = (RidingInfo) intent.getSerializableExtra("ridingInfo");
-//            if (ridingInfo != null) {
-//                if (orderPopupWindow != null) {
-//                    orderPopupWindow.dismiss();
-//                }
-//
-//                if (mServiceIntent != null) {
-//                    stopService(mServiceIntent);
-//                    Intent ridingResult = new Intent(MainActivity.this, RidingResultActivity.class);
-//                    ridingResult.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable("result", ridingInfo);
-//                    ridingResult.putExtras(bundle);
-//                    startActivity(ridingResult);
-//                    mMap.clear();
-//                    getBikeInfo(mCurrentLantitude, mCurrentLongitude);
-//                    mScan.setVisibility(View.VISIBLE);
-//                    isClick = true;
-//                }
-//            }
-//
-//        }
-//    }
-
-//    private void addOverLayout(double _latitude, double _longitude) {
-//        //先清除图层
-//        mMap.clear();
-//        BitmapDescriptor dragLocationIcon = BitmapDescriptorFactory.fromResource(R.mipmap.search_center_ic);
-//        mLocationClient.requestLocation();
-//        // 定义Maker坐标点
-//        LatLng point = new LatLng(_latitude, _longitude);
-//        // 构建MarkerOption，用于在地图上添加Marker
-//        MarkerOptions options = new MarkerOptions().position(point)
-//                .icon(dragLocationIcon);
-//        // 在地图上添加Marker，并显示
-//        mMap.addOverlay(options);
-//
-//    }
 
 }

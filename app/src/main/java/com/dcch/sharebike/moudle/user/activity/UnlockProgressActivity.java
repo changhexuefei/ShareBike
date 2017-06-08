@@ -169,7 +169,7 @@ public class UnlockProgressActivity extends BaseActivity {
 
     @Subscriber(tag = "on", mode = ThreadMode.MAIN)
     private void receiveFromNettyService(MessageEvent info) {
-        LogUtils.d("主页给的数据", "成功" + info.toString());
+        LogUtils.d("NettyService", "成功" + info.toString());
         if (info != null) {
             num = 0;
             mMyProgressBar.beginStarting();//启动开始动画
@@ -178,8 +178,9 @@ public class UnlockProgressActivity extends BaseActivity {
 
     @Subscriber(tag = "off", mode = ThreadMode.MAIN)
     private void receiveFromNettyServiceOther(MessageEvent info) {
-        LogUtils.d("主页给的数据", "失败" + info.toString());
+        LogUtils.d("NettyServiceOther", "失败" + info.toString());
         mMyProgressBar.setError();//进度失败 发生错误
+        EventBus.getDefault().post(new MessageEvent(), "lose");
         this.finish();
     }
 

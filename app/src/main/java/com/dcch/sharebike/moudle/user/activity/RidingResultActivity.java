@@ -1,19 +1,18 @@
 package com.dcch.sharebike.moudle.user.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
-import com.dcch.sharebike.moudle.home.bean.RidingInfo;
-import com.dcch.sharebike.utils.ClickUtils;
+import com.dcch.sharebike.moudle.home.bean.RideResultInfo;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.ToastUtils;
@@ -38,10 +37,6 @@ public class RidingResultActivity extends BaseActivity {
     TextView mRideTime;
     @BindView(R.id.balance)
     TextView mBalance;
-    @BindView(R.id.take_phone)
-    TextView mTakePhone;
-    @BindView(R.id.share_journey)
-    TextView mShareJourney;
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.toolbar)
@@ -52,11 +47,11 @@ public class RidingResultActivity extends BaseActivity {
     TextView mRideDis;
     @BindView(R.id.calorimeter)
     TextView mCalorimeter;
-    @BindView(R.id.pay_now)
-    Button mPayNow;
+    @BindView(R.id.callCenter)
+    TextView mCallCenter;
+
     private String mImei;
     private String mUserId;
-
 
     @Override
     protected int getLayoutId() {
@@ -94,20 +89,15 @@ public class RidingResultActivity extends BaseActivity {
                 LogUtils.d("骑行结果", response);
                 if (JsonUtils.isSuccess(response)) {
                     Gson gson = new Gson();
-                    RidingInfo ridingInfo = gson.fromJson(response, RidingInfo.class);
-                    LogUtils.d("骑行结果", ridingInfo.getFinalCast() + "\n" + ridingInfo.getOrderCast() + "\n" + ridingInfo.getTripTime() + "\n" + ridingInfo.getTripDist());
-                    mMoneyResultShow.setText(String.valueOf(ridingInfo.getFinalCast()));
-                    mRideCost.setText(String.valueOf(ridingInfo.getOrderCast()) + "元");
-                    mRideTime.setText(String.valueOf(ridingInfo.getTripTime()) + "分钟");
-                    if (ridingInfo.getAmount() < 0) {
-                        mBalance.setText("您的余额不足，请前往充值");
-                        mBalance.setTextColor(R.color.colorTitle);
-                    } else {
-                        mBalance.setText(String.valueOf(ridingInfo.getAmount()) + "元");
-                    }
-                    mCouponCost.setText(String.valueOf(ridingInfo.getCouponAmount()) + "元");
-                    mCalorimeter.setText(String.valueOf(ridingInfo.getCalorie()) + "(kCal)");
-                    mRideDis.setText(String.valueOf(ridingInfo.getTripDist()) + "(km)");
+                    RideResultInfo rideResultInfo = gson.fromJson(response, RideResultInfo.class);
+                    LogUtils.d("骑行结果", rideResultInfo.getCarRentalInfo().getFinalCast() + "\n" + rideResultInfo.getCarRentalInfo().getOrderCast() + "\n" + rideResultInfo.getCarRentalInfo().getTripTime() + "\n" + rideResultInfo.getCarRentalInfo().getTripDist());
+                    mMoneyResultShow.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getFinalCast()));
+                    mRideCost.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getFinalCast()) + "元");
+                    mRideTime.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getTripTime()) + "分钟");
+                    mBalance.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getFinalCast()) + "元");
+                    mCouponCost.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getCouponAmount()) + "元");
+                    mCalorimeter.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getCalorie()) + "(kCal)");
+                    mRideDis.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getTripDist()) + "(km)");
                 } else {
                     ToastUtils.showShort(RidingResultActivity.this, "请求失败");
                 }
@@ -120,28 +110,6 @@ public class RidingResultActivity extends BaseActivity {
         super.initListener();
     }
 
-    @OnClick({R.id.take_phone, R.id.share_journey, R.id.pay_now})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.take_phone:
-                if (ClickUtils.isFastClick()) {
-                    return;
-                }
-                ToastUtils.showShort(RidingResultActivity.this, "您点击的是拍照");
-                break;
-            case R.id.share_journey:
-                if (ClickUtils.isFastClick()) {
-                    return;
-                }
-                ToastUtils.showShort(RidingResultActivity.this, "您点击的是分享行程");
-                break;
-
-            case R.id.pay_now:
-
-                break;
-        }
-    }
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,21 +117,8 @@ public class RidingResultActivity extends BaseActivity {
         Intent intent = getIntent();
         mImei = intent.getStringExtra("IMEI");
         mUserId = intent.getStringExtra("userId");
-//        Bundle extras = intent.getExtras();
-//        if (extras != null) {
-//            RidingInfo ridingInfo = (RidingInfo) extras.getSerializable("result");
-//            mMoneyResultShow.setText(String.valueOf(ridingInfo.getFinalCast()));
-//            mRideCost.setText(String.valueOf(ridingInfo.getOrderCast()) + "元");
-//            mRideTime.setText(String.valueOf(ridingInfo.getTripTime()) + "分钟");
-//            if (ridingInfo.getAmount() <= 0) {
-//                mBalance.setText("您的余额不足，请前往充值");
-//                mBalance.setTextColor(R.color.colorTitle);
-//            } else {
-//                mBalance.setText(String.valueOf(ridingInfo.getAmount()) + "元");
-//            }
-//            mCouponCost.setText(String.valueOf(ridingInfo.getCouponAmount() + "元"));
-//        }
     }
+
 
     @Override
     protected void onResume() {
@@ -191,5 +146,14 @@ public class RidingResultActivity extends BaseActivity {
         super.onBackPressed();
         startActivity(new Intent(RidingResultActivity.this, MainActivity.class));
         RidingResultActivity.this.finish();
+    }
+
+    @OnClick(R.id.callCenter)
+    public void onViewClicked() {
+        String phoneNumber = "400-660-6215";
+        mCallCenter.setText(phoneNumber);
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

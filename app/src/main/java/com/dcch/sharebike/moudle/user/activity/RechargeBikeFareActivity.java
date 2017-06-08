@@ -97,7 +97,6 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
     RadioButton mRbRg5;
     @BindView(R.id.rg_rec_rg)
     RadioGroup mRgRecRg;
-    //    private String mOutTradeNo;
     private String orderbody = "交车费";
     private String subject = "车费";
 
@@ -117,26 +116,10 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                 finish();
             }
         });
-
         rbfWeixinCheckbox.setChecked(true);
         mRbRg1.setChecked(true);
         String s1 = mRbRg1.getText().toString().trim();
         rechargeNumber = s1.substring(1, s1.length());
-        if (SPUtils.isLogin()) {
-            String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-            Log.d("ooooo", userDetail);
-            if (userDetail != null) {
-                try {
-                    JSONObject object = new JSONObject(userDetail);
-                    int userId = object.getInt("id");
-                    uID = String.valueOf(userId);
-                    Log.d("微信支付", uID);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
     }
 
     @Override
@@ -144,35 +127,6 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         rgRecRg1.setOnCheckedChangeListener(this);
         rgRecRg2.setOnCheckedChangeListener(this);
         mRgRecRg.setOnCheckedChangeListener(this);
-//        input_moneySum.setFocusable(true);
-//        input_moneySum.setFocusableInTouchMode(true);
-//        input_moneySum.requestFocus();
-//        input_moneySum.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                if (s.toString().trim() != null && !s.toString().trim().equals("")) {
-//                    if (Integer.valueOf(s.toString().trim()) > 0) {
-//                        rbRg110.setChecked(false);
-//                        rbRg120.setChecked(false);
-//                        rbRg250.setChecked(false);
-//                        rbRg2100.setChecked(false);
-//                        rechargeNumber = s.toString().trim();
-//                    } else {
-//                        ToastUtils.showShort(RechargeBikeFareActivity.this, "请输入正确的数值");
-//                    }
-//                }
-//            }
-//        });
     }
 
     @OnClick({R.id.recharge_agreement, R.id.rbf_aliArea, R.id.rbf_weixinArea, R.id.btn_rbf_recharge})
@@ -396,6 +350,26 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
             }
         }
     };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (SPUtils.isLogin()) {
+            String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
+            Log.d("ooooo", userDetail);
+            if (userDetail != null) {
+                try {
+                    JSONObject object = new JSONObject(userDetail);
+                    int userId = object.getInt("id");
+                    uID = String.valueOf(userId);
+                    Log.d("微信支付", uID);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
 
     @Override
     protected void onDestroy() {

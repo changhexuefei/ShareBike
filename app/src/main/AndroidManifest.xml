@@ -34,6 +34,7 @@
     <!-- <uses-permission android:name="android.permission.WRITE_SETTINGS"/> -->
     <!-- <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/> -->
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
 
     <!-- Optional. Required for location feature -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
@@ -123,14 +124,14 @@
             android:name=".MainActivity"
             android:launchMode="singleTask">
         </activity>
-        <activity android:name=".activity.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+        <activity
+            android:name=".activity.SplashActivity"
+            android:launchMode="singleTask">
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
-        <activity android:name=".activity.GuideActivity"/>
+        <activity
+            android:name=".activity.GuideActivity"
+            android:launchMode="singleTask"/>
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -141,9 +142,7 @@
             <!-- QQ和QQ空间分享 QQ登录的回调必须要配置的 -->
             <intent-filter>
                 <data android:scheme="tencent1106173064"/>
-
                 <action android:name="android.intent.action.VIEW"/>
-
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
@@ -178,18 +177,25 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".moudle.login.activity.PersonalCenterActivity"/>
-        <activity android:name=".moudle.login.activity.LoginActivity"/>
+        <activity
+            android:name=".moudle.login.activity.PersonalCenterActivity"/>
+        <activity
+            android:name=".moudle.login.activity.LoginActivity"
+            android:launchMode="singleTask"/>
         <activity android:name=".moudle.search.activity.SeekActivity"/>
         <activity android:name=".moudle.login.activity.AgreementActivity"/>
         <activity
             android:name=".moudle.login.activity.RechargeActivity"
             android:launchMode="singleTask"/>
-        <activity android:name=".moudle.login.activity.IdentityAuthentication"/>
+        <activity
+            android:name=".moudle.login.activity.IdentityAuthentication"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".moudle.user.activity.PersonInfoActivity"
             android:launchMode="singleTask"/>
-        <activity android:name=".moudle.user.activity.CreditIntegralActivity"/>
+        <activity
+            android:name=".moudle.user.activity.CreditIntegralActivity"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".moudle.user.activity.WalletInfoActivity"
             android:launchMode="singleTask"/>
@@ -199,24 +205,32 @@
         <activity android:name=".moudle.user.activity.SettingActivity"/>
         <activity android:name=".moudle.user.activity.UsualAddressActivity"/>
         <activity android:name=".moudle.user.activity.ChangeUserNickNameActivity"/>
-        <activity android:name=".moudle.user.activity.MyJourneyActivity"/>
+        <activity
+            android:name=".moudle.user.activity.MyJourneyActivity"
+            android:launchMode="singleTask"
+            />
         <activity
             android:name=".moudle.user.activity.UserGuideActivity"
             android:launchMode="singleTask"/>
-        <activity android:name=".moudle.user.activity.MyMessageActivity"/>
-        <activity android:name=".moudle.login.activity.AuthenticationOkActivity"/>
+        <activity
+            android:name=".moudle.user.activity.MyMessageActivity"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".moudle.login.activity.AuthenticationOkActivity"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".moudle.user.activity.CustomerServiceActivity"
             android:launchMode="singleTask"/>
-        <activity android:name=".moudle.user.activity.RechargeDepositActivity"/>
+        <activity
+            android:name=".moudle.user.activity.RechargeDepositActivity"
+            android:launchMode="singleTask"
+            />
         <activity
             android:name=".moudle.user.activity.RechargeBikeFareActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
-
                 <category android:name="android.intent.category.DEFAULT"/>
-
                 <data android:scheme="wxd4b5d5e34b0dd095"/>
             </intent-filter>
         </activity>
@@ -360,10 +374,19 @@
         <activity android:name=".moudle.user.activity.AboutUsActivity"/>
         <activity android:name=".moudle.user.activity.SetAddressActivity"/>
         <activity android:name=".moudle.user.activity.ShowRefundResultsActivity"/>
-        <activity android:name=".moudle.user.activity.ManualInputActivity"/>
+        <activity
+            android:name=".moudle.user.activity.ManualInputActivity"
+            android:launchMode="singleTask"
+            />
         <activity
             android:name=".moudle.user.activity.RidingResultActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".moudle.user.activity.UnlockProgressActivity"
             android:launchMode="singleTask"/>
@@ -391,15 +414,23 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".moudle.user.activity.JourneyDetailActivity">
+        <activity
+            android:name=".moudle.user.activity.JourneyDetailActivity"
+            android:launchMode="singleTask">
         </activity>
-        <activity android:name=".moudle.user.activity.UserAgreementActivity">
+        <activity
+            android:name=".moudle.user.activity.UserAgreementActivity"
+            android:launchMode="singleTask">
         </activity>
         <activity android:name=".moudle.user.activity.RefundExplainActivity">
         </activity>
-        <activity android:name=".moudle.user.activity.CashPledgeExplainActivity">
+        <activity
+            android:name=".moudle.user.activity.CashPledgeExplainActivity"
+            android:launchMode="singleTask">
         </activity>
-        <activity android:name=".moudle.user.activity.RechargeAgreementActivity">
+        <activity
+            android:name=".moudle.user.activity.RechargeAgreementActivity"
+            android:launchMode="singleTask">
         </activity>
         <activity
             android:name=".moudle.login.activity.OpenLockTipAcitivity"
@@ -416,9 +447,15 @@
 
         <service android:name=".service.InitializeService"/>
 
-        <activity android:name=".moudle.user.activity.CouponRuleActivity">
+        <activity
+            android:name=".moudle.user.activity.CouponRuleActivity"
+            android:launchMode="singleTask"
+            >
         </activity>
-        <activity android:name=".moudle.user.activity.UnlockBillPageActivity">
+        <activity
+            android:name=".moudle.user.activity.UnlockBillPageActivity"
+            android:launchMode="singleTask"
+            >
         </activity>
     </application>
 

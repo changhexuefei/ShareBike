@@ -146,17 +146,15 @@ public class SettingActivity extends BaseActivity {
                         EventBus.getDefault().post(new MessageEvent(), "unLogin");
                         //给主页发送消息
                         EventBus.getDefault().post(new MessageEvent(), "visible");
-                        startActivity(i1);
                         SPUtils.clear(App.getContext());
                         SPUtils.put(App.getContext(), "islogin", false);
                         SPUtils.put(App.getContext(), "isfirst", false);
                         SPUtils.put(App.getContext(), "isStartGuide", true);
+                        startActivity(i1);
                         finish();
                     }
                 }).create()
                 .show();
-
-
     }
 
     private void checkUpDate() {
