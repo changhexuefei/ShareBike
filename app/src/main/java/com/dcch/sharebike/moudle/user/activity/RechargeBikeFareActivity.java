@@ -277,6 +277,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                 radioGroup.check(R.id.rb_rg1_10);
                 String s1 = rbRg110.getText().toString().trim();
                 rechargeNumber = s1.substring(1, s1.length());
+                LogUtils.d("你是谁",rechargeNumber);
                 break;
             case R.id.rb_rg1_20:
                 rgRecRg2.clearCheck();
@@ -284,6 +285,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                 radioGroup.check(R.id.rb_rg1_20);
                 String s2 = rbRg120.getText().toString().trim();
                 rechargeNumber = s2.substring(1, s2.length());
+                LogUtils.d("你是谁",rechargeNumber);
                 break;
 
             case R.id.rb_rg2_50:
@@ -292,6 +294,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                 radioGroup.check(R.id.rb_rg2_50);
                 String s3 = rbRg250.getText().toString().trim();
                 rechargeNumber = s3.substring(1, s3.length());
+                LogUtils.d("你是谁",rechargeNumber);
                 break;
             case R.id.rb_rg2_100:
                 rgRecRg1.clearCheck();
@@ -299,6 +302,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                 radioGroup.check(R.id.rb_rg2_100);
                 String s4 = rbRg2100.getText().toString().trim();
                 rechargeNumber = s4.substring(1, s4.length());
+                LogUtils.d("你是谁",rechargeNumber);
                 break;
             case R.id.rb_rg_1:
                 rgRecRg1.clearCheck();
@@ -306,6 +310,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                 radioGroup.check(R.id.rb_rg_1);
                 String s5 = mRbRg1.getText().toString().trim();
                 rechargeNumber = s5.substring(1, s5.length());
+                LogUtils.d("你是谁",rechargeNumber);
                 break;
             case R.id.rb_rg_5:
                 rgRecRg1.clearCheck();
@@ -313,6 +318,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                 radioGroup.check(R.id.rb_rg_5);
                 String s6 = mRbRg5.getText().toString().trim();
                 rechargeNumber = s6.substring(1, s6.length());
+                LogUtils.d("你是谁",rechargeNumber);
                 break;
         }
     }

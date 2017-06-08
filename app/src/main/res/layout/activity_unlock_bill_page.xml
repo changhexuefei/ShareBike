@@ -149,7 +149,7 @@
         android:enabled="false"
         android:gravity="center"
         android:text="@string/upload"
-        android:textColor="#ffffff"
+        android:textColor="@color/color_ff"
         android:textSize="18sp"/>
 
 </RelativeLayout>
