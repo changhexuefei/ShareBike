@@ -149,7 +149,7 @@ public class SettingActivity extends BaseActivity {
                         SPUtils.clear(App.getContext());
                         SPUtils.put(App.getContext(), "islogin", false);
                         SPUtils.put(App.getContext(), "isfirst", false);
-                        SPUtils.put(App.getContext(), "isStartGuide", true);
+//                        SPUtils.put(App.getContext(), "isStartGuide", true);
                         startActivity(i1);
                         finish();
                     }

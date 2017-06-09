@@ -17,6 +17,8 @@ import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.google.gson.Gson;
+import com.hss01248.dialog.StyledDialog;
+import com.hss01248.dialog.interfaces.MyDialogListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -70,8 +72,6 @@ public class RidingResultActivity extends BaseActivity {
                 RidingResultActivity.this.finish();
             }
         });
-//        MapUtil.initDrawable(mTakePhone);
-//        MapUtil.initDrawable(mShareJourney);
     }
 
     private void getResult(String imei, String userId) {
@@ -150,10 +150,23 @@ public class RidingResultActivity extends BaseActivity {
 
     @OnClick(R.id.callCenter)
     public void onViewClicked() {
-        String phoneNumber = "400-660-6215";
-        mCallCenter.setText(phoneNumber);
-        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber));
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        StyledDialog.buildIosAlert(RidingResultActivity.this, "提示", "拨打电话 400-660-6215", new MyDialogListener() {
+            @Override
+            public void onFirst() {
+//                Intent intent = new Intent();
+//                intent.setAction(Intent.ACTION_CALL);//指定意图动作
+//                intent.setData(Uri.parse("tel:400-660-6215"));//指定电话号码
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(intent);
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "400-660-6215"));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onSecond() {
+                return;
+            }
+        }).setMsgColor(R.color.colorHeading).setMsgSize(16).show();
     }
 }

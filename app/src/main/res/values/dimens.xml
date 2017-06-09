@@ -13,6 +13,6 @@
     <dimen name="title_size">18sp</dimen>
     <dimen name="sub_title_size">14sp</dimen>
     <dimen name="detail_image_height">220dp</dimen>
-
+    <dimen name="drawable_ring_size">4dip</dimen>
 
 </resources>

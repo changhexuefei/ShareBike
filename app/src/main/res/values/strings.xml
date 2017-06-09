@@ -52,6 +52,7 @@
     <string name="deposit_pay">押金交纳</string>
     <string name="phone_verification">手机验证</string>
     <string name="unlock_fare">关锁不结束计费</string>
+    <string name="feedback_detail">反馈详情</string>
     <string name="agreement">用车服务条款</string>
     <string name="ride_result">骑行结束页</string>
     <string name="bike_service_regulations">用车服务条例</string>
@@ -190,4 +191,14 @@
     <string name="_2_5">2.5元</string>
     <string name="_3_0">3.0元</string>
     <string name="pay_now">立即支付</string>
+    <string name="feedbacktime">反馈时间</string>
+    <string name="feedbackcost">你选择的用车费用</string>
+    <string name="costnum">0.5元</string>
+    <string name="_123456">123456</string>
+    <string name="time">2017-06-09 21:21</string>
+    <string name="feedbackshowTip">关锁不结束计费</string>
+    <string name="callphone">联系人工客服</string>
+    <string name="exercise_burns">运动燃烧</string>
+    <string name="being_used">正在用车</string>
+    <string name="estimated_cost">预计费用</string>
 </resources>

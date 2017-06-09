@@ -183,7 +183,6 @@ public class UnableUnlockFragment extends Fragment {
 
                     @Override
                     public void onResponse(String response, int id) {
-
                         //{"resultStatus":"1"}
                         try {
                             JSONObject object = new JSONObject(response);

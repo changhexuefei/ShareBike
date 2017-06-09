@@ -328,7 +328,6 @@ public class CycleFailureFragment extends Fragment {
         mTips.setVisibility(View.VISIBLE);
         upload.setEnabled(true);
         upload.setBackgroundColor(getResources().getColor(R.color.colorTitle));
-
     }
 
 

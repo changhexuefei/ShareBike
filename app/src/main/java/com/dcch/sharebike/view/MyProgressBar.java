@@ -17,7 +17,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AnticipateInterpolator;
@@ -84,7 +83,7 @@ public class MyProgressBar extends View {
     private int progress;
 
     private float pointStartX = -1f;
-    float downX;//手指按下时的X坐标
+//    float downX;//手指按下时的X坐标
     //动画结束监听  开始初始化进度设置
     private AnimationEndListener animationEndListener;
 
@@ -366,7 +365,7 @@ public class MyProgressBar extends View {
         offsetY = 0;
         //progress = 0;
         pointStartX = -1f;
-        downX = 0;
+//        downX = 0;
         moveBounds = null;
         paint.setColor(progressBarColor);
         downloadBitmap = BitmapFactory.decodeResource(getResources(), startDrawable);
@@ -714,62 +713,62 @@ public class MyProgressBar extends View {
         }
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (!isCanEndSuccessClickable){
-            return false;
-        }
-        for (ValueAnimator va:vas_List){
-            if (va.isRunning()){
-                return false;
-            }
-        }
-        if (state == STATE_READY || state == DONE){
-            if (rectClickRange.contains(event.getX(),event.getY())){
-                state = STATE_READY;
-                for (ValueAnimator va:vas_List){
-                    va.cancel();
-                }
-                beginStarting();
-            }
-            return false;
-        }
-        if (state != STATE_STARTING || isFirstSetListener || !isCanDrag){
-            return false;
-        }
-        //downX = (int) event.getX();
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                downX = (int) event.getX();
-                float downY = (int) event.getY();
-                if (moveBounds.contains(downX,downY)){
-                    pointStartX = downX;
-                }else{
-                    pointStartX = -1f;
-                }
-                break;
-            case MotionEvent.ACTION_MOVE:
-                if (pointStartX!=-1){
-                    float moveX = (int) event.getX();
-                    progressOffsetX = moveX;
-
-                    if (progressOffsetX>=(getWidth()- mBgPaint.getStrokeWidth() -loadingBitmap.getWidth())){
-                        progressOffsetX = (getWidth()- mBgPaint.getStrokeWidth() -loadingBitmap.getWidth());
-                    }
-                    if (progressOffsetX<0)
-                        progressOffsetX = 0;
-
-                    progress = (int)(POS[0]*max*1.0f/(getWidth()- mBgPaint.getStrokeWidth() -loadingBitmap.getWidth()));
-
-                    invalidate();
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                pointStartX = -1f;
-                break;
-        }
-        return true;
-    }
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        if (!isCanEndSuccessClickable){
+//            return false;
+//        }
+//        for (ValueAnimator va:vas_List){
+//            if (va.isRunning()){
+//                return false;
+//            }
+//        }
+//        if (state == STATE_READY || state == DONE){
+//            if (rectClickRange.contains(event.getX(),event.getY())){
+//                state = STATE_READY;
+//                for (ValueAnimator va:vas_List){
+//                    va.cancel();
+//                }
+//                beginStarting();
+//            }
+//            return false;
+//        }
+//        if (state != STATE_STARTING || isFirstSetListener || !isCanDrag){
+//            return false;
+//        }
+//        //downX = (int) event.getX();
+//        switch (event.getAction()) {
+////            case MotionEvent.ACTION_DOWN:
+////                downX = (int) event.getX();
+////                float downY = (int) event.getY();
+////                if (moveBounds.contains(downX,downY)){
+////                    pointStartX = downX;
+////                }else{
+////                    pointStartX = -1f;
+////                }
+////                break;
+//            case MotionEvent.ACTION_MOVE:
+//                if (pointStartX!=-1){
+//                    float moveX = (int) event.getX();
+//                    progressOffsetX = moveX;
+//
+//                    if (progressOffsetX>=(getWidth()- mBgPaint.getStrokeWidth() -loadingBitmap.getWidth())){
+//                        progressOffsetX = (getWidth()- mBgPaint.getStrokeWidth() -loadingBitmap.getWidth());
+//                    }
+//                    if (progressOffsetX<0)
+//                        progressOffsetX = 0;
+//
+//                    progress = (int)(POS[0]*max*1.0f/(getWidth()- mBgPaint.getStrokeWidth() -loadingBitmap.getWidth()));
+//
+//                    invalidate();
+//                }
+//                break;
+////            case MotionEvent.ACTION_UP:
+////                pointStartX = -1f;
+////                break;
+//        }
+//        return true;
+//    }
     /**
      * 成功后返回动画
      */

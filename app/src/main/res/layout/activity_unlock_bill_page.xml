@@ -23,6 +23,7 @@
         app:maxCount="140"/>
 
     <RelativeLayout
+        android:visibility="gone"
         android:id="@+id/select_photo_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/select_photo_area"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="20dp">
 
         <TextView
             android:id="@+id/tv20"
@@ -145,8 +146,7 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="center"
         android:layout_margin="20dp"
-        android:background="#c6bfbf"
-        android:enabled="false"
+        android:background="@color/colorTitle"
         android:gravity="center"
         android:text="@string/upload"
         android:textColor="@color/color_ff"

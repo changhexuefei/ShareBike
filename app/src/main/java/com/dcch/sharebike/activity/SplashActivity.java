@@ -16,6 +16,8 @@ import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 
+import org.simple.eventbus.EventBus;
+
 import butterknife.BindView;
 
 public class SplashActivity extends BaseActivity {
@@ -26,12 +28,11 @@ public class SplashActivity extends BaseActivity {
     private final static int SWITCH_MAINACTIVITY = 1000;
     private final static int SWITCH_GUIDACTIVITY = 1001;
 
-
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case SWITCH_MAINACTIVITY:
-                    switchPage();
+                   goMain();
                     break;
 
                 case SWITCH_GUIDACTIVITY:
@@ -49,7 +50,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        //设置全屏显示
+//        //设置全屏显示
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         AlphaAnimation animation = new AlphaAnimation(0, 1);
@@ -57,34 +58,38 @@ public class SplashActivity extends BaseActivity {
         animation.setFillAfter(true);
         mRlSplashRoot.startAnimation(animation);
         LogUtils.d("网络", NetUtils.isNetworkAvailable(App.getContext()) + "");
+        EventBus.getDefault().register(this);
         if (NetUtils.isNetworkAvailable(App.getContext())) {
             if (SPUtils.isFirst()) {
-                handler.sendEmptyMessageDelayed(SWITCH_GUIDACTIVITY, 2000);
+                handler.sendEmptyMessageDelayed(SWITCH_GUIDACTIVITY, 1500);
+//                EventBus.getDefault().post(new MessageEvent(), "guide");
             } else {
-                handler.sendEmptyMessageDelayed(SWITCH_MAINACTIVITY, 2000);
+                handler.sendEmptyMessageDelayed(SWITCH_MAINACTIVITY, 1500);
+//                EventBus.getDefault().post(new MessageEvent(), "main");
             }
         } else {
 //            ToastUtils.showLong(SplashActivity.this, getString(R.string.coupon_tip_two));
             NetUtils.checkNetwork(this);
         }
 
+
     }
 
 
-    private void switchPage() {
-        boolean isStartGuide = (boolean) SPUtils.get(this, "isStartGuide", false);
-        if (SPUtils.isLogin()) {
-            LogUtils.e("已经登录...");
-            goMain();
-        } else {
-            LogUtils.e("没有登录...");
-            if (isStartGuide) {
-                goMain();
-            } else {
-                goGuide();
-            }
-        }
-    }
+//    private void switchPage() {
+//        boolean isStartGuide = (boolean) SPUtils.get(this, "isStartGuide", false);
+//        if (SPUtils.isLogin()) {
+//            LogUtils.e("已经登录...");
+//            goMain();
+//        } else {
+//            LogUtils.e("没有登录...");
+//            if (isStartGuide) {
+//                goMain();
+//            } else {
+//                goGuide();
+//            }
+//        }
+//    }
 
     private void goGuide() {
         Intent intent = new Intent(this, GuideActivity.class);
@@ -101,8 +106,6 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-
     }
 
     @Override
@@ -114,12 +117,30 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         AppManager.finishActivity(this);
 //        App.getRefWatcher().watch(this);
     }
+
 
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
     }
+
+
+//    //gotoguide
+//    @Subscriber(tag = "guide", mode = ThreadMode.POST)
+//    private void receiveMessageToGuide(MessageEvent info) {
+//        LogUtils.d("输入", info.toString()+"guide");
+//        goGuide();
+//    }
+//    //gotoMain
+//    @Subscriber(tag = "main", mode = ThreadMode.POST)
+//    private void receiveMessageToMain(MessageEvent info) {
+//        LogUtils.d("输入", info.toString()+"main");
+//        goMain();
+//    }
+
+
 }

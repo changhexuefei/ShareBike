@@ -186,7 +186,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     return;
                 }
                 if (NetUtils.isConnected(LoginActivity.this)) {
-
                     getseCode(phone);
                 } else {
                     ToastUtils.showLong(LoginActivity.this, "请检查网络后重试！！");

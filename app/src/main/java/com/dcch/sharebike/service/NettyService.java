@@ -120,7 +120,7 @@ public class NettyService extends Service implements NettyListener {
 //        byte[] content = RequestUtil.getEncryptBytes(auth);
 //        byte[] requestHeader = RequestUtil.getRequestHeader(content, 1, 1001);
 //        byte[] requestBody = RequestUtil.getRequestBody(requestHeader, content);
-        String s = mPhone + "_" + mUserId;
+        String s = "key" + mPhone + "_" + mUserId;
 //        String s = new String("");
         byte[] requestBody = s.getBytes();
         NettyClient.getInstance().sendMsgToServer(requestBody, new ChannelFutureListener() {    //3
@@ -146,15 +146,20 @@ public class NettyService extends Service implements NettyListener {
         int len = byteBuf.writerIndex();
         LogUtils.d("netty", s.trim() + "\n" + len);
         //根据不同的返回值，来执行相应的操作
-        if (s.trim().equals("SERVER RECEIVED!")) {
+        if (s.trim() != null && !s.trim().equals("")) {
+            if (s.trim().equals("SERVER RECEIVED!")) {
 
-        } else if (s.trim().equals("OpenSuccess")) {
-            EventBus.getDefault().post(new MessageEvent(), "on");
-        } else if (s.trim().equals("OpenFailure")) {
+            } else if (s.trim().equals("OpenSuccess")) {
+                EventBus.getDefault().post(new MessageEvent(), "on");
+            } else if (s.trim().equals("OpenFailure")) {
+                EventBus.getDefault().post(new MessageEvent(), "off");
+            } else if (s.trim().equals("CloseSuccess")) {
+                EventBus.getDefault().post(new MessageEvent(), "close");
+            }
+        } else {
             EventBus.getDefault().post(new MessageEvent(), "off");
-        } else if (s.trim().equals("CloseSuccess")) {
-            EventBus.getDefault().post(new MessageEvent(), "close");
         }
+
 
 //        // 接收
 //        if (0xED == ByteUtil.unsignedByteToInt(bytes[0])

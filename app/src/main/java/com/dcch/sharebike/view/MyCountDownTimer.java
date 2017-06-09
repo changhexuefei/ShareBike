@@ -23,20 +23,16 @@ public class MyCountDownTimer extends CountDownTimer {
 
     }
 
-    public String  toClock(long millisUntilFinished)
-
-    {
-        long hour = millisUntilFinished/(60*60*1000);
-        long minute = (millisUntilFinished - hour*60*60*1000)/(60*1000);
-        long second = (millisUntilFinished - hour*60*60*1000   - minute*60*1000)/1000;
-        if(second >= 60 )
-        {
+    public String toClock(long millisUntilFinished) {
+        long hour = millisUntilFinished / (60 * 60 * 1000);
+        long minute = (millisUntilFinished - hour * 60 * 60 * 1000) / (60 * 1000);
+        long second = (millisUntilFinished - hour * 60 * 60 * 1000 - minute * 60 * 1000) / 1000;
+        if (second >= 60) {
             second = second % 60;
-            minute+=second/60;
+            minute += second / 60;
         }
-        if(minute >= 60)
-        {
-            minute = minute %60;
+        if (minute >= 60) {
+            minute = minute % 60;
 //            hour += minute/60;
         }
 //        String sh = "";
@@ -49,21 +45,17 @@ public class MyCountDownTimer extends CountDownTimer {
 //        {
 //            sh = String.valueOf(hour);
 //        }
-        if(minute <10)
-        {
+        if (minute < 10) {
             sm = "0" + String.valueOf(minute);
-        }else
-        {
+        } else {
             sm = String.valueOf(minute);
         }
-        if(second <10)
-        {
+        if (second < 10) {
             ss = "0" + String.valueOf(second);
-        }else
-        {
+        } else {
             ss = String.valueOf(second);
         }
-        return sm+":" + ss;
+        return sm + ":" + ss;
     }
 
 }

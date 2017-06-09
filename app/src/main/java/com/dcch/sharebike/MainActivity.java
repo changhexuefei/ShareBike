@@ -212,6 +212,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private String mToken;
     private boolean mHasPlanRoute;
     private ProgressDialog mDialog;
+    private String mCarRentalOrderId;
 
     @Override
     protected int getLayoutId() {
@@ -794,6 +795,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         }
     };
 
+    //响铃的方法
     private void ringDown(String result, String time) {
         Map<String, String> map = new HashMap<>();
         map.put("bicycleNo", "091700001");
@@ -819,47 +821,15 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 case R.id.close_lock:
                     if (result != null) {
 //                        closeLock(result);
-                        startActivity(new Intent(MainActivity.this, UnlockBillPageActivity.class));
+                        Intent billPage = new Intent(MainActivity.this, UnlockBillPageActivity.class);
+                        billPage.putExtra("carRentalOrderId",mCarRentalOrderId);
+                        billPage.putExtra("userId",uID);
+                        startActivity(billPage);
                     }
                     break;
             }
         }
     };
-
-//    private void closeLock(String result) {
-//        Map<String, String> map = new HashMap<>();
-//        map.put("bicycleNo", result);
-//        OkHttpUtils.post().url(Api.BASE_URL + Api.CLOSELOCK).params(map).build().execute(new StringCallback() {
-//            @Override
-//            public void onError(Call call, Exception e, int id) {
-//                ToastUtils.showShort(MainActivity.this, "请求服务器超时，请稍后！");
-//            }
-//
-//            @Override
-//            public void onResponse(String response, int id) {
-//                LogUtils.d("关锁", response);
-//                //{"resultStatus":"1"}
-//                try {
-//                    JSONObject object = new JSONObject(response);
-//                    String resultStatus = object.optString("resultStatus");
-//                    if (resultStatus.equals("0")) {
-//                        ToastUtils.showShort(MainActivity.this, "服务器忙，请稍后！");
-//                    } else if (resultStatus.equals("1")) {
-//                        ToastUtils.showShort(MainActivity.this, "结束订单成功");
-//                        if (orderPopupWindow != null && orderPopupWindow.isShowing()) {
-//                            orderPopupWindow.dismiss();
-//                        }
-//                    } else if (resultStatus.equals("2")) {
-//                        ToastUtils.showShort(MainActivity.this, "当前车锁未关闭，请关闭车锁！");
-//                    }
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//
-//    }
 
     //根据手机号，查询预约次数
     private void queryBookingNum(String phone) {
@@ -1165,9 +1135,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     bikeRentalOrderInfo = gson.fromJson(response, BikeRentalOrderInfo.class);
 //                    result = bikeRentalOrderInfo.getBicycleNo();
                     String carRentalOrderDate = bikeRentalOrderInfo.getCarRentalOrderDate();
-                    String carRentalOrderId = bikeRentalOrderInfo.getCarRentalOrderId();
-                    if (mToken != null && uID != null && result != null && carRentalOrderDate != null && carRentalOrderId != null) {
-                        withServicesMutually(mToken, uID, result, carRentalOrderDate, carRentalOrderId);
+                    mCarRentalOrderId = bikeRentalOrderInfo.getCarRentalOrderId();
+                    if (mToken != null && uID != null && result != null && carRentalOrderDate != null && mCarRentalOrderId != null) {
+                        withServicesMutually(mToken, uID, result, carRentalOrderDate, mCarRentalOrderId);
                     }
                     mScan.setVisibility(View.INVISIBLE);
                     if (menuWindow != null) {
@@ -1558,7 +1528,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             }
         } else {
             ToastUtils.showShort(MainActivity.this, getString(R.string.no_network_tip));
-//            clickDismissOverlay();
         }
     }
 
@@ -1616,7 +1585,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             mRPSearch.destroy();
         }
         if (timer != null) {
+            timer.onFinish();
             timer.cancel();
+            timer = null;
         }
         super.onDestroy();
     }

@@ -126,7 +126,13 @@
         </activity>
         <activity
             android:name=".activity.SplashActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:theme="@style/Splash_Theme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+
         </activity>
         <activity
             android:name=".activity.GuideActivity"
@@ -380,11 +386,8 @@
         <activity
             android:name=".moudle.user.activity.RidingResultActivity"
             android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+
         </activity>
         <activity
             android:name=".moudle.user.activity.UnlockProgressActivity"
@@ -453,8 +456,11 @@
         <activity
             android:name=".moudle.user.activity.UnlockBillPageActivity"
             android:launchMode="singleTask">
+
+
         </activity>
-        <activity android:name=".moudle.user.activity.dealFeedbackActivity">
+        <activity android:name=".moudle.user.activity.DealFeedbackActivity">
+
         </activity>
     </application>
 

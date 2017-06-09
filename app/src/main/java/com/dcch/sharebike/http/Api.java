@@ -77,6 +77,7 @@ public class Api {
     //微信退款
     public static final String REFUNDWXPAY = "refundWXPay.do?";
     //关锁未结费
+    public static final String FORCECLOSELOCK = "forceCloseLock.do?";
     public static final String CLOSELOCK = "CloseLock.do?";
     //寻车铃
     public static final String FINDBIKERING = "FindBikeRing.do?";

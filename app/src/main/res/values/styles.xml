@@ -49,6 +49,12 @@
     </style>
 
 
+    <!-- 为 Theme 设置背景图 -->
+    <style name="Splash_Theme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/timg</item>
+    </style>
+
+
     <style name="titleStyle">
         <item name="android:button">@null</item>
         <item name="android:background">@drawable/selector_title_style</item>
