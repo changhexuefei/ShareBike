@@ -201,4 +201,12 @@
     <string name="exercise_burns">运动燃烧</string>
     <string name="being_used">正在用车</string>
     <string name="estimated_cost">预计费用</string>
+    <string name="go_biking">去骑车</string>
+    <string name="congratulation">恭喜您注册成功!</string>
+    <string name="_100">信用积分 100</string>
+    <string name="come_on">加油</string>
+    <string name="official_website">官方网站</string>
+    <string name="_70bikes_cn">70bikes.cn</string>
+    <string name="nickName">昵称</string>
+    <string name="save">保存</string>
 </resources>

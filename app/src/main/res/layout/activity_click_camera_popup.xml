@@ -1,78 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_click_camera_popup"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.dcch.sharebike.moudle.login.activity.ClickCameraPopupActivity">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/activity_click_camera_popup"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:context="com.dcch.sharebike.moudle.login.activity.ClickCameraPopupActivity">
 
-    <FrameLayout
-        android:layout_marginTop="18dp"
+    <ImageView
+        android:id="@+id/close"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="right"
+        android:layout_marginTop="40dp"
+        android:src="@mipmap/hintcard_close"/>
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/tipsArea"
         android:layout_width="match_parent"
-        android:layout_height="360dp"
-        android:layout_alignTop="@+id/close"
-        android:layout_alignParentStart="true">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/close"
+        android:layout_gravity="bottom|center"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="60dp"
+        app:cardCornerRadius="2dp"
+        app:contentPadding="10dp">
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/tipsArea"
-            android:layout_width="330dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            app:cardCornerRadius="2dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <ImageView
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp"
-                android:scaleType="fitXY"
-                android:layout_gravity="center_horizontal"
                 android:id="@+id/img"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="80dp"
-                android:src="@drawable/help_unlock" />
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tips_click_camera"
+                android:layout_marginTop="20dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/help_unlock"/>
 
             <TextView
-                android:layout_marginTop="5dp"
                 android:id="@+id/title_click_camera"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:gravity="center_horizontal"
                 android:text="@string/help_unlock"
-                android:textColor="#000000"
-                android:textSize="16sp" />
+                android:textColor="@color/black"
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/tips_click_camera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30dp"
+                android:layout_below="@+id/title_click_camera"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="@string/help_unlock_desc" />
-        </android.support.v7.widget.CardView>
-    </FrameLayout>
+                android:text="@string/help_unlock_desc"/>
 
-    <ImageView
-        android:layout_marginTop="60dp"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="right"
-        android:id="@+id/close"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:src="@mipmap/hintcard_close" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
 
     <Button
         android:id="@+id/toLoginActivity"
         android:layout_width="150dp"
         android:layout_height="50dp"
+        android:layout_below="@+id/tipsArea"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="500dp"
+        android:layout_marginTop="60dp"
         android:background="@drawable/card_login_button_normal"
         android:text="@string/login_immediately"
-        android:textColor="#ffffff" />
+        android:textColor="@color/white"/>
 
 
 </RelativeLayout>

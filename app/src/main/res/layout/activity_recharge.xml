@@ -20,15 +20,15 @@
 
 
     <!--<ImageView-->
-        <!--android:id="@+id/icon_public"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="300dp"-->
-        <!--android:layout_alignStart="@+id/btn_recharge"-->
-        <!--android:layout_below="@+id/pay"-->
-        <!--android:layout_marginRight="20dp"-->
-        <!--android:layout_marginTop="20dp"-->
-        <!--android:scaleType="fitXY"-->
-        <!--android:src="@drawable/publicity"/>-->
+    <!--android:id="@+id/icon_public"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="300dp"-->
+    <!--android:layout_alignStart="@+id/btn_recharge"-->
+    <!--android:layout_below="@+id/pay"-->
+    <!--android:layout_marginRight="20dp"-->
+    <!--android:layout_marginTop="20dp"-->
+    <!--android:scaleType="fitXY"-->
+    <!--android:src="@drawable/publicity"/>-->
 
 
     <Button
@@ -55,39 +55,10 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:visibility="gone"
-            android:id="@+id/withoutMarginArea"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#ffffff">
-
-            <TextView
-                android:id="@+id/withoutMargin"
-                style="@style/rb_pay_type"
-                android:drawableLeft="@drawable/sharebike"
-                android:drawablePadding="10dp"
-                android:text="@string/from_deposit"
-                android:textColor="@color/colorTitle"/>
-
-            <CheckBox
-                android:id="@+id/withoutMargin_checkbox"
-                style="@style/checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#F9F9F9"
-            android:visibility="gone"/>
-
-
-        <RelativeLayout
             android:id="@+id/weixinArea"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff">
+            android:background="@color/white">
 
             <TextView
                 android:id="@+id/weixin"
@@ -105,13 +76,13 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="#F9F9F9"/>
+            android:background="@color/lineColor"/>
 
         <RelativeLayout
             android:id="@+id/aliArea"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff">
+            android:background="@color/white">
 
             <TextView
                 android:id="@+id/ali"
@@ -136,7 +107,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/stepsView"
         android:layout_marginTop="7dp"
-        android:background="#ffffff"
+        android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -162,7 +133,7 @@
             android:drawableLeft="@drawable/renminbi"
             android:gravity="center"
             android:text="@string/cash_pledge"
-            android:textColor="#000000"
+            android:textColor="@color/black"
             android:textSize="20sp"/>
 
     </RelativeLayout>
@@ -181,9 +152,9 @@
         style="@style/recharge_text_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/tip2"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/text2"
-        android:layout_alignParentLeft="true"/>
+        android:text="@string/tip2"/>
 
 
 </RelativeLayout>

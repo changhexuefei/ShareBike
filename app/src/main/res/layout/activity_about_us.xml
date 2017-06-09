@@ -26,7 +26,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:text="@string/qilinbikes"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         android:textSize="16sp"/>
 
     <TextView
@@ -37,14 +37,14 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
         android:text="v1.0.0"
-        android:textColor="#000000"/>
+        android:textColor="@color/black"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/app_version"
         android:layout_marginTop="60dp"
-        android:background="#ffffff"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -62,7 +62,7 @@
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
                 android:text="@string/weixinpublic"
-                android:textColor="#000000"/>
+                android:textColor="@color/black"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -75,10 +75,12 @@
         </RelativeLayout>
 
         <View
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_gravity="center"
-            android:background="#d7d3d3"/>
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@color/lineColor"/>
 
         <RelativeLayout
             android:id="@+id/phone"
@@ -95,7 +97,7 @@
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
                 android:text="@string/phone"
-                android:textColor="#000000"/>
+                android:textColor="@color/black"/>
 
 
             <TextView
@@ -109,10 +111,12 @@
         </RelativeLayout>
 
         <View
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_gravity="center"
-            android:background="#d7d3d3"/>
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@color/lineColor"/>
 
         <RelativeLayout
             android:id="@+id/email"
@@ -130,7 +134,7 @@
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
                 android:text="@string/email"
-                android:textColor="#000000"/>
+                android:textColor="@color/black"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -143,10 +147,12 @@
         </RelativeLayout>
 
         <View
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_gravity="center"
-            android:background="#d7d3d3"/>
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@color/lineColor"/>
 
         <RelativeLayout
             android:id="@+id/official_website"
@@ -163,8 +169,8 @@
                 android:drawableLeft="@drawable/ic_language_black_24dp"
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
-                android:text="官方网站"
-                android:textColor="#000000"/>
+                android:text="@string/official_website"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -172,7 +178,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"
                 android:gravity="center_vertical"
-                android:text="70bikes.cn"
+                android:text="@string/_70bikes_cn"
                 android:textColor="@color/colorTitle"/>
         </RelativeLayout>
     </LinearLayout>
@@ -184,6 +190,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:text="@string/company_name"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         android:textSize="14sp"/>
 </RelativeLayout>

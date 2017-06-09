@@ -75,7 +75,6 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:fadeScrollbars="false"
         android:scrollbars="vertical"
@@ -96,7 +95,7 @@
                 <View
                     android:layout_width="100dp"
                     android:layout_height="1dp"
-                    android:background="#cecdcd"/>
+                    android:background="@color/lineColor"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -104,13 +103,13 @@
                     android:layout_gravity="center"
                     android:padding="8dp"
                     android:text="@string/docking_stations"
-                    android:textColor="#000000"
+                    android:textColor="@color/black"
                     android:textSize="16sp"/>
 
                 <View
                     android:layout_width="100dp"
                     android:layout_height="1dp"
-                    android:background="#cecdcd"/>
+                    android:background="@color/lineColor"/>
             </LinearLayout>
 
             <ImageView
@@ -140,7 +139,7 @@
                 <View
                     android:layout_width="100dp"
                     android:layout_height="1dp"
-                    android:background="#cecdcd"/>
+                    android:background="@color/lineColor"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -148,13 +147,13 @@
                     android:layout_gravity="center"
                     android:padding="8dp"
                     android:text="@string/appointment_billing"
-                    android:textColor="#000000"
+                    android:textColor="@color/black"
                     android:textSize="16sp"/>
 
                 <View
                     android:layout_width="100dp"
                     android:layout_height="1dp"
-                    android:background="#cecdcd"/>
+                    android:background="@color/lineColor"/>
             </LinearLayout>
 
             <ImageView
@@ -183,7 +182,7 @@
                 <View
                     android:layout_width="100dp"
                     android:layout_height="1dp"
-                    android:background="#cecdcd"/>
+                    android:background="@color/lineColor"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -191,13 +190,13 @@
                     android:layout_gravity="center"
                     android:padding="8dp"
                     android:text="@string/help_unlock"
-                    android:textColor="#000000"
+                    android:textColor="@color/black"
                     android:textSize="16sp"/>
 
                 <View
                     android:layout_width="100dp"
                     android:layout_height="1dp"
-                    android:background="#cecdcd"/>
+                    android:background="@color/lineColor"/>
             </LinearLayout>
 
             <ImageView
@@ -226,7 +225,7 @@
                 <View
                     android:layout_width="100dp"
                     android:layout_height="1dp"
-                    android:background="#cecdcd"/>
+                    android:background="@color/lineColor"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -234,7 +233,7 @@
                     android:layout_gravity="center"
                     android:padding="8dp"
                     android:text="@string/open_lock"
-                    android:textColor="#000000"
+                    android:textColor="@color/black"
                     android:textSize="16sp"/>
 
                 <View
@@ -268,7 +267,7 @@
                 <View
                     android:layout_width="100dp"
                     android:layout_height="1dp"
-                    android:background="#cecdcd"/>
+                    android:background="@color/lineColor"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -276,13 +275,13 @@
                     android:layout_gravity="center"
                     android:padding="8dp"
                     android:text="@string/customerService"
-                    android:textColor="#000000"
+                    android:textColor="@color/black"
                     android:textSize="16sp"/>
 
                 <View
                     android:layout_width="100dp"
                     android:layout_height="1dp"
-                    android:background="#cecdcd"/>
+                    android:background="@color/lineColor"/>
             </LinearLayout>
 
             <ImageView
@@ -295,7 +294,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
                 android:paddingLeft="20dp"

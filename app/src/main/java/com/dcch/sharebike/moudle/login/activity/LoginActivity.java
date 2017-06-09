@@ -4,8 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -41,6 +39,8 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.simple.eventbus.EventBus;
+import org.simple.eventbus.Subscriber;
+import org.simple.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -74,28 +74,28 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private String seCode;
     private String phone;
 
-    private Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case CODE_ING://已发送,倒计时
-                    if (TIME > 0) {
-                        getSecurityCode.setText("(" + --TIME + "s)");
-                    }
-                    if (TIME <= 0) {
-                        TIME = 60;
-                    }
-                    getSecurityCode.setBackgroundColor(Color.parseColor("#c6bfbf"));
-                    getSecurityCode.setClickable(false);
-                    break;
-                case CODE_REPEAT://重新发送
-                    getSecurityCode.setText("重新获取验证码");
-                    getSecurityCode.setBackgroundColor(Color.parseColor("#F05B47"));
-                    getSecurityCode.setClickable(true);
-                    break;
-
-            }
-        }
-    };
+    //    private Handler handler = new Handler() {
+//        public void handleMessage(Message msg) {
+//            switch (msg.what) {
+//                case CODE_ING://已发送,倒计时
+//                    if (TIME > 0) {
+//                        getSecurityCode.setText("(" + --TIME + "s)");
+//                    }
+//                    if (TIME <= 0) {
+//                        TIME = 60;
+//                    }
+//                    getSecurityCode.setBackgroundColor(Color.parseColor("#c6bfbf"));
+//                    getSecurityCode.setClickable(false);
+//                    break;
+//                case CODE_REPEAT://重新发送
+//                    getSecurityCode.setText("重新获取验证码");
+//                    getSecurityCode.setBackgroundColor(Color.parseColor("#F05B47"));
+//                    getSecurityCode.setClickable(true);
+//                    break;
+//
+//            }
+//        }
+//    };
     private String verificationCode;
 
 
@@ -185,7 +185,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                if (NetUtils.isConnected(LoginActivity.this)) {
+                if (NetUtils.isConnected(App.getContext())) {
                     getseCode(phone);
                 } else {
                     ToastUtils.showLong(LoginActivity.this, "请检查网络后重试！！");
@@ -209,8 +209,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                Intent intent = new Intent(this, AgreementActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(this, AgreementActivity.class));
                 break;
         }
     }
@@ -229,7 +228,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             @Override
                             public void run() {
                                 for (int i = 60; i > 0; i--) {
-                                    handler.sendEmptyMessage(CODE_ING);
+//                                    handler.sendEmptyMessage(CODE_ING);
+                                    EventBus.getDefault().post(new MessageEvent(), "continue");
                                     if (i <= 0) {
                                         break;
                                     }
@@ -239,7 +239,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                         e.printStackTrace();
                                     }
                                 }
-                                handler.sendEmptyMessage(CODE_REPEAT);
+//                                handler.sendEmptyMessage(CODE_REPEAT);
+                                EventBus.getDefault().post(new MessageEvent(), "repeat");
                             }
                         }).start();
                     }
@@ -248,13 +249,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 .show();
     }
 
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        handler.removeCallbacksAndMessages(null);
-        EventBus.getDefault().unregister(this);
-    }
 
     private void registerAndLogin(String phone) {
         phone = AES.encrypt(phone.getBytes(), MyContent.key);
@@ -294,11 +288,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     EventBus.getDefault().post(new MessageEvent(), "gone");
                     LoginActivity.this.finish();
                     //储存用户信息(登录储存一次)
-                    SPUtils.clear(LoginActivity.this);
-                    SPUtils.put(LoginActivity.this, "userDetail", response);
-                    LogUtils.d("userDetail", response);
-                    SPUtils.put(LoginActivity.this, "islogin", true);
-                    SPUtils.put(LoginActivity.this, "isfirst", false);
+                    SPUtils.clear(App.getContext());
+                    SPUtils.put(App.getContext(), "userDetail", response);
+                    SPUtils.put(App.getContext(), "islogin", true);
+                    SPUtils.put(App.getContext(), "isfirst", false);
                 } else {
                     ToastUtils.showShort(LoginActivity.this, "未知错误！请重试。");
                 }
@@ -322,8 +315,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 ToastUtils.showLong(LoginActivity.this, "验证码已发送");
                 try {
                     JSONObject object = new JSONObject(response);
-                    verificationCode = object.getString("code");
-                    securityCode.setText(verificationCode);
+                    verificationCode = object.optString("code");
+                    if (verificationCode != null && !verificationCode.equals("")) {
+                        securityCode.setText(verificationCode);
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -339,6 +334,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        handler.removeCallbacksAndMessages(null);
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
         goToPersonCenter();
@@ -347,4 +349,28 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void goToPersonCenter() {
         startActivity(new Intent(LoginActivity.this, PersonalCenterActivity.class));
     }
+
+    //接收到继续倒计时的消息
+    @Subscriber(tag = "continue", mode = ThreadMode.MAIN)
+    private void receiveContinue(MessageEvent info) {
+        LogUtils.d("输入", info.toString());
+        if (TIME > 0) {
+            getSecurityCode.setText("(" + --TIME + "s)");
+        }
+        if (TIME <= 0) {
+            TIME = 60;
+        }
+        getSecurityCode.setBackgroundColor(Color.parseColor("#c6bfbf"));
+        getSecurityCode.setClickable(false);
+    }
+
+    //接收到继续倒计时的消息
+    @Subscriber(tag = "repeat", mode = ThreadMode.MAIN)
+    private void receiveRepeat(MessageEvent info) {
+        LogUtils.d("输入", info.toString());
+        getSecurityCode.setText("重新获取验证码");
+        getSecurityCode.setBackgroundColor(Color.parseColor("#F05B47"));
+        getSecurityCode.setClickable(true);
+    }
+
 }

@@ -1,15 +1,12 @@
 package com.dcch.sharebike.moudle.login.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -215,26 +212,5 @@ public class IdentityAuthentication extends BaseActivity {
         startActivity(backToLoginMain);
         finish();
     }
-
-    public void showDialog(Context mContext) {
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        View view = inflater.inflate(R.layout.coupon, null);
-
-        AlertDialog dialog = new AlertDialog.Builder(mContext)
-                .setCancelable(true)
-                .setView(view)
-                .show();
-
-
-        Button btn_discount = (Button) view.findViewById(R.id.btn_discount);
-        btn_discount.setOnClickListener(new android.view.View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("测试", "对话框中的Button被点击了");
-
-            }
-        });
-    }
-
 
 }

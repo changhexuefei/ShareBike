@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,20 +11,24 @@
     <include layout="@layout/toolbar"/>
 
     <ImageView
+        android:layout_below="@+id/toolbar"
         android:id="@+id/iv_drawable"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:padding="12dp"/>
 
     <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/iv_drawable"
         android:text="处理中......."
         android:id="@+id/reminder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:gravity="center"
         android:textSize="14sp"/>
 
     <android.support.v7.widget.CardView
+        android:layout_below="@+id/reminder"
         android:id="@+id/card_show"
         android:layout_width="match_parent"
         android:layout_height="200dp"
@@ -144,13 +148,15 @@
     </android.support.v7.widget.CardView>
 
     <Button
+        android:layout_marginBottom="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
         android:id="@+id/customer_service"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="60dp"
         android:background="@null"
         android:text="@string/callphone"
         android:textColor="@color/colorHeading"/>
 
-</LinearLayout>
+</RelativeLayout>

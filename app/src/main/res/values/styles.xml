@@ -113,7 +113,7 @@
     </style>
 
     <style name="checkbox">
-        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_gravity">center_vertical</item>
         <item name="android:clickable">false</item>
         <item name="android:scaleY">0.5</item>
         <item name="android:scaleX">0.5</item>

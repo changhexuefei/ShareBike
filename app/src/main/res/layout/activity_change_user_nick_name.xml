@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_change_user_nick_name"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.dcch.sharebike.moudle.user.activity.ChangeUserNickNameActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/activity_change_user_nick_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.dcch.sharebike.moudle.user.activity.ChangeUserNickNameActivity">
 
     <FrameLayout
         android:id="@+id/nicknameInfo"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/colorHeading"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:background="@color/colorHeading">
 
         <ImageView
             android:id="@+id/back"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:padding="12dp"
-            android:src="@mipmap/back" />
+            android:src="@mipmap/back"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="昵称"
+            android:text="@string/nickName"
             android:textColor="@color/common"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
+
         <TextView
             android:id="@+id/save_nickname"
-            android:layout_marginRight="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
-            android:text="保存"
-            android:textColor="#ffffff"
-            android:textSize="16sp" />
+            android:layout_marginRight="15dp"
+            android:text="@string/save"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
     </FrameLayout>
-    
+
     <EditText
-        android:padding="10dp"
-        android:drawableRight="@mipmap/clear_text"
-        android:background="@null"
         android:id="@+id/change_nickname"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/nicknameInfo"
         android:layout_width="match_parent"
-        android:layout_height="40dp" />
+        android:layout_height="40dp"
+        android:layout_below="@+id/nicknameInfo"
+        android:layout_marginTop="20dp"
+        android:background="@null"
+        android:drawableRight="@mipmap/clear_text"
+        android:padding="10dp"/>
 
 </RelativeLayout>

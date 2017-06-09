@@ -46,8 +46,6 @@ public class DealFeedbackActivity extends BaseActivity {
     TextView mReminder;
     private String mRechargeNumber;
     private String mContentText;
-    private String mCarRentalOrderId;
-    private String mUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

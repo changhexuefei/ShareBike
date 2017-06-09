@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_identity_authentication"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.dcch.sharebike.moudle.login.activity.IdentityAuthentication">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/activity_identity_authentication"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.dcch.sharebike.moudle.login.activity.IdentityAuthentication">
 
     <include layout="@layout/toolbar"/>
 
     <com.anton46.stepsview.StepsView
-        android:layout_below="@+id/toolbar"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/iden_stepsView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-
-        />
+        android:layout_marginRight="10dp"/>
 
 
     <LinearLayout
@@ -34,24 +32,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/realName_identity_title"
-            android:textColor="#000000"
-            android:textSize="20sp" />
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
 
         <EditText
+            android:layout_marginTop="10dp"
             android:id="@+id/userRealName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
             android:hint="@string/identity_tip_one"
             android:padding="15dp"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="#e1dada" />
+            android:background="@color/lineColor"/>
 
         <EditText
+            android:layout_marginTop="10dp"
             android:id="@+id/IDCardNo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,12 +59,12 @@
             android:hint="@string/indetity_tip_two"
             android:maxLength="18"
             android:padding="15dp"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="#e1dada" />
+            android:background="@color/lineColor"/>
     </LinearLayout>
 
     <Button
@@ -72,14 +72,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/userInfo"
-        android:layout_centerHorizontal="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="40dp"
-        android:background="#c6bfbf"
+        android:background="@color/btn_bg"
         android:enabled="false"
         android:text="@string/to_identity"
-        android:textColor="#ffffff"
-        android:textSize="16sp" />
+        android:textColor="@color/white"
+        android:textSize="16sp"/>
 
 </RelativeLayout>

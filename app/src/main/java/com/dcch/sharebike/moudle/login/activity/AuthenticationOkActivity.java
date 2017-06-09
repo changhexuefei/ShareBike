@@ -48,11 +48,11 @@ public class AuthenticationOkActivity extends BaseActivity {
         });
     }
 
-    @OnClick( R.id.back_to_main)
+    @OnClick(R.id.back_to_main)
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back_to_main:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 Intent backToMain = new Intent(this, MainActivity.class);

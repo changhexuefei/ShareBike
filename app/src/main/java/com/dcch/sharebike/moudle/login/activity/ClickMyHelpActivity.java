@@ -138,6 +138,7 @@ public class ClickMyHelpActivity extends BaseActivity {
     public void onClick() {
         finish();
     }
+
     /*
       将dp转化为px
        */

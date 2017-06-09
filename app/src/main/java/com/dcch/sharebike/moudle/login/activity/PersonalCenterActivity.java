@@ -68,7 +68,6 @@ public class PersonalCenterActivity extends BaseActivity {
     private void showFragment() {
         hideFragments();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        LogUtils.d("状态", SPUtils.isLogin() + "1");
         if (SPUtils.isLogin()) {
             if (lf == null) {
                 lf = new LoginFragment();
