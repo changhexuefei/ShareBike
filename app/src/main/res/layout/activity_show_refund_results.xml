@@ -11,8 +11,8 @@
 
     <ImageView
         android:id="@+id/result_icon"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_below="@+id/toolbar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
@@ -27,7 +27,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:text="@string/refund_success_tip"
-        android:textColor="#fa0b0b"/>
+        android:textColor="@color/colorTitle"/>
 
     <TextView
         android:id="@+id/refund_sum"
@@ -38,7 +38,7 @@
         android:layout_marginTop="20dp"
         android:drawableLeft="@drawable/renminbi"
         android:text="@string/cash_pledge"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         android:textSize="30sp"/>
 
     <TextView
@@ -56,12 +56,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/refund_tips_two"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginTop="40dp"
         android:background="@color/colorTitle"
         android:text="@string/verify"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:textSize="16sp"/>
 
 

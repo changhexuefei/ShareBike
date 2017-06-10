@@ -16,6 +16,7 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.user.adapter.TransactionDetailInfoAdapter;
 import com.dcch.sharebike.moudle.user.bean.TransactionDetailInfo;
+import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.NetUtils;
@@ -68,7 +69,6 @@ public class TransactionDetailActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
         Intent intent = getIntent();
         if (intent != null) {
             mUserId = intent.getStringExtra("userId");
@@ -81,8 +81,10 @@ public class TransactionDetailActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (NetUtils.isConnected(App.getContext())) {
-            getTransactionDetail(mUserId);
-            StyledDialog.buildLoading(TransactionDetailActivity.this, "正在加载..", true, false).setMsgColor(R.color.color_ff).show();
+            if (mUserId != null && !mUserId.equals("")) {
+                getTransactionDetail(mUserId);
+                StyledDialog.buildLoading(TransactionDetailActivity.this, "正在加载..", true, false).setMsgColor(R.color.color_ff).show();
+            }
         } else {
             mNoPayTip.setVisibility(View.GONE);
             mIvNoPay.setVisibility(View.GONE);
@@ -135,9 +137,15 @@ public class TransactionDetailActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
+                if (ClickUtils.isFastClick()) {
+                    return;
+                }
                 finish();
                 break;
             case R.id.refundExplain:
+                if (ClickUtils.isFastClick()) {
+                    return;
+                }
                 startActivity(new Intent(this, RefundExplainActivity.class));
                 break;
         }

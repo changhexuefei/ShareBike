@@ -89,9 +89,10 @@ public class RechargeDepositActivity extends BaseActivity {
             }
         });
         rdWeixinCheckbox.setChecked(true);
-        String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-        Log.d("用户明细", userDetail);
+
         try {
+            String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
+            Log.d("用户明细", userDetail);
             JSONObject object = new JSONObject(userDetail);
             int id = object.getInt("id");
             Log.d("手机号", id + "");
@@ -246,8 +247,6 @@ public class RechargeDepositActivity extends BaseActivity {
                                 Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(RechargeDepositActivity.this, WalletInfoActivity.class));
                         finish();
-//                        updateUserCashstatus(userID);
-//                        returnData(mMoneySum);
                     } else {
                         // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
                         if (TextUtils.equals(resultStatus, "8000")) {
@@ -264,34 +263,9 @@ public class RechargeDepositActivity extends BaseActivity {
         }
     };
 
-    private void updateUserCashstatus(String userID) {
-        Map<String, String> map = new HashMap<>();
-        map.put("userId", userID);
-        OkHttpUtils.post().url(Api.BASE_URL + Api.UPDATEUSERCASHSTATUS).params(map).build().execute(new StringCallback() {
-            @Override
-            public void onError(Call call, Exception e, int id) {
-                Log.e("onError:", e.getMessage());
-                ToastUtils.showShort(RechargeDepositActivity.this, "服务器正忙，请稍后再试！");
-            }
-
-            @Override
-            public void onResponse(String response, int id) {
-                Log.d("交押金后", response);
-                //{"code":"1"}
-//                try {
-//                    JSONObject object = new JSONObject(response);
-//                    String code = object.optString("code");
-//                    if (code.equals("1")) {
-//                        ToastUtils.showShort(RechargeDepositActivity.this, "用户资料更新成功！");
-//                    } else if (code.equals("0")) {
-//                        ToastUtils.showShort(RechargeDepositActivity.this, "用户资料更新失败！");
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-            }
-        });
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacksAndMessages(null);
     }
-
-
 }

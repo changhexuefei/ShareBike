@@ -70,10 +70,6 @@ public class RechargeActivity extends BaseActivity {
     //    private static final int SDK_AUTH_FLAG = 2;
     @BindView(R.id.stepsView)
     StepsView mStepsView;
-    @BindView(R.id.withoutMargin_checkbox)
-    CheckBox mWithoutMarginCheckbox;
-    @BindView(R.id.withoutMarginArea)
-    RelativeLayout mWithoutMarginArea;
     private String userID;
     private String mToken;
     private String orderbodydesc = "交押金";
@@ -100,13 +96,11 @@ public class RechargeActivity extends BaseActivity {
 
         //默认微信选中
         weixinCheckbox.setChecked(true);
-        String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-        Log.d("用户明细", userDetail);
         try {
+            String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
             JSONObject object = new JSONObject(userDetail);
             int id = object.optInt("id");
             mToken = object.optString("token");
-            Log.d("手机号", id + "");
             userID = String.valueOf(id);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -121,34 +115,24 @@ public class RechargeActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.btn_recharge, R.id.aliArea, R.id.weixinArea, R.id.withoutMarginArea})
+    @OnClick({R.id.btn_recharge, R.id.aliArea, R.id.weixinArea})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.aliArea:
                 aliCheckbox.setChecked(true);
                 weixinCheckbox.setChecked(false);
-                mWithoutMarginCheckbox.setChecked(false);
+
                 break;
 
             case R.id.weixinArea:
                 weixinCheckbox.setChecked(true);
                 aliCheckbox.setChecked(false);
-                mWithoutMarginCheckbox.setChecked(false);
                 break;
-
-//            case R.id.withoutMarginArea:
-//                weixinCheckbox.setChecked(false);
-//                aliCheckbox.setChecked(false);
-//                mWithoutMarginCheckbox.setChecked(true);
-//                break;
 
             case R.id.btn_recharge:
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-//                if (userID != null && mToken != null) {
-//                    updateUserCashstatus(userID, mToken);
-//                }
                 if (NetUtils.isConnected(App.getContext())) {
                     String moneySum = money.getText().toString().trim();
                     String outTradeNo;
@@ -260,31 +244,6 @@ public class RechargeActivity extends BaseActivity {
         });
     }
 
-//    private void updateUserCashstatus(String userID, String token) {
-//
-//        Map<String, String> map = new HashMap<>();
-//        map.put("userId", userID);
-//        map.put("token", token);
-//        OkHttpUtils.post().url(Api.BASE_URL + Api.UPDATEUSERCASHSTATUS).params(map).build().execute(new StringCallback() {
-//            @Override
-//            public void onError(Call call, Exception e, int id) {
-//                Log.e("onError:", e.getMessage());
-//                ToastUtils.showShort(RechargeActivity.this, "服务器正忙，请稍后再试！");
-//            }
-//
-//            @Override
-//            public void onResponse(String response, int id) {
-//                Log.d("交押金后", response);
-//                if (JsonUtils.isSuccess(response)) {
-//                    startActivity(new Intent(RechargeActivity.this, IdentityAuthentication.class));
-//                    finish();
-//                } else {
-//                    ToastUtils.showShort(RechargeActivity.this, "服务器正忙，请稍后再试！");
-//                }
-//            }
-//        });
-//    }
-
 
     Handler handler = new Handler() {
         @Override
@@ -327,4 +286,9 @@ public class RechargeActivity extends BaseActivity {
         finish();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacksAndMessages(null);
+    }
 }

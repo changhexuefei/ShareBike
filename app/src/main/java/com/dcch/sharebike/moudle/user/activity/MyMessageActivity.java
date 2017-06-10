@@ -134,7 +134,7 @@ public class MyMessageActivity extends BaseActivity {
                                 }
                             }
                         });
-                    }else{
+                    } else {
                         mNoMessage.setVisibility(View.VISIBLE);
                         mMyMessageList.setVisibility(View.GONE);
                     }
@@ -151,7 +151,7 @@ public class MyMessageActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Glide.with(this).pauseRequests();
+        Glide.with(App.getContext()).pauseRequests();
         StyledDialog.dismiss();
     }
 }

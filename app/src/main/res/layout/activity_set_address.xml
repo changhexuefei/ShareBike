@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    tools:context="com.dcch.sharebike.moudle.user.activity.SetAddressActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                tools:context="com.dcch.sharebike.moudle.user.activity.SetAddressActivity">
 
     <RelativeLayout
         android:id="@+id/set_address_area"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#000000"
-        android:orientation="horizontal"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:background="@color/black"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/set_cancel"
@@ -24,37 +24,36 @@
             android:background="#00000000"
             android:padding="8dp"
             android:text="@string/cancel"
-            android:textColor="#ffffff" />
+            android:textColor="@color/white"/>
 
         <EditText
             android:id="@+id/set_search"
             android:layout_width="240dp"
             android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="10dp"
             android:background="@null"
             android:cursorVisible="true"
+            android:drawableLeft="@mipmap/search"
             android:drawablePadding="4dp"
-            android:drawableStart="@mipmap/search"
             android:gravity="center_vertical"
             android:hint="@string/set_address"
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:singleLine="true"
-            android:textColor="#ffffff"
-            android:textColorHint="#c7c2c2"
-            android:textCursorDrawable="@null" />
+            android:textColor="@color/white"
+            android:textColorHint="@color/text_hint_color"
+            android:textCursorDrawable="@null"/>
 
         <ImageButton
             android:id="@+id/set_deleteWord"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/set_search"
-            android:background="#000000"
+            android:background="@color/black"
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
-            android:src="@mipmap/delete" />
+            android:src="@mipmap/delete"/>
 
         <View
             android:layout_width="260dp"
@@ -62,17 +61,18 @@
             android:layout_below="@+id/set_search"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="-4dp"
-            android:background="#838080" />
+            android:background="@color/lineColor"/>
 
     </RelativeLayout>
+
     <TextView
-        android:visibility="gone"
         android:id="@+id/no_result"
-        android:gravity="bottom|center_horizontal"
-        android:layout_below="@+id/set_address_area"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="@string/no_result" />
+        android:layout_below="@+id/set_address_area"
+        android:gravity="bottom|center_horizontal"
+        android:text="@string/no_result"
+        android:visibility="gone"/>
 
     <ListView
         android:id="@+id/set_infoList"

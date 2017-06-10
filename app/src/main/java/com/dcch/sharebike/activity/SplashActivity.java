@@ -63,24 +63,7 @@ public class SplashActivity extends BaseActivity {
         LogUtils.d("网络", NetUtils.isNetworkAvailable(App.getContext()) + "");
 
 
-
     }
-
-
-//    private void switchPage() {
-//        boolean isStartGuide = (boolean) SPUtils.get(this, "isStartGuide", false);
-//        if (SPUtils.isLogin()) {
-//            LogUtils.e("已经登录...");
-//            goMain();
-//        } else {
-//            LogUtils.e("没有登录...");
-//            if (isStartGuide) {
-//                goMain();
-//            } else {
-//                goGuide();
-//            }
-//        }
-//    }
 
     private void goGuide() {
         Intent intent = new Intent(this, GuideActivity.class);
@@ -123,13 +106,14 @@ public class SplashActivity extends BaseActivity {
     //gotoguide
     @Subscriber(tag = "guide", mode = ThreadMode.POST)
     private void receiveMessageToGuide(MessageEvent info) {
-        LogUtils.d("输入", info.toString()+"guide");
+        LogUtils.d("输入", info.toString() + "guide");
         goGuide();
     }
+
     //gotoMain
     @Subscriber(tag = "main", mode = ThreadMode.POST)
     private void receiveMessageToMain(MessageEvent info) {
-        LogUtils.d("输入", info.toString()+"main");
+        LogUtils.d("输入", info.toString() + "main");
         goMain();
     }
 

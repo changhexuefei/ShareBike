@@ -10,11 +10,14 @@ import android.widget.TextView;
 
 import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
+import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.home.bean.RideResultInfo;
+import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.google.gson.Gson;
 import com.hss01248.dialog.StyledDialog;
@@ -92,7 +95,7 @@ public class RidingResultActivity extends BaseActivity {
                     RideResultInfo rideResultInfo = gson.fromJson(response, RideResultInfo.class);
                     LogUtils.d("骑行结果", rideResultInfo.getCarRentalInfo().getFinalCast() + "\n" + rideResultInfo.getCarRentalInfo().getOrderCast() + "\n" + rideResultInfo.getCarRentalInfo().getTripTime() + "\n" + rideResultInfo.getCarRentalInfo().getTripDist());
                     mMoneyResultShow.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getFinalCast()));
-                    mRideCost.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getFinalCast()) + "元");
+                    mRideCost.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getRideCost()) + "元");
                     mRideTime.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getTripTime()) + "分钟");
                     mBalance.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getFinalCast()) + "元");
                     mCouponCost.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getCouponAmount()) + "元");
@@ -111,22 +114,24 @@ public class RidingResultActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (NetUtils.isConnected(App.getContext())) {
+            if (mImei != null && mUserId != null) {
+                LogUtils.d("骑行结果", mImei + "\n" + mUserId);
+                getResult(mImei, mUserId);
+            }
+        }
+    }
+
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LogUtils.d("周期", "onCreate");
         Intent intent = getIntent();
         mImei = intent.getStringExtra("IMEI");
         mUserId = intent.getStringExtra("userId");
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (mImei != null && mUserId != null) {
-            LogUtils.d("骑行结果", mImei + "\n" + mUserId);
-            getResult(mImei, mUserId);
-        }
     }
 
     @Override
@@ -150,6 +155,9 @@ public class RidingResultActivity extends BaseActivity {
 
     @OnClick(R.id.callCenter)
     public void onViewClicked() {
+        if (ClickUtils.isFastClick()) {
+            return;
+        }
         StyledDialog.buildIosAlert(RidingResultActivity.this, "提示", "拨打电话 400-660-6215", new MyDialogListener() {
             @Override
             public void onFirst() {

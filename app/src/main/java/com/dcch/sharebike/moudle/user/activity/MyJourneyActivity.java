@@ -40,6 +40,7 @@ import java.util.Map;
 import butterknife.BindView;
 import okhttp3.Call;
 
+
 public class MyJourneyActivity extends BaseActivity {
 
     @BindView(R.id.journey_list)
@@ -103,7 +104,6 @@ public class MyJourneyActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        LogUtils.d("why", "为什么onCreate");
         super.onCreate(savedInstanceState);
         if (NetUtils.isConnected(App.getContext())) {
             getJourneyInfo(mPhone, mToken);
@@ -134,14 +134,13 @@ public class MyJourneyActivity extends BaseActivity {
                     Gson gson = new Gson();
                     mJourneyInfo = gson.fromJson(response, JourneyInfo.class);
                     if (mJourneyInfo.getCarrOrders().size() > 0) {
-
                         LogUtils.d("记录", mJourneyInfo.getCarrOrders().size() + "");
                         StyledDialog.dismissLoading();
                         journeyList.setVisibility(View.VISIBLE);
                         mAdapter = new JourneyInfoAdapter(MyJourneyActivity.this, R.layout.item_my_journey, mJourneyInfo.getCarrOrders());
                         journeyList.setLayoutManager(new LinearLayoutManager(MyJourneyActivity.this, OrientationHelper.VERTICAL, false));
                         LRecyclerViewAdapter adapter = new LRecyclerViewAdapter(mAdapter);
-                        //添加分割线
+//                        //添加分割线
                         journeyList.addItemDecoration(new DividerItemDecoration(MyJourneyActivity.this, DividerItemDecoration.VERTICAL));
                         journeyList.setAdapter(adapter);
                         CommonFooter footerView = new CommonFooter(MyJourneyActivity.this, R.layout.footer);
@@ -171,6 +170,7 @@ public class MyJourneyActivity extends BaseActivity {
                                     journeyDetail.putExtra("tripDist", tripDist);
                                     journeyDetail.putExtra("tripTime", tripTime);
                                     journeyDetail.putExtra("image", image);
+                                    LogUtils.d("距离和大卡", tripDist + "\n" + calorie);
                                     startActivity(journeyDetail);
                                 }
                             }

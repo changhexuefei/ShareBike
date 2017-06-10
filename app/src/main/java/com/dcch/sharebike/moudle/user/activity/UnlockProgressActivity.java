@@ -30,8 +30,6 @@ import butterknife.BindView;
 
 public class UnlockProgressActivity extends BaseActivity {
 
-    //    @BindView(R.id.unlockIcon)
-//    ImageView mUnlockIcon;
     @BindView(R.id.myProgressBar)
     MyProgressBar mMyProgressBar;
     boolean isDownloading;
@@ -109,7 +107,6 @@ public class UnlockProgressActivity extends BaseActivity {
                 mMyProgressBar.setProgress(num);//初次进入在动画结束时设置进度
                 Log.d("实验", "结束了+++++++" + "onCreate");
                 handler.sendEmptyMessage(WHAT);
-//                EventBus.getDefault().post(new MessageEvent(), "create");
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         //你需要跳转的地方的代码
@@ -143,7 +140,7 @@ public class UnlockProgressActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogUtils.d("实验","我已经创建好了");
+        LogUtils.d("实验", "我已经创建好了");
         EventBus.getDefault().register(this);
     }
 

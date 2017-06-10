@@ -14,12 +14,12 @@
         android:id="@+id/input_area"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="#41c0dc">
+        android:background="@color/colorHeading">
 
         <ImageView
             android:id="@+id/back"
             android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:padding="16dp"
             android:src="@drawable/back"/>
@@ -29,8 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="输入编号开锁"
-            android:textColor="#ffffff"
+            android:text="@string/inputBikeNo"
+            android:textColor="@color/white"
             android:textSize="16sp"/>
 
         <TextView
@@ -40,8 +40,8 @@
             android:layout_gravity="right"
             android:layout_marginRight="15dp"
             android:gravity="center_vertical"
-            android:text="使用帮助"
-            android:textColor="#ffffff"
+            android:text="@string/usinghelp"
+            android:textColor="@color/white"
             android:textSize="14sp"/>
     </FrameLayout>
 
@@ -58,18 +58,18 @@
             android:layout_marginTop="30dp">
 
             <ImageView
-                android:layout_centerHorizontal="true"
                 android:id="@+id/icon_bike"
                 android:layout_width="wrap_content"
                 android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
                 android:src="@mipmap/input_top_icon"/>
 
             <ToggleButton
-                android:layout_centerVertical="true"
                 android:id="@+id/inputFlashLight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:background="@null"
                 android:checked="false"
                 android:drawableTop="@drawable/flash_light_selector"
@@ -82,10 +82,10 @@
             android:id="@+id/manualInputArea"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginTop="20dp"
             android:layout_below="@+id/input_icon"
             android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"/>
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="20dp"/>
 
 
         <TextView
@@ -94,13 +94,12 @@
             android:layout_below="@+id/manualInputArea"
             android:layout_centerInParent="true"
             android:layout_marginTop="30dp"
-            android:text="请确认您输入了正确的自行车编号"
-            android:textColor="#ffffff"/>
+            android:text="@string/input_tips"
+            android:textColor="@color/white"/>
 
     </RelativeLayout>
 
     <Button
-        android:enabled="false"
         android:id="@+id/ensure"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -108,9 +107,10 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="30dp"
-        android:background="#6b6b6b"
+        android:background="@color/input_btn_color"
+        android:enabled="false"
         android:text="@string/verify"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:textSize="14sp"/>
 
 

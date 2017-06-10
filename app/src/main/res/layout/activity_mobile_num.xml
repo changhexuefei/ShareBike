@@ -25,7 +25,7 @@
         android:layout_below="@+id/mobile_icon"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
-        android:text="您当前的手机号为11111111111"
+        android:text="@string/_11111111111"
         android:textColor="#000000"
         android:textSize="14sp"/>
 
@@ -59,7 +59,7 @@
         android:id="@+id/replace_mobile_num"
         android:textSize="14sp"
         android:textColor="@color/common"
-        android:text="更换手机号"
+        android:text="@string/chagePhoneNum"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="30dp"

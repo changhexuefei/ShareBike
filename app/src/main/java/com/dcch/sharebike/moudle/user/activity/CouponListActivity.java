@@ -3,7 +3,6 @@ package com.dcch.sharebike.moudle.user.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.view.View;
@@ -124,7 +123,7 @@ public class CouponListActivity extends BaseActivity {
                         mCouponList.setLayoutManager(new LinearLayoutManager(CouponListActivity.this, OrientationHelper.VERTICAL, false));
                         LRecyclerViewAdapter adapter = new LRecyclerViewAdapter(mCouponInfoAdapter);
                         //添加分割线
-                        mCouponList.addItemDecoration(new DividerItemDecoration(CouponListActivity.this, DividerItemDecoration.VERTICAL));
+//                        mCouponList.addItemDecoration(new DividerItemDecoration(CouponListActivity.this, DividerItemDecoration.VERTICAL));
                         mCouponList.setAdapter(adapter);
                         CommonFooter footerView = new CommonFooter(CouponListActivity.this, R.layout.footer);
                         adapter.addFooterView(footerView);

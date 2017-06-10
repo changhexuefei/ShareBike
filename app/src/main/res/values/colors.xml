@@ -23,5 +23,7 @@
     <color name="edittext_bg">#dad5d5</color>
     <color name="text_hint_color">#c2baba</color>
     <color name="black">#000000</color>
+    <color name="recharge_amount_color">#716F76</color>
+    <color name="input_btn_color">#6b6b6b</color>
 
 </resources>

@@ -1,7 +1,6 @@
 package com.dcch.sharebike;
 
 import android.Manifest;
-import android.app.AlarmManager;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -247,7 +246,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         initOritationListener();
         //注册EventBus
         EventBus.getDefault().register(this);
-        AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+//        AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         lr = new LocationReceiver();
 //        UpdateManager updateManager = new UpdateManager(this);
 //        updateManager.checkVersion();
@@ -822,8 +821,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     if (result != null) {
 //                        closeLock(result);
                         Intent billPage = new Intent(MainActivity.this, UnlockBillPageActivity.class);
-                        billPage.putExtra("carRentalOrderId",mCarRentalOrderId);
-                        billPage.putExtra("userId",uID);
+                        billPage.putExtra("carRentalOrderId", mCarRentalOrderId);
+                        billPage.putExtra("userId", uID);
                         startActivity(billPage);
                     }
                     break;
@@ -1714,6 +1713,21 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         mScan.setVisibility(View.VISIBLE);
     }
 
+    //接收到UnlockBillPage强制结费的消息
+    @Subscriber(tag = "forced close", mode = ThreadMode.MAIN)
+    private void receiveFromUnlockBillPage(MessageEvent info) {
+        mMap.clear();
+        if (mServiceIntent != null) {
+            stopService(mServiceIntent);
+        }
+        if (orderPopupWindow != null) {
+            orderPopupWindow.dismiss();
+        }
+        getBikeInfo(mCurrentLantitude, mCurrentLongitude);
+        mScan.setVisibility(View.VISIBLE);
+    }
+
+
     class LocationReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -1729,7 +1743,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     orderPopupWindow.rideDistance.setText(s);
                     orderPopupWindow.rideTime.setText(String.valueOf(ridingInfo.getTripTime()) + "分钟");
                     orderPopupWindow.consumeEnergy.setText(MapUtil.changeOneDouble(calorie) + "大卡");
-                    orderPopupWindow.costCycling.setText(String.valueOf(ridingInfo.getRideCost()));
+                    orderPopupWindow.costCycling.setText(String.valueOf(ridingInfo.getRideCost()) + "元");
                 }
             }
         }

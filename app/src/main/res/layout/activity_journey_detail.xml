@@ -58,7 +58,7 @@
                 android:textSize="12sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="自行车编号："/>
+                android:text="@string/bikeNum"/>
 
             <TextView
                 android:textSize="12sp"
@@ -98,7 +98,7 @@
                     android:textSize="12sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="骑行时间(min)"/>
+                    android:text="@string/min"/>
             </LinearLayout>
 
 
@@ -123,7 +123,7 @@
                     android:textSize="12sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="骑行距离(km)"/>
+                    android:text="@string/km"/>
             </LinearLayout>
 
             <LinearLayout
@@ -147,7 +147,7 @@
                     android:textSize="12sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="卡路里(kCal)"/>
+                    android:text="@string/kcal"/>
 
             </LinearLayout>
 

@@ -12,11 +12,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
+import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.http.Api;
+import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.louisgeek.multiedittextviewlib.MultiEditInputView;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -103,19 +106,29 @@ public class UnlockBillPageActivity extends BaseActivity implements RadioGroup.O
 
     @OnClick(R.id.mbikefareconfirm)
     public void onViewClicked() {
-        String contentText = mUnlockDesc.getContentText();
-        if (rechargeNumber != null && !rechargeNumber.equals("") && mCarRentalOrderId != null && !mCarRentalOrderId.equals("") && !mUserId.equals("") && mUserId != null) {
-            knotfee(mCarRentalOrderId, rechargeNumber, mUserId);
-            Intent commit = new Intent(UnlockBillPageActivity.this, DealFeedbackActivity.class);
-            commit.putExtra("rechargeNumber", rechargeNumber);
-            commit.putExtra("contentText", contentText);
-            commit.putExtra("mCarRentalOrderId", mCarRentalOrderId);
-            commit.putExtra("mUserId", mUserId);
-            startActivity(commit);
-            this.finish();
-        } else {
-            ToastUtils.showShort(UnlockBillPageActivity.this, "请选择实际用车金额");
+        if (ClickUtils.isFastClick()) {
+            return;
         }
+        String contentText = mUnlockDesc.getContentText();
+        if (NetUtils.isConnected(App.getContext())) {
+            if (rechargeNumber != null && !rechargeNumber.equals("") && mCarRentalOrderId != null
+                    && !mCarRentalOrderId.equals("") && !mUserId.equals("") && mUserId != null) {
+                LogUtils.d("谁是空的", rechargeNumber + "\n" + mCarRentalOrderId + "\n" + mUserId);
+                knotfee(mCarRentalOrderId, rechargeNumber, mUserId);
+                Intent commit = new Intent(UnlockBillPageActivity.this, DealFeedbackActivity.class);
+                commit.putExtra("rechargeNumber", rechargeNumber);
+                commit.putExtra("contentText", contentText);
+                commit.putExtra("mCarRentalOrderId", mCarRentalOrderId);
+                commit.putExtra("mUserId", mUserId);
+                startActivity(commit);
+                this.finish();
+            } else {
+                ToastUtils.showShort(UnlockBillPageActivity.this, "请选择实际用车金额");
+            }
+        } else {
+            ToastUtils.showShort(UnlockBillPageActivity.this, getString(R.string.no_network_tip));
+        }
+
     }
 
     private void knotfee(String carRentalOrderId, String rechargeNumber, String userId) {
@@ -136,7 +149,7 @@ public class UnlockBillPageActivity extends BaseActivity implements RadioGroup.O
                 LogUtils.d("强制", response);
                 if (JsonUtils.isSuccess(response)) {
                     ToastUtils.showShort(UnlockBillPageActivity.this, "提交成功");
-                    EventBus.getDefault().post(new MessageEvent(),"forced close");
+                    EventBus.getDefault().post(new MessageEvent(), "forced close");
                 } else {
                     ToastUtils.showShort(UnlockBillPageActivity.this, "提交失败，请重试！");
                 }

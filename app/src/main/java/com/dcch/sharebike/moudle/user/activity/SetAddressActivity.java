@@ -76,7 +76,7 @@ public class SetAddressActivity extends BaseActivity {
                     mSuggestionSearch.requestSuggestion((new SuggestionSearchOption())
                             .keyword(inputKeyWords)
                             .city("全国"));
-                }else{
+                } else {
                     setInfoList.setVisibility(View.GONE);
                 }
             }
@@ -118,7 +118,7 @@ public class SetAddressActivity extends BaseActivity {
                     String set_address = suggestionInfo.city + suggestionInfo.district;
                     Intent mIntent = new Intent();
                     mIntent.putExtra("item01", key);
-                    mIntent.putExtra("item02",set_address);
+                    mIntent.putExtra("item02", set_address);
                     // 设置结果，并进行传送
                     SetAddressActivity.this.setResult(0, mIntent);
                     SetAddressActivity.this.finish();

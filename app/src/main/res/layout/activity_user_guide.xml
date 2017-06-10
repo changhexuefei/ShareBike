@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_user_guide"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.dcch.sharebike.moudle.user.activity.UserGuideActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/activity_user_guide"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.dcch.sharebike.moudle.user.activity.UserGuideActivity">
 
     <include layout="@layout/toolbar"/>
 
@@ -16,20 +16,18 @@
         android:layout_marginLeft="15dp"
         android:paddingBottom="15dp"
         android:paddingTop="15dp"
-        android:text="热点问题" />
+        android:text="@string/hot_topics"/>
 
     <LinearLayout
         android:id="@+id/lock"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#ffffff">
+        android:layout_height="50dp">
 
         <TextView
             style="@style/user_guide_info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="开不了锁" />
-
+            android:text="@string/unlock"/>
 
     </LinearLayout>
 
@@ -38,14 +36,13 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="0.8dp"
-        android:background="#ffffff">
+        android:background="@color/white">
 
         <TextView
+            style="@style/user_guide_info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            style="@style/user_guide_info"
-            android:text="发现车辆故障" />
-
+            android:text="@string/problem_finding"/>
 
     </LinearLayout>
 
@@ -54,13 +51,13 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="0.8dp"
-        android:background="#ffffff">
+        android:background="@color/white">
 
         <TextView
+            style="@style/user_guide_info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            style="@style/user_guide_info"
-            android:text="押金说明" />
+            android:text="@string/deposit_instructions"/>
 
     </LinearLayout>
 
@@ -69,13 +66,13 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="0.8dp"
-        android:background="#ffffff">
+        android:background="@color/white">
 
         <TextView
+            style="@style/user_guide_info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            style="@style/user_guide_info"
-            android:text="充值说明" />
+            android:text="@string/recharge_instructions"/>
 
     </LinearLayout>
 
@@ -84,46 +81,46 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="0.8dp"
-        android:background="#ffffff">
+        android:background="@color/white">
 
         <TextView
+            style="@style/user_guide_info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            style="@style/user_guide_info"
-            android:text="举报违停" />
+            android:text="@string/reporting_illegal_parking"/>
 
     </LinearLayout>
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/unFindBike"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="0.8dp"
-        android:background="#ffffff">
+        android:background="@color/white"
+        android:visibility="gone">
 
         <TextView
+            style="@style/user_guide_info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            style="@style/user_guide_info"
-            android:text="找不到车" />
+            android:text="unfind_bike"/>
 
     </LinearLayout>
 
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/allQuestion"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
-        android:background="#ffffff">
+        android:background="@color/white"
+        android:visibility="gone">
 
         <TextView
+            style="@style/user_guide_info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            style="@style/user_guide_info"
-            android:text="全部问题" />
+            android:text="@string/whole_problem"/>
     </LinearLayout>
 
 </LinearLayout>

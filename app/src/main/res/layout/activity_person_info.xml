@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_person_info"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.dcch.sharebike.moudle.user.activity.PersonInfoActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/activity_person_info"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.dcch.sharebike.moudle.user.activity.PersonInfoActivity">
 
     <include layout="@layout/toolbar"/>
 
@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="头像" />
+                android:text="@string/head_portrait"/>
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/userInfoIcon"
@@ -35,7 +35,7 @@
                 android:layout_height="60dp"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/fuhao"
-                android:src="@mipmap/avatar_default_login" />
+                android:src="@mipmap/avatar_default_login"/>
 
             <TextView
                 android:id="@+id/fuhao"
@@ -44,14 +44,14 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:drawableRight="@mipmap/forward"
-                android:padding="10dp" />
+                android:padding="10dp"/>
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginTop="2dp"
-            android:background="@color/lineColor" />
+            android:background="@color/lineColor"/>
         <!--昵称-->
         <RelativeLayout
             android:id="@+id/userNickname"
@@ -63,21 +63,21 @@
                 style="@style/user_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="昵称" />
+                android:text="@string/nickName"/>
 
             <TextView
                 android:id="@+id/nickName"
                 style="@style/text_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="加油" />
+                android:text="@string/sample"/>
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginTop="2dp"
-            android:background="@color/lineColor" />
+            android:background="@color/lineColor"/>
         <!--姓名-->
         <RelativeLayout
             android:id="@+id/userRealName"
@@ -89,21 +89,21 @@
                 style="@style/user_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="姓名" />
+                android:text="@string/name"/>
 
             <TextView
                 android:id="@+id/realName"
                 style="@style/text_other_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="中国" />
+                android:text="@string/nameSample"/>
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="6dp"
             android:layout_marginTop="2dp"
-            android:background="@color/lineColor" />
+            android:background="@color/lineColor"/>
         <!--实名认证-->
         <RelativeLayout
             android:id="@+id/authorityArea"
@@ -115,21 +115,21 @@
                 style="@style/user_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="实名认证" />
+                android:text="@string/realNameAuthentication"/>
 
             <TextView
                 android:id="@+id/authority"
                 style="@style/text_other_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="已认证" />
+                android:text="@string/authenticated"/>
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginTop="2dp"
-            android:background="@color/lineColor" />
+            android:background="@color/lineColor"/>
         <!--手机号-->
         <RelativeLayout
             android:id="@+id/phone"
@@ -141,14 +141,14 @@
                 style="@style/user_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="手机号" />
+                android:text="@string/cellphone"/>
 
             <TextView
                 android:id="@+id/telephone"
                 style="@style/text_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="111****1111" />
+                android:text="@string/cellphoneSample"/>
         </RelativeLayout>
 
     </LinearLayout>

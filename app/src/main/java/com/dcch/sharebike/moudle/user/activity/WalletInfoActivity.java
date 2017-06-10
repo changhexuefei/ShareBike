@@ -23,6 +23,7 @@ import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.dcch.sharebike.view.RefundPopuwindow;
@@ -185,7 +186,6 @@ public class WalletInfoActivity extends BaseActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         startActivity(new Intent(WalletInfoActivity.this, RechargeBikeFareActivity.class));
-
                     }
                 }).create()
                 .show();
@@ -206,7 +206,9 @@ public class WalletInfoActivity extends BaseActivity {
                         return;
                     }
                     //先进行检查余额操作
-                    checkAccountBalances(uID, mToken);
+                    if (NetUtils.isConnected(App.getContext())) {
+                        checkAccountBalances(uID, mToken);
+                    }
                     break;
             }
         }

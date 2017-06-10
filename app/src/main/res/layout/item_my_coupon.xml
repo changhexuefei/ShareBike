@@ -1,73 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="10dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="10dp"
-                android:paddingTop="10dp">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-
-    <TextView
-        android:id="@+id/my_coupon"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="麒麟单车骑行券"
-        android:textColor="#000000"
-        android:textSize="18sp"/>
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@mipmap/user_voucher">
 
-    <TextView
-        android:id="@+id/coupon_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/my_coupon"
-        android:layout_marginTop="5dp"
-        android:text="骑行券编号："
-        android:textSize="12sp"/>
+        <TextView
+            android:id="@+id/my_coupon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/qilin_coupon"
+            android:textSize="14sp"/>
 
-    <TextView
-        android:id="@+id/couponNum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/coupon_name"
-        android:layout_toRightOf="@+id/coupon_name"
-        android:text="0000000000"
-        android:textSize="12sp"/>
+        <TextView
+            android:id="@+id/coupon_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/my_coupon"
+            android:layout_below="@+id/my_coupon"
+            android:layout_marginTop="5dp"
+            android:text="@string/couponNo"
+            android:textSize="12sp"/>
 
-
-    <TextView
-        android:id="@+id/place_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/coupon_name"
-        android:layout_marginTop="5dp"
-        android:drawableLeft="@mipmap/my_trip_item_duration_img"
-        android:drawablePadding="4dp"
-        android:gravity="center_vertical"
-        android:text="有效期至："
-        android:textSize="12sp"/>
-
-    <TextView
-        android:id="@+id/expiry_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/place_name"
-        android:layout_marginLeft="2dp"
-        android:layout_toRightOf="@+id/place_name"
-        android:textSize="12sp"/>
+        <TextView
+            android:id="@+id/couponNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/coupon_name"
+            android:layout_toRightOf="@+id/coupon_name"
+            android:text="0000000000"
+            android:textSize="12sp"/>
 
 
-    <TextView
-        android:id="@+id/coupon_amount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="30dp"
-        android:drawableLeft="@mipmap/coupon_icon"
-        android:textColor="@color/colorTitle"
-        android:textSize="24sp"/>
+        <TextView
+            android:id="@+id/place_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/my_coupon"
+            android:layout_below="@+id/coupon_name"
+            android:layout_marginTop="20dp"
+            android:drawableLeft="@mipmap/my_trip_item_duration_img"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="有效期至："
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/expiry_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/place_name"
+            android:layout_marginLeft="2dp"
+            android:layout_toRightOf="@+id/place_name"
+            android:textSize="12sp"/>
+
+
+        <TextView
+            android:id="@+id/coupon_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="45dp"
+            android:textColor="@color/colorTitle"
+            android:textSize="20sp"/>
+    </RelativeLayout>
 
 
 </RelativeLayout>

@@ -15,7 +15,7 @@
         <ImageView
             android:id="@+id/back"
             android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_height="match_parent"
             android:padding="12dp"
             android:src="@mipmap/back"/>
 
@@ -37,7 +37,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="@string/refund_instructions"
-            android:textColor="@color/sub_title_color"
+            android:textColor="@color/white"
             android:textSize="@dimen/sub_title_size"
             android:visibility="invisible"/>
     </FrameLayout>

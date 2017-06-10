@@ -38,22 +38,30 @@ public class ShowRefundResultsActivity extends BaseActivity {
                 finish();
             }
         });
-
-
     }
 
 
-    @OnClick( R.id.verify)
+    @OnClick(R.id.verify)
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.verify:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
-                startActivity(new Intent(ShowRefundResultsActivity.this, WalletInfoActivity.class));
-                finish();
+                goToWallet();
                 break;
         }
+    }
+
+    private void goToWallet() {
+        startActivity(new Intent(ShowRefundResultsActivity.this, WalletInfoActivity.class));
+        this.finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        goToWallet();
     }
 
 }

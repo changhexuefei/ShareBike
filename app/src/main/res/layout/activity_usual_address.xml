@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_usual_address"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.dcch.sharebike.moudle.user.activity.UsualAddressActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/activity_usual_address"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.dcch.sharebike.moudle.user.activity.UsualAddressActivity">
 
     <include layout="@layout/toolbar"/>
 
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@+id/toolbar"
-        android:background="#ffffff">
+        android:background="@color/white">
 
         <ImageView
             android:id="@+id/starTargetOne"
@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            android:src="@mipmap/ease_icon_star_normal" />
+            android:src="@mipmap/ease_icon_star_normal"/>
 
         <TextView
             android:id="@+id/placeNameOne"
@@ -30,8 +30,8 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/starTargetOne"
             android:paddingTop="6dp"
-            android:text="常用地址1"
-            android:textSize="16sp" />
+            android:text="@string/usually_address_1"
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/addressNameOne"
@@ -41,8 +41,8 @@
             android:layout_below="@+id/placeNameOne"
             android:layout_centerVertical="true"
             android:paddingTop="4dp"
-            android:text="设置常用地址"
-            android:textSize="12sp" />
+            android:text="@string/set_usual_address"
+            android:textSize="12sp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:drawableRight="@mipmap/forward"
-            android:padding="10dp" />
+            android:padding="10dp"/>
 
     </RelativeLayout>
 
@@ -59,14 +59,14 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_below="@+id/addressOne"
-        android:background="@color/lineColor" />
+        android:background="@color/lineColor"/>
 
     <RelativeLayout
         android:id="@+id/addressTwo"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@+id/line4"
-        android:background="#ffffff">
+        android:background="@color/white">
 
         <ImageView
             android:id="@+id/starTargetTwo"
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            android:src="@mipmap/ease_icon_star_normal" />
+            android:src="@mipmap/ease_icon_star_normal"/>
 
         <TextView
             android:id="@+id/placeNameTwo"
@@ -83,8 +83,8 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/starTargetTwo"
             android:paddingTop="6dp"
-            android:text="常用地址2"
-            android:textSize="16sp" />
+            android:text="@string/usually_address_2"
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/addressNameTwo"
@@ -93,8 +93,8 @@
             android:layout_alignLeft="@+id/placeNameTwo"
             android:layout_below="@+id/placeNameTwo"
             android:paddingTop="4dp"
-            android:text="设置常用地址"
-            android:textSize="12sp" />
+            android:text="@string/set_usual_address"
+            android:textSize="12sp"/>
 
 
         <TextView
@@ -103,7 +103,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:drawableRight="@mipmap/forward"
-            android:padding="10dp" />
+            android:padding="10dp"/>
 
     </RelativeLayout>
 

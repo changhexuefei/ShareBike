@@ -121,8 +121,12 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
             mDistanceshow.setText(String.valueOf(MapUtil.changeDouble(tripDist)));
             mKCal.setText(String.valueOf(MapUtil.changeDouble(calorie)));
             Glide.with(App.getContext()).load(image).error(R.drawable.sharebike).into(mIcon);
+            if (bicycleNo != null && !bicycleNo.equals("") && carRentalOrderId != null
+                    && !carRentalOrderId.equals("") && !userId.equals("") && userId != null
+                    && !token.equals("") && token != null) {
 
-            checkTrip(bicycleNo, carRentalOrderId, userId, token);
+                checkTrip(bicycleNo, carRentalOrderId, userId, token);
+            }
         }
 
         mPoints = new ArrayList<>();
@@ -137,8 +141,8 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
     }
 
     private void addOverLayout(LatLng startPosition, LatLng endPosition) {
-        //先清除图层
-//        mBaiduMap.clear();
+//        先清除图层
+//        mRouteBaiduMap.clear();
         // 定义Maker坐标点
         // 构建MarkerOption，用于在地图上添加Marker
         MarkerOptions options = new MarkerOptions().position(startPosition)
@@ -152,24 +156,16 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
     }
 
     private void initMap() {
-//        mlocationClient = new LocationClient(this);
-//        mlistener = new MylocationListener();
-//        mlocationClient.registerLocationListener(mlistener);
         LocationClientOption mOption = new LocationClientOption();
         //设置坐标类型
         mOption.setCoorType("bd09ll");
         //设置是否需要地址信息，默认为无地址
-        mOption.setIsNeedAddress(true);
+//        mOption.setIsNeedAddress(true);
         //设置是否打开gps进行定位
-        mOption.setOpenGps(true);
-        //设置扫描间隔，单位是毫秒 当<1000(1s)时，定时定位无效
-        int span = 10000;
-        mOption.setScanSpan(span);
-        //设置 LocationClientOption
-//        mlocationClient.setLocOption(mOption);
-//        if (!mlocationClient.isStarted()) {
-//            mlocationClient.start();
-//        }
+//        mOption.setOpenGps(true);
+//        //设置扫描间隔，单位是毫秒 当<1000(1s)时，定时定位无效
+//        int span = 10000;
+//        mOption.setScanSpan(span);
         UiSettings settings = mRouteBaiduMap.getUiSettings();
         settings.setScrollGesturesEnabled(true);
     }
@@ -225,28 +221,6 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
         }
     }
 
-
-//    public class MylocationListener implements BDLocationListener {
-//        //定位请求回调接口
-//        private boolean isFirstIn = true;
-//
-//        //定位请求回调函数,这里面会得到定位信息
-//        @Override
-//        public void onReceiveLocation(BDLocation bdLocation) {
-//            //判断是否为第一次定位,是的话需要定位到用户当前位置
-//            if (isFirstIn) {
-//                Log.d("gao", "onReceiveLocation----------RouteDetail-----" + bdLocation.getAddrStr());
-////                LatLng currentLL = new LatLng(bdLocation.getLatitude(),
-////                        bdLocation.getLongitude());
-//////                startNodeStr = PlanNode.withLocation(currentLL);
-////                MapStatus.Builder builder = new MapStatus.Builder();
-////                builder.target(currentLL).zoom(18.0f);
-////                routeBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
-//                isFirstIn = false;
-//            }
-//        }
-//
-//    }
 
     @Override
     protected void onStart() {
@@ -334,6 +308,7 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
                             BitmapDescriptor descriptor = BitmapDescriptorFactory.fromResource(R.mipmap.icon_road_blue_arrow);
                             OverlayOptions ooPolyline = new PolylineOptions().width(10).customTexture(descriptor).points(mPoints);
                             mRouteBaiduMap.addOverlay(ooPolyline);
+
                             RoutePoint startPoint = routePoints.get(0);
 //                            startNodeStr = PlanNode.withLocation(new LatLng(startPoint.getRouteLat(), startPoint.getRouteLng()));
                             LatLng startPosition = new LatLng(startPoint.getRouteLat(), startPoint.getRouteLng());
@@ -345,6 +320,7 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
                             LatLng endPosition = new LatLng(endPoint.getRouteLat(), endPoint.getRouteLng());
 //                            mRPSearch.bikingSearch((new BikingRoutePlanOption()).from(startNodeStr).to(endNodeStr));
                             addOverLayout(startPosition, endPosition);
+
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

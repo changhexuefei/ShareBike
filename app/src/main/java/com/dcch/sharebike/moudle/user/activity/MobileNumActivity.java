@@ -72,11 +72,11 @@ public class MobileNumActivity extends BaseActivity {
 //                                }
 //                            }).create().show();
 //                } else if (mCashStatus == 0) {
-                    if (mToken != null && mUserId != null) {
-                        Intent changeMobileNum = new Intent(this, ChangeMobileNumActivity.class);
-                        changeMobileNum.putExtra("token", mToken);
-                        changeMobileNum.putExtra("userId", mUserId);
-                        startActivity(changeMobileNum);
+                if (mToken != null && mUserId != null) {
+                    Intent changeMobileNum = new Intent(this, ChangeMobileNumActivity.class);
+                    changeMobileNum.putExtra("token", mToken);
+                    changeMobileNum.putExtra("userId", mUserId);
+                    startActivity(changeMobileNum);
 //                    }
 
                 }

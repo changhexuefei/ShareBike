@@ -74,9 +74,6 @@ public class InviteFriendsActivity extends BaseActivity {
     @OnClick({R.id.shareWeiChat, R.id.shareWeiChatCircle, R.id.shareQQ, R.id.shareQQZONE, R.id.shareSina})
     public void onClick(View view) {
         switch (view.getId()) {
-//            case R.id.updateInvitationCode:
-//                String inviteCode = mUpdateInvitationCode.getText().toString().trim();
-//                break;
 
             case R.id.shareWeiChat:
                 if (ClickUtils.isFastClick()) {
@@ -145,7 +142,7 @@ public class InviteFriendsActivity extends BaseActivity {
         // url仅在微信（包括好友和朋友圈）中使用
         oks.setUrl("http://a.app.qq.com/o/simple.jsp?pkgname=com.dcch.sharebike");
         // comment是我对这条分享的评论，仅在人人网和QQ空间使用
-        oks.setComment("一起麒行");
+        oks.setComment("邀请好友，一起麒行");
         // site是分享此内容的网站名称，仅在QQ空间使用
         oks.setSite("70bikes");
         // siteUrl是分享此内容的网站地址，仅在QQ空间使用

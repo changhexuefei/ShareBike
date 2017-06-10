@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_setting"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.dcch.sharebike.moudle.user.activity.SettingActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/activity_setting"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.dcch.sharebike.moudle.user.activity.SettingActivity">
 
     <include layout="@layout/toolbar"/>
 
@@ -16,38 +16,41 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:visibility="gone"
             android:id="@+id/usualAddress"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="@string/usually_address" />
+                android:text="@string/usually_address"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:drawableRight="@mipmap/forward"
-                android:padding="10dp" />
+                android:padding="10dp"/>
         </RelativeLayout>
+
         <View
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginTop="2dp"
-            android:background="@color/lineColor" />
+            android:background="@color/lineColor"
+            android:visibility="gone"/>
 
 
         <RelativeLayout
             android:id="@+id/checkVersions"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:gravity="center_vertical">
 
             <TextView
@@ -55,26 +58,28 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="@string/check_update" />
+                android:text="@string/check_update"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:drawableRight="@mipmap/forward"
-                android:padding="10dp" />
+                android:padding="10dp"/>
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginTop="2dp"
-            android:background="@color/lineColor" />
+            android:background="@color/lineColor"/>
         <!--消息-->
         <RelativeLayout
             android:id="@+id/aboutUs"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:gravity="center_vertical">
 
             <TextView
@@ -82,27 +87,30 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="@string/about_us" />
+                android:text="@string/about_us"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:drawableRight="@mipmap/forward"
-                android:padding="10dp" />
+                android:padding="10dp"/>
         </RelativeLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="6dp"
             android:layout_marginTop="2dp"
-            android:background="@color/lineColor" />
+            android:background="@color/lineColor"/>
 
 
-        <!--邀请好友-->
+        <!--用户协议-->
         <RelativeLayout
             android:id="@+id/userAgreement"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:gravity="center_vertical">
 
             <TextView
@@ -110,26 +118,28 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="@string/user_agreement" />
+                android:text="@string/user_agreement"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:drawableRight="@mipmap/forward"
-                android:padding="10dp" />
+                android:padding="10dp"/>
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginTop="2dp"
-            android:background="@color/lineColor" />
+            android:background="@color/lineColor"/>
         <!--用户指南-->
         <RelativeLayout
             android:id="@+id/cashPledgeExplain"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:gravity="center_vertical">
 
             <TextView
@@ -137,26 +147,28 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="@string/cashPledge_explain" />
+                android:text="@string/cashPledge_explain"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:drawableRight="@mipmap/forward"
-                android:padding="10dp" />
+                android:padding="10dp"/>
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginTop="2dp"
-            android:background="@color/lineColor" />
+            android:background="@color/lineColor"/>
         <!--设置-->
         <RelativeLayout
             android:id="@+id/rechargeAgreement"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:gravity="center_vertical">
 
             <TextView
@@ -164,26 +176,27 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="@string/recharge_agreement" />
+                android:text="@string/recharge_agreement"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:drawableRight="@mipmap/forward"
-                android:padding="10dp" />
+                android:padding="10dp"/>
         </RelativeLayout>
+
         <Button
             android:id="@+id/signOut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="30dp"
             android:background="@color/colorTitle"
             android:text="@string/log_out"
-            android:textColor="#ffffff"
-            android:textSize="16sp"
-            android:layout_marginTop="30dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp" />
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
 
 
     </LinearLayout>

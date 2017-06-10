@@ -9,21 +9,21 @@
     <include layout="@layout/toolbar"/>
 
     <com.github.jdsjlzx.recyclerview.LRecyclerView
-        android:visibility="gone"
-        android:layout_below="@+id/toolbar"
         android:id="@+id/my_message_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:visibility="gone">
 
 
     </com.github.jdsjlzx.recyclerview.LRecyclerView>
 
     <RelativeLayout
-        android:visibility="gone"
         android:id="@+id/no_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar">
+        android:layout_below="@+id/toolbar"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/iv_noMessage"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_noMessage"
             android:layout_centerHorizontal="true"
-            android:text="还没有什么大事发生哦"/>
+            android:text="@string/no_msg"/>
 
     </RelativeLayout>
 

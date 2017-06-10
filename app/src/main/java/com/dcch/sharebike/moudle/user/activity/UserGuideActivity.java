@@ -26,7 +26,7 @@ public class UserGuideActivity extends BaseActivity {
     LinearLayout topUpInstructions;
     @BindView(R.id.report)
     LinearLayout report;
-//    @BindView(R.id.unFindBike)
+    //    @BindView(R.id.unFindBike)
 //    LinearLayout unFindBike;
     @BindView(R.id.allQuestion)
     LinearLayout allQuestion;
@@ -53,12 +53,13 @@ public class UserGuideActivity extends BaseActivity {
         });
 
     }
+
     //, R.id.allQuestion, R.id.unFindBike
     @OnClick({R.id.lock, R.id.breakdown, R.id.depositInstructions, R.id.topUpInstructions, R.id.report})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.lock:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 Intent unLock = new Intent(this, CustomerServiceActivity.class);
@@ -66,7 +67,7 @@ public class UserGuideActivity extends BaseActivity {
                 startActivity(unLock);
                 break;
             case R.id.breakdown:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 Intent bikeTrouble = new Intent(this, CustomerServiceActivity.class);
@@ -74,19 +75,19 @@ public class UserGuideActivity extends BaseActivity {
                 startActivity(bikeTrouble);
                 break;
             case R.id.depositInstructions:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
-                startActivity(new Intent(this,CashPledgeExplainActivity.class));
+                startActivity(new Intent(this, CashPledgeExplainActivity.class));
                 break;
             case R.id.topUpInstructions:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
-                startActivity(new Intent(this,RechargeAgreementActivity.class));
+                startActivity(new Intent(this, RechargeAgreementActivity.class));
                 break;
             case R.id.report:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 Intent reportIllegalParking = new Intent(this, CustomerServiceActivity.class);

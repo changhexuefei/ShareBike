@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.MapUtil;
 import com.hss01248.dialog.StyledDialog;
 import com.hss01248.dialog.interfaces.MyDialogListener;
@@ -81,6 +82,9 @@ public class DealFeedbackActivity extends BaseActivity {
 
     @OnClick(R.id.customer_service)
     public void onViewClicked() {
+        if (ClickUtils.isFastClick()) {
+            return;
+        }
         StyledDialog.buildIosAlert(DealFeedbackActivity.this, "提示", "拨打电话 400-660-6215", new MyDialogListener() {
             @Override
             public void onFirst() {

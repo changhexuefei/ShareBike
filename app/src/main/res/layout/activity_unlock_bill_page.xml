@@ -16,19 +16,19 @@
         android:layout_below="@+id/toolbar"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         android:padding="5dp"
         app:contentHeight="100dp"
         app:hintText="@string/question_input_tip"
         app:maxCount="140"/>
 
     <RelativeLayout
-        android:visibility="gone"
         android:id="@+id/select_photo_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/unlockDesc"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/select_photo_two"
@@ -62,7 +62,7 @@
             android:gravity="center_vertical"
             android:paddingLeft="20dp"
             android:text="@string/inputbikefare_tip"
-            android:textColor="#716F76"/>
+            android:textColor="@color/recharge_amount_color"/>
 
         <EditText
             android:id="@+id/input_moneySum"

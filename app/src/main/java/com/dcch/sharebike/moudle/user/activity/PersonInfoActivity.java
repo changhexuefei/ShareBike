@@ -19,6 +19,7 @@ import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.PictureProcessingUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
@@ -91,15 +92,15 @@ public class PersonInfoActivity extends BaseActivity {
         Bundle user = intent.getExtras();
         if (user != null) {
             mUserBundle = (UserInfo) user.getSerializable("userBundle");
-            if (mUserBundle != null) {
+            if (mUserBundle.getPhone() != null && !mUserBundle.getPhone().equals("")
+                    && !mUserBundle.getPhone().equals("") && mUserBundle.getPhone() != null) {
                 nickName.setText(mUserBundle.getNickName().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
                 telephone.setText(mUserBundle.getPhone().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
             }
             if (mUserBundle.getStatus() == 0) {
                 authority.setText("未认证");
                 realName.setText("未认证");
-            }
-            if (mUserBundle.getStatus() == 1) {
+            } else if (mUserBundle.getStatus() == 1) {
                 authority.setText("已认证");
                 realName.setText(mUserBundle.getName());
             }
@@ -115,8 +116,8 @@ public class PersonInfoActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         if (SPUtils.isLogin()) {
-            String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
             try {
+                String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
                 JSONObject object = new JSONObject(userDetail);
                 int id = object.optInt("id");
                 uID = String.valueOf(id);
@@ -135,7 +136,7 @@ public class PersonInfoActivity extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                RxGalleryFinal.with(PersonInfoActivity.this)
+                RxGalleryFinal.with(App.getContext())
                         .cropHideBottomControls(true)
                         .cropOvalDimmedLayer(false)
                         .cropAllowedGestures(-1, -1, -1)
@@ -155,10 +156,14 @@ public class PersonInfoActivity extends BaseActivity {
                                     //将图片赋值给图片控件
                                     Glide.with(App.getContext()).load(result).into(userInfoIcon);
                                     //下一步将选择的图片上传到服务器
-                                    if (mImageResult != null && mToken != null && uID != null) {
-                                        upLoadIcon(mImageResult, mToken, uID);
-                                    }
+                                    if (NetUtils.isConnected(App.getContext())) {
+                                        if (mImageResult != null && mToken != null && uID != null) {
+                                            upLoadIcon(mImageResult, mToken, uID);
+                                        }
+                                    } else {
+                                        ToastUtils.showShort(PersonInfoActivity.this, getString(R.string.no_network_tip));
 
+                                    }
                                 }
                             }
                         }).openGallery();
@@ -167,10 +172,10 @@ public class PersonInfoActivity extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                Intent changeNickName = new Intent(this, ChangeUserNickNameActivity.class);
                 String trim = nickName.getText().toString().trim();
+                Intent changeNickName = new Intent(this, ChangeUserNickNameActivity.class);
                 Log.d("trim", trim);
-                if (!trim.equals(""))
+                if (!trim.equals("") && trim != null)
                     changeNickName.putExtra("nickname", trim);
                 startActivityForResult(changeNickName, 0);
                 break;
@@ -179,12 +184,16 @@ public class PersonInfoActivity extends BaseActivity {
                     return;
                 }
                 if (mUserBundle != null) {
-                    Intent mobileNum = new Intent(this, MobileNumActivity.class);
-                    mobileNum.putExtra("cashStatus", mUserBundle.getCashStatus());
-                    mobileNum.putExtra("phone", mUserBundle.getPhone());
-                    mobileNum.putExtra("token", mToken);
-                    mobileNum.putExtra("userId", uID);
-                    startActivity(mobileNum);
+                    if (mUserBundle.getCashStatus() == 1 && !mUserBundle.getPhone().equals("")
+                            && mUserBundle.getPhone() != null && !mToken.equals("") && mToken != null
+                            && !uID.equals("") && uID != null) {
+                        Intent mobileNum = new Intent(this, MobileNumActivity.class);
+                        mobileNum.putExtra("cashStatus", mUserBundle.getCashStatus());
+                        mobileNum.putExtra("phone", mUserBundle.getPhone());
+                        mobileNum.putExtra("token", mToken);
+                        mobileNum.putExtra("userId", uID);
+                        startActivity(mobileNum);
+                    }
                 }
                 break;
         }
@@ -231,13 +240,18 @@ public class PersonInfoActivity extends BaseActivity {
             switch (requestCode) {
                 case 0:
                     if (newName != null && !newName.equals("")) {
-                        nickName.setText(newName);
-                        String userNickName = nickName.getText().toString().trim();
                         try {
+                            nickName.setText(newName);
+                            String userNickName = nickName.getText().toString().trim();
                             String encode = URLEncoder.encode(userNickName, "utf-8");//"UTF-8"
                             LogUtils.d("昵称", encode);
-                            if (mToken != null && encode != null && uID != null) {
-                                updateUserNickName(mToken, encode, uID);
+                            if (NetUtils.isConnected(App.getContext())) {
+                                if (mToken != null && encode != null && uID != null) {
+                                    updateUserNickName(mToken, encode, uID);
+                                }
+                            } else {
+                                ToastUtils.showShort(PersonInfoActivity.this, getString(R.string.no_network_tip));
+
                             }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
@@ -279,6 +293,6 @@ public class PersonInfoActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        
+
     }
 }

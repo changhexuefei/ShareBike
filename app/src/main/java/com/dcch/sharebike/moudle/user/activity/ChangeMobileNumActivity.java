@@ -3,8 +3,6 @@ package com.dcch.sharebike.moudle.user.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -35,6 +33,8 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.simple.eventbus.EventBus;
+import org.simple.eventbus.Subscriber;
+import org.simple.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,32 +65,8 @@ public class ChangeMobileNumActivity extends BaseActivity {
     private static final int SMSDDK_HANDLER = 3;  //短信回调
     private int TIME = 60;//倒计时60s
     private String verificationCode;
-
-    Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case CODE_ING://已发送,倒计时
-                    if (TIME > 0) {
-                        mGetNewSecurityCode.setText("(" + --TIME + "s)");
-                    }
-                    if (TIME <= 0) {
-                        TIME = 60;
-                    }
-                    mGetNewSecurityCode.setBackgroundColor(Color.parseColor("#c6bfbf"));
-                    mGetNewSecurityCode.setClickable(false);
-                    break;
-                case CODE_REPEAT://重新发送
-                    mGetNewSecurityCode.setText("重新获取验证码");
-                    mGetNewSecurityCode.setBackgroundColor(Color.parseColor("#F05B47"));
-                    mGetNewSecurityCode.setClickable(true);
-                    break;
-
-            }
-        }
-    };
     private String mToken;
     private String mUserId;
-
 
     @Override
     protected int getLayoutId() {
@@ -169,7 +145,7 @@ public class ChangeMobileNumActivity extends BaseActivity {
                         SPUtils.clear(App.getContext());
                         SPUtils.put(App.getContext(), "islogin", false);
                         SPUtils.put(App.getContext(), "isfirst", false);
-                        SPUtils.put(App.getContext(), "isStartGuide", true);
+//                        SPUtils.put(App.getContext(), "isStartGuide", true);
                         finish();
                     } else if (resultStatus.equals("2")) {
                         ToastUtils.showLong(ChangeMobileNumActivity.this, "您的账号在其他设备登录，您被迫下线！");
@@ -252,14 +228,13 @@ public class ChangeMobileNumActivity extends BaseActivity {
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-//                        SMSSDK.getVerificationCode("86", phone);
                         getSecurityCode(phone);
                         mGetNewSecurityCode.setClickable(false);
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
                                 for (int i = 60; i > 0; i--) {
-                                    handler.sendEmptyMessage(CODE_ING);
+                                    EventBus.getDefault().post(new MessageEvent(), "change_continue");
                                     if (i <= 0) {
                                         break;
                                     }
@@ -269,7 +244,7 @@ public class ChangeMobileNumActivity extends BaseActivity {
                                         e.printStackTrace();
                                     }
                                 }
-                                handler.sendEmptyMessage(CODE_REPEAT);
+                                EventBus.getDefault().post(new MessageEvent(), "change_repeat");
                             }
                         }).start();
                     }
@@ -295,13 +270,38 @@ public class ChangeMobileNumActivity extends BaseActivity {
                 try {
                     JSONObject object = new JSONObject(response);
                     verificationCode = object.getString("code");
-                    mNewSecurityCode.setText(verificationCode);
+                    if (mNewSecurityCode != null && !mNewSecurityCode.equals("")) {
+                        mNewSecurityCode.setText(verificationCode);
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+    //接收到继续倒计时的消息
+    @Subscriber(tag = "change_continue", mode = ThreadMode.MAIN)
+    private void receiveContinue(MessageEvent info) {
+        LogUtils.d("输入", info.toString());
+        if (TIME > 0) {
+            mGetNewSecurityCode.setText("(" + --TIME + "s)");
+        }
+        if (TIME <= 0) {
+            TIME = 60;
+        }
+        mGetNewSecurityCode.setBackgroundColor(Color.parseColor("#c6bfbf"));
+        mGetNewSecurityCode.setClickable(false);
+    }
+
+    //接收到继续倒计时的消息
+    @Subscriber(tag = "change_repeat", mode = ThreadMode.MAIN)
+    private void receiveRepeat(MessageEvent info) {
+        LogUtils.d("输入", info.toString());
+        mGetNewSecurityCode.setText("重新获取验证码");
+        mGetNewSecurityCode.setBackgroundColor(Color.parseColor("#F05B47"));
+        mGetNewSecurityCode.setClickable(true);
     }
 
 

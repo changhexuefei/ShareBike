@@ -276,16 +276,17 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                 mRgRecRg.clearCheck();
                 radioGroup.check(R.id.rb_rg1_10);
                 String s1 = rbRg110.getText().toString().trim();
+                rechargeNumber = "";
                 rechargeNumber = s1.substring(1, s1.length());
-                LogUtils.d("你是谁",rechargeNumber);
+
                 break;
             case R.id.rb_rg1_20:
                 rgRecRg2.clearCheck();
                 mRgRecRg.clearCheck();
                 radioGroup.check(R.id.rb_rg1_20);
                 String s2 = rbRg120.getText().toString().trim();
+                rechargeNumber = "";
                 rechargeNumber = s2.substring(1, s2.length());
-                LogUtils.d("你是谁",rechargeNumber);
                 break;
 
             case R.id.rb_rg2_50:
@@ -293,32 +294,35 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                 mRgRecRg.clearCheck();
                 radioGroup.check(R.id.rb_rg2_50);
                 String s3 = rbRg250.getText().toString().trim();
+                rechargeNumber = "";
                 rechargeNumber = s3.substring(1, s3.length());
-                LogUtils.d("你是谁",rechargeNumber);
+
                 break;
             case R.id.rb_rg2_100:
                 rgRecRg1.clearCheck();
                 mRgRecRg.clearCheck();
                 radioGroup.check(R.id.rb_rg2_100);
                 String s4 = rbRg2100.getText().toString().trim();
+                rechargeNumber = "";
                 rechargeNumber = s4.substring(1, s4.length());
-                LogUtils.d("你是谁",rechargeNumber);
+
                 break;
             case R.id.rb_rg_1:
                 rgRecRg1.clearCheck();
                 rgRecRg2.clearCheck();
                 radioGroup.check(R.id.rb_rg_1);
                 String s5 = mRbRg1.getText().toString().trim();
+                rechargeNumber = "";
                 rechargeNumber = s5.substring(1, s5.length());
-                LogUtils.d("你是谁",rechargeNumber);
+
                 break;
             case R.id.rb_rg_5:
                 rgRecRg1.clearCheck();
                 rgRecRg2.clearCheck();
                 radioGroup.check(R.id.rb_rg_5);
                 String s6 = mRbRg5.getText().toString().trim();
+                rechargeNumber = "";
                 rechargeNumber = s6.substring(1, s6.length());
-                LogUtils.d("你是谁",rechargeNumber);
                 break;
         }
     }
@@ -362,13 +366,11 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         super.onResume();
         if (SPUtils.isLogin()) {
             String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-            Log.d("ooooo", userDetail);
             if (userDetail != null) {
                 try {
                     JSONObject object = new JSONObject(userDetail);
                     int userId = object.getInt("id");
                     uID = String.valueOf(userId);
-                    Log.d("微信支付", uID);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -381,9 +383,6 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
     protected void onDestroy() {
         super.onDestroy();
         handler.removeCallbacksAndMessages(null);
-        if (handler != null) {
-            handler = null;
-        }
     }
 
 }

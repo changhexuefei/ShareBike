@@ -178,7 +178,6 @@ public class ManualInputActivity extends BaseActivity {
                                 Intent bikeNoIntent = new Intent(ManualInputActivity.this, UnlockProgressActivity.class);
                                 EventBus.getDefault().post(new CodeEvent(bikeNo), "bikeNo");
                                 startActivity(bikeNoIntent);
-                                LogUtils.d("hao",bikeNo);
 
                                 break;
                             }

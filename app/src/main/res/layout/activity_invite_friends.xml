@@ -43,47 +43,47 @@
         android:textSize="16sp"
         android:textStyle="bold"/>
 
-    <TextView
-        android:id="@+id/tv_tip_there"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_tip_two"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
-        android:text="@string/inviteTipThere"
-        android:textSize="12sp"
-        android:visibility="gone"/>
+    <!--<TextView-->
+        <!--android:id="@+id/tv_tip_there"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/tv_tip_two"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginTop="25dp"-->
+        <!--android:text="@string/inviteTipThere"-->
+        <!--android:textSize="12sp"-->
+        <!--android:visibility="gone"/>-->
 
-    <TextView
-        android:id="@+id/tv_tip_four"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_tip_there"
-        android:layout_centerHorizontal="true"
-        android:text="XXX635535"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:visibility="gone"/>
+    <!--<TextView-->
+        <!--android:id="@+id/tv_tip_four"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/tv_tip_there"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:text="XXX635535"-->
+        <!--android:textColor="#000000"-->
+        <!--android:textSize="16sp"-->
+        <!--android:textStyle="bold"-->
+        <!--android:visibility="gone"/>-->
 
 
-    <RelativeLayout
-        android:id="@+id/updateArea"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@+id/tv_tip_four">
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/updateArea"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_below="@+id/tv_tip_four">-->
 
-        <TextView
-            android:id="@+id/updateInvitationCode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
-            android:text="@string/inviteUpdateCode"
-            android:textColor="@color/colorTitle"
-            android:textSize="16sp"
-            android:visibility="gone"/>
-    </RelativeLayout>
+        <!--<TextView-->
+            <!--android:id="@+id/updateInvitationCode"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:text="@string/inviteUpdateCode"-->
+            <!--android:textColor="@color/colorTitle"-->
+            <!--android:textSize="16sp"-->
+            <!--android:visibility="gone"/>-->
+    <!--</RelativeLayout>-->
 
     <RelativeLayout
         android:id="@+id/rl_tip"
@@ -107,11 +107,11 @@
         android:layout_above="@+id/sharePlatform"
         android:layout_marginBottom="10dp"
         android:background="@color/lineColor"/>
-    <!--android:layout_below="@+id/rl_tip"-->
+
     <LinearLayout
         android:id="@+id/sharePlatform"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
         android:gravity="center"
@@ -123,7 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:drawableTop="@mipmap/umeng_socialize_wechat"
-            android:text="微信"/>
+            android:text="@string/weixin"/>
 
         <Button
             android:id="@+id/shareWeiChatCircle"
@@ -131,7 +131,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:drawableTop="@mipmap/umeng_socialize_wxcircle"
-            android:text="微信朋友圈"/>
+            android:text="@string/CircleFriends"/>
 
         <Button
             android:id="@+id/shareQQ"
@@ -139,7 +139,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:drawableTop="@mipmap/umeng_socialize_qq_on"
-            android:text="QQ好友"/>
+            android:text="@string/qq"/>
 
         <Button
             android:id="@+id/shareQQZONE"
@@ -147,7 +147,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:drawableTop="@mipmap/umeng_socialize_qzone_on"
-            android:text="QQ空间"/>
+            android:text="@string/qq_zone"/>
 
         <Button
             android:id="@+id/shareSina"
@@ -155,7 +155,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:drawableTop="@mipmap/umeng_socialize_sina_on"
-            android:text="微博"/>
+            android:text="@string/sina"/>
 
     </LinearLayout>
 

@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -73,30 +75,29 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private int TIME = 60;//倒计时60s
     private String seCode;
     private String phone;
-
-    //    private Handler handler = new Handler() {
-//        public void handleMessage(Message msg) {
-//            switch (msg.what) {
-//                case CODE_ING://已发送,倒计时
-//                    if (TIME > 0) {
-//                        getSecurityCode.setText("(" + --TIME + "s)");
-//                    }
-//                    if (TIME <= 0) {
-//                        TIME = 60;
-//                    }
-//                    getSecurityCode.setBackgroundColor(Color.parseColor("#c6bfbf"));
-//                    getSecurityCode.setClickable(false);
-//                    break;
-//                case CODE_REPEAT://重新发送
-//                    getSecurityCode.setText("重新获取验证码");
-//                    getSecurityCode.setBackgroundColor(Color.parseColor("#F05B47"));
-//                    getSecurityCode.setClickable(true);
-//                    break;
-//
-//            }
-//        }
-//    };
     private String verificationCode;
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case CODE_ING://已发送,倒计时
+                    if (TIME > 0) {
+                        getSecurityCode.setText("(" + --TIME + "s)");
+                    }
+                    if (TIME <= 0) {
+                        TIME = 60;
+                    }
+                    getSecurityCode.setBackgroundColor(Color.parseColor("#c6bfbf"));
+                    getSecurityCode.setClickable(false);
+                    break;
+                case CODE_REPEAT://重新发送
+                    getSecurityCode.setText("重新获取验证码");
+                    getSecurityCode.setBackgroundColor(Color.parseColor("#F05B47"));
+                    getSecurityCode.setClickable(true);
+                    break;
+
+            }
+        }
+    };
 
 
     @Override
@@ -228,8 +229,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             @Override
                             public void run() {
                                 for (int i = 60; i > 0; i--) {
-//                                    handler.sendEmptyMessage(CODE_ING);
-                                    EventBus.getDefault().post(new MessageEvent(), "continue");
+                                    handler.sendEmptyMessage(CODE_ING);
+//                                    EventBus.getDefault().post(new MessageEvent(), "continue");
                                     if (i <= 0) {
                                         break;
                                     }
@@ -239,8 +240,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                         e.printStackTrace();
                                     }
                                 }
-//                                handler.sendEmptyMessage(CODE_REPEAT);
-                                EventBus.getDefault().post(new MessageEvent(), "repeat");
+                                handler.sendEmptyMessage(CODE_REPEAT);
+//                                EventBus.getDefault().post(new MessageEvent(), "repeat");
                             }
                         }).start();
                     }
@@ -330,14 +331,30 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LogUtils.d("实验", "Login+onCreate");
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LogUtils.d("实验", "Login+onPause");
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LogUtils.d("实验", "Login+onStop");
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        handler.removeCallbacksAndMessages(null);
-        EventBus.getDefault().unregister(this);
+        LogUtils.d("实验", "Login+onDestroy");
+        handler.removeCallbacksAndMessages(null);
+//        EventBus.getDefault().unregister(this);
     }
 
     @Override
