@@ -144,23 +144,24 @@
                 android:id="@+id/wallet"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:gravity="center"
-                    android:padding="10dp"
                     android:text="@string/my_wallet"/>
 
                 <TextView
                     android:id="@+id/remainSum"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:drawablePadding="10dp"
                     android:drawableRight="@mipmap/forward"
-                    android:padding="10dp"/>
+                    android:gravity="center_vertical"/>
             </RelativeLayout>
 
             <View
@@ -173,21 +174,22 @@
                 android:id="@+id/favorable"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:gravity="center"
-                    android:padding="10dp"
                     android:text="@string/my_favorable"/>
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
-                    android:drawableRight="@mipmap/forward"
-                    android:padding="10dp"/>
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@mipmap/forward"/>
             </RelativeLayout>
 
             <View
@@ -200,21 +202,22 @@
                 android:id="@+id/journey"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:gravity="center"
-                    android:padding="10dp"
                     android:text="@string/my_journey"/>
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
-                    android:drawableRight="@mipmap/forward"
-                    android:padding="10dp"/>
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@mipmap/forward"/>
             </RelativeLayout>
 
             <View
@@ -227,14 +230,15 @@
                 android:id="@+id/message"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/my_msg"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:gravity="center"
-                    android:padding="10dp"
                     android:text="@string/my_message"/>
 
                 <ImageView
@@ -249,10 +253,10 @@
                 <TextView
                     android:id="@+id/tv_tv"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
-                    android:drawableRight="@mipmap/forward"
-                    android:padding="10dp"/>
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@mipmap/forward"/>
             </RelativeLayout>
 
             <View
@@ -265,21 +269,22 @@
                 android:id="@+id/friend"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:gravity="center"
-                    android:padding="10dp"
                     android:text="@string/invite_friends"/>
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
-                    android:drawableRight="@mipmap/forward"
-                    android:padding="10dp"/>
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@mipmap/forward"/>
             </RelativeLayout>
 
             <View
@@ -292,21 +297,22 @@
                 android:id="@+id/guide"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:gravity="center"
-                    android:padding="10dp"
                     android:text="@string/user_guide"/>
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
-                    android:drawableRight="@mipmap/forward"
-                    android:padding="10dp"/>
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@mipmap/forward"/>
             </RelativeLayout>
 
             <View
@@ -319,21 +325,22 @@
                 android:id="@+id/setting"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:gravity="center"
-                    android:padding="10dp"
                     android:text="@string/setting"/>
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
-                    android:drawableRight="@mipmap/forward"
-                    android:padding="10dp"/>
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@mipmap/forward"/>
             </RelativeLayout>
 
         </LinearLayout>
@@ -407,8 +414,6 @@
                     android:src="@mipmap/avatar_default_login"
                     app:civ_border_color="@color/white"
                     app:civ_border_width="2dp"/>
-
-
             </RelativeLayout>
 
         </android.support.design.widget.CollapsingToolbarLayout>

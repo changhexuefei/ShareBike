@@ -49,23 +49,22 @@
             android:id="@+id/checkVersions"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:gravity="center_vertical">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:padding="10dp"
                 android:text="@string/check_update"/>
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:drawableRight="@mipmap/forward"
-                android:padding="10dp"/>
+                android:drawablePadding="10dp"
+                android:drawableRight="@mipmap/forward"/>
         </RelativeLayout>
 
         <View
@@ -78,23 +77,22 @@
             android:id="@+id/aboutUs"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:gravity="center_vertical">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:padding="10dp"
                 android:text="@string/about_us"/>
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:drawableRight="@mipmap/forward"
-                android:padding="10dp"/>
+                android:drawablePadding="10dp"
+                android:drawableRight="@mipmap/forward"/>
         </RelativeLayout>
 
         <View
@@ -109,23 +107,23 @@
             android:id="@+id/userAgreement"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:gravity="center_vertical">
 
             <TextView
+                android:id="@+id/textView6"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:padding="10dp"
                 android:text="@string/user_agreement"/>
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:drawableRight="@mipmap/forward"
-                android:padding="10dp"/>
+                android:drawablePadding="10dp"
+                android:drawableRight="@mipmap/forward"/>
         </RelativeLayout>
 
         <View
@@ -138,23 +136,22 @@
             android:id="@+id/cashPledgeExplain"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:gravity="center_vertical">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:padding="10dp"
                 android:text="@string/cashPledge_explain"/>
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:drawableRight="@mipmap/forward"
-                android:padding="10dp"/>
+                android:drawablePadding="10dp"
+                android:drawableRight="@mipmap/forward"/>
         </RelativeLayout>
 
         <View
@@ -167,31 +164,30 @@
             android:id="@+id/rechargeAgreement"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:gravity="center_vertical">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:padding="10dp"
                 android:text="@string/recharge_agreement"/>
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:drawableRight="@mipmap/forward"
-                android:padding="10dp"/>
+                android:drawablePadding="10dp"
+                android:drawableRight="@mipmap/forward"/>
         </RelativeLayout>
 
         <Button
             android:id="@+id/signOut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:layout_marginTop="30dp"
             android:background="@color/colorTitle"
             android:text="@string/log_out"

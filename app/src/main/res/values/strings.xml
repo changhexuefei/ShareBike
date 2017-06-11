@@ -255,4 +255,9 @@
     <string name="input_tips">请确认您输入了正确的自行车编号</string>
     <string name="qilin_coupon">麒麟单车骑行券</string>
     <string name="couponNo">骑行券编号：</string>
+    <string name="_091700001">091700001</string>
+    <string name="time_100">100</string>
+    <string name="_10">10</string>
+    <string name="_400">400</string>
+    <string name="_123">123</string>
 </resources>

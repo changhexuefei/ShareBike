@@ -13,9 +13,9 @@
         <item name="android:windowAnimationStyle">@style/fade</item>
     </style>
 
-   <!--<style name="Theme_Animation" parent="AppTheme">-->
+    <!--<style name="Theme_Animation" parent="AppTheme">-->
 
-   <!--</style>-->
+    <!--</style>-->
     <style name="fade" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/fade_in</item>
         <item name="android:activityOpenExitAnimation">@anim/fade_out</item>
@@ -27,6 +27,7 @@
         <item name="android:windowEnterAnimation">@anim/fade_in</item>
         <item name="android:windowExitAnimation">@anim/fade_out</item>
     </style>
+
     <style name="Animation.Activity.Translucent.Style.Main" parent="@android:style/Animation.Translucent">
         <item name="android:windowExitAnimation">@anim/fade_out</item>
     </style>
@@ -208,6 +209,12 @@
             backward-compatibility can go here.
 
         -->
+    </style>
+
+    <style name="layoutStyle">
+        <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:layout_marginRight">15dp</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
 

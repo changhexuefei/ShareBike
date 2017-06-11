@@ -7,23 +7,22 @@
 
     <RelativeLayout
         android:id="@+id/foundFaulty"
+        style="@style/layoutStyle"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center_vertical">
+        android:layout_height="40dp">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:padding="10dp"
             android:text="@string/findTrouble"/>
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:drawableRight="@mipmap/forward"
-            android:padding="10dp"/>
+            android:drawablePadding="10dp"
+            android:drawableRight="@mipmap/forward"/>
     </RelativeLayout>
 
     <View
@@ -34,23 +33,22 @@
     <!--消息-->
     <RelativeLayout
         android:id="@+id/unlock"
+        style="@style/layoutStyle"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center_vertical">
+        android:layout_height="40dp">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:padding="10dp"
             android:text="@string/unlock"/>
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:drawableRight="@mipmap/forward"
-            android:padding="10dp"/>
+            android:drawablePadding="10dp"
+            android:drawableRight="@mipmap/forward"/>
     </RelativeLayout>
 
     <View
@@ -59,27 +57,25 @@
         android:layout_marginTop="2dp"
         android:background="@color/lineColor"/>
 
-
     <!--邀请好友-->
     <RelativeLayout
         android:id="@+id/FuserAgreement"
+        style="@style/layoutStyle"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center_vertical">
+        android:layout_height="40dp">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:padding="10dp"
             android:text="@string/user_agreement"/>
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:drawableRight="@mipmap/forward"
-            android:padding="10dp"/>
+            android:drawablePadding="10dp"
+            android:drawableRight="@mipmap/forward"/>
     </RelativeLayout>
 
     <View
@@ -90,23 +86,22 @@
     <!--用户指南-->
     <RelativeLayout
         android:id="@+id/FcashPledgeExplain"
+        style="@style/layoutStyle"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center_vertical">
+        android:layout_height="40dp">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:padding="10dp"
             android:text="@string/cashPledge_explain"/>
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:drawableRight="@mipmap/forward"
-            android:padding="10dp"/>
+            android:drawablePadding="10dp"
+            android:drawableRight="@mipmap/forward"/>
     </RelativeLayout>
 
     <View
@@ -117,26 +112,22 @@
     <!--设置-->
     <RelativeLayout
         android:id="@+id/FrechargeAgreement"
+        style="@style/layoutStyle"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center_vertical">
+        android:layout_height="40dp">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:padding="10dp"
-            android:text="@string/recharge_agreement"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
+            android:text="@string/recharge_agreement"/>
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:drawableRight="@mipmap/forward"
-            android:padding="10dp"/>
+            android:drawablePadding="10dp"
+            android:drawableRight="@mipmap/forward"/>
     </RelativeLayout>
 
 

@@ -12,19 +12,19 @@
 
 
     <com.baidu.mapapi.map.MapView
-        android:layout_above="@+id/detail_desc"
-        android:layout_below="@+id/toolbar"
         android:id="@+id/journey_mapView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/detail_desc"
+        android:layout_below="@+id/toolbar">
 
     </com.baidu.mapapi.map.MapView>
 
     <RelativeLayout
-        android:layout_alignParentBottom="true"
         android:id="@+id/detail_desc"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/icon"
@@ -33,7 +33,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
             android:src="@drawable/sharebike"
-            app:civ_border_color="#fff"
+            app:civ_border_color="@color/white"
             app:civ_border_width="2dp"/>
 
         <TextView
@@ -43,8 +43,7 @@
             android:layout_below="@+id/icon"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
-            android:text="123"
-            android:textStyle="bold"/>
+            android:text="@string/_123"/>
 
         <LinearLayout
             android:id="@+id/time_riding"
@@ -55,26 +54,26 @@
             android:gravity="center">
 
             <TextView
-                android:textSize="12sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/bikeNum"/>
+                android:text="@string/bikeNum"
+                android:textSize="12sp"/>
 
             <TextView
-                android:textSize="12sp"
                 android:id="@+id/bikeNO"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="091700001"/>
+                android:text="@string/_091700001"
+                android:textSize="12sp"/>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/time_riding"
             android:layout_marginBottom="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:layout_marginTop="10dp">
 
             <LinearLayout
@@ -90,15 +89,14 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@mipmap/my_trip_item_duration_img"
                     android:drawablePadding="5dp"
-                    android:text="100"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:text="@string/time_100"
+                    android:textSize="16sp"/>
 
                 <TextView
-                    android:textSize="12sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/min"/>
+                    android:text="@string/min"
+                    android:textSize="12sp"/>
             </LinearLayout>
 
 
@@ -115,15 +113,14 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@mipmap/riding"
                     android:drawablePadding="5dp"
-                    android:text="10"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:text="@string/_10"
+                    android:textSize="16sp"/>
 
                 <TextView
-                    android:textSize="12sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/km"/>
+                    android:text="@string/km"
+                    android:textSize="12sp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -139,15 +136,14 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@mipmap/kcal"
                     android:drawablePadding="5dp"
-                    android:text="400"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:text="@string/_400"
+                    android:textSize="16sp"/>
 
                 <TextView
-                    android:textSize="12sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/kcal"/>
+                    android:text="@string/kcal"
+                    android:textSize="12sp"/>
 
             </LinearLayout>
 
