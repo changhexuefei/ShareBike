@@ -14,7 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.FutureTarget;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
@@ -181,11 +180,11 @@ public class LoginFragment extends Fragment {
                     if (mUserimage != null) {
                         Log.d("用户头像路径", mUserimage);
                         //使用用户自定义的头像
-                            Glide.with(App.getContext()).load(mUserimage)
-                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                    .error(R.mipmap.avatar_default_login)
-                                    .thumbnail(0.1f)// 加载缩略图
-                                    .into(userIcon);
+                        Glide.with(LoginFragment.this).load(mUserimage)
+//                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .error(R.mipmap.avatar_default_login)
+                                .thumbnail(0.1f)// 加载缩略图
+                                .into(userIcon);
                     } else {
                         userIcon.setImageResource(R.mipmap.avatar_default_login);
                     }
@@ -352,7 +351,6 @@ public class LoginFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
 //        App.getRefWatcher().watch(this);
-        Glide.with(App.getContext()).pauseRequests();
 
     }
 

@@ -32,7 +32,6 @@ import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.bumptech.glide.Glide;
 import com.dcch.sharebike.R;
-import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.home.bean.RoutePoint;
@@ -41,6 +40,7 @@ import com.dcch.sharebike.overlayutil.OverlayManager;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.MapUtil;
+import com.dcch.sharebike.utils.ToastUtils;
 import com.hss01248.dialog.StyledDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -120,7 +120,7 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
             mRidetime.setText(String.valueOf(tripTime));
             mDistanceshow.setText(String.valueOf(MapUtil.changeDouble(tripDist)));
             mKCal.setText(String.valueOf(MapUtil.changeDouble(calorie)));
-            Glide.with(App.getContext()).load(image).error(R.drawable.sharebike).into(mIcon);
+            Glide.with(this).load(image).error(R.drawable.sharebike).into(mIcon);
             if (bicycleNo != null && !bicycleNo.equals("") && carRentalOrderId != null
                     && !carRentalOrderId.equals("") && !userId.equals("") && userId != null
                     && !token.equals("") && token != null) {
@@ -242,7 +242,6 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
         mJourneyMapView.onDestroy();
         mJourneyMapView = null;
         StyledDialog.dismiss();
-        Glide.with(App.getContext()).pauseRequests();
 
 //        if (mlocationClient != null) {
 //            mlocationClient.unRegisterLocationListener(mlistener);
@@ -325,6 +324,9 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                } else {
+                    ToastUtils.showShort(JourneyDetailActivity.this, "抱歉！未找到结果");
+                    StyledDialog.dismissLoading();
                 }
             }
         });

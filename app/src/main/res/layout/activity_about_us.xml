@@ -70,7 +70,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"
                 android:gravity="center_vertical"
-                android:text="@string/public_name"
+                android:text="@string/kirin_public"
                 android:textColor="@color/colorTitle"/>
         </RelativeLayout>
 

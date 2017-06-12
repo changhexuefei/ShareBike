@@ -24,6 +24,7 @@ import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.view.CommonFooter;
 import com.google.gson.Gson;
+import com.hss01248.dialog.StyledDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -91,6 +92,7 @@ public class CouponListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         if (NetUtils.isConnected(App.getContext())) {
             getCouponListInfo(mUserId, mToken);
+            StyledDialog.buildLoading(CouponListActivity.this, "正在加载..", true, false).setMsgColor(R.color.color_ff).show();
         } else {
             mIvNoJourney.setVisibility(View.GONE);
             mNoJourney.setVisibility(View.GONE);
@@ -117,6 +119,7 @@ public class CouponListActivity extends BaseActivity {
                     Gson gson = new Gson();
                     mCouponInfo = gson.fromJson(response, CouponInfo.class);
                     if (mCouponInfo.getCoupons().size() > 0) {
+                        StyledDialog.dismissLoading();
                         mDefaultShow.setVisibility(View.GONE);
                         mCouponList.setVisibility(View.VISIBLE);
                         mCouponInfoAdapter = new CouponInfoAdapter(CouponListActivity.this, R.layout.item_my_coupon, mCouponInfo.getCoupons());
@@ -132,30 +135,10 @@ public class CouponListActivity extends BaseActivity {
                         //禁用自动加载更多功能
                         mCouponList.setLoadMoreEnabled(false);
 
-                        mCouponList.setLScrollListener(new LRecyclerView.LScrollListener() {
-                            @Override
-                            public void onScrollUp() {
-                            }
-
-                            @Override
-                            public void onScrollDown() {
-
-                            }
-
-                            @Override
-                            public void onScrolled(int distanceX, int distanceY) {
-
-                            }
-
-                            @Override
-                            public void onScrollStateChanged(int state) {
-
-                            }
-                        });
-
-                    } else {
-                        mDefaultShow.setVisibility(View.VISIBLE);
                     }
+                } else {
+                    StyledDialog.dismissLoading();
+                    mDefaultShow.setVisibility(View.VISIBLE);
                 }
             }
         });

@@ -50,7 +50,7 @@ import static cn.jiguang.api.utils.ByteBufferUtils.ERROR_CODE;
  */
 
 public class GPSService extends Service {
-    private static final int minTime = 5000;
+    private static final int minTime = 60000;
     private LocationClient locationClient;
     private BDGpsServiceListener locationListener;
     private LocationClientOption lco;
@@ -73,7 +73,7 @@ public class GPSService extends Service {
     private String stopTime = "";
     private double routeLng;
     private double routeLat;
-//    private RouteAdapter adapter = new RouteAdapter();
+    //    private RouteAdapter adapter = new RouteAdapter();
     public float totalPrice = 0;
     public long beginTime = 0, totalTime = 0;
 
@@ -186,7 +186,6 @@ public class GPSService extends Service {
 //    };
 
 
-
 // *获取设备提供的经纬度，Network或GPS
 
 //    private double getDeviceLocation(DeviceLocType type) {
@@ -228,8 +227,8 @@ public class GPSService extends Service {
 //    }
 
 
-      //* 设备位置监听器
-      private class deviceLocationListener implements LocationListener {
+    //* 设备位置监听器
+    private class deviceLocationListener implements LocationListener {
 
         // Provider的状态在可用、暂时不可用和无务三个状态直接切换时触发此函数
         public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -268,7 +267,7 @@ public class GPSService extends Service {
     }
 
 
-     // 初始化轨迹文件路径和名称
+    // 初始化轨迹文件路径和名称
     private String getFilePath() {
         stopTime = getTimeStr();
         String format = ".json";
@@ -363,7 +362,7 @@ public class GPSService extends Service {
 //                sendToActivity(sb.toString());
 
                 Map<String, String> map = new HashMap<>();
-                map.put("token",mToken);
+                map.put("token", mToken);
                 map.put("carRentalOrderDate", mCarRentalOrderDate);
                 map.put("bicycleNo", mBicycleNo);
                 map.put("carRentalOrderId", mCarRentalOrderId);
@@ -371,7 +370,7 @@ public class GPSService extends Service {
                 map.put("lng", mRouteLng + "");
                 map.put("lat", mRouteLat + "");
                 map.put("mile", totalDistance / 1000 + "");
-                LogUtils.d("看看数据",mToken+"\n"+mCarRentalOrderDate+"\n"+mBicycleNo+"\n"+mCarRentalOrderId+"\n"+mUserId);
+                LogUtils.d("看看数据", mToken + "\n" + mCarRentalOrderDate + "\n" + mBicycleNo + "\n" + mCarRentalOrderId + "\n" + mUserId);
 //                byte[] encryptBytes = MapUtil.transMapToString(map).getBytes();
 //                NettyClient.getInstance().sendMsgToServer(encryptBytes, new ChannelFutureListener() {
 //                    @Override
@@ -394,20 +393,20 @@ public class GPSService extends Service {
                     public void onResponse(String response, int id) {
                         Log.d("给后台", response);
                         if (JsonUtils.isSuccess(response)) {
-                                    Gson gson = new Gson();
-                                    RidingInfo ridingInfo = gson.fromJson(response, RidingInfo.class);
-                                    if(ridingInfo.getStatus()==0){
-                                        Bundle bundle = new Bundle();
-                                        bundle.putSerializable("ridingInfo", ridingInfo);
-                                        if (bundle != null) {
-                                            sendToActivity(bundle);
-                                        }
-                                    } else if(ridingInfo.getStatus()==1){
+                            Gson gson = new Gson();
+                            RidingInfo ridingInfo = gson.fromJson(response, RidingInfo.class);
+                            if (ridingInfo.getStatus() == 0) {
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("ridingInfo", ridingInfo);
+                                if (bundle != null) {
+                                    sendToActivity(bundle);
+                                }
+                            } else if (ridingInfo.getStatus() == 1) {
 //                                        Bundle bundle = new Bundle();
 //                                        bundle.putSerializable("ridingInfo", ridingInfo);
 //                                        sendToRidingResult(bundle);
-                                        stopSelf();
-                                }
+                                stopSelf();
+                            }
                         }
                     }
                 });
@@ -433,14 +432,14 @@ public class GPSService extends Service {
         // 第三个参数：ContentValues对象
         sqliteDatabase.insert("routePoint", null, values);
         Cursor cursor = sqliteDatabase.query("routePoint", null, null, null, null, null, null);
-        while (cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             String route_id = cursor.getString(cursor.getColumnIndex("route_id"));
             String cycle_date = cursor.getString(cursor.getColumnIndex("cycle_date"));
             String cycle_time = cursor.getString(cursor.getColumnIndex("cycle_time"));
             String cycle_distance = cursor.getString(cursor.getColumnIndex("cycle_distance"));
             String cycle_price = cursor.getString(cursor.getColumnIndex("cycle_price"));
             String cycle_points = cursor.getString(cursor.getColumnIndex("cycle_points"));
-            LogUtils.d("数据库",route_id+"\n"+cycle_date+"\n"+cycle_time+"\n"+cycle_distance+"\n"+cycle_price+"\n"+cycle_points);
+            LogUtils.d("数据库", route_id + "\n" + cycle_date + "\n" + cycle_time + "\n" + cycle_distance + "\n" + cycle_price + "\n" + cycle_points);
         }
         cursor.close();
         sqliteDatabase.close();

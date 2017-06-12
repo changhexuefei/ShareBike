@@ -260,4 +260,7 @@
     <string name="_10">10</string>
     <string name="_400">400</string>
     <string name="_123">123</string>
+    <string name="kirin_public">麒麟共享单车</string>
+    <string name="openLock">扫码开锁</string>
+    <string name="needHelp">需要帮助</string>
 </resources>

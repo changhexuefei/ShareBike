@@ -108,12 +108,12 @@ public class TransactionDetailActivity extends BaseActivity {
             public void onResponse(String response, int id) {
                 LogUtils.d("充值", response);
                 if (JsonUtils.isSuccess(response)) {
-                    StyledDialog.dismissLoading();
                     mTransactList.setVisibility(View.VISIBLE);
                     Gson gson = new Gson();
                     mTransactionDetailInfo = gson.fromJson(response, TransactionDetailInfo.class);
                     LogUtils.d("几条", mTransactionDetailInfo.getPayBills().size() + "");
                     if (mTransactionDetailInfo.getPayBills().size() > 0) {
+                        StyledDialog.dismissLoading();
                         mTransactList.setLayoutManager(new LinearLayoutManager(TransactionDetailActivity.this, OrientationHelper.VERTICAL, false));
                         mAdapter = new TransactionDetailInfoAdapter(TransactionDetailActivity.this, R.layout.item_transaction_detail, mTransactionDetailInfo.getPayBills());
                         LRecyclerViewAdapter adapter = new LRecyclerViewAdapter(mAdapter);
@@ -124,10 +124,11 @@ public class TransactionDetailActivity extends BaseActivity {
                         mTransactList.setPullRefreshEnabled(false);
                         //禁用自动加载更多功能
                         mTransactList.setLoadMoreEnabled(false);
-                    } else {
-                        mNoPayTip.setVisibility(View.VISIBLE);
-                        mIvNoPay.setVisibility(View.VISIBLE);
                     }
+                } else {
+                    StyledDialog.dismissLoading();
+                    mNoPayTip.setVisibility(View.VISIBLE);
+                    mIvNoPay.setVisibility(View.VISIBLE);
                 }
             }
         });

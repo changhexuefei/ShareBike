@@ -212,6 +212,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private boolean mHasPlanRoute;
     private ProgressDialog mDialog;
     private String mCarRentalOrderId;
+    private Intent mNettyService;
 
     @Override
     protected int getLayoutId() {
@@ -797,7 +798,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     //响铃的方法
     private void ringDown(String result, String time) {
         Map<String, String> map = new HashMap<>();
-        map.put("bicycleNo", "091700001");
+        map.put("bicycleNo", result);
         map.put("Count", time);
         OkHttpUtils.post().url(Api.BASE_URL + Api.FINDBIKERING).params(map).build().execute(new StringCallback() {
             @Override
@@ -1089,6 +1090,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     //扫码开锁的方法
     private void openScan(final String uID, String phone, final String result, final String mToken) {
+
         if (phone != null && !phone.equals("") && result != null && !result.equals("")) {
             Map<String, String> map = new HashMap<>();
             map.put("userId", uID);
@@ -1480,6 +1482,14 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 phone = object.optString("phone");
                 status = object.optInt("status");
                 cashStatus = object.optInt("cashStatus");
+                if (uID != null && phone != null) {
+                    if (mNettyService == null) {
+                        mNettyService = new Intent(MainActivity.this, NettyService.class);
+                        mNettyService.putExtra("userId", uID);
+                        mNettyService.putExtra("phone", phone);
+                        startService(mNettyService);
+                    }
+                }
                 LogUtils.d("hehe", uID + "\n" + mToken + "\n" + status + "\n" + cashStatus);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -1511,12 +1521,12 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     int id = object.optInt("id");
                     uID = String.valueOf(id);
                     phone = object.optString("phone");
-                    if (uID != null && phone != null) {
-                        Intent nettyService = new Intent(MainActivity.this, NettyService.class);
-                        nettyService.putExtra("userId", uID);
-                        nettyService.putExtra("phone", phone);
-                        startService(nettyService);
-                    }
+//                    if (uID != null && phone != null) {
+//                        Intent nettyService = new Intent(MainActivity.this, NettyService.class);
+//                        nettyService.putExtra("userId", uID);
+//                        nettyService.putExtra("phone", phone);
+//                        startService(nettyService);
+//                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -1566,7 +1576,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         //反注册EventBus
         EventBus.getDefault().unregister(this);
         unregisterReceiver(lr);
-        stopService(new Intent(this, NettyService.class));
+//        stopService(new Intent(this, NettyService.class));
         Log.d("实验", "onDestroy");
         StyledDialog.dismiss();
         mMap.setMyLocationEnabled(false);
@@ -1660,12 +1670,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     }
 
     //开锁进度条页面发来的消息
-    @Subscriber(tag = "create", mode = ThreadMode.MAIN)
+    @Subscriber(tag = "order_show", mode = ThreadMode.MAIN)
     private void receiveFromUnlockProgress(MessageEvent info) {
         LogUtils.d("进度条页面的数据", "成功" + info.toString());
-        if (uID != null && result != null && mToken != null) {
-            createRidingOrder(uID, result, mToken);
-        }
+
     }
 
     //手工输入页面发来的消息
@@ -1700,7 +1708,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     //接收到关锁成功命令Nettyservice发来的消息
     @Subscriber(tag = "close", mode = ThreadMode.MAIN)
     private void receiveFromNettyService(MessageEvent info) {
-        LogUtils.d("输入", info.toString());
+        if (mNettyService != null) {
+            stopService(mNettyService);
+        }
         Intent ridingResult = new Intent(MainActivity.this, RidingResultActivity.class);
         ridingResult.putExtra("IMEI", result);
         ridingResult.putExtra("userId", uID);
@@ -1720,6 +1730,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         if (mServiceIntent != null) {
             stopService(mServiceIntent);
         }
+        stopService(new Intent(this, NettyService.class));
         if (orderPopupWindow != null) {
             orderPopupWindow.dismiss();
         }
@@ -1727,6 +1738,15 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         mScan.setVisibility(View.VISIBLE);
     }
 
+    @Subscriber(tag = "on", mode = ThreadMode.MAIN)
+    private void receiveOnFromNettyService(MessageEvent info) {
+        LogUtils.d("NettyService", "成功" + info.toString());
+        if (info != null) {
+            if (uID != null && result != null && mToken != null) {
+                createRidingOrder(uID, result, mToken);
+            }
+        }
+    }
 
     class LocationReceiver extends BroadcastReceiver {
         @Override

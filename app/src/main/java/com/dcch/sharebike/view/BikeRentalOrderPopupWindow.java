@@ -25,7 +25,7 @@ public class BikeRentalOrderPopupWindow extends PopupWindow {
     private View mBikeRentalOrderView;
     private TextView closeLock;
 
-    public BikeRentalOrderPopupWindow(Context context, BikeRentalOrderInfo bikeRentalOrderInfo,View.OnClickListener itemOnClick) {
+    public BikeRentalOrderPopupWindow(Context context, BikeRentalOrderInfo bikeRentalOrderInfo, View.OnClickListener itemOnClick) {
         super(context);
         this.bikeRentalOrderInfo = bikeRentalOrderInfo;
 
@@ -41,7 +41,7 @@ public class BikeRentalOrderPopupWindow extends PopupWindow {
         consumeEnergy = (TextView) mBikeRentalOrderView.findViewById(R.id.consume_energy);
         bikeNo = (TextView) mBikeRentalOrderView.findViewById(R.id.bike_number);
         costCycling = (TextView) mBikeRentalOrderView.findViewById(R.id.cost_cycling);
-        closeLock=(TextView)mBikeRentalOrderView.findViewById(R.id.close_lock);
+        closeLock = (TextView) mBikeRentalOrderView.findViewById(R.id.close_lock);
 //        // 设置按钮监听
         closeLock.setOnClickListener(itemOnClick);
 //          为控件赋值
@@ -49,7 +49,7 @@ public class BikeRentalOrderPopupWindow extends PopupWindow {
             rideTime.setText(String.valueOf(bikeRentalOrderInfo.getTripTime()) + "分钟");
             rideDistance.setText(String.valueOf(bikeRentalOrderInfo.getTripDist()) + "米");
             bikeNo.setText(bikeRentalOrderInfo.getBicycleNo());
-            costCycling.setText(String.valueOf(bikeRentalOrderInfo.getRideCost()));
+            costCycling.setText(String.valueOf(bikeRentalOrderInfo.getRideCost()) + "元");
         }
         // 设置SelectPicPopupWindow的View
         this.setContentView(mBikeRentalOrderView);

@@ -175,10 +175,11 @@ public class MyJourneyActivity extends BaseActivity {
                                 }
                             }
                         });
-                    } else {
-                        mIvNoJourney.setVisibility(View.VISIBLE);
-                        noJourney.setVisibility(View.VISIBLE);
                     }
+                } else {
+                    StyledDialog.dismissLoading();
+                    mIvNoJourney.setVisibility(View.VISIBLE);
+                    noJourney.setVisibility(View.VISIBLE);
                 }
             }
         });

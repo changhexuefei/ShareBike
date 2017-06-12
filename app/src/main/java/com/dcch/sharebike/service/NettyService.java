@@ -1,5 +1,6 @@
 package com.dcch.sharebike.service;
 
+import android.app.AlarmManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -41,6 +42,7 @@ public class NettyService extends Service implements NettyListener {
     private ScheduledExecutorService mScheduledExecutorService;
     private String mUserId;
     private String mPhone;
+    private AlarmManager mAlarmManager;
 
     private void shutdown() {
         if (mScheduledExecutorService != null) {
@@ -155,6 +157,9 @@ public class NettyService extends Service implements NettyListener {
                 EventBus.getDefault().post(new MessageEvent(), "off");
             } else if (s.trim().equals("CloseSuccess")) {
                 EventBus.getDefault().post(new MessageEvent(), "close");
+                stopSelf();
+            } else if (s.trim().equals("SERVER SEND MSG SUCCESS!")) {
+
             }
         } else {
             EventBus.getDefault().post(new MessageEvent(), "off");

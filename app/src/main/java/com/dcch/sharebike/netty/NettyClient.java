@@ -63,6 +63,7 @@ public class NettyClient {
             } catch (Exception e) {
                 Timber.e(e, e.getMessage());
                 LogUtils.d("netty", "yichang"+e.getMessage());
+                LogUtils.d("netty", "请检查网络连接");
                 listener.onServiceStatusConnectChanged(NettyListener.STATUS_CONNECT_ERROR);
                 reconnect();
             }

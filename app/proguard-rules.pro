@@ -143,7 +143,7 @@
         **[] $VALUES;
         public *;
       }
-    -keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+#    -keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 
     # 极光推送
     -dontoptimize
@@ -513,10 +513,10 @@
         public <init>(android.content.Context);
     }
 
-    #2.rx
-    -dontwarn io.reactivex.**
-    -keep io.reactivex.**
-    -keepclassmembers class io.reactivex.** { *; }
+#    #2.rx
+#    -dontwarn io.reactivex.**
+#    -keep io.reactivex.**
+#    -keepclassmembers class io.reactivex.** { *; }
 
     #3.retrolambda
     -dontwarn java.lang.invoke.*

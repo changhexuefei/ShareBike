@@ -8,8 +8,8 @@
     <FrameLayout
         android:id="@+id/scan_area"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#41c0dc">
+        android:layout_height="56dp"
+        android:background="@color/colorHeading">
 
         <ImageView
             android:id="@+id/back"
@@ -24,8 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="扫码开锁"
-            android:textColor="#ffffff"
+            android:text="@string/openLock"
+            android:textColor="@color/white"
             android:textSize="16sp"/>
 
         <TextView
@@ -35,8 +35,8 @@
             android:layout_gravity="right"
             android:layout_marginRight="15dp"
             android:gravity="center_vertical"
-            android:text="需要帮助?"
-            android:textColor="#ffffff"
+            android:text="@string/needHelp"
+            android:textColor="@color/white"
             android:textSize="14sp"/>
     </FrameLayout>
 
@@ -48,7 +48,6 @@
         android:layout_below="@+id/scan_area"/>
 
     <RelativeLayout
-
         android:id="@+id/capture_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -86,7 +85,7 @@
 
         <TextView
             android:id="@+id/tips_one"
-            android:layout_width="220dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/capture_crop_view"
             android:layout_centerHorizontal="true"
@@ -94,17 +93,17 @@
             android:gravity="center_horizontal"
             android:paddingTop="10dp"
             android:text="@string/capture_tips"
-            android:textColor="#ffffff"/>
+            android:textColor="@color/white"/>
 
 
         <RelativeLayout
-            android:gravity="center"
             android:id="@+id/capture_mask_bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_below="@+id/tips_one"
-            android:background="@drawable/shadow">
+            android:background="@drawable/shadow"
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/manualInput"
@@ -114,21 +113,21 @@
                 android:drawableTop="@drawable/manual_input_selector"
                 android:gravity="center"
                 android:text="@string/manual_input"
-                android:textColor="#ffffff"
+                android:textColor="@color/white"
                 android:textSize="12sp"/>
 
             <ToggleButton
-                android:gravity="center"
-                android:layout_marginLeft="30dp"
-                android:layout_toRightOf="@+id/manualInput"
                 android:id="@+id/openFlashLight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_toRightOf="@+id/manualInput"
                 android:background="@null"
                 android:checked="false"
                 android:drawablePadding="10dp"
                 android:drawableTop="@drawable/flash_light_selector"
-                android:textColor="#ffffff"
+                android:gravity="center"
+                android:textColor="@color/white"
                 android:textOff="@string/open"
                 android:textOn="@string/close"
                 android:textSize="12sp"/>

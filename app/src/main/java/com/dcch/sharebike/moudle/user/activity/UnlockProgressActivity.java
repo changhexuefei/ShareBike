@@ -100,6 +100,7 @@ public class UnlockProgressActivity extends BaseActivity {
                 .setTextColorNormal(Color.parseColor("#491C14"))//设置默认字体颜色
                 .setTextColorError(Color.parseColor("#BC5246"));//设置错误时字体颜色
 
+
         mMyProgressBar.setOnAnimationEndListener(new MyProgressBar.AnimationEndListener() {
             @Override
             public void onAnimationEnd() {
@@ -107,11 +108,12 @@ public class UnlockProgressActivity extends BaseActivity {
                 mMyProgressBar.setProgress(num);//初次进入在动画结束时设置进度
                 Log.d("实验", "结束了+++++++" + "onCreate");
                 handler.sendEmptyMessage(WHAT);
+
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         //你需要跳转的地方的代码
                         startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
-                        EventBus.getDefault().post(new MessageEvent(), "create");
+                        EventBus.getDefault().post(new MessageEvent(), "order_show");
                         UnlockProgressActivity.this.finish();
                     }
                 }, 5000); //延迟5秒跳转
@@ -178,6 +180,17 @@ public class UnlockProgressActivity extends BaseActivity {
         LogUtils.d("NettyServiceOther", "失败" + info.toString());
         mMyProgressBar.setError();//进度失败 发生错误
         EventBus.getDefault().post(new MessageEvent(), "lose");
+        this.finish();
+    }
+
+    //接收到关锁成功命令Nettyservice发来的消息
+    @Subscriber(tag = "close", mode = ThreadMode.MAIN)
+    private void receiveCloseFromNettyService(MessageEvent info) {
+        LogUtils.d("输入", info.toString());
+        mMyProgressBar.setError();
+//        mMyProgressBar.changeStateError();
+        handler.removeCallbacksAndMessages(null);
+//        mMyProgressBar.setProgress(0);
         this.finish();
     }
 

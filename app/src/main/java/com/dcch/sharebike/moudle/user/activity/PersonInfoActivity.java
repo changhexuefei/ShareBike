@@ -105,7 +105,8 @@ public class PersonInfoActivity extends BaseActivity {
                 realName.setText(mUserBundle.getName());
             }
             if (mUserBundle.getUserimage() != null) {
-                Glide.with(App.getContext()).load(mUserBundle.getUserimage()).error(R.mipmap.avatar_default_login).thumbnail(0.1f).into(userInfoIcon);
+                LogUtils.d("图片", mUserBundle.getUserimage());
+                Glide.with(this).load(mUserBundle.getUserimage()).error(R.mipmap.avatar_default_login).thumbnail(0.1f).into(userInfoIcon);
             } else {
                 userInfoIcon.setImageResource(R.mipmap.avatar_default_login);
             }
@@ -154,7 +155,12 @@ public class PersonInfoActivity extends BaseActivity {
                                 String mImageResult = PictureProcessingUtils.bitmapToBase64(bitmap);
                                 if (result != null && !result.equals("")) {
                                     //将图片赋值给图片控件
-                                    Glide.with(App.getContext()).load(result).into(userInfoIcon);
+                                    LogUtils.d("图片", result);
+                                    Glide.with(PersonInfoActivity.this)
+                                            .load(result)
+                                            .error(R.mipmap.avatar_default_login)
+                                            .thumbnail(0.1f)// 加载缩略图
+                                            .into(userInfoIcon);
                                     //下一步将选择的图片上传到服务器
                                     if (NetUtils.isConnected(App.getContext())) {
                                         if (mImageResult != null && mToken != null && uID != null) {

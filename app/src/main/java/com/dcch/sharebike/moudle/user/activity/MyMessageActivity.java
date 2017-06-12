@@ -86,7 +86,6 @@ public class MyMessageActivity extends BaseActivity {
         } else {
             mNoMessage.setVisibility(View.VISIBLE);
             ToastUtils.showShort(this, "网络无法访问，请检查网络连接！");
-
         }
     }
 
@@ -103,10 +102,10 @@ public class MyMessageActivity extends BaseActivity {
             @Override
             public void onResponse(String response, int id) {
                 if (JsonUtils.isSuccess(response)) {
-                    StyledDialog.dismissLoading();
                     Gson gson = new Gson();
                     mMessageInfo = gson.fromJson(response, MessageInfo.class);
                     if (mMessageInfo.getActivitys().size() > 0) {
+                        StyledDialog.dismissLoading();
                         mNoMessage.setVisibility(View.GONE);
                         mMyMessageList.setVisibility(View.VISIBLE);
                         mMessageInfoAdapter = new MessageInfoAdapter(MyMessageActivity.this, R.layout.item_my_message, mMessageInfo.getActivitys());
@@ -134,10 +133,11 @@ public class MyMessageActivity extends BaseActivity {
                                 }
                             }
                         });
-                    } else {
-                        mNoMessage.setVisibility(View.VISIBLE);
-                        mMyMessageList.setVisibility(View.GONE);
                     }
+                } else {
+                    StyledDialog.dismissLoading();
+                    mNoMessage.setVisibility(View.VISIBLE);
+                    mMyMessageList.setVisibility(View.GONE);
                 }
             }
         });
