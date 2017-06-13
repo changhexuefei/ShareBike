@@ -58,10 +58,10 @@
         android:layout_below="@+id/top"/>
 
     <!--<ImageView-->
-        <!--android:layout_width="20dp"-->
-        <!--android:layout_height="40dp"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:src="@drawable/search_center_ic"/>-->
+    <!--android:layout_width="20dp"-->
+    <!--android:layout_height="40dp"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:src="@drawable/search_center_ic"/>-->
 
     <Button
         android:id="@+id/instructions"
@@ -75,7 +75,7 @@
         android:background="@color/colorTitle"
         android:gravity="center"
         android:text="@string/instructions"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:textSize="16sp"/>
 
     <ImageButton
@@ -96,16 +96,17 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/selector_scan"
         android:drawableLeft="@mipmap/scan"
-        android:drawablePadding="20dp"
+        android:drawablePadding="10dp"
         android:enabled="true"
-        android:gravity="center_vertical"
+        android:gravity="center"
+        android:maxLines="1"
         android:paddingBottom="15dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:paddingTop="15dp"
         android:text="@string/unlocking"
-        android:textColor="#ffffff"
-        android:textSize="16sp"/>
+        android:textColor="@color/white"
+        android:textSize="14sp"/>
 
     <ImageButton
         android:id="@+id/btn_my_location"

@@ -162,7 +162,12 @@ public class NettyService extends Service implements NettyListener {
 
             }
         } else {
-            EventBus.getDefault().post(new MessageEvent(), "off");
+//            mScheduledExecutorService.scheduleAtFixedRate(new Runnable() {
+//                @Override
+//                public void run() {
+//                    EventBus.getDefault().post(new MessageEvent(), "off");
+//                }
+//            }, 2, 30, TimeUnit.SECONDS);
         }
 
 

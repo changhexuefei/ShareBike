@@ -180,7 +180,7 @@ public class LoginFragment extends Fragment {
                     if (mUserimage != null) {
                         Log.d("用户头像路径", mUserimage);
                         //使用用户自定义的头像
-                        Glide.with(LoginFragment.this).load(mUserimage)
+                        Glide.with(getActivity()).load(mUserimage)
 //                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .error(R.mipmap.avatar_default_login)
                                 .thumbnail(0.1f)// 加载缩略图

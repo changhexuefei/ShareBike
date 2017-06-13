@@ -213,6 +213,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private ProgressDialog mDialog;
     private String mCarRentalOrderId;
     private Intent mNettyService;
+    private boolean IsConnect;
 
     @Override
     protected int getLayoutId() {
@@ -1483,11 +1484,14 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 status = object.optInt("status");
                 cashStatus = object.optInt("cashStatus");
                 if (uID != null && phone != null) {
-                    if (mNettyService == null) {
+                    LogUtils.d("netty", "我将要执行建立长连接" + !IsConnect + mNettyService);
+                    if (!IsConnect && mNettyService == null) {
+                        IsConnect = true;
                         mNettyService = new Intent(MainActivity.this, NettyService.class);
                         mNettyService.putExtra("userId", uID);
                         mNettyService.putExtra("phone", phone);
                         startService(mNettyService);
+                        LogUtils.d("netty", "我建立了长连接");
                     }
                 }
                 LogUtils.d("hehe", uID + "\n" + mToken + "\n" + status + "\n" + cashStatus);
@@ -1650,7 +1654,11 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private void receiveFromSetting(MessageEvent info) {
         LogUtils.e(info.toString());
         mInstructions.setVisibility(View.VISIBLE);
-        stopService(new Intent(this, NettyService.class));
+        if (IsConnect = mNettyService != null) {
+            IsConnect = false;
+            stopService(mNettyService);
+            mNettyService = null;
+        }
     }
 
     //登录成功页面发来的消息，将mInstructions控件隐藏
@@ -1708,8 +1716,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     //接收到关锁成功命令Nettyservice发来的消息
     @Subscriber(tag = "close", mode = ThreadMode.MAIN)
     private void receiveFromNettyService(MessageEvent info) {
-        if (mNettyService != null) {
+        if (IsConnect = mNettyService != null) {
+            IsConnect = false;
             stopService(mNettyService);
+            mNettyService = null;
         }
         Intent ridingResult = new Intent(MainActivity.this, RidingResultActivity.class);
         ridingResult.putExtra("IMEI", result);
@@ -1730,7 +1740,11 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         if (mServiceIntent != null) {
             stopService(mServiceIntent);
         }
-        stopService(new Intent(this, NettyService.class));
+        if (IsConnect = mNettyService != null) {
+            IsConnect = false;
+            stopService(mNettyService);
+            mNettyService = null;
+        }
         if (orderPopupWindow != null) {
             orderPopupWindow.dismiss();
         }

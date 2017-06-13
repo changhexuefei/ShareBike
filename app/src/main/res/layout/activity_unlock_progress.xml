@@ -7,38 +7,47 @@
     android:layout_height="match_parent"
     android:background="@color/colorHeading"
     tools:context="com.dcch.sharebike.moudle.user.activity.UnlockProgressActivity">
+
     <include layout="@layout/toolbar"/>
 
-    <!--<ImageView-->
-        <!--android:id="@+id/unlockIcon"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginLeft="50dp"-->
-        <!--android:layout_marginTop="150dp"-->
-        <!--android:src="@drawable/unlock_o"/>-->
-
-
-    <com.dcch.sharebike.view.MyProgressBar
-        android:id="@+id/myProgressBar"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/unlockIcon"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        app:startDrawable="@drawable/ic_file_upload_white_36dp"
-        app:endSuccessDrawable="@drawable/ic_done_white_36dp"
-        app:textSize="12sp"
-        app:textColorSuccess="#66A269"
-        app:textColorNormal="#491C14"
-        app:textColorError="#BC5246"
-        app:progressBarHeight="4dp"
-        app:progressBarBgColor="#491C14"
-        app:progressBarColor="#ffffff"
-        app:canReBackable="true"
-        app:canDragable="false"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="20dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
-        android:layout_below="@+id/toolbar"/>
+        android:background="@mipmap/bg_waiting_enable"
+        android:src="@mipmap/bg_waiting_disenable"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/unlockIcon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-90dp"
+        android:text="开锁中，请稍后"/>
+
+
+    <!--<com.dcch.sharebike.view.MyProgressBar-->
+    <!--android:id="@+id/myProgressBar"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--app:startDrawable="@drawable/ic_file_upload_white_36dp"-->
+    <!--app:endSuccessDrawable="@drawable/ic_done_white_36dp"-->
+    <!--app:textSize="12sp"-->
+    <!--app:textColorSuccess="#66A269"-->
+    <!--app:textColorNormal="#491C14"-->
+    <!--app:textColorError="#BC5246"-->
+    <!--app:progressBarHeight="4dp"-->
+    <!--app:progressBarBgColor="#491C14"-->
+    <!--app:progressBarColor="#ffffff"-->
+    <!--app:canReBackable="true"-->
+    <!--app:canDragable="false"-->
+    <!--android:layout_marginRight="30dp"-->
+    <!--android:layout_marginLeft="20dp"-->
+    <!--android:layout_marginTop="100dp"-->
+    <!--android:layout_below="@+id/toolbar"/>-->
 
 
 </RelativeLayout>
