@@ -88,12 +88,7 @@ public class SettingActivity extends BaseActivity {
                 }
                 ToastUtils.showShort(this, "正在检查更新");
                 if (NetUtils.isConnected(this)) {
-                    if (NetUtils.isWifi(this)) {
-                        checkUpDate();
-                    } else {
-                        ToastUtils.showShort(this, getString(R.string.switching_network_tip));
-                    }
-
+                    checkUpDate();
                 } else {
                     ToastUtils.showShort(this, getString(R.string.no_network_tip));
                 }
@@ -143,7 +138,7 @@ public class SettingActivity extends BaseActivity {
                         Intent i1 = new Intent(SettingActivity.this, PersonalCenterActivity.class);
                         i1.putExtra("name", "unLogin");
                         //用EventBus发送消息给个人中心
-                        EventBus.getDefault().post(new MessageEvent(), "unLogin");
+//                        EventBus.getDefault().post(new MessageEvent(), "unLogin");
                         //给主页发送消息
                         EventBus.getDefault().post(new MessageEvent(), "visible");
                         SPUtils.clear(App.getContext());

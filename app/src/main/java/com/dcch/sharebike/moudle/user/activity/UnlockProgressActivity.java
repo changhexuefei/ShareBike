@@ -1,37 +1,30 @@
 package com.dcch.sharebike.moudle.user.activity;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.utils.LogUtils;
-import com.dcch.sharebike.view.MyProgressBar;
 
 import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 import org.simple.eventbus.ThreadMode;
 
-import java.lang.ref.WeakReference;
-
 import butterknife.BindView;
 
 public class UnlockProgressActivity extends BaseActivity {
 
-    @BindView(R.id.myProgressBar)
-    MyProgressBar mMyProgressBar;
+    //    @BindView(R.id.myProgressBar)
+//    MyProgressBar mMyProgressBar;
     boolean isDownloading;
     int progress = 0;
     boolean stop;
@@ -43,30 +36,34 @@ public class UnlockProgressActivity extends BaseActivity {
     Toolbar mToolbar;
     private static final int WHAT = 1;
     int num = 0;
-    MyHandler handler = new MyHandler(this);
+    @BindView(R.id.unlockIcon)
+    ImageView mUnlockIcon;
+    private Animation mAnimation;
 
-    private class MyHandler extends Handler {
-        WeakReference<Activity> weakReference;
+//    MyHandler handler = new MyHandler(this);
 
-        MyHandler(Activity activity) {
-            weakReference = new WeakReference<>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            if (weakReference.get() != null) {
-                switch (msg.what) {
-                    case WHAT:
-                        num++;
-                        if (num <= mMyProgressBar.getMax()) {
-                            mMyProgressBar.setProgress(num);
-                            handler.sendEmptyMessageDelayed(WHAT, 20);
-                        }
-                        break;
-                }
-            }
-        }
-    }
+//    private class MyHandler extends Handler {
+//        WeakReference<Activity> weakReference;
+//
+//        MyHandler(Activity activity) {
+//            weakReference = new WeakReference<>(activity);
+//        }
+//
+//        @Override
+//        public void handleMessage(Message msg) {
+//            if (weakReference.get() != null) {
+//                switch (msg.what) {
+//                    case WHAT:
+//                        num++;
+//                        if (num <= mMyProgressBar.getMax()) {
+//                            mMyProgressBar.setProgress(num);
+//                            handler.sendEmptyMessageDelayed(WHAT, 20);
+//                        }
+//                        break;
+//                }
+//            }
+//        }
+//    }
 
     @Override
     protected int getLayoutId() {
@@ -86,57 +83,57 @@ public class UnlockProgressActivity extends BaseActivity {
             }
         });
 
-        mMyProgressBar.setEndSuccessBackgroundColor(Color.parseColor("#66A269"))//设置进度完成时背景颜色
-                .setEndSuccessDrawable(R.drawable.ic_done_white_36dp, null)//设置进度完成时背景图片
-                .setCanEndSuccessClickable(false)//设置进度完成后是否可以再次点击开始
-                .setProgressBarColor(Color.WHITE)//进度条颜色
-                .setCanDragChangeProgress(false)//是否进度条是否可以拖拽
-                .setCanReBack(true)//是否在进度成功后返回初始状态
-                .setProgressBarBgColor(Color.parseColor("#491C14"))//进度条背景颜色
-                .setProgressBarHeight(mMyProgressBar.dip2px(this, 4))//进度条宽度
-                .setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()))//设置字体大小
-                .setStartDrawable(R.drawable.ic_file_upload_white_36dp, null)//设置开始时背景图片
-                .setTextColorSuccess(Color.parseColor("#66A269"))//设置成功时字体颜色
-                .setTextColorNormal(Color.parseColor("#491C14"))//设置默认字体颜色
-                .setTextColorError(Color.parseColor("#BC5246"));//设置错误时字体颜色
-
-
-        mMyProgressBar.setOnAnimationEndListener(new MyProgressBar.AnimationEndListener() {
-            @Override
-            public void onAnimationEnd() {
-                mMyProgressBar.setMax(100);
-                mMyProgressBar.setProgress(num);//初次进入在动画结束时设置进度
-                Log.d("实验", "结束了+++++++" + "onCreate");
-                handler.sendEmptyMessage(WHAT);
-
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        //你需要跳转的地方的代码
-                        startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
-                        EventBus.getDefault().post(new MessageEvent(), "order_show");
-                        UnlockProgressActivity.this.finish();
-                    }
-                }, 5000); //延迟5秒跳转
-
-            }
-        });
-        mMyProgressBar.setOntextChangeListener(new MyProgressBar.OntextChangeListener() {
-            @Override
-            public String onProgressTextChange(MyProgressBar specialProgressBarView, int max, int progress) {
-                return progress * 100 / max + "%";
-
-            }
-
-            @Override
-            public String onErrorTextChange(MyProgressBar specialProgressBarView, int max, int progress) {
-                return "error";
-            }
-
-            @Override
-            public String onSuccessTextChange(MyProgressBar specialProgressBarView, int max, int progress) {
-                return "done";
-            }
-        });
+//        mMyProgressBar.setEndSuccessBackgroundColor(Color.parseColor("#66A269"))//设置进度完成时背景颜色
+//                .setEndSuccessDrawable(R.drawable.ic_done_white_36dp, null)//设置进度完成时背景图片
+//                .setCanEndSuccessClickable(false)//设置进度完成后是否可以再次点击开始
+//                .setProgressBarColor(Color.WHITE)//进度条颜色
+//                .setCanDragChangeProgress(false)//是否进度条是否可以拖拽
+//                .setCanReBack(true)//是否在进度成功后返回初始状态
+//                .setProgressBarBgColor(Color.parseColor("#491C14"))//进度条背景颜色
+//                .setProgressBarHeight(mMyProgressBar.dip2px(this, 4))//进度条宽度
+//                .setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()))//设置字体大小
+//                .setStartDrawable(R.drawable.ic_file_upload_white_36dp, null)//设置开始时背景图片
+//                .setTextColorSuccess(Color.parseColor("#66A269"))//设置成功时字体颜色
+//                .setTextColorNormal(Color.parseColor("#491C14"))//设置默认字体颜色
+//                .setTextColorError(Color.parseColor("#BC5246"));//设置错误时字体颜色
+//
+//
+//        mMyProgressBar.setOnAnimationEndListener(new MyProgressBar.AnimationEndListener() {
+//            @Override
+//            public void onAnimationEnd() {
+//                mMyProgressBar.setMax(100);
+//                mMyProgressBar.setProgress(num);//初次进入在动画结束时设置进度
+//                Log.d("实验", "结束了+++++++" + "onCreate");
+//                handler.sendEmptyMessage(WHAT);
+//
+//                new Handler().postDelayed(new Runnable() {
+//                    public void run() {
+//                        //你需要跳转的地方的代码
+//                        startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
+//                        EventBus.getDefault().post(new MessageEvent(), "order_show");
+//                        UnlockProgressActivity.this.finish();
+//                    }
+//                }, 5000); //延迟5秒跳转
+//
+//            }
+//        });
+//        mMyProgressBar.setOntextChangeListener(new MyProgressBar.OntextChangeListener() {
+//            @Override
+//            public String onProgressTextChange(MyProgressBar specialProgressBarView, int max, int progress) {
+//                return progress * 100 / max + "%";
+//
+//            }
+//
+//            @Override
+//            public String onErrorTextChange(MyProgressBar specialProgressBarView, int max, int progress) {
+//                return "error";
+//            }
+//
+//            @Override
+//            public String onSuccessTextChange(MyProgressBar specialProgressBarView, int max, int progress) {
+//                return "done";
+//            }
+//        });
     }
 
     @Override
@@ -144,6 +141,8 @@ public class UnlockProgressActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         LogUtils.d("实验", "我已经创建好了");
         EventBus.getDefault().register(this);
+        mAnimation = AnimationUtils.loadAnimation(this, R.anim.unlock_lock_anim);
+        mUnlockIcon.startAnimation(mAnimation);
     }
 
     @Override
@@ -171,14 +170,14 @@ public class UnlockProgressActivity extends BaseActivity {
         LogUtils.d("NettyService", "成功" + info.toString());
         if (info != null) {
             num = 0;
-            mMyProgressBar.beginStarting();//启动开始动画
+//            mMyProgressBar.beginStarting();//启动开始动画
         }
     }
 
     @Subscriber(tag = "off", mode = ThreadMode.MAIN)
     private void receiveFromNettyServiceOther(MessageEvent info) {
         LogUtils.d("NettyServiceOther", "失败" + info.toString());
-        mMyProgressBar.setError();//进度失败 发生错误
+//        mMyProgressBar.setError();//进度失败 发生错误
         EventBus.getDefault().post(new MessageEvent(), "lose");
         this.finish();
     }
@@ -187,9 +186,9 @@ public class UnlockProgressActivity extends BaseActivity {
     @Subscriber(tag = "close", mode = ThreadMode.MAIN)
     private void receiveCloseFromNettyService(MessageEvent info) {
         LogUtils.d("输入", info.toString());
-        mMyProgressBar.setError();
+//        mMyProgressBar.setError();
 //        mMyProgressBar.changeStateError();
-        handler.removeCallbacksAndMessages(null);
+//        handler.removeCallbacksAndMessages(null);
 //        mMyProgressBar.setProgress(0);
         this.finish();
     }
