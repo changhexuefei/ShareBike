@@ -1525,12 +1525,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     int id = object.optInt("id");
                     uID = String.valueOf(id);
                     phone = object.optString("phone");
-//                    if (uID != null && phone != null) {
-//                        Intent nettyService = new Intent(MainActivity.this, NettyService.class);
-//                        nettyService.putExtra("userId", uID);
-//                        nettyService.putExtra("phone", phone);
-//                        startService(nettyService);
-//                    }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -1681,6 +1676,18 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     @Subscriber(tag = "order_show", mode = ThreadMode.MAIN)
     private void receiveFromUnlockProgress(MessageEvent info) {
         LogUtils.d("进度条页面的数据", "成功" + info.toString());
+
+    }
+
+    //开锁长时间没有回应的消息
+    @Subscriber(tag = "stopNetty", mode = ThreadMode.MAIN)
+    private void receiveStopNettyFromUnlockProgress(MessageEvent info) {
+        LogUtils.d("进度条页面的数据", "成功" + info.toString());
+        if (IsConnect = mNettyService != null) {
+            IsConnect = false;
+            stopService(mNettyService);
+            mNettyService = null;
+        }
 
     }
 

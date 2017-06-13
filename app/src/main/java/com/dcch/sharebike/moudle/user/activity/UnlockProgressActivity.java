@@ -1,5 +1,6 @@
 package com.dcch.sharebike.moudle.user.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +11,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
@@ -18,6 +20,9 @@ import com.dcch.sharebike.utils.LogUtils;
 import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 import org.simple.eventbus.ThreadMode;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 
@@ -39,6 +44,7 @@ public class UnlockProgressActivity extends BaseActivity {
     @BindView(R.id.unlockIcon)
     ImageView mUnlockIcon;
     private Animation mAnimation;
+    private Timer mTimer;
 
 //    MyHandler handler = new MyHandler(this);
 
@@ -143,6 +149,17 @@ public class UnlockProgressActivity extends BaseActivity {
         EventBus.getDefault().register(this);
         mAnimation = AnimationUtils.loadAnimation(this, R.anim.unlock_lock_anim);
         mUnlockIcon.startAnimation(mAnimation);
+        final Intent main = new Intent(this, MainActivity.class); // 要转向的Activity
+        mTimer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                startActivity(main); // 启动新的Activity      //或不写该段仅让当前Activity消失
+                EventBus.getDefault().post(new MessageEvent(), "stopNetty");
+                UnlockProgressActivity.this.finish();
+            }
+        };
+        mTimer.schedule(task, 1000 * 40); // 40秒后执行
     }
 
     @Override
@@ -169,7 +186,8 @@ public class UnlockProgressActivity extends BaseActivity {
     private void receiveFromNettyService(MessageEvent info) {
         LogUtils.d("NettyService", "成功" + info.toString());
         if (info != null) {
-            num = 0;
+            EventBus.getDefault().post(new MessageEvent(), "order_show");
+            mTimer.cancel();
 //            mMyProgressBar.beginStarting();//启动开始动画
         }
     }
@@ -178,6 +196,7 @@ public class UnlockProgressActivity extends BaseActivity {
     private void receiveFromNettyServiceOther(MessageEvent info) {
         LogUtils.d("NettyServiceOther", "失败" + info.toString());
 //        mMyProgressBar.setError();//进度失败 发生错误
+        mTimer.cancel();
         EventBus.getDefault().post(new MessageEvent(), "lose");
         this.finish();
     }
@@ -190,6 +209,7 @@ public class UnlockProgressActivity extends BaseActivity {
 //        mMyProgressBar.changeStateError();
 //        handler.removeCallbacksAndMessages(null);
 //        mMyProgressBar.setProgress(0);
+        mTimer.cancel();
         this.finish();
     }
 

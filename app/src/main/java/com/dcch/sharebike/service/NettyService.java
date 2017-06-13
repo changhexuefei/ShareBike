@@ -149,25 +149,15 @@ public class NettyService extends Service implements NettyListener {
         LogUtils.d("netty", s.trim() + "\n" + len);
         //根据不同的返回值，来执行相应的操作
         if (s.trim() != null && !s.trim().equals("")) {
-            if (s.trim().equals("SERVER RECEIVED!")) {
-
-            } else if (s.trim().equals("OpenSuccess")) {
+            if (s.trim().equals("OpenSuccess")) {
                 EventBus.getDefault().post(new MessageEvent(), "on");
             } else if (s.trim().equals("OpenFailure")) {
                 EventBus.getDefault().post(new MessageEvent(), "off");
             } else if (s.trim().equals("CloseSuccess")) {
                 EventBus.getDefault().post(new MessageEvent(), "close");
                 stopSelf();
-            } else if (s.trim().equals("SERVER SEND MSG SUCCESS!")) {
-
             }
-        } else {
-//            mScheduledExecutorService.scheduleAtFixedRate(new Runnable() {
-//                @Override
-//                public void run() {
-//                    EventBus.getDefault().post(new MessageEvent(), "off");
-//                }
-//            }, 2, 30, TimeUnit.SECONDS);
+
         }
 
 
