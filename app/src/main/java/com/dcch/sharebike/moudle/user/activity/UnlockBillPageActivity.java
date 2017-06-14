@@ -111,9 +111,10 @@ public class UnlockBillPageActivity extends BaseActivity implements RadioGroup.O
         }
         String contentText = mUnlockDesc.getContentText();
         if (NetUtils.isConnected(App.getContext())) {
+            LogUtils.d("谁是空的", rechargeNumber + "\n" + mCarRentalOrderId + "\n" + mUserId);
             if (rechargeNumber != null && !rechargeNumber.equals("") && mCarRentalOrderId != null
                     && !mCarRentalOrderId.equals("") && !mUserId.equals("") && mUserId != null) {
-                LogUtils.d("谁是空的", rechargeNumber + "\n" + mCarRentalOrderId + "\n" + mUserId);
+
                 knotfee(mCarRentalOrderId, rechargeNumber, mUserId);
                 Intent commit = new Intent(UnlockBillPageActivity.this, DealFeedbackActivity.class);
                 commit.putExtra("rechargeNumber", rechargeNumber);

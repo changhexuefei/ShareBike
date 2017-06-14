@@ -24,6 +24,7 @@ import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.InPutUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -101,8 +102,6 @@ public class IdentityAuthentication extends BaseActivity {
                 .setLabelColorIndicator(getResources().getColor(R.color.colorTitle))
                 .setCompletedPosition(2)
                 .drawView();
-
-
     }
 
     @Override
@@ -163,7 +162,12 @@ public class IdentityAuthentication extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                verifyRealName(uID, realName, cardNum, mToken);
+                if (NetUtils.isConnected(App.getContext())) {
+                    verifyRealName(uID, realName, cardNum, mToken);
+                } else {
+                    ToastUtils.showShort(this, getString(R.string.no_network_tip));
+                }
+
                 break;
         }
     }
@@ -171,19 +175,19 @@ public class IdentityAuthentication extends BaseActivity {
     private void verifyRealName(final String uID, final String realName, String cardNum, String token) {
         try {
             String encode = URLEncoder.encode(realName, "utf-8");//"UTF-8"
-            cardNum= AES.encrypt(cardNum.getBytes(),MyContent.key);
+            cardNum = AES.encrypt(cardNum.getBytes(), MyContent.key);
             Map<String, String> map = new HashMap<>();
             map.put("userId", uID);
             map.put("name", encode);
             map.put("IDcard", cardNum);
             map.put("token", token);
-            LogUtils.d("参数",uID+"\n"+encode+"\n"+cardNum+"\n"+token);
+            LogUtils.d("参数", uID + "\n" + encode + "\n" + cardNum + "\n" + token);
 
             OkHttpUtils.post().url(Api.BASE_URL + Api.UPDATEUSERSTATUS).params(map).build().execute(new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
                     Log.e("错误", e.getMessage());
-                    ToastUtils.showShort(IdentityAuthentication.this, "服务器正忙，请稍后再试！");
+                    ToastUtils.showShort(IdentityAuthentication.this, getString(R.string.server_is_busy));
                 }
 
                 @Override
@@ -195,7 +199,7 @@ public class IdentityAuthentication extends BaseActivity {
                         finish();
 
                     } else {
-                        ToastUtils.showShort(IdentityAuthentication.this, "对不起，实名验证失败，请输入正确的信息");
+                        ToastUtils.showShort(IdentityAuthentication.this, getString(R.string.input_name_uuid_fail));
                     }
                 }
             });

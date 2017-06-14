@@ -1,5 +1,6 @@
 package com.dcch.sharebike.moudle.user.activity;
 
+import android.app.AlarmManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -45,6 +46,7 @@ public class UnlockProgressActivity extends BaseActivity {
     ImageView mUnlockIcon;
     private Animation mAnimation;
     private Timer mTimer;
+    private AlarmManager mAlarmManager;
 
 //    MyHandler handler = new MyHandler(this);
 
@@ -78,17 +80,18 @@ public class UnlockProgressActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
         mToolbar.setTitle("");
         mTitle.setText(getResources().getString(R.string.unlock_progress));
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mTimer.cancel();
                 finish();
             }
         });
 
+        mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 //        mMyProgressBar.setEndSuccessBackgroundColor(Color.parseColor("#66A269"))//设置进度完成时背景颜色
 //                .setEndSuccessDrawable(R.drawable.ic_done_white_36dp, null)//设置进度完成时背景图片
 //                .setCanEndSuccessClickable(false)//设置进度完成后是否可以再次点击开始
@@ -159,7 +162,7 @@ public class UnlockProgressActivity extends BaseActivity {
                 UnlockProgressActivity.this.finish();
             }
         };
-        mTimer.schedule(task, 1000 * 40); // 40秒后执行
+        mTimer.schedule(task, 1000 * 40); // 40秒后执行跳转页面的操作
     }
 
     @Override
@@ -186,8 +189,10 @@ public class UnlockProgressActivity extends BaseActivity {
     private void receiveFromNettyService(MessageEvent info) {
         LogUtils.d("NettyService", "成功" + info.toString());
         if (info != null) {
-            EventBus.getDefault().post(new MessageEvent(), "order_show");
             mTimer.cancel();
+            startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
+            EventBus.getDefault().post(new MessageEvent(), "order_show");
+            UnlockProgressActivity.this.finish();
 //            mMyProgressBar.beginStarting();//启动开始动画
         }
     }
@@ -197,6 +202,7 @@ public class UnlockProgressActivity extends BaseActivity {
         LogUtils.d("NettyServiceOther", "失败" + info.toString());
 //        mMyProgressBar.setError();//进度失败 发生错误
         mTimer.cancel();
+        startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
         EventBus.getDefault().post(new MessageEvent(), "lose");
         this.finish();
     }

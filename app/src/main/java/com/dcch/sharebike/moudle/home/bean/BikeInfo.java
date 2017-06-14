@@ -41,10 +41,9 @@ public class BikeInfo implements Serializable {
      */
 
     private int bicycleId;
-    private int bicycleNo;
-
+    private String bicycleNo;
     private float unitPrice;
-    private int price;
+    private String price;
 
     private String address;
 
@@ -60,13 +59,14 @@ public class BikeInfo implements Serializable {
         this.bicycleId = bicycleId;
     }
 
-    public int getBicycleNo() {
+    public String getBicycleNo() {
         return bicycleNo;
     }
 
-    public void setBicycleNo(int bicycleNo) {
+    public void setBicycleNo(String bicycleNo) {
         this.bicycleNo = bicycleNo;
     }
+
     public float getUnitPrice() {
         return unitPrice;
     }
@@ -75,28 +75,34 @@ public class BikeInfo implements Serializable {
         this.unitPrice = unitPrice;
     }
 
-    public int getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(String price) {
         this.price = price;
     }
+
     public String getAddress() {
         return address;
     }
+
     public void setAddress(String address) {
         this.address = address;
     }
+
     public String getLongitude() {
         return longitude;
     }
+
     public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
+
     public String getLatitude() {
         return latitude;
     }
+
     public void setLatitude(String latitude) {
         this.latitude = latitude;
     }

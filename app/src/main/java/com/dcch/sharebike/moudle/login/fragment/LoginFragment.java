@@ -1,6 +1,7 @@
 package com.dcch.sharebike.moudle.login.fragment;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -101,6 +102,11 @@ public class LoginFragment extends Fragment {
 
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (SPUtils.isLogin()) {
@@ -180,8 +186,9 @@ public class LoginFragment extends Fragment {
                     if (mUserimage != null) {
                         Log.d("用户头像路径", mUserimage);
                         //使用用户自定义的头像
-                        Glide.with(getActivity()).load(mUserimage)
-//                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        Glide.with(LoginFragment.this).load(mUserimage)
+                                .crossFade()
+//                              .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .error(R.mipmap.avatar_default_login)
                                 .thumbnail(0.1f)// 加载缩略图
                                 .into(userIcon);
@@ -372,5 +379,13 @@ public class LoginFragment extends Fragment {
         return null;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
 }

@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
@@ -130,7 +131,8 @@ public class ManualInputActivity extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                finish();
+                startActivity(new Intent(this, MainActivity.class));
+                this.finish();
                 break;
             case R.id.ensure:
                 if (ClickUtils.isFastClick()) {

@@ -155,9 +155,7 @@ public class NettyService extends Service implements NettyListener {
                 EventBus.getDefault().post(new MessageEvent(), "off");
             } else if (s.trim().equals("CloseSuccess")) {
                 EventBus.getDefault().post(new MessageEvent(), "close");
-                stopSelf();
             }
-
         }
 
 

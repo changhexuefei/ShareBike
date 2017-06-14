@@ -14,6 +14,7 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
+import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.utils.ClickUtils;
@@ -68,7 +69,6 @@ public class PersonInfoActivity extends BaseActivity {
     private UserInfo mUserBundle;
     private String uID;
     private String result;
-    public static final String BOUNDARY = "ZnGpDtePMx0KrHh_G0X99Yef9r8JZsRJSXC";
     private String mToken;
 
     @Override
@@ -98,10 +98,10 @@ public class PersonInfoActivity extends BaseActivity {
                 telephone.setText(mUserBundle.getPhone().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
             }
             if (mUserBundle.getStatus() == 0) {
-                authority.setText("未认证");
-                realName.setText("未认证");
+                authority.setText(R.string.unverified);
+                realName.setText(R.string.unverified);
             } else if (mUserBundle.getStatus() == 1) {
-                authority.setText("已认证");
+                authority.setText(R.string.verified);
                 realName.setText(mUserBundle.getName());
             }
             if (mUserBundle.getUserimage() != null) {
@@ -214,13 +214,13 @@ public class PersonInfoActivity extends BaseActivity {
         //用户上传头像的方法
         OkHttpUtils.post().url(Api.BASE_URL + Api.UPLOADAVATAR)
                 .params(map)
-                .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)
+                .addHeader("Content-Type", "multipart/form-data;boundary=" + MyContent.BOUNDARY)
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-//                        Log.e("错误", e.getMessage());
-                        ToastUtils.showShort(PersonInfoActivity.this, "服务器忙，请稍后再试");
+//                        LogUtils.e("错误", e.getMessage());
+                        ToastUtils.showShort(PersonInfoActivity.this, getString(R.string.changeIcon_fail));
                     }
 
                     @Override
@@ -229,9 +229,9 @@ public class PersonInfoActivity extends BaseActivity {
                         Log.d("上传头像", response);
                         //{"code":"1"}
                         if (JsonUtils.isSuccess(response)) {
-                            ToastUtils.showShort(PersonInfoActivity.this, "头像更改成功!");
+                            ToastUtils.showShort(PersonInfoActivity.this, getString(R.string.changeIcon_success));
                         } else {
-                            ToastUtils.showShort(PersonInfoActivity.this, "头像更改失败!");
+                            ToastUtils.showShort(PersonInfoActivity.this, getString(R.string.changeIcon_fail));
                         }
                     }
                 });

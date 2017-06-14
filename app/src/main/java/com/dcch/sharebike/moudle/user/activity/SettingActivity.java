@@ -157,7 +157,7 @@ public class SettingActivity extends BaseActivity {
         final IFlytekUpdate updManager = IFlytekUpdate.getInstance(App.getContext());
         //开启调试模式，默认不开启
         updManager.setDebugMode(true);
-        //开启wifi环境下检测更新，仅对自动更新有效，强制更新则生效
+        //开启wifi环境下检测更新，仅对自动更新有效，强制更新则无效
         updManager.setParameter(UpdateConstants.EXTRA_WIFIONLY, "true");
         //设置通知栏使用应用icon，详情请见示例
         updManager.setParameter(UpdateConstants.EXTRA_NOTI_ICON, "true");
@@ -180,7 +180,8 @@ public class SettingActivity extends BaseActivity {
             }
         };
 // 启动自动更新
-        updManager.autoUpdate(this, updateListener);
+//        updManager.autoUpdate(this, updateListener);
+        updManager.forceUpdate(this, updateListener);
 
     }
 
