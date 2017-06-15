@@ -243,7 +243,7 @@ public class UpdateManager {
                 String sdpath = Environment.getExternalStorageDirectory() + "/";
                 fileSavePath = sdpath;
                 try {
-                    LogUtils.d("监听", "1223333++++++" + sdpath);
+                    LogUtils.d("监听", "1223333++++++" + sdpath+versionInfo.getLoadUrl());
                     URL url = new URL(versionInfo.getLoadUrl());
                     // 创建连接
                     conn = (HttpURLConnection) url.openConnection();

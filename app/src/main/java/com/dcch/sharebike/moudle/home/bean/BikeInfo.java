@@ -44,11 +44,9 @@ public class BikeInfo implements Serializable {
     private String bicycleNo;
     private float unitPrice;
     private String price;
-
     private String address;
-
-    private String longitude;
-    private String latitude;
+    private double longitude;
+    private double latitude;
 
 
     public int getBicycleId() {
@@ -91,19 +89,19 @@ public class BikeInfo implements Serializable {
         this.address = address;
     }
 
-    public String getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
-    public String getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 

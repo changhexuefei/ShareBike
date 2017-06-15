@@ -34,7 +34,7 @@ public class NettyClient {
 
     private long reconnectIntervalTime = 5000;
 
-    public static NettyClient getInstance(){
+    public static NettyClient getInstance() {
         return nettyClient;
     }
 
@@ -43,7 +43,7 @@ public class NettyClient {
             group = new NioEventLoopGroup();
             Bootstrap bootstrap = new Bootstrap().group(group)
 //                    .option(ChannelOption.SO_TIMEOUT,10)
-                    .option(ChannelOption.SO_KEEPALIVE,true)
+                    .option(ChannelOption.SO_KEEPALIVE, true)
                     .channel(NioSocketChannel.class)
                     .handler(new NettyClientInitializer(listener));
 
@@ -62,7 +62,7 @@ public class NettyClient {
 
             } catch (Exception e) {
                 Timber.e(e, e.getMessage());
-                LogUtils.d("netty", "yichang"+e.getMessage());
+                LogUtils.d("netty", "yichang" + e.getMessage());
                 LogUtils.d("netty", "请检查网络连接");
                 listener.onServiceStatusConnectChanged(NettyListener.STATUS_CONNECT_ERROR);
                 reconnect();
@@ -76,17 +76,17 @@ public class NettyClient {
     }
 
     public void reconnect() {
-        if(reconnectNum >0 && !isConnect){
+        if (reconnectNum > 0 && !isConnect) {
             reconnectNum--;
             try {
                 Thread.sleep(reconnectIntervalTime);
             } catch (InterruptedException e) {
-                LogUtils.d("netty", "InterruptedException"+e.getMessage());
+                LogUtils.d("netty", "InterruptedException" + e.getMessage());
             }
             Timber.e("重新连接");
             disconnect();
             connect();
-        }else{
+        } else {
             disconnect();
         }
     }
@@ -96,8 +96,7 @@ public class NettyClient {
         if (flag) {
             ByteBuf buf = Unpooled.copiedBuffer(data);
             String s = new String(buf.array());
-            LogUtils.d("netty", "flag"+flag+"\n"+"发送数据："+buf+"\n"+ s.toString());
-
+            LogUtils.d("netty", "flag" + flag + "\n" + "发送数据：" + buf + "\n" + s.toString());
             channel.writeAndFlush(buf).addListener(listener);
         }
         return flag;
@@ -111,11 +110,11 @@ public class NettyClient {
         this.reconnectIntervalTime = reconnectIntervalTime;
     }
 
-    public boolean getConnectStatus(){
+    public boolean getConnectStatus() {
         return isConnect;
     }
 
-    public void setConnectStatus(boolean status){
+    public void setConnectStatus(boolean status) {
         this.isConnect = status;
     }
 

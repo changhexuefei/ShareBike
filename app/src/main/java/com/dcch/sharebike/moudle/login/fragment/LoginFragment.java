@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
+import com.bumptech.glide.util.Util;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.http.Api;
@@ -126,12 +127,21 @@ public class LoginFragment extends Fragment {
         }
     }
 
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+    }
+
     @Override
     public void onResume() {
         super.onResume();
+
         if (NetUtils.isConnected(App.getContext())) {
             if (uID != null && mToken != null) {
                 getUserInfo(uID, mToken);
+
             } else {
                 if (mNickName != null && !mNickName.equals("")) {
                     nickName.setText(mNickName);
@@ -146,6 +156,7 @@ public class LoginFragment extends Fragment {
                 mNoNetworkTip.setVisibility(View.VISIBLE);
             }
         }
+
     }
 
     //从服务端拿到客户信息
@@ -185,13 +196,16 @@ public class LoginFragment extends Fragment {
                     mUserimage = mInfo.getUserimage();
                     if (mUserimage != null) {
                         Log.d("用户头像路径", mUserimage);
-                        //使用用户自定义的头像
-                        Glide.with(LoginFragment.this).load(mUserimage)
-                                .crossFade()
+                        if (Util.isOnMainThread()) {
+                            //使用用户自定义的头像
+                            Glide.with(LoginFragment.this).load(mUserimage)
+                                    .crossFade()
 //                              .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .error(R.mipmap.avatar_default_login)
-                                .thumbnail(0.1f)// 加载缩略图
-                                .into(userIcon);
+                                    .error(R.mipmap.avatar_default_login)
+                                    .thumbnail(0.1f)// 加载缩略图
+                                    .into(userIcon);
+                        }
+
                     } else {
                         userIcon.setImageResource(R.mipmap.avatar_default_login);
                     }
@@ -357,8 +371,8 @@ public class LoginFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+//        Glide.with(LoginFragment.this).pauseRequests();
 //        App.getRefWatcher().watch(this);
-
     }
 
     private String getImgPathFromCache(String url) {

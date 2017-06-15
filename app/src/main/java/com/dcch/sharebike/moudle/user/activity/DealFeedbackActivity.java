@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.utils.ClickUtils;
@@ -67,7 +68,8 @@ public class DealFeedbackActivity extends BaseActivity {
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                startActivity(new Intent(DealFeedbackActivity.this, MainActivity.class));
+                DealFeedbackActivity.this.finish();
             }
         });
         Intent intent = getIntent();

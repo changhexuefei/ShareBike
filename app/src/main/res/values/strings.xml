@@ -101,7 +101,7 @@
     <string name="authen_ok">注册完成</string>
     <string name="person_info">个人信息</string>
     <string name="recharge_bike_fare">车费充值</string>
-    <string name="unlock_progress">编码开锁</string>
+    <string name="unlock_progress">开锁中</string>
     <string name="usual_address">常用地址</string>
     <string name="app_tip">提示</string>
     <string name="pay_result_callback_msg" formatted="false">微信支付结果：%s</string>
@@ -142,9 +142,9 @@
     <string name="customerService">客户服务</string>
     <string name="customerServicedesc">寻找客服帮助、举报违停或发现故障车，请点击首页右下角客服图标</string>
     <string name="login_immediately">立即登录</string>
-    <string name="_1">1.观察车锁是否亮起</string>
-    <string name="_2">2.提示单车处于故障中，请换其他麒麟单车</string>
-    <string name="_3">3.提示您再次尝试开锁或者超时</string>
+    <string name="_1">1.观察车锁是否亮灯</string>
+    <string name="_2">1.提示单车处于故障中，请换其他麒麟单车</string>
+    <string name="_3">2.提示您再次尝试开锁或者超时</string>
     <string name="_1_tip">如果车锁蓝灯亮起，代表这辆车已经被预约，请换其他麒麟单车使用</string>
     <string name="_2_tip">当前提示下，该辆单车可能处于故障中，正在等待维修人员前往维修。请换其他麒麟单车使用。</string>
     <string name="_3_tip">多次尝试仍开锁失败，请描述现象并提交，麒麟单车会因您的关怀越变越好</string>
@@ -263,4 +263,20 @@
     <string name="kirin_public">麒麟共享单车</string>
     <string name="openLock">扫码开锁</string>
     <string name="needHelp">需要帮助</string>
+    <string name="book_bike">预约用车</string>
+    <string name="complete_register">完成注册即可骑单车</string>
+    <string name="login_biking">立即登录即可骑单车</string>
+    <string name="sorry_no_result">抱歉，未找到结果</string>
+    <string name="server_is_busy">抱歉，服务器正忙！</string>
+    <string name="booking_overfulfil">抱歉，您今天已经预约5次，明天再来吧。</string>
+    <string name="booking">正在预定..</string>
+    <string name="cancel_fail">取消失败！</string>
+    <string name="book_again">预约失败，请重新预约！</string>
+    <string name="no_bikes">当前周围没有车辆</string>
+    <string name="changeIcon_success">头像更改成功!</string>
+    <string name="changeIcon_fail">头像更改失败!</string>
+    <string name="unverified">未认证</string>
+    <string name="verified">已认证</string>
+    <string name="input_name_uuid_fail">对不起，实名验证失败，请输入正确的姓名和身份证号！</string>
+    <string name="route_planning">路线规划中..</string>
 </resources>

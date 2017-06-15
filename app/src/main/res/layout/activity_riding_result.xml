@@ -9,117 +9,120 @@
     tools:context="com.dcch.sharebike.moudle.user.activity.RidingResultActivity">
 
     <include layout="@layout/toolbar"/>
+    <!--//  app:cardBackgroundColor="@color/colorTitle"-->
+    <!--app:contentPaddingLeft="15dp"-->
+    <!--app:contentPaddingRight="15dp"-->
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/card_show"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@+id/toolbar"-->
+    <!--android:background="@color/colorTitle">-->
 
-    <android.support.v7.widget.CardView
+    <RelativeLayout
         android:id="@+id/card_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="15dp"
-        app:cardBackgroundColor="@color/colorTitle"
-        app:cardElevation="10dp"
-        app:contentPaddingLeft="15dp"
-        app:contentPaddingRight="15dp">
+        android:background="@color/colorTitle"
+        android:gravity="center_horizontal">
+
+        <RelativeLayout
+            android:id="@+id/cost_show"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/ride_money"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@mipmap/ride_money_background"/>
+
+            <TextView
+                android:id="@+id/moneyResult_show"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/ride_money"
+                android:drawableLeft="@drawable/money_unit"
+                android:text="0.00"
+                android:textColor="@color/color_ff"
+                android:textSize="40sp"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/sum_cost_show"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/cost_show"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/text4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/journey_cost"
+                android:textColor="@color/color_ff"/>
+
+            <TextView
+                android:id="@+id/ride_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/text4"
+                android:paddingLeft="5dp"
+                android:text="0.00元"
+                android:textColor="@color/color_ff"/>
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sum_cost_show"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center">
 
-            <RelativeLayout
-                android:id="@+id/cost_show"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/text6"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:gravity="center">
+                android:text="@string/coupon_deduction"
+                android:textColor="@color/color_ff"/>
 
-                <ImageView
-                    android:id="@+id/ride_money"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@mipmap/ride_money_background"/>
-
-                <TextView
-                    android:id="@+id/moneyResult_show"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@+id/ride_money"
-                    android:drawableLeft="@drawable/money_unit"
-                    android:text="0.00"
-                    android:textColor="@color/color_ff"
-                    android:textSize="40sp"
-                    android:textStyle="bold"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/sum_cost_show"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/coupon_cost"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/cost_show"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/text4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/journey_cost"
-                    android:textColor="@color/color_ff"/>
-
-                <TextView
-                    android:id="@+id/ride_cost"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/text4"
-                    android:paddingLeft="5dp"
-                    android:text="0.00元"
-                    android:textColor="@color/color_ff"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/sum_cost_show"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="5dp"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/text6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/coupon_deduction"
-                    android:textColor="@color/color_ff"/>
-
-                <TextView
-                    android:id="@+id/coupon_cost"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/text6"
-                    android:paddingLeft="5dp"
-                    android:text="0.50元"
-                    android:textColor="@color/color_ff"/>
-            </RelativeLayout>
+                android:layout_toRightOf="@+id/text6"
+                android:paddingLeft="5dp"
+                android:text="0.50元"
+                android:textColor="@color/color_ff"/>
         </RelativeLayout>
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
+        <!--</RelativeLayout>-->
+    </RelativeLayout>
+    <!--app:contentPaddingLeft="15dp"-->
+    <!--app:contentPaddingRight="15dp"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/card_show"-->
+    <RelativeLayout
         android:id="@+id/riding_time"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@+id/card_show"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="5dp"
-        app:cardElevation="10dp"
-        app:contentPaddingLeft="15dp"
-        app:contentPaddingRight="15dp"
-        app:layout_constraintTop_toBottomOf="@+id/card_show">
+        android:gravity="center_vertical">
 
         <TextView
             android:layout_width="wrap_content"
@@ -132,20 +135,24 @@
             android:id="@+id/rideTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_gravity="center_vertical|end"/>
-    </android.support.v7.widget.CardView>
+    </RelativeLayout>
 
-    <android.support.v7.widget.CardView
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:layout_below="@+id/riding_time"
+        android:background="@color/lineColor"/>
+
+    <RelativeLayout
         android:id="@+id/myWalletCard"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@+id/riding_time"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="5dp"
-        app:cardElevation="10dp"
-        app:contentPaddingLeft="15dp"
-        app:contentPaddingRight="15dp">
+        android:gravity="center_vertical">
 
         <TextView
             android:layout_width="wrap_content"
@@ -158,20 +165,24 @@
             android:id="@+id/balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_gravity="center_vertical|end"/>
-    </android.support.v7.widget.CardView>
+    </RelativeLayout>
 
-    <android.support.v7.widget.CardView
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:layout_below="@+id/myWalletCard"
+        android:background="@color/lineColor"/>
+
+    <RelativeLayout
         android:id="@+id/myDistance"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@+id/myWalletCard"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="5dp"
-        app:cardElevation="10dp"
-        app:contentPaddingLeft="15dp"
-        app:contentPaddingRight="15dp">
+        android:gravity="center_vertical">
 
         <TextView
             android:layout_width="wrap_content"
@@ -184,23 +195,26 @@
             android:id="@+id/ride_dis"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|end"
-            android:text="0.0km"/>
+            android:layout_alignParentRight="true"
+            android:text="0.0(km)"/>
 
 
-    </android.support.v7.widget.CardView>
+    </RelativeLayout>
 
-    <android.support.v7.widget.CardView
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:layout_below="@+id/myDistance"
+        android:background="@color/lineColor"/>
+
+    <RelativeLayout
         android:id="@+id/myKcal"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@+id/myDistance"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="5dp"
-        app:cardElevation="10dp"
-        app:contentPaddingLeft="15dp"
-        app:contentPaddingRight="15dp">
+        android:gravity="center_vertical">
 
         <TextView
             android:layout_width="wrap_content"
@@ -213,11 +227,12 @@
             android:id="@+id/calorimeter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_gravity="center_vertical|end"
-            android:text="0.0kCal"/>
+            android:text="0.0(kCal)"/>
 
 
-    </android.support.v7.widget.CardView>
+    </RelativeLayout>
 
 
     <Button

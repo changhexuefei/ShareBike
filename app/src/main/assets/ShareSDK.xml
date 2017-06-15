@@ -62,7 +62,7 @@
         SortId="1"
         AppKey="246026132"
         AppSecret="0061d439c5f1612f2a5c8d6ebce32628"
-        RedirectUrl="http://www.70bikes.cn"
+        RedirectUrl="http://a.app.qq.com/o/simple.jsp?pkgname=com.dcch.sharebike"
         ShareByAppClient="true"
         Enable="true" />
 

@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.Util;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
@@ -106,7 +107,9 @@ public class PersonInfoActivity extends BaseActivity {
             }
             if (mUserBundle.getUserimage() != null) {
                 LogUtils.d("图片", mUserBundle.getUserimage());
-                Glide.with(this).load(mUserBundle.getUserimage()).error(R.mipmap.avatar_default_login).thumbnail(0.1f).into(userInfoIcon);
+                if (Util.isOnMainThread()) {
+                    Glide.with(this).load(mUserBundle.getUserimage()).error(R.mipmap.avatar_default_login).thumbnail(0.1f).into(userInfoIcon);
+                }
             } else {
                 userInfoIcon.setImageResource(R.mipmap.avatar_default_login);
             }
@@ -299,6 +302,6 @@ public class PersonInfoActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+//        Glide.with(this).pauseRequests();
     }
 }

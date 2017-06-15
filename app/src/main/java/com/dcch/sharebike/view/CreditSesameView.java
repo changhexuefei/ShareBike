@@ -117,7 +117,7 @@ public class CreditSesameView extends View {
         this.mArcProgressPaint.setStyle(Style.STROKE);
         this.mArcProgressPaint.setStrokeCap(Cap.ROUND);
         this.mBitmapPaint = new Paint();
-        this.mBitmapPaint.setStyle(Style.FILL);
+        this.mBitmapPaint.setStyle(Style.STROKE);
         this.mBitmapPaint.setAntiAlias(true);
         this.bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_circle);
         this.pos = new float[2];
