@@ -51,7 +51,7 @@
             android:drawableLeft="@mipmap/my_trip_item_duration_img"
             android:drawablePadding="4dp"
             android:gravity="center_vertical"
-            android:text="有效期至："
+            android:text="@string/time_limit"
             android:textSize="12sp"/>
 
         <TextView

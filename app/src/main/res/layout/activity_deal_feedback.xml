@@ -18,6 +18,7 @@
         android:padding="12dp"/>
 
     <TextView
+        android:visibility="gone"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/iv_drawable"
         android:text="处理中......."

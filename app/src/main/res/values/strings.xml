@@ -101,7 +101,7 @@
     <string name="authen_ok">注册完成</string>
     <string name="person_info">个人信息</string>
     <string name="recharge_bike_fare">车费充值</string>
-    <string name="unlock_progress">开锁中</string>
+    <string name="unlock_progress">扫码开锁</string>
     <string name="usual_address">常用地址</string>
     <string name="app_tip">提示</string>
     <string name="pay_result_callback_msg" formatted="false">微信支付结果：%s</string>
@@ -279,4 +279,25 @@
     <string name="verified">已认证</string>
     <string name="input_name_uuid_fail">对不起，实名验证失败，请输入正确的姓名和身份证号！</string>
     <string name="route_planning">路线规划中..</string>
+    <string name="bike_no_exist">该车辆编号不存在！</string>
+    <string name="using">我正在被使用，请找其他麒麟单车使用！</string>
+    <string name="breakdown">我是故障车，请找其他麒麟单车使用！</string>
+    <string name="biking">我已经被预约，请找其他麒麟单车使用！</string>
+    <string name="address_info">地址信息</string>
+    <string name="bikeNo">自行车编号：</string>
+    <string name="ring">寻车铃</string>
+    <string name="use_biking">预约中</string>
+    <string name="hold_time">保留时间</string>
+    <string name="cancel_use">取消用车</string>
+    <string name="pay_style">支付宝支付</string>
+    <string name="per_30">每30分钟</string>
+    <string name="distance">距离起始位置</string>
+    <string name="footing">步行可到达</string>
+    <string name="booking_bike">预约用车</string>
+    <string name="bike_NO">自行车编号：</string>
+    <string name="riding_time">骑行时间：</string>
+    <string name="riding_cost">骑行花费:</string>
+    <string name="time_limit">有效期至：</string>
+    <string name="report">举报违停</string>
+    <string name="other_question">其他问题</string>
 </resources>

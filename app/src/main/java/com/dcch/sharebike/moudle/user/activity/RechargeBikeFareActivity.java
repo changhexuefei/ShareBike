@@ -204,7 +204,6 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINPAY).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                LogUtils.e("错误", e.getMessage());
                 ToastUtils.showShort(RechargeBikeFareActivity.this, "服务器正忙请稍后！");
             }
 

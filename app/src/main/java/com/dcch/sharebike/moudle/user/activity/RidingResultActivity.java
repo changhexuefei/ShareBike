@@ -99,8 +99,8 @@ public class RidingResultActivity extends BaseActivity {
                     mRideTime.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getTripTime()) + "分钟");
                     mBalance.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getFinalCast()) + "元");
                     mCouponCost.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getCouponAmount()) + "元");
-                    mCalorimeter.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getCalorie()) + "(kCal)");
-                    mRideDis.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getTripDist()) + "(km)");
+                    mCalorimeter.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getCalorie()) + "大卡");
+                    mRideDis.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getTripDist()) + "千米");
                 } else {
                     ToastUtils.showShort(RidingResultActivity.this, "请求失败");
                 }

@@ -9,7 +9,7 @@
     <FrameLayout
         android:id="@+id/nicknameInfo"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
         android:layout_alignParentTop="true"
         android:background="@color/colorHeading">
 
@@ -21,12 +21,10 @@
             android:src="@mipmap/back"/>
 
         <TextView
+            style="@style/title_bar_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/nickName"
-            android:textColor="@color/common"
-            android:textSize="16sp"/>
+            android:text="@string/nickName"/>
 
         <TextView
             android:id="@+id/save_nickname"

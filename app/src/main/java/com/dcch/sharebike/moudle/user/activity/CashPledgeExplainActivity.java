@@ -41,7 +41,7 @@ public class CashPledgeExplainActivity extends BaseActivity {
         mCashPledgeExplainWebView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                return false;
+                return true;
             }
         });
 

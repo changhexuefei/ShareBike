@@ -169,7 +169,6 @@ public class RechargeDepositActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINCASHPAY).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                LogUtils.d("错误", e.getMessage());
                 ToastUtils.showShort(RechargeDepositActivity.this, "服务器正忙请稍后！");
             }
 

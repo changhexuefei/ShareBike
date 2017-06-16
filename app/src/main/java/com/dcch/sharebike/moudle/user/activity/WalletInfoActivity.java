@@ -258,10 +258,11 @@ public class WalletInfoActivity extends BaseActivity {
         mMap.put("total_fee", mTotal_fee);
         mMap.put("refund_fee", mRefund_fee);
         mMap.put("token", mToken);
+        LogUtils.e("错误", uID + "\n" + outRefundNo + "\n" + mTotal_fee + "\n" + mRefund_fee + "\n" + mToken);
         OkHttpUtils.post().url(Api.BASE_URL + Api.REFUNDWXPAY).params(mMap).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                LogUtils.e("错误", e.getMessage());
+//                LogUtils.e("错误", e.getMessage());
             }
 
             @Override

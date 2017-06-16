@@ -80,6 +80,7 @@ import com.dcch.sharebike.moudle.user.activity.RechargeDepositActivity;
 import com.dcch.sharebike.moudle.user.activity.RidingResultActivity;
 import com.dcch.sharebike.moudle.user.activity.UnlockBillPageActivity;
 import com.dcch.sharebike.moudle.user.activity.UnlockProgressActivity;
+import com.dcch.sharebike.moudle.user.activity.UserAgreementActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.netty.NettyClient;
 import com.dcch.sharebike.overlayutil.OverlayManager;
@@ -640,7 +641,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             //创建marker的显示图标
             BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.bike_icon);
             LatLng latLng;
-//            List<Double> doubles = new ArrayList<>();
             for (int i = 0; i < bikeInfos.size(); i++) {
                 bikeInfo = (BikeInfo) bikeInfos.get(i);
                 double lat = bikeInfo.getLatitude();
@@ -1003,10 +1003,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     private void popupDialog() {
         final List<BottomSheetBean> strings = new ArrayList<>();
-        strings.add(new BottomSheetBean(R.mipmap.locking, "开不了锁"));
-        strings.add(new BottomSheetBean(R.mipmap.trouble, "发现车辆故障"));
-        strings.add(new BottomSheetBean(R.mipmap.report, "举报违停"));
-        strings.add(new BottomSheetBean(R.mipmap.other, "其他问题"));
+        strings.add(new BottomSheetBean(R.mipmap.locking, getString(R.string.unlock)));
+        strings.add(new BottomSheetBean(R.mipmap.trouble, getString(R.string.findTrouble)));
+        strings.add(new BottomSheetBean(R.mipmap.agreement, getString(R.string.user_agreement)));
+        strings.add(new BottomSheetBean(R.mipmap.other, getString(R.string.other_question)));
 
         StyledDialog.buildBottomSheetGv(this, "客户服务", strings, "", 2, new MyItemDialogListener() {
             @Override
@@ -1023,8 +1023,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     startActivity(bikeTrouble);
                 }
                 if (position == 2) {
-                    Intent reportIllegalParking = new Intent(MainActivity.this, CustomerServiceActivity.class);
-                    reportIllegalParking.putExtra("name", "2");
+                    Intent reportIllegalParking = new Intent(MainActivity.this, UserAgreementActivity.class);
+//                    reportIllegalParking.putExtra("name", "2");
                     startActivity(reportIllegalParking);
                 }
                 if (position == 3) {
@@ -1054,7 +1054,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                         if (result != null) {
                             result = result.substring(result.length() - 9, result.length());
                             LogUtils.d("锁号", result);
-                            checkBicycleNo(result, mToken);
+                            if (NetUtils.isConnected(App.getContext())) {
+                                checkBicycleNo(result, mToken);
+                            }
                         }
                     }
                     break;
@@ -1083,19 +1085,24 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 try {
                     JSONObject object = new JSONObject(response);
                     String resultStatus = object.optString("resultStatus");
-                    if (resultStatus.equals("0")) {
-                        ToastUtils.showLong(MainActivity.this, "该车辆编号不存在！");
-
-                    } else if (resultStatus.equals("1")) {
-                        Intent intent = new Intent(MainActivity.this, UnlockProgressActivity.class);
-                        startActivity(intent);
-                        openScan(uID, result);
-                    } else if (resultStatus.equals("3")) {
-                        ToastUtils.showLong(MainActivity.this, "我正在被使用，请找其他麒麟单车使用！");
-                    } else if (resultStatus.equals("4")) {
-                        ToastUtils.showLong(MainActivity.this, "我是故障车，请找其他麒麟单车使用！");
-                    } else if (resultStatus.equals("5")) {
-                        ToastUtils.showLong(MainActivity.this, "我已经被预约，请找其他麒麟单车使用！");
+                    switch (resultStatus) {
+                        case "0":
+                            ToastUtils.showLong(MainActivity.this, getString(R.string.bike_no_exist));
+                            break;
+                        case "1":
+                            Intent intent = new Intent(MainActivity.this, UnlockProgressActivity.class);
+                            startActivity(intent);
+                            openScan(uID, result);
+                            break;
+                        case "3":
+                            ToastUtils.showLong(MainActivity.this, getString(R.string.using));
+                            break;
+                        case "4":
+                            ToastUtils.showLong(MainActivity.this, getString(R.string.breakdown));
+                            break;
+                        case "5":
+                            ToastUtils.showLong(MainActivity.this, getString(R.string.biking));
+                            break;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1730,6 +1737,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         if (orderPopupWindow != null) {
             orderPopupWindow.dismiss();
         }
+        isChecked = true;
         getBikeInfo(mCurrentLantitude, mCurrentLongitude);
         mScan.setVisibility(View.VISIBLE);
     }

@@ -10,7 +10,6 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.moudle.user.fragment.CycleFailureFragment;
 import com.dcch.sharebike.moudle.user.fragment.OtherQuestionFragment;
-import com.dcch.sharebike.moudle.user.fragment.ReportIllegalParkingFragment;
 import com.dcch.sharebike.moudle.user.fragment.UnableUnlockFragment;
 
 import butterknife.BindView;
@@ -50,9 +49,9 @@ public class CustomerServiceActivity extends BaseActivity {
             if (name.equals("1")) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.customerService, new CycleFailureFragment()).commit();
             }
-            if (name.equals("2")) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.customerService, new ReportIllegalParkingFragment()).commit();
-            }
+//            if (name.equals("2")) {
+//                getSupportFragmentManager().beginTransaction().replace(R.id.customerService, new ReportIllegalParkingFragment()).commit();
+//            }
             if (name.equals("3")) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.customerService, new OtherQuestionFragment()).commit();
             }

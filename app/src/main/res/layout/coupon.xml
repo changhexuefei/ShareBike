@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:background="@mipmap/coupon_bg"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentLeft="true">
 
         <TextView
             android:textColor="#fa0101"

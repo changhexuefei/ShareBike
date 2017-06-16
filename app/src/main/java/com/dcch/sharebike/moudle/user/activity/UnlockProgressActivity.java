@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -17,6 +18,8 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.ToastUtils;
+import com.dcch.sharebike.view.MarqueeTextView;
 
 import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
@@ -44,6 +47,9 @@ public class UnlockProgressActivity extends BaseActivity {
     int num = 0;
     @BindView(R.id.unlockIcon)
     ImageView mUnlockIcon;
+    @BindView(R.id.menu_desc)
+    MarqueeTextView mMenuDesc;
+
     private Animation mAnimation;
     private Timer mTimer;
     private AlarmManager mAlarmManager;
@@ -82,12 +88,14 @@ public class UnlockProgressActivity extends BaseActivity {
     protected void initData() {
         mToolbar.setTitle("");
         mTitle.setText(getResources().getString(R.string.unlock_progress));
+        mTitle.setTextSize(18);
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mTimer.cancel();
-                finish();
+//                mTimer.cancel();
+//                finish();
+                ToastUtils.showShort(UnlockProgressActivity.this, "正在开锁中，请稍后.....");
             }
         });
 
@@ -152,6 +160,9 @@ public class UnlockProgressActivity extends BaseActivity {
         EventBus.getDefault().register(this);
         mAnimation = AnimationUtils.loadAnimation(this, R.anim.unlock_lock_anim);
         mUnlockIcon.startAnimation(mAnimation);
+        mMenuDesc.setTextColor(getColor(R.color.white));
+        mMenuDesc.setSpeed(5);
+        mMenuDesc.startScroll();
         final Intent main = new Intent(this, MainActivity.class); // 要转向的Activity
         mTimer = new Timer();
         TimerTask task = new TimerTask() {
@@ -162,7 +173,7 @@ public class UnlockProgressActivity extends BaseActivity {
                 UnlockProgressActivity.this.finish();
             }
         };
-        mTimer.schedule(task, 1000 * 40); // 40秒后执行跳转页面的操作
+        mTimer.schedule(task, 1000 * 10); // 40秒后执行跳转页面的操作
     }
 
     @Override
@@ -217,6 +228,14 @@ public class UnlockProgressActivity extends BaseActivity {
 //        mMyProgressBar.setProgress(0);
         mTimer.cancel();
         this.finish();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 }

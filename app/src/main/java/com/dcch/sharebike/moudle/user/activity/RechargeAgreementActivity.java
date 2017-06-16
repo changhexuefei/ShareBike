@@ -42,7 +42,7 @@ public class RechargeAgreementActivity extends BaseActivity {
         mRechargeAgreementWebView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                return false;
+                return true;
             }
         });
 

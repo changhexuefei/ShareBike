@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="2017-02-22  17:00"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         android:textSize="14sp"/>
 
     <LinearLayout
@@ -26,7 +26,7 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="自行车编号："
+            android:text="@string/bike_NO"
             android:textSize="12sp"/>
 
         <TextView
@@ -57,7 +57,7 @@
                 android:drawableLeft="@mipmap/my_trip_item_duration_img"
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
-                android:text="骑行时间："
+                android:text="@string/riding_time"
                 android:textSize="12sp"/>
 
             <TextView
@@ -81,7 +81,7 @@
                 android:drawableLeft="@mipmap/my_trip_item_cost_img"
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
-                android:text="骑行花费:"
+                android:text="@string/riding_cost"
                 android:textSize="12sp"/>
 
             <TextView

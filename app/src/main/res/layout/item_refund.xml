@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/refund_area"
-                android:background="#ffffff"
+                android:background="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -50,6 +50,6 @@
             android:layout_weight="1"
             android:background="@color/colorTitle"
             android:text="@string/refund_cash_pledge"
-            android:textColor="#ffffff"/>
+            android:textColor="@color/white"/>
     </LinearLayout>
 </RelativeLayout>

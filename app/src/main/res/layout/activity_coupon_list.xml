@@ -22,12 +22,10 @@
             android:src="@mipmap/back"/>
 
         <TextView
+            style="@style/title_bar_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/my_coupon"
-            android:textColor="@color/common"
-            android:textSize="16sp"/>
+            android:text="@string/my_coupon"/>
 
         <ImageView
             android:id="@+id/coupon_rule"

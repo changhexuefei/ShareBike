@@ -41,7 +41,7 @@ public class RefundExplainActivity extends BaseActivity {
         mRefundExplainWebView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                return false;
+                return true;
             }
         });
     }

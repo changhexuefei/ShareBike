@@ -131,7 +131,7 @@ public class DealFeedbackActivity extends BaseActivity {
             @Override
             public void onAnimationEnd(Animator animation) {
 //                mReminder.setText("");
-                mReminder.setText("结束了");
+//                mReminder.setText("结束了");
             }
 
             @Override

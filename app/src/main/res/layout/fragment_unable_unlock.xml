@@ -2,7 +2,7 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="#ffffff"
+              android:background="@color/white"
               android:focusable="true"
               android:focusableInTouchMode="true"
               tools:context="com.dcch.sharebike.moudle.user.fragment.UnableUnlockFragment">
@@ -22,7 +22,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="30dp"
                 android:text="@string/unlock"
-                android:textColor="#000000"
+                android:textColor="@color/black"
                 android:textSize="18sp"/>
 
             <RelativeLayout
@@ -32,7 +32,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:background="#eae8e8">
+                android:background="@color/trouble_camera_color">
 
                 <ImageView
                     android:id="@+id/report_issue"
@@ -93,7 +93,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/_2"
-                android:textColor="#000000"
+                android:textColor="@color/black"
                 android:textSize="16sp"/>
 
             <TextView
@@ -104,7 +104,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/_2_tip"
-                android:textColor="#000000"/>
+                android:textColor="@color/black"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -112,7 +112,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/_3"
-                android:textColor="#000000"
+                android:textColor="@color/black"
                 android:textSize="16sp"/>
 
             <TextView
@@ -122,7 +122,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/_3_tip"
-                android:textColor="#000000"/>
+                android:textColor="@color/black"/>
 
             <com.louisgeek.multiedittextviewlib.MultiEditInputView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -145,11 +145,11 @@
                 android:layout_gravity="center"
                 android:layout_margin="15dp"
                 android:layout_marginBottom="20dp"
-                android:background="#c6bfbf"
+                android:background="@color/btn_bg"
                 android:enabled="false"
                 android:gravity="center"
                 android:text="@string/upload"
-                android:textColor="#ffffff"
+                android:textColor="@color/white"
                 android:textSize="18sp"/>
 
         </LinearLayout>

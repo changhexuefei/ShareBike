@@ -21,8 +21,8 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="30dp"
                 android:text="@string/findTrouble"
-                android:textColor="#000000"
-                android:textSize="18sp" />
+                android:textColor="@color/black"
+                android:textSize="18sp"/>
 
             <RelativeLayout
                 android:id="@+id/scan_code"
@@ -31,7 +31,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:background="#eae8e8">
+                android:background="@color/trouble_camera_color">
 
                 <ImageView
                     android:id="@+id/report_issue"
@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
-                    android:src="@mipmap/report_issue_scan_qrcode" />
+                    android:src="@mipmap/report_issue_scan_qrcode"/>
 
                 <TextView
                     android:id="@+id/cf_bike_code"
@@ -48,7 +48,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
                     android:layout_toRightOf="@+id/report_issue"
-                    android:hint="@string/scan_tips" />
+                    android:hint="@string/scan_tips"/>
 
                 <TextView
                     android:id="@+id/tips"
@@ -60,7 +60,7 @@
                     android:text="@string/scan_tip_one"
                     android:textColor="@color/colorTitle"
                     android:textSize="10sp"
-                    android:visibility="invisible" />
+                    android:visibility="invisible"/>
 
             </RelativeLayout>
 
@@ -71,21 +71,21 @@
                 android:layout_marginTop="15dp">
 
                 <CheckBox
-                    android:tag="1"
                     android:id="@+id/questionOne"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
-                    android:text="@string/option_one" />
+                    android:tag="1"
+                    android:text="@string/option_one"/>
 
                 <CheckBox
-                    android:tag="2"
                     android:id="@+id/questionTwo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/option_two" />
+                    android:tag="2"
+                    android:text="@string/option_two"/>
 
             </LinearLayout>
 
@@ -95,21 +95,21 @@
                 android:layout_height="30dp">
 
                 <CheckBox
-                    android:tag="3"
                     android:id="@+id/questionThere"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
-                    android:text="@string/option_there" />
+                    android:tag="3"
+                    android:text="@string/option_there"/>
 
                 <CheckBox
-                    android:tag="4"
                     android:id="@+id/questionFour"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/option_four" />
+                    android:tag="4"
+                    android:text="@string/option_four"/>
 
 
             </LinearLayout>
@@ -121,21 +121,21 @@
 
 
                 <CheckBox
-                    android:tag="5"
                     android:id="@+id/questionFive"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
-                    android:text="@string/option_five" />
+                    android:tag="5"
+                    android:text="@string/option_five"/>
 
                 <CheckBox
-                    android:tag="6"
                     android:id="@+id/questionSix"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/option_six" />
+                    android:tag="6"
+                    android:text="@string/option_six"/>
 
             </LinearLayout>
 
@@ -145,13 +145,13 @@
                 android:layout_height="30dp">
 
                 <CheckBox
-                    android:tag="7"
                     android:id="@+id/questionSeven"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
-                    android:text="@string/option_seven" />
+                    android:tag="7"
+                    android:text="@string/option_seven"/>
             </LinearLayout>
 
             <RelativeLayout
@@ -164,7 +164,7 @@
                     android:layout_height="80dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="30dp"
-                    android:src="@mipmap/report_violation_default" />
+                    android:src="@mipmap/report_violation_default"/>
 
                 <TextView
                     android:layout_width="100dp"
@@ -173,7 +173,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@+id/cycle_photo"
                     android:text="@string/hint"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"/>
             </RelativeLayout>
 
             <com.louisgeek.multiedittextviewlib.MultiEditInputView
@@ -187,20 +187,20 @@
                 android:padding="5dp"
                 app:contentHeight="100dp"
                 app:hintText="备注"
-                app:maxCount="140" />
+                app:maxCount="140"/>
 
             <TextView
-                android:enabled="false"
                 android:id="@+id/upload"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_margin="15dp"
-                android:background="#c6bfbf"
+                android:background="@color/btn_bg"
+                android:enabled="false"
                 android:gravity="center"
                 android:text="@string/upload"
-                android:textColor="#ffffff"
-                android:textSize="18sp" />
+                android:textColor="@color/white"
+                android:textSize="18sp"/>
 
         </LinearLayout>
 

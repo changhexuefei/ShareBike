@@ -1,6 +1,5 @@
 package com.dcch.sharebike.moudle.login.activity;
 
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
@@ -11,7 +10,6 @@ import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.view.ProgressWebview;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class AgreementActivity extends BaseActivity {
 
@@ -43,15 +41,10 @@ public class AgreementActivity extends BaseActivity {
         mAgreementWebView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                return false;
+                return true;
             }
         });
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
+
 }

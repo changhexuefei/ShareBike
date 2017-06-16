@@ -20,13 +20,10 @@
             android:src="@drawable/back"/>
 
         <TextView
+            style="@style/title_bar_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="@string/openLock"
-            android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:text="@string/openLock"/>
 
         <TextView
             android:id="@+id/help_tip"
@@ -85,7 +82,7 @@
 
         <TextView
             android:id="@+id/tips_one"
-            android:layout_width="wrap_content"
+            android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/capture_crop_view"
             android:layout_centerHorizontal="true"

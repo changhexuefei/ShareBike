@@ -196,7 +196,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="0.0(km)"/>
+            android:text="0.0千米"/>
 
 
     </RelativeLayout>
@@ -229,7 +229,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_gravity="center_vertical|end"
-            android:text="0.0(kCal)"/>
+            android:text="0.0卡路里"/>
 
 
     </RelativeLayout>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/pop_layout"
-              android:background="#ffffff"
+              android:background="@color/white"
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
 
@@ -18,12 +18,11 @@
             android:drawableLeft="@mipmap/bike_info_board_location"
             android:drawablePadding="4dp"
             android:padding="15dp"
-            android:text="地址信息"/>
+            android:text="@string/address_info"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/lineColor"
-            />
+            android:background="@color/lineColor"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,7 +49,7 @@
                     android:layout_below="@+id/unitPrice"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="2dp"
-                    android:text="每30分钟"/>
+                    android:text="@string/per_30"/>
 
 
             </RelativeLayout>
@@ -75,7 +74,7 @@
                     android:layout_below="@+id/distance"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="2dp"
-                    android:text="距离起始位置"/>
+                    android:text="@string/distance"/>
 
 
             </RelativeLayout>
@@ -100,7 +99,7 @@
                     android:layout_below="@+id/arrivalTime"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="2dp"
-                    android:text="步行可到达"/>
+                    android:text="@string/footing"/>
 
 
             </RelativeLayout>
@@ -113,8 +112,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorTitle"
-            android:text="预约用车"
-            android:textColor="#ffffff"/>
+            android:text="@string/booking_bike"
+            android:textColor="@color/white"/>
 
     </LinearLayout>
 

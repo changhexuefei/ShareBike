@@ -391,7 +391,8 @@
         </activity>
         <activity
             android:name=".moudle.user.activity.UnlockProgressActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            />
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"

@@ -17,8 +17,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="30dp"
-            android:text="举报违停，加信用分"
-            android:textColor="#000000"
+            android:text="@string/report"
+            android:textColor="@color/black"
             android:textSize="18sp" />
 
         <RelativeLayout
@@ -28,7 +28,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
-            android:background="#eae8e8">
+            android:background="@color/trouble_camera_color">
 
             <ImageView
                 android:id="@+id/report_issue"
@@ -105,11 +105,11 @@
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_margin="15dp"
-            android:background="#c6bfbf"
+            android:background="@color/btn_bg"
             android:enabled="false"
             android:gravity="center"
             android:text="@string/upload"
-            android:textColor="#ffffff"
+            android:textColor="@color/white"
             android:textSize="18sp" />
 
     </LinearLayout>

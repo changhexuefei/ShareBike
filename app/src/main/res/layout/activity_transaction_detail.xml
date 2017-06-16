@@ -20,13 +20,10 @@
             android:src="@mipmap/back"/>
 
         <TextView
+            style="@style/title_bar_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="@string/transaction_detail"
-            android:textColor="@color/common"
-            android:textSize="@dimen/title_size"/>
+            android:text="@string/transaction_detail"/>
 
         <TextView
             android:id="@+id/refundExplain"

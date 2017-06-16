@@ -47,7 +47,7 @@ public class ProgressWebview extends WebView {
 
     private void initView(Context context) {
         //开启js脚本支持
-        getSettings().setJavaScriptEnabled(true);
+        getSettings().setJavaScriptEnabled(false);
         //创建进度条
         progressbar = new ProgressBar(context, null,
                 android.R.attr.progressBarStyleHorizontal);

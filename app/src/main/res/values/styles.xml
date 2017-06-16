@@ -217,5 +217,12 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
+    <style name="title_bar_style">
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">@dimen/titleSize</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textColor">@color/common</item>
+    </style>
 
 </resources>
