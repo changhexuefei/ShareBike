@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.moudle.home.content.MyContent;
-import com.dcch.sharebike.moudle.login.activity.IdentityAuthentication;
+import com.dcch.sharebike.moudle.login.activity.IdentityAuthenticationActivity;
 import com.dcch.sharebike.moudle.user.activity.WalletInfoActivity;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
@@ -22,7 +22,6 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.simple.eventbus.EventBus;
 
 
 public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
@@ -47,8 +46,6 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
             }
         }
 
-
-        EventBus.getDefault().register(this);
 //        setContentView(R.layout.pay_result);
         api = WXAPIFactory.createWXAPI(this, MyContent.APP_ID);
         api.handleIntent(getIntent(), this);
@@ -73,14 +70,16 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
             if (resp.errCode == 0) {
                 if (mStatus == 0) {
                     LogUtils.d("走着了","zheli");
-                    Intent intent = new Intent(WXPayEntryActivity.this, IdentityAuthentication.class);
+                    Intent intent = new Intent(WXPayEntryActivity.this, IdentityAuthenticationActivity.class);
                     intent.putExtra("PAYCODE", resp.errCode + "");
                     ToastUtils.showShort(App.getContext(), "支付成功！");
+                    SPUtils.put(App.getContext(), "cashStatus", 1);
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent(WXPayEntryActivity.this, WalletInfoActivity.class);
                     intent.putExtra("PAYCODE", resp.errCode + "");
                     ToastUtils.showShort(App.getContext(), "支付成功！");
+                    SPUtils.put(App.getContext(), "cashStatus", 1);
                     startActivity(intent);
                 }
                 this.finish();
@@ -97,7 +96,6 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 
 }

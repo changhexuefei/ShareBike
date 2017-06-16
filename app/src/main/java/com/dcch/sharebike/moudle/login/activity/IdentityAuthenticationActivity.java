@@ -46,7 +46,7 @@ import okhttp3.Call;
  * 实名认证页面
  */
 
-public class IdentityAuthentication extends BaseActivity {
+public class IdentityAuthenticationActivity extends BaseActivity {
 
     @BindView(R.id.IDCardNo)
     EditText IDCardNo;
@@ -80,7 +80,7 @@ public class IdentityAuthentication extends BaseActivity {
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent backToLoginMain = new Intent(IdentityAuthentication.this, MainActivity.class);
+                Intent backToLoginMain = new Intent(IdentityAuthenticationActivity.this, MainActivity.class);
                 startActivity(backToLoginMain);
                 finish();
             }
@@ -186,20 +186,23 @@ public class IdentityAuthentication extends BaseActivity {
             OkHttpUtils.post().url(Api.BASE_URL + Api.UPDATEUSERSTATUS).params(map).build().execute(new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
-                    Log.e("错误", e.getMessage());
-                    ToastUtils.showShort(IdentityAuthentication.this, getString(R.string.server_is_busy));
+                    if (e != null && !e.equals("")) {
+                        LogUtils.e("错误", e.getMessage());
+                    }
+                    ToastUtils.showShort(IdentityAuthenticationActivity.this, getString(R.string.server_is_busy));
                 }
 
                 @Override
                 public void onResponse(String response, int id) {
                     Log.d("实名认证", response);
                     if (JsonUtils.isSuccess(response)) {
-                        Intent authentication = new Intent(IdentityAuthentication.this, AuthenticationOkActivity.class);
+                        Intent authentication = new Intent(IdentityAuthenticationActivity.this, AuthenticationOkActivity.class);
+                        SPUtils.put(App.getContext(),"status",1);
                         startActivity(authentication);
                         finish();
 
                     } else {
-                        ToastUtils.showShort(IdentityAuthentication.this, getString(R.string.input_name_uuid_fail));
+                        ToastUtils.showShort(IdentityAuthenticationActivity.this, getString(R.string.input_name_uuid_fail));
                     }
                 }
             });
@@ -212,7 +215,7 @@ public class IdentityAuthentication extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent backToLoginMain = new Intent(IdentityAuthentication.this, MainActivity.class);
+        Intent backToLoginMain = new Intent(IdentityAuthenticationActivity.this, MainActivity.class);
         startActivity(backToLoginMain);
         finish();
     }

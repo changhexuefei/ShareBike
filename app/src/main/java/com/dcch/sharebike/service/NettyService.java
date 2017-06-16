@@ -148,7 +148,7 @@ public class NettyService extends Service implements NettyListener {
         int len = byteBuf.writerIndex();
         LogUtils.d("netty", s.trim() + "\n" + len);
         //根据不同的返回值，来执行相应的操作
-        if (s.trim() != null && !s.trim().equals("")) {
+        if  (s.trim() != null && !s.trim().equals("")) {
             if (s.trim().equals("OpenSuccess")) {
                 EventBus.getDefault().post(new MessageEvent(), "on");
             } else if (s.trim().equals("OpenFailure")) {

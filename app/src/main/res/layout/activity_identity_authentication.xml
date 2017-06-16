@@ -4,7 +4,7 @@
                 android:id="@+id/activity_identity_authentication"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context="com.dcch.sharebike.moudle.login.activity.IdentityAuthentication">
+                tools:context="com.dcch.sharebike.moudle.login.activity.IdentityAuthenticationActivity">
 
     <include layout="@layout/toolbar"/>
 

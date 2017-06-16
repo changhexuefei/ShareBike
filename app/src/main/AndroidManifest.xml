@@ -194,7 +194,7 @@
             android:name=".moudle.login.activity.RechargeActivity"
             android:launchMode="singleTask"/>
         <activity
-            android:name=".moudle.login.activity.IdentityAuthentication"
+            android:name=".moudle.login.activity.IdentityAuthenticationActivity"
             android:launchMode="singleTask"/>
         <activity
             android:name=".moudle.user.activity.PersonInfoActivity"

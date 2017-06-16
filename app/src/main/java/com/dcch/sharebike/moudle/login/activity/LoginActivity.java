@@ -269,7 +269,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     UserInfo userInfo = gson.fromJson(response, UserInfo.class);
                     ToastUtils.showLong(LoginActivity.this, "验证码验证成功！");
                     if (userInfo.getCashStatus() == 1 && userInfo.getStatus() == 0) {
-                        startActivity(new Intent(LoginActivity.this, IdentityAuthentication.class));
+                        startActivity(new Intent(LoginActivity.this, IdentityAuthenticationActivity.class));
                     } else if (userInfo.getCashStatus() == 0 && userInfo.getStatus() == 0) {
                         startActivity(new Intent(LoginActivity.this, RechargeActivity.class));
                     } else if (userInfo.getCashStatus() == 0 && userInfo.getStatus() == 1) {

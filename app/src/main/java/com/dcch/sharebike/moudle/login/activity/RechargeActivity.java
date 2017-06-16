@@ -259,7 +259,8 @@ public class RechargeActivity extends BaseActivity {
                     if (TextUtils.equals(resultStatus, "9000")) {
                         Toast.makeText(RechargeActivity.this, "支付成功",
                                 Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(RechargeActivity.this, IdentityAuthentication.class));
+                        SPUtils.put(App.getContext(), "cashStatus", 1);
+                        startActivity(new Intent(RechargeActivity.this, IdentityAuthenticationActivity.class));
                         finish();
 
                     } else {

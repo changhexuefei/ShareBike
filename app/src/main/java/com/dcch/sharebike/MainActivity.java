@@ -67,7 +67,7 @@ import com.dcch.sharebike.moudle.home.bean.BookingBikeInfo;
 import com.dcch.sharebike.moudle.home.bean.RidingInfo;
 import com.dcch.sharebike.moudle.login.activity.ClickCameraPopupActivity;
 import com.dcch.sharebike.moudle.login.activity.ClickMyHelpActivity;
-import com.dcch.sharebike.moudle.login.activity.IdentityAuthentication;
+import com.dcch.sharebike.moudle.login.activity.IdentityAuthenticationActivity;
 import com.dcch.sharebike.moudle.login.activity.LoginActivity;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.moudle.login.activity.PropagandaPosterActivity;
@@ -565,7 +565,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                             } else if (cashStatus == 0 && status == 0) {
                                 startActivity(new Intent(this, RechargeActivity.class));
                             } else if (cashStatus == 1 && status == 0) {
-                                startActivity(new Intent(this, IdentityAuthentication.class));
+                                startActivity(new Intent(this, IdentityAuthenticationActivity.class));
                             } else if (cashStatus == 0 && status == 1) {
                                 startActivity(new Intent(this, RechargeDepositActivity.class));
                             }
@@ -745,7 +745,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                                 startActivity(new Intent(MainActivity.this, RechargeActivity.class));
                                 clearDrawingOverlay();
                             } else if (cashStatus == 1 && status == 0) {
-                                startActivity(new Intent(MainActivity.this, IdentityAuthentication.class));
+                                startActivity(new Intent(MainActivity.this, IdentityAuthenticationActivity.class));
                                 clearDrawingOverlay();
                             } else if (cashStatus == 0 && status == 1) {
                                 startActivity(new Intent(MainActivity.this, RechargeDepositActivity.class));
@@ -1467,7 +1467,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                         LogUtils.d("netty", "我建立了长连接");
                     }
                 }
-                LogUtils.d("hehe", uID + "\n" + mToken + "\n" + status + "\n" + cashStatus);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
