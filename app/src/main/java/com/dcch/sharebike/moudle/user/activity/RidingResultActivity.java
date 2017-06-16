@@ -84,7 +84,10 @@ public class RidingResultActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.ORDERBALANCE).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-
+                if (e != null && !e.equals("")) {
+                    LogUtils.e(e.getMessage());
+                }
+                ToastUtils.showShort(RidingResultActivity.this, "服务器忙，请稍后");
             }
 
             @Override

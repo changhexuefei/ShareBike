@@ -50,6 +50,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 
+import static com.dcch.sharebike.R.string.server_tip;
+
 public class RechargeBikeFareActivity extends BaseActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     @BindView(R.id.input_moneySum)
     EditText input_moneySum;
@@ -204,7 +206,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINPAY).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(RechargeBikeFareActivity.this, "服务器正忙请稍后！");
+                ToastUtils.showShort(RechargeBikeFareActivity.this, getString(R.string.server_tip));
             }
 
             @Override
