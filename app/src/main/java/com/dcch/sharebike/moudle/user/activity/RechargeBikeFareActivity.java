@@ -50,8 +50,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 
-import static com.dcch.sharebike.R.string.server_tip;
-
 public class RechargeBikeFareActivity extends BaseActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     @BindView(R.id.input_moneySum)
     EditText input_moneySum;
