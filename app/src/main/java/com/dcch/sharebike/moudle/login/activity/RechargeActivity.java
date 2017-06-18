@@ -71,7 +71,6 @@ public class RechargeActivity extends BaseActivity {
     @BindView(R.id.stepsView)
     StepsView mStepsView;
     private String userID;
-    private String mToken;
     private String orderbodydesc = "交押金";
     private String subjectdes = "押金";
 
@@ -100,7 +99,7 @@ public class RechargeActivity extends BaseActivity {
             String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
             JSONObject object = new JSONObject(userDetail);
             int id = object.optInt("id");
-            mToken = object.optString("token");
+            String token = object.optString("token");
             userID = String.valueOf(id);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -142,7 +141,7 @@ public class RechargeActivity extends BaseActivity {
                         if (moneySum != null && userID != null && outTradeNo != null) {
                             aliPayWay(userID, outTradeNo, moneySum, orderbodydesc, subjectdes);
                         } else {
-                            ToastUtils.showShort(App.getContext(), "服务忙，请稍后重试");
+                            ToastUtils.showShort(RechargeActivity.this, getString(R.string.server_tip));
                         }
                     } else if (weixinCheckbox.isChecked()) {
 
@@ -158,7 +157,7 @@ public class RechargeActivity extends BaseActivity {
                             weiXinPayWay(outTradeNo, subjectdes, userID, ipAddress, moneySum);
 
                         } else {
-                            ToastUtils.showShort(App.getContext(), "服务忙，请稍后重试");
+                            ToastUtils.showShort(App.getContext(), getString(R.string.server_tip));
                         }
                     }
                 } else {
@@ -181,8 +180,8 @@ public class RechargeActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINCASHPAY).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                LogUtils.d("错误", e.getMessage());
-                ToastUtils.showShort(RechargeActivity.this, "服务器正忙请稍后！");
+
+                ToastUtils.showShort(RechargeActivity.this, getString(R.string.server_tip));
             }
 
             @Override
@@ -202,7 +201,7 @@ public class RechargeActivity extends BaseActivity {
                     req.extData = "app data"; // optional
                     msgApi.sendReq(req);
                 } else {
-                    ToastUtils.showShort(RechargeActivity.this, "服务器正忙请稍后！");
+                    ToastUtils.showShort(RechargeActivity.this, getString(R.string.server_tip));
                 }
             }
         });
@@ -219,7 +218,8 @@ public class RechargeActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAYCASH).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                LogUtils.d(e.getMessage());
+
+                ToastUtils.showShort(RechargeActivity.this, getString(R.string.server_tip));
             }
 
             @Override

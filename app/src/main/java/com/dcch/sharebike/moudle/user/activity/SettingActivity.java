@@ -86,7 +86,7 @@ public class SettingActivity extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                ToastUtils.showShort(this, "正在检查更新");
+                ToastUtils.showShort(this, getString(R.string.checkVersion));
                 if (NetUtils.isConnected(this)) {
                     checkUpDate();
                 } else {
@@ -175,7 +175,7 @@ public class SettingActivity extends BaseActivity {
                     }
                     updManager.showUpdateInfo(SettingActivity.this, result);
                 } else {
-                    showTip("请求更新失败！更新错误码：" + errorcode);
+                    showTip("请求更新失败");
                 }
             }
         };

@@ -167,7 +167,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                             aliPayWay(uID, outTradeNo, rechargeNumber, orderbody, subject);
 
                         } else {
-                            ToastUtils.showShort(App.getContext(), "服务忙，请稍后重试");
+                            ToastUtils.showShort(RechargeBikeFareActivity.this, getString(R.string.server_tip));
                         }
                     } else if (rbfWeixinCheckbox.isChecked()) {
                         //调取微信的支付方式
@@ -182,7 +182,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                         if (uID != null && mOutTradeNo != null && ipAddress != null) {
                             weiXinPayWay(mOutTradeNo, subject, uID, ipAddress, rechargeNumber);
                         } else {
-                            ToastUtils.showShort(App.getContext(), "服务忙，请稍后重试");
+                            ToastUtils.showShort(RechargeBikeFareActivity.this, getString(R.string.server_tip));
                         }
                     }
                 } else {
@@ -225,7 +225,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                     LogUtils.d("微信支付", req.appId + "\n" + req.partnerId + "\n" + req.prepayId + "\n" + req.nonceStr + "\n" + req.timeStamp + "\n" + req.packageValue + "\n" + req.sign + "\n" + req.extData);
                     mMsgApi.sendReq(req);
                 } else {
-                    ToastUtils.showShort(RechargeBikeFareActivity.this, "服务器正忙请稍后！");
+                    ToastUtils.showShort(RechargeBikeFareActivity.this, getString(R.string.server_tip));
                 }
             }
         });
@@ -242,7 +242,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAY).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                LogUtils.d(e.getMessage());
+                ToastUtils.showShort(RechargeBikeFareActivity.this, getString(R.string.server_tip));
             }
 
             @Override

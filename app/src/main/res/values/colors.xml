@@ -19,6 +19,8 @@
     <color name="bg">#CDB5CD</color>
     <color name="navpage">#FFE1E8EB</color>
     <color name="btn_bg">#c6bfbf</color>
+    <!--<color name="btn_bg_other">#F05B47</color>-->
+    <color name="btn_bg_other">#F8941D</color>
     <color name="white">#ffffff</color>
     <color name="edittext_bg">#dad5d5</color>
     <color name="text_hint_color">#c2baba</color>

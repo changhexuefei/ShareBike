@@ -1,7 +1,6 @@
 package com.dcch.sharebike.moudle.login.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -64,8 +63,8 @@ public class IdentityAuthenticationActivity extends BaseActivity {
     private String cardNum;
     private String uID;
     private String mToken;
-    private String encryptionName;
-    private String encryptionIDCARD;
+//    private String encryptionName;
+//    private String encryptionIDCARD;
 
     @Override
     protected int getLayoutId() {
@@ -123,13 +122,13 @@ public class IdentityAuthenticationActivity extends BaseActivity {
                     cardNum = editable.toString().trim();
                     if (!InPutUtils.IDCardValidate(cardNum)) {
                         btnAuthentication.setEnabled(false);
-                        btnAuthentication.setBackgroundColor(Color.parseColor("#c6bfbf"));
+                        btnAuthentication.setBackgroundColor(getColor(R.color.btn_bg));
                     } else if (TextUtils.isEmpty(realName)) {
                         btnAuthentication.setEnabled(false);
-                        btnAuthentication.setBackgroundColor(Color.parseColor("#c6bfbf"));
+                        btnAuthentication.setBackgroundColor(getColor(R.color.btn_bg));
                     } else if (InPutUtils.IDCardValidate(cardNum) && !TextUtils.isEmpty(realName)) {
                         btnAuthentication.setEnabled(true);
-                        btnAuthentication.setBackgroundColor(Color.parseColor("#F8941D"));
+                        btnAuthentication.setBackgroundColor(getColor(R.color.btn_bg_other));
                     }
                 }
             }
@@ -147,7 +146,7 @@ public class IdentityAuthenticationActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (!editable.toString().trim().equals("") && editable != null) {
+                if (!editable.toString().trim().equals("")) {
                     realName = editable.toString().trim();
                 }
             }
@@ -186,10 +185,8 @@ public class IdentityAuthenticationActivity extends BaseActivity {
             OkHttpUtils.post().url(Api.BASE_URL + Api.UPDATEUSERSTATUS).params(map).build().execute(new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
-                    if (e != null && !e.equals("")) {
-                        LogUtils.e("错误", e.getMessage());
-                    }
-                    ToastUtils.showShort(IdentityAuthenticationActivity.this, getString(R.string.server_is_busy));
+
+                    ToastUtils.showShort(IdentityAuthenticationActivity.this, getString(R.string.server_tip));
                 }
 
                 @Override

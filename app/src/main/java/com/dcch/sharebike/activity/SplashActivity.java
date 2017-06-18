@@ -80,6 +80,18 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (NetUtils.isNetworkAvailable(App.getContext())) {
+            if (SPUtils.isFirst()) {
+//                handler.sendEmptyMessageDelayed(SWITCH_GUIDACTIVITY, 1500);
+                EventBus.getDefault().post(new MessageEvent(), "guide");
+            } else {
+//                handler.sendEmptyMessageDelayed(SWITCH_MAINACTIVITY, 1500);
+                EventBus.getDefault().post(new MessageEvent(), "main");
+            }
+        } else {
+//            ToastUtils.showLong(SplashActivity.this, getString(R.string.coupon_tip_two));
+            NetUtils.checkNetwork(this);
+        }
     }
 
     @Override
@@ -121,17 +133,6 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        if (NetUtils.isNetworkAvailable(App.getContext())) {
-            if (SPUtils.isFirst()) {
-//                handler.sendEmptyMessageDelayed(SWITCH_GUIDACTIVITY, 1500);
-                EventBus.getDefault().post(new MessageEvent(), "guide");
-            } else {
-//                handler.sendEmptyMessageDelayed(SWITCH_MAINACTIVITY, 1500);
-                EventBus.getDefault().post(new MessageEvent(), "main");
-            }
-        } else {
-//            ToastUtils.showLong(SplashActivity.this, getString(R.string.coupon_tip_two));
-            NetUtils.checkNetwork(this);
-        }
+
     }
 }

@@ -65,6 +65,7 @@ import com.dcch.sharebike.moudle.home.bean.BikeInfo;
 import com.dcch.sharebike.moudle.home.bean.BikeRentalOrderInfo;
 import com.dcch.sharebike.moudle.home.bean.BookingBikeInfo;
 import com.dcch.sharebike.moudle.home.bean.RidingInfo;
+import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.moudle.login.activity.ClickCameraPopupActivity;
 import com.dcch.sharebike.moudle.login.activity.ClickMyHelpActivity;
 import com.dcch.sharebike.moudle.login.activity.IdentityAuthenticationActivity;
@@ -87,6 +88,7 @@ import com.dcch.sharebike.overlayutil.OverlayManager;
 import com.dcch.sharebike.overlayutil.WalkingRouteOverlay;
 import com.dcch.sharebike.service.GPSService;
 import com.dcch.sharebike.service.NettyService;
+import com.dcch.sharebike.utils.AES;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
@@ -316,9 +318,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 .execute(new StringCallback() {
                              @Override
                              public void onError(Call call, Exception e, int id) {
-                                 if (e != null) {
+                                 if (e != null && !e.equals("")) {
                                      LogUtils.e(e.getMessage());
                                  }
+                                 ToastUtils.showShort(MainActivity.this, getString(R.string.server_tip));
                              }
 
                              @Override
@@ -538,7 +541,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     startActivityForResult(seek, 1);
                 }
                 if (!isClick) {
-                    ToastUtils.showShort(MainActivity.this, "在预约和骑行过程中，此功能不可用！");
+                    ToastUtils.showShort(MainActivity.this, getString(R.string.booking_riding_tip));
                 }
                 break;
 
@@ -557,29 +560,24 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                if (NetUtils.isConnected(App.getContext())) {
-                    if (SPUtils.isLogin()) {
-                        if (mToken != null) {
-                            if (cashStatus == 1 && status == 1) {
-                                checkAggregate(uID, mToken);
-                            } else if (cashStatus == 0 && status == 0) {
-                                startActivity(new Intent(this, RechargeActivity.class));
-                            } else if (cashStatus == 1 && status == 0) {
-                                startActivity(new Intent(this, IdentityAuthenticationActivity.class));
-                            } else if (cashStatus == 0 && status == 1) {
-                                startActivity(new Intent(this, RechargeDepositActivity.class));
-                            }
+                if (SPUtils.isLogin()) {
+                    if (mToken != null) {
+                        if (cashStatus == 1 && status == 1) {
+                            checkAggregate(uID, mToken);
+                        } else if (cashStatus == 0 && status == 0) {
+                            startActivity(new Intent(this, RechargeActivity.class));
+                        } else if (cashStatus == 1 && status == 0) {
+                            startActivity(new Intent(this, IdentityAuthenticationActivity.class));
+                        } else if (cashStatus == 0 && status == 1) {
+                            startActivity(new Intent(this, RechargeDepositActivity.class));
                         }
-                    } else {
-//                没有登录的情况设置Activity
-                        mBtnMyHelp.setVisibility(View.GONE);
-                        mBtnMyLocation.setVisibility(View.GONE);
-                        mScan.setVisibility(View.GONE);
-                        startActivity(new Intent(MainActivity.this, ClickCameraPopupActivity.class));
                     }
-
                 } else {
-                    ToastUtils.showShort(App.getContext(), "网络无法连接，请检查网络连接！");
+//                没有登录的情况设置Activity
+                    mBtnMyHelp.setVisibility(View.GONE);
+                    mBtnMyLocation.setVisibility(View.GONE);
+                    mScan.setVisibility(View.GONE);
+                    startActivity(new Intent(MainActivity.this, ClickCameraPopupActivity.class));
                 }
                 break;
             case R.id.specialOffer:
@@ -814,7 +812,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         OkHttpUtils.post().url(Api.BASE_URL + Api.FINDBIKERING).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(MainActivity.this, getString(R.string.server_is_busy));
+
+                ToastUtils.showShort(MainActivity.this, getString(R.string.server_tip));
             }
 
             @Override
@@ -851,8 +850,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
             @Override
             public void onError(Call call, Exception e, int id) {
-                LogUtils.e(e.getMessage());
-                ToastUtils.showShort(MainActivity.this, getString(R.string.server_is_busy));
+
+                ToastUtils.showShort(MainActivity.this, getString(R.string.server_tip));
             }
 
             @Override
@@ -882,7 +881,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     }
 
                 } else {
-                    ToastUtils.showShort(MainActivity.this, getString(R.string.server_is_busy));
+                    ToastUtils.showShort(MainActivity.this, getString(R.string.server_tip));
                     menuWindow.dismiss();
                     clearDrawingOverlay();
                 }
@@ -902,7 +901,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             OkHttpUtils.post().url(Api.BASE_URL + Api.CANCELBOOK).params(map).build().execute(new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
-                    ToastUtils.showShort(MainActivity.this, getString(R.string.server_is_busy));
+                    ToastUtils.showShort(MainActivity.this, getString(R.string.server_tip));
                 }
 
                 @Override
@@ -944,8 +943,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             OkHttpUtils.post().url(Api.BASE_URL + Api.BOOKBIKE).params(map).build().execute(new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
-                    LogUtils.d("错误", e.getMessage());
-                    ToastUtils.showShort(MainActivity.this, getString(R.string.server_is_busy));
+
+                    ToastUtils.showShort(MainActivity.this, getString(R.string.server_tip));
                 }
 
                 @Override
@@ -1075,7 +1074,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         OkHttpUtils.post().url(Api.BASE_URL + Api.CHECKBICYCLENO).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(MainActivity.this, getString(R.string.server_is_busy));
+
+                ToastUtils.showShort(MainActivity.this, getString(R.string.server_tip));
             }
 
             @Override
@@ -1311,8 +1311,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         OkHttpUtils.post().url(Api.BASE_URL + Api.SEARCHORDERING).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                LogUtils.e(e.getMessage());
-                ToastUtils.showShort(MainActivity.this, getString(R.string.error_info));
+
+                ToastUtils.showShort(MainActivity.this, getString(R.string.server_tip));
             }
 
             @Override
@@ -1369,8 +1369,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             OkHttpUtils.post().url(Api.BASE_URL + Api.FINDBICYCLE).params(map).build().execute(new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
-                    LogUtils.e(e.getMessage());
-                    ToastUtils.showShort(MainActivity.this, getString(R.string.server_is_busy));
+                    ToastUtils.showShort(MainActivity.this, getString(R.string.server_tip));
                 }
 
                 @Override
@@ -1419,7 +1418,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         OkHttpUtils.post().url(Api.BASE_URL + Api.CHECKAGGREGATE).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(MainActivity.this, "抱歉，服务器正忙！");
+                ToastUtils.showShort(MainActivity.this, getString(R.string.server_tip));
             }
 
             @Override
@@ -1433,7 +1432,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     i4.putExtra("msg", "main");
                     startActivityForResult(i4, 0);
                 } else {
-                    ToastUtils.showShort(MainActivity.this, "余额不足，请充值后骑行！");
+                    ToastUtils.showShort(MainActivity.this, getString(R.string.not_sufficient_funds));
                     startActivity(new Intent(MainActivity.this, RechargeBikeFareActivity.class));
                 }
             }
@@ -1445,8 +1444,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         super.onResume();
         Log.d("实验", "onResume+1");
         mMapView.onResume();
-        if (SPUtils.isLogin()) {
 
+        if (SPUtils.isLogin()) {
             mInstructions.setVisibility(View.GONE);
             String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
             JSONObject object;
@@ -1456,13 +1455,17 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 mToken = object.optString("token");
                 uID = String.valueOf(id);
                 if (uID != null && mToken != null) {
-                    queryUserInfo(uID, mToken);
+//                    queryUserInfo(uID, mToken);
+                    phone = AES.decrypt((String) SPUtils.get(App.getContext(), "phone", ""), MyContent.key);
+                    cashStatus = (Integer) SPUtils.get(App.getContext(), "cashStatus", 0);
+                    status = (Integer) SPUtils.get(App.getContext(), "status", 0);
+                    LogUtils.d("netty", "用户信息" + phone + cashStatus + status + (String) SPUtils.get(App.getContext(), "phone", ""));
                     LogUtils.d("netty", "我将要执行建立长连接" + !IsConnect + mNettyService);
                     if (!IsConnect && mNettyService == null) {
                         IsConnect = true;
                         mNettyService = new Intent(MainActivity.this, NettyService.class);
                         mNettyService.putExtra("userId", uID);
-                        mNettyService.putExtra("phone", phone);
+                        mNettyService.putExtra("phone", this.phone);
                         startService(mNettyService);
                         LogUtils.d("netty", "我建立了长连接");
                     }
@@ -1492,7 +1495,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         OkHttpUtils.post().url(Api.BASE_URL + Api.INFOUSER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(MainActivity.this, "服务器忙，请重试");
+                ToastUtils.showShort(MainActivity.this, getString(R.string.server_tip));
             }
 
             @Override

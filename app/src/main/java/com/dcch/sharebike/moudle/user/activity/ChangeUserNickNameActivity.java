@@ -37,8 +37,6 @@ public class ChangeUserNickNameActivity extends BaseActivity {
         if (!mNickname.equals("") && mNickname != null) {
             changeNickname.setText(mNickname);
         }
-
-
     }
 
 
@@ -76,6 +74,4 @@ public class ChangeUserNickNameActivity extends BaseActivity {
         result.putExtra("newName", newName);
         this.setResult(0, result);
     }
-
-
 }

@@ -85,7 +85,7 @@ public class MyMessageActivity extends BaseActivity {
             }
         } else {
             mNoMessage.setVisibility(View.VISIBLE);
-            ToastUtils.showShort(this, "网络无法访问，请检查网络连接！");
+            ToastUtils.showShort(this, getString(R.string.no_network_tip));
         }
     }
 
@@ -96,7 +96,8 @@ public class MyMessageActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.GETACTIVITYS).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(MyMessageActivity.this, "当前服务器忙，请稍后！");
+
+                ToastUtils.showShort(MyMessageActivity.this, getString(R.string.server_tip));
             }
 
             @Override

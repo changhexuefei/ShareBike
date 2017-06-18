@@ -58,5 +58,6 @@ public class MessageDetailActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mMsgWebview.loadUrl(mActivityUrl);
+
     }
 }

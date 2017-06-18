@@ -2,7 +2,6 @@ package com.dcch.sharebike.moudle.user.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -104,7 +103,7 @@ public class ChangeMobileNumActivity extends BaseActivity {
                 if (NetUtils.isConnected(ChangeMobileNumActivity.this)) {
                     getseCode(phone);
                 } else {
-                    ToastUtils.showLong(ChangeMobileNumActivity.this, "请检查网络后重试！！");
+                    ToastUtils.showLong(ChangeMobileNumActivity.this, getString(R.string.no_network_tip));
                 }
                 break;
             case R.id.change_cell_phone:
@@ -124,8 +123,7 @@ public class ChangeMobileNumActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.EDITUSERPHONE).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                LogUtils.e("错误", e.getMessage());
-                ToastUtils.showShort(ChangeMobileNumActivity.this, "服务器忙，请稍后再试！");
+                ToastUtils.showShort(ChangeMobileNumActivity.this, getString(R.string.server_tip));
             }
 
             @Override
@@ -182,13 +180,13 @@ public class ChangeMobileNumActivity extends BaseActivity {
                     phone = s.toString().trim();
                     if (TextUtils.isEmpty(phone)) {
                         mGetNewSecurityCode.setEnabled(false);
-                        mGetNewSecurityCode.setBackgroundColor(Color.parseColor("#c6bfbf"));
+                        mGetNewSecurityCode.setBackgroundColor(getColor(R.color.btn_bg));
                     } else if (!InPutUtils.isMobilePhone(phone)) {
                         mGetNewSecurityCode.setEnabled(false);
-                        mGetNewSecurityCode.setBackgroundColor(Color.parseColor("#c6bfbf"));
+                        mGetNewSecurityCode.setBackgroundColor(getColor(R.color.btn_bg));
                     } else if (!TextUtils.isEmpty(phone) && InPutUtils.isMobilePhone(phone)) {
                         mGetNewSecurityCode.setEnabled(true);
-                        mGetNewSecurityCode.setBackgroundColor(Color.parseColor("#F8941D"));
+                        mGetNewSecurityCode.setBackgroundColor(getColor(R.color.btn_bg_other));
                     }
                 }
             }
@@ -210,10 +208,10 @@ public class ChangeMobileNumActivity extends BaseActivity {
                     seCode = s.toString().trim();
                     if (TextUtils.isEmpty(seCode)) {
                         mChangeCellPhone.setEnabled(false);
-                        mChangeCellPhone.setBackgroundColor(Color.parseColor("#c6bfbf"));
+                        mChangeCellPhone.setBackgroundColor(getColor(R.color.btn_bg));
                     } else if (!TextUtils.isEmpty(phone)) {
                         mChangeCellPhone.setEnabled(true);
-                        mChangeCellPhone.setBackgroundColor(Color.parseColor("#F8941D"));
+                        mChangeCellPhone.setBackgroundColor(getColor(R.color.btn_bg_other));
                     }
                 }
             }
@@ -260,7 +258,7 @@ public class ChangeMobileNumActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.REGISTER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showLong(App.getContext(), "网络错误，请重试");
+                ToastUtils.showLong(ChangeMobileNumActivity.this, getString(R.string.server_tip));
             }
 
             @Override
@@ -291,7 +289,7 @@ public class ChangeMobileNumActivity extends BaseActivity {
         if (TIME <= 0) {
             TIME = 60;
         }
-        mGetNewSecurityCode.setBackgroundColor(Color.parseColor("#c6bfbf"));
+        mGetNewSecurityCode.setBackgroundColor(getColor(R.color.btn_bg));
         mGetNewSecurityCode.setClickable(false);
     }
 
@@ -300,7 +298,7 @@ public class ChangeMobileNumActivity extends BaseActivity {
     private void receiveRepeat(MessageEvent info) {
         LogUtils.d("输入", info.toString());
         mGetNewSecurityCode.setText("重新获取验证码");
-        mGetNewSecurityCode.setBackgroundColor(Color.parseColor("#F05B47"));
+        mGetNewSecurityCode.setBackgroundColor(getColor(R.color.btn_bg_other));
         mGetNewSecurityCode.setClickable(true);
     }
 

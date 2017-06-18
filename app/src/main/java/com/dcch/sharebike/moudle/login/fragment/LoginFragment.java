@@ -3,6 +3,7 @@ package com.dcch.sharebike.moudle.login.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,8 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.FutureTarget;
-import com.bumptech.glide.util.Util;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.http.Api;
@@ -48,7 +47,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -97,6 +95,7 @@ public class LoginFragment extends Fragment {
     private String mToken;
     private String mNickName;
     private String mUserimage;
+    private String mImageURL;
 
     public LoginFragment() {
     }
@@ -112,6 +111,7 @@ public class LoginFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (SPUtils.isLogin()) {
             String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
+
             if (userDetail != null) {
                 try {
                     JSONObject object = new JSONObject(userDetail);
@@ -137,16 +137,29 @@ public class LoginFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mImageURL = (String) SPUtils.get(App.getContext(), "imageURL", "");
+        LogUtils.d("图片", mImageURL);
+        if (mImageURL != null && !mImageURL.equals("")) {
+            //使用用户自定义的头像
+            Glide.with(LoginFragment.this).load(Uri.fromFile(new File(mImageURL)))
+                    .crossFade()
+                    .error(R.mipmap.avatar_default_login)
+                    .thumbnail(0.1f)// 加载缩略图
+                    .into(userIcon);
+
+        } else {
+            userIcon.setImageResource(R.mipmap.avatar_default_login);
+        }
 
         if (NetUtils.isConnected(App.getContext())) {
             if (uID != null && mToken != null) {
                 getUserInfo(uID, mToken);
 
-            } else {
-                if (mNickName != null && !mNickName.equals("")) {
-                    nickName.setText(mNickName);
-                }
             }
+            if (mNickName != null && !mNickName.equals("")) {
+                nickName.setText(mNickName);
+            }
+
             mAchievementShow.setVisibility(View.VISIBLE);
             mNoNetworkTip.setVisibility(View.GONE);
         } else {
@@ -168,8 +181,7 @@ public class LoginFragment extends Fragment {
         OkHttpUtils.post().url(Api.BASE_URL + Api.INFOUSER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-//                Log.e("获取用户信息", e.getMessage());
-//                ToastUtils.showShort(getContext(), "服务器正忙");
+                ToastUtils.showShort(getContext(), getString(R.string.server_tip));
             }
 
             @Override
@@ -194,21 +206,21 @@ public class LoginFragment extends Fragment {
                     sportsAchievement.setText(String.valueOf(MapUtil.changeOneDouble(mInfo.getCalorie())));
                     //用户头像
                     mUserimage = mInfo.getUserimage();
-                    if (mUserimage != null) {
-                        Log.d("用户头像路径", mUserimage);
-                        if (Util.isOnMainThread()) {
-                            //使用用户自定义的头像
-                            Glide.with(LoginFragment.this).load(mUserimage)
-                                    .crossFade()
-//                              .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                    .error(R.mipmap.avatar_default_login)
-                                    .thumbnail(0.1f)// 加载缩略图
-                                    .into(userIcon);
-                        }
+//                    if (mUserimage != null) {
+//                        Log.d("用户头像路径", mUserimage);
+//                        if (Util.isOnMainThread()) {
+//                            //使用用户自定义的头像
+//                            Glide.with(LoginFragment.this).load(mUserimage)
+//                                    .crossFade()
+////                              .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                                    .error(R.mipmap.avatar_default_login)
+//                                    .thumbnail(0.1f)// 加载缩略图
+//                                    .into(userIcon);
+//                        }
 
-                    } else {
-                        userIcon.setImageResource(R.mipmap.avatar_default_login);
-                    }
+//                    } else {
+//                        userIcon.setImageResource(R.mipmap.avatar_default_login);
+//                    }
                 } else {
                     LogUtils.d("状态", "您被迫下线了");
                     startActivity(new Intent(getActivity(), LoginActivity.class));
@@ -359,6 +371,9 @@ public class LoginFragment extends Fragment {
         Bundle mUserBundle = new Bundle();
         mUserBundle.putSerializable("userBundle", info);
         personInfo.putExtras(mUserBundle);
+        if (mImageURL != null) {
+            personInfo.putExtra("imageURL", mImageURL);
+        }
         startActivity(personInfo);
     }
 
@@ -373,24 +388,6 @@ public class LoginFragment extends Fragment {
         super.onDestroy();
 //        Glide.with(LoginFragment.this).pauseRequests();
 //        App.getRefWatcher().watch(this);
-    }
-
-    private String getImgPathFromCache(String url) {
-
-        FutureTarget<File> future = Glide.with(getContext())
-                .load(url)
-                .downloadOnly(100, 100);
-        try {
-            File cacheFile = future.get();
-            String path = cacheFile.getAbsolutePath();
-
-            return path;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     @Override

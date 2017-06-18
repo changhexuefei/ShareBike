@@ -24,6 +24,7 @@ import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.CodeEvent;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.libzxing.zxing.activity.CaptureActivity;
+import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.LogUtils;
@@ -105,7 +106,6 @@ public class CycleFailureFragment extends Fragment {
     private String uID;
     private String result;
     List<CheckBox> checkBoxes = new ArrayList<>();
-    public static final String BOUNDARY = "ZnGpDtePMx0KrHh_G0X99Yef9r8JZsRJSXC";
     private String bikeNo = "";
     private String contentText = "";
     private String mImageResult = "";
@@ -256,13 +256,15 @@ public class CycleFailureFragment extends Fragment {
         LogUtils.d("错误", uID + "\n" + bikeNo + "\n" + token);
         OkHttpUtils.post()
                 .url(Api.BASE_URL + Api.ADDTROUBLEORDER)
-                .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)
+                .addHeader("Content-Type", "multipart/form-data;boundary=" + MyContent.BOUNDARY)
                 .params(map)
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        Log.d("错误", e.getMessage());
+                        if (!e.equals("") && e != null) {
+                            Log.d("错误", e.getMessage());
+                        }
                         ToastUtils.showLong(getContext(), "服务器正忙！");
                     }
 

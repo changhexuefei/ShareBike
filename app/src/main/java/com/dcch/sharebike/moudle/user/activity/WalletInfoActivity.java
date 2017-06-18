@@ -222,7 +222,7 @@ public class WalletInfoActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.SEARCHAMOUNT).params(mMap).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(App.getContext(), "服务器正忙，请稍后再试");
+                ToastUtils.showShort(App.getContext(), getString(R.string.server_tip));
             }
 
             @Override
@@ -262,7 +262,8 @@ public class WalletInfoActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.REFUNDWXPAY).params(mMap).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-//                LogUtils.e("错误", e.getMessage());
+
+                ToastUtils.showShort(App.getContext(), getString(R.string.server_tip));
             }
 
             @Override
@@ -270,10 +271,11 @@ public class WalletInfoActivity extends BaseActivity {
                 LogUtils.d("退款", response);
                 //{"resultStatus":"0"}
                 if (JsonUtils.isSuccess(response)) {
+                    SPUtils.put(App.getContext(), "cashStatus", 0);
                     startActivity(new Intent(WalletInfoActivity.this, ShowRefundResultsActivity.class));
                 } else {
 //                    startActivity(new Intent(WalletInfoActivity.this, ShowRefundResultsActivity.class));
-                    ToastUtils.showShort(WalletInfoActivity.this, "退款失败！");
+                    ToastUtils.showShort(WalletInfoActivity.this, getString(R.string.refund_error));
                 }
                 refundPopuwindow.dismiss();
             }
@@ -283,7 +285,7 @@ public class WalletInfoActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (uID != null) {
+        if (uID != null && mToken != null) {
             getUserInfo(uID, mToken);
         }
     }
@@ -296,8 +298,8 @@ public class WalletInfoActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.INFOUSER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-//                Log.e("获取用户信息", e.getMessage());
-                ToastUtils.showShort(App.getContext(), "服务器正忙");
+
+                ToastUtils.showShort(App.getContext(), getString(R.string.server_tip));
             }
 
             @Override

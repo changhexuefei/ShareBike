@@ -142,17 +142,17 @@ public class UnlockBillPageActivity extends BaseActivity implements RadioGroup.O
         OkHttpUtils.post().url(Api.BASE_URL + Api.FORCECLOSELOCK).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-
+                ToastUtils.showShort(UnlockBillPageActivity.this, getString(R.string.server_tip));
             }
 
             @Override
             public void onResponse(String response, int id) {
                 LogUtils.d("强制", response);
                 if (JsonUtils.isSuccess(response)) {
-                    ToastUtils.showShort(UnlockBillPageActivity.this, "提交成功");
+                    ToastUtils.showShort(UnlockBillPageActivity.this, getString(R.string.submit_success));
                     EventBus.getDefault().post(new MessageEvent(), "forced close");
                 } else {
-                    ToastUtils.showShort(UnlockBillPageActivity.this, "提交失败，请重试！");
+                    ToastUtils.showShort(UnlockBillPageActivity.this, getString(R.string.submit_fail));
                 }
             }
         });

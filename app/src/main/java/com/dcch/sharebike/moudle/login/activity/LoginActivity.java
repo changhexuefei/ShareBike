@@ -2,7 +2,6 @@ package com.dcch.sharebike.moudle.login.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -85,12 +84,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     if (TIME <= 0) {
                         TIME = 60;
                     }
-                    getSecurityCode.setBackgroundColor(Color.parseColor("#c6bfbf"));
+                    getSecurityCode.setBackgroundColor(getColor(R.color.btn_bg));
                     getSecurityCode.setClickable(false);
                     break;
                 case CODE_REPEAT://重新发送
-                    getSecurityCode.setText("重新获取验证码");
-                    getSecurityCode.setBackgroundColor(Color.parseColor("#F05B47"));
+                    getSecurityCode.setText(getString(R.string.regain_verifyCode));
+                    getSecurityCode.setBackgroundColor(getColor(R.color.btn_bg_other));
                     getSecurityCode.setClickable(true);
                     break;
 
@@ -139,13 +138,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     phone = s.toString().trim();
                     if (TextUtils.isEmpty(phone)) {
                         getSecurityCode.setEnabled(false);
-                        getSecurityCode.setBackgroundColor(Color.parseColor("#c6bfbf"));
+                        getSecurityCode.setBackgroundColor(getColor(R.color.btn_bg));
                     } else if (!InPutUtils.isMobilePhone(phone)) {
                         getSecurityCode.setEnabled(false);
-                        getSecurityCode.setBackgroundColor(Color.parseColor("#c6bfbf"));
+                        getSecurityCode.setBackgroundColor(getColor(R.color.btn_bg));
                     } else if (!TextUtils.isEmpty(phone) && InPutUtils.isMobilePhone(phone)) {
                         getSecurityCode.setEnabled(true);
-                        getSecurityCode.setBackgroundColor(Color.parseColor("#F8941D"));
+                        getSecurityCode.setBackgroundColor(getColor(R.color.btn_bg_other));
                     }
                 }
             }
@@ -167,10 +166,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     seCode = s.toString().trim();
                     if (TextUtils.isEmpty(seCode)) {
                         confirm.setEnabled(false);
-                        confirm.setBackgroundColor(Color.parseColor("#c6bfbf"));
+                        confirm.setBackgroundColor(getColor(R.color.btn_bg));
                     } else if (!TextUtils.isEmpty(phone)) {
                         confirm.setEnabled(true);
-                        confirm.setBackgroundColor(Color.parseColor("#F8941D"));
+                        confirm.setBackgroundColor(getColor(R.color.btn_bg_other));
                     }
                 }
             }
@@ -188,7 +187,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 if (NetUtils.isConnected(App.getContext())) {
                     getseCode(phone);
                 } else {
-                    ToastUtils.showLong(LoginActivity.this, "请检查网络后重试！！");
+                    ToastUtils.showLong(LoginActivity.this, getString(R.string.no_network_tip));
                 }
 
                 break;
@@ -202,7 +201,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 if (phone != null && verificationCode != null && verificationCode.equals(seCode)) {
                     registerAndLogin(phone);
                 } else {
-                    ToastUtils.showShort(this, "验证码错误");
+                    ToastUtils.showShort(this, getString(R.string.verifyCodeerror));
                 }
                 break;
             case R.id.rules:
@@ -254,11 +253,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         phone = AES.encrypt(phone.getBytes(), MyContent.key);
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone);
+        final String finalPhone = phone;
         OkHttpUtils.post().url(Api.BASE_URL + Api.SAVEUSER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                LogUtils.e("onError:" + e.getMessage());
-                ToastUtils.showShort(LoginActivity.this, "登录失败，网络异常！");
+                ToastUtils.showShort(LoginActivity.this, getString(R.string.login_error));
             }
 
             @Override
@@ -277,8 +276,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     } else if (userInfo.getCashStatus() == 1 && userInfo.getStatus() == 1) {
                         goToPersonCenter();
                     }
-                    String userId = String.valueOf(userInfo.getId());
-                    String userPhone = userInfo.getPhone();
+//                    String userId = String.valueOf(userInfo.getId());
+//                    String userPhone = userInfo.getPhone();
 //                    if (userId != null && userPhone != null) {
 //                        Intent nettyService = new Intent(LoginActivity.this, NettyService.class);
 //                        nettyService.putExtra("userId", userId);
@@ -292,8 +291,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     SPUtils.put(App.getContext(), "userDetail", response);
                     SPUtils.put(App.getContext(), "islogin", true);
                     SPUtils.put(App.getContext(), "isfirst", false);
+                    SPUtils.put(App.getContext(), "cashStatus", userInfo.getCashStatus());
+                    SPUtils.put(App.getContext(), "status", userInfo.getStatus());
+                    SPUtils.put(App.getContext(), "phone", finalPhone);
                 } else {
-                    ToastUtils.showShort(LoginActivity.this, "未知错误！请重试。");
+                    ToastUtils.showShort(LoginActivity.this, getString(R.string.login_error));
                 }
             }
         });
@@ -306,13 +308,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         OkHttpUtils.post().url(Api.BASE_URL + Api.REGISTER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showLong(App.getContext(), "网络错误，请重试");
+
+                ToastUtils.showLong(App.getContext(), getString(R.string.server_tip));
             }
 
             @Override
             public void onResponse(String response, int id) {
                 Log.d("测试", response);
-                ToastUtils.showLong(LoginActivity.this, "验证码已发送");
+                ToastUtils.showLong(LoginActivity.this, getString(R.string.verifyCode_send));
                 try {
                     JSONObject object = new JSONObject(response);
                     verificationCode = object.optString("code");
@@ -376,7 +379,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         if (TIME <= 0) {
             TIME = 60;
         }
-        getSecurityCode.setBackgroundColor(Color.parseColor("#c6bfbf"));
+        getSecurityCode.setBackgroundColor(getColor(R.color.btn_bg));
         getSecurityCode.setClickable(false);
     }
 
@@ -384,8 +387,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Subscriber(tag = "repeat", mode = ThreadMode.MAIN)
     private void receiveRepeat(MessageEvent info) {
         LogUtils.d("输入", info.toString());
-        getSecurityCode.setText("重新获取验证码");
-        getSecurityCode.setBackgroundColor(Color.parseColor("#F05B47"));
+        getSecurityCode.setText(getString(R.string.regain_verifyCode));
+        getSecurityCode.setBackgroundColor(getColor(R.color.btn_bg_other));
         getSecurityCode.setClickable(true);
     }
 

@@ -1,5 +1,6 @@
 package com.dcch.sharebike.utils;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.widget.TextView;
 
@@ -126,5 +127,13 @@ public class MapUtil {
                     entry.getValue().toString()).append(iterator.hasNext() ? ";" : "");
         }
         return sb.toString();
+    }
+
+    /*
+      将dp转化为px
+       */
+    public static int Dp2Px(Context context, float dp) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
     }
 }

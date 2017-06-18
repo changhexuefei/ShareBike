@@ -234,7 +234,7 @@ public class ManualInputActivity extends BaseActivity {
     private void clearTextView() {
         mManualInputArea.clearText();
         mEnsure.setEnabled(false);
-        mEnsure.setBackgroundColor(Color.parseColor("#6b6b6b"));
+        mEnsure.setBackgroundColor(getColor(R.color.input_btn_color));
     }
 
     @Override

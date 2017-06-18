@@ -14,6 +14,7 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
+import com.dcch.sharebike.moudle.login.activity.IdentityAuthenticationActivity;
 import com.dcch.sharebike.moudle.user.adapter.CouponInfoAdapter;
 import com.dcch.sharebike.moudle.user.bean.CouponInfo;
 import com.dcch.sharebike.utils.JsonUtils;
@@ -109,7 +110,8 @@ public class CouponListActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.GETCOUPON).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(App.getContext(), "服务器忙，请稍后重试！");
+
+                ToastUtils.showShort(CouponListActivity.this, getString(R.string.server_tip));
             }
 
             @Override

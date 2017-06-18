@@ -124,7 +124,8 @@ public class MyJourneyActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.GETCARRENTALORDERBYPHONE).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(App.getContext(), "服务器忙，请稍后重试！");
+
+                ToastUtils.showShort(MyJourneyActivity.this, getString(R.string.server_tip));
             }
 
             @Override

@@ -12,12 +12,21 @@ import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
+import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.utils.ClickUtils;
+import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.ToastUtils;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.simple.eventbus.EventBus;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 public class AuthenticationOkActivity extends BaseActivity {
 
@@ -44,6 +53,26 @@ public class AuthenticationOkActivity extends BaseActivity {
                 Intent backToLoginMain = new Intent(AuthenticationOkActivity.this, MainActivity.class);
                 startActivity(backToLoginMain);
                 finish();
+            }
+        });
+        //生成优惠券的方法
+//        GenerateCoupon();
+
+    }
+
+    private void GenerateCoupon() {
+        Map<String,String> map = new HashMap<>();
+        OkHttpUtils.post().url(Api.BASE_URL+Api.ADDCOUPON).params(map).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+
+                ToastUtils.showShort(AuthenticationOkActivity.this, getString(R.string.server_tip));
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                LogUtils.d("优惠",response);
+
             }
         });
     }

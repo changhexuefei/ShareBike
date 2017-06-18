@@ -273,7 +273,7 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
         OkHttpUtils.post().url(Api.BASE_URL + Api.TRIPRECORD).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-
+                ToastUtils.showShort(JourneyDetailActivity.this, getString(R.string.server_tip));
             }
 
             @Override
@@ -325,7 +325,7 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
                         e.printStackTrace();
                     }
                 } else {
-                    ToastUtils.showShort(JourneyDetailActivity.this, "抱歉！未找到结果");
+                    ToastUtils.showShort(JourneyDetailActivity.this, getString(R.string.sorry));
                     StyledDialog.dismissLoading();
                 }
             }

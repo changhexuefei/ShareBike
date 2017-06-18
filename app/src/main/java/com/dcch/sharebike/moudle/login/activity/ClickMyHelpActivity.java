@@ -1,6 +1,5 @@
 package com.dcch.sharebike.moudle.login.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -13,6 +12,7 @@ import android.widget.LinearLayout;
 import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.utils.MapUtil;
 
 import java.util.ArrayList;
 
@@ -52,9 +52,9 @@ public class ClickMyHelpActivity extends BaseActivity {
         mDots = new ArrayList<ImageView>();
         for (int i = 0; i < pageViews.size(); i++) {
             ImageView imageView = new ImageView(this);
-            int width = Dp2Px(this, 6);
-            int heigth = Dp2Px(this, 6);
-            int margin = Dp2Px(this, 5);
+            int width = MapUtil.Dp2Px(this, 6);
+            int heigth = MapUtil.Dp2Px(this, 6);
+            int margin = MapUtil.Dp2Px(this, 5);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, heigth);
             params.setMargins(margin, margin, margin, margin);//设置margin,也就是外边距。
             imageView.setLayoutParams(params);//传入参数params设置宽和高
@@ -137,14 +137,6 @@ public class ClickMyHelpActivity extends BaseActivity {
     @OnClick(R.id.close_view_pager)
     public void onClick() {
         finish();
-    }
-
-    /*
-      将dp转化为px
-       */
-    public int Dp2Px(Context context, float dp) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dp * scale + 0.5f);
     }
 
 }

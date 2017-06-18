@@ -88,7 +88,6 @@ public class UnlockProgressActivity extends BaseActivity {
     protected void initData() {
         mToolbar.setTitle("");
         mTitle.setText(getResources().getString(R.string.unlock_progress));
-        mTitle.setTextSize(18);
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

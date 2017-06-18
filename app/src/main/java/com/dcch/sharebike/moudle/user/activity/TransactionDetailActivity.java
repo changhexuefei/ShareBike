@@ -101,7 +101,7 @@ public class TransactionDetailActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.SEARCHPAYLIST).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(TransactionDetailActivity.this, "服务器忙！");
+                ToastUtils.showShort(TransactionDetailActivity.this, getString(R.string.server_tip));
             }
 
             @Override

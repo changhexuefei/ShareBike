@@ -2,6 +2,7 @@ package com.dcch.sharebike.moudle.user.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -10,7 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.util.Util;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
@@ -31,6 +31,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -71,6 +72,7 @@ public class PersonInfoActivity extends BaseActivity {
     private String uID;
     private String result;
     private String mToken;
+    private String mImageURL;
 
     @Override
     protected int getLayoutId() {
@@ -90,6 +92,9 @@ public class PersonInfoActivity extends BaseActivity {
             }
         });
         Intent intent = getIntent();
+        if (intent != null) {
+            mImageURL = intent.getStringExtra("imageURL");
+        }
         Bundle user = intent.getExtras();
         if (user != null) {
             mUserBundle = (UserInfo) user.getSerializable("userBundle");
@@ -105,14 +110,14 @@ public class PersonInfoActivity extends BaseActivity {
                 authority.setText(R.string.verified);
                 realName.setText(mUserBundle.getName());
             }
-            if (mUserBundle.getUserimage() != null) {
-                LogUtils.d("图片", mUserBundle.getUserimage());
-                if (Util.isOnMainThread()) {
-                    Glide.with(this).load(mUserBundle.getUserimage()).error(R.mipmap.avatar_default_login).thumbnail(0.1f).into(userInfoIcon);
-                }
-            } else {
-                userInfoIcon.setImageResource(R.mipmap.avatar_default_login);
-            }
+//            if (mUserBundle.getUserimage() != null) {
+//                LogUtils.d("图片", mUserBundle.getUserimage());
+//                if (Util.isOnMainThread()) {
+//                    Glide.with(this).load(mUserBundle.getUserimage()).error(R.mipmap.avatar_default_login).thumbnail(0.1f).into(userInfoIcon);
+//                }
+//            } else {
+//                userInfoIcon.setImageResource(R.mipmap.avatar_default_login);
+//            }
         }
     }
 
@@ -123,6 +128,15 @@ public class PersonInfoActivity extends BaseActivity {
             try {
                 String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
                 JSONObject object = new JSONObject(userDetail);
+                if (mImageURL != null && !mImageURL.equals("")) {
+                    Glide.with(PersonInfoActivity.this)
+                            .load(Uri.fromFile(new File(mImageURL)))
+                            .error(R.mipmap.avatar_default_login)
+                            .thumbnail(0.1f)// 加载缩略图
+                            .into(userInfoIcon);
+                } else {
+                    userInfoIcon.setImageResource(R.mipmap.avatar_default_login);
+                }
                 int id = object.optInt("id");
                 uID = String.valueOf(id);
                 mToken = object.optString("token");
@@ -156,24 +170,26 @@ public class PersonInfoActivity extends BaseActivity {
                                 result = imageRadioResultEvent.getResult().getOriginalPath();
                                 Bitmap bitmap = PictureProcessingUtils.getimage(result);
                                 String mImageResult = PictureProcessingUtils.bitmapToBase64(bitmap);
+                                //将图片赋值给图片控件
                                 if (result != null && !result.equals("")) {
-                                    //将图片赋值给图片控件
-                                    LogUtils.d("图片", result);
+                                    Log.d("图片", result);
+
                                     Glide.with(PersonInfoActivity.this)
-                                            .load(result)
+                                            .load(Uri.fromFile(new File(result)))
                                             .error(R.mipmap.avatar_default_login)
                                             .thumbnail(0.1f)// 加载缩略图
                                             .into(userInfoIcon);
-                                    //下一步将选择的图片上传到服务器
-                                    if (NetUtils.isConnected(App.getContext())) {
-                                        if (mImageResult != null && mToken != null && uID != null) {
-                                            upLoadIcon(mImageResult, mToken, uID);
-                                        }
-                                    } else {
-                                        ToastUtils.showShort(PersonInfoActivity.this, getString(R.string.no_network_tip));
-
-                                    }
                                 }
+
+                                //下一步将选择的图片上传到服务器
+                                if (NetUtils.isConnected(App.getContext())) {
+                                    if (mImageResult != null && mToken != null && uID != null) {
+                                        upLoadIcon(mImageResult, mToken, uID);
+                                    }
+                                } else {
+                                    ToastUtils.showShort(PersonInfoActivity.this, getString(R.string.no_network_tip));
+                                }
+
                             }
                         }).openGallery();
                 break;
@@ -222,8 +238,8 @@ public class PersonInfoActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-//                        LogUtils.e("错误", e.getMessage());
-                        ToastUtils.showShort(PersonInfoActivity.this, getString(R.string.changeIcon_fail));
+
+                        ToastUtils.showShort(PersonInfoActivity.this, getString(R.string.server_tip));
                     }
 
                     @Override
@@ -232,6 +248,7 @@ public class PersonInfoActivity extends BaseActivity {
                         Log.d("上传头像", response);
                         //{"code":"1"}
                         if (JsonUtils.isSuccess(response)) {
+                            SPUtils.put(App.getContext(), "imageURL", result);
                             ToastUtils.showShort(PersonInfoActivity.this, getString(R.string.changeIcon_success));
                         } else {
                             ToastUtils.showShort(PersonInfoActivity.this, getString(R.string.changeIcon_fail));
@@ -283,17 +300,16 @@ public class PersonInfoActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        Log.e("修改昵称的请求失败", e.getMessage());
-                        ToastUtils.showShort(PersonInfoActivity.this, "服务器暂时不可用，请稍后再试");
+                        ToastUtils.showShort(PersonInfoActivity.this, getString(R.string.server_tip));
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         //根据返回值成功和失败的判断
                         if (JsonUtils.isSuccess(response)) {
-                            ToastUtils.showShort(PersonInfoActivity.this, "昵称修改成功!");
+                            ToastUtils.showShort(PersonInfoActivity.this, getString(R.string.updateNickName_success));
                         } else {
-                            ToastUtils.showShort(PersonInfoActivity.this, "昵称修改失败!");
+                            ToastUtils.showShort(PersonInfoActivity.this, getString(R.string.updateNickName_fail));
                         }
                     }
                 });

@@ -133,7 +133,7 @@ public class RechargeDepositActivity extends BaseActivity {
                         if (moneySum != null && userID != null && mOutTradeNo != null) {
                             aliPayWay(userID, mOutTradeNo, moneySum, orderbody, subject);
                         } else {
-                            ToastUtils.showShort(App.getContext(), "服务忙，请稍后重试");
+                            ToastUtils.showShort(RechargeDepositActivity.this, getString(R.string.server_tip));
                         }
                     } else if (rdWeixinCheckbox.isChecked()) {
                         //调取微信的支付方式
@@ -147,7 +147,7 @@ public class RechargeDepositActivity extends BaseActivity {
                         if (userID != null && mOutTradeNo != null && moneySum != null && ipAddress != null) {
                             weiXinPayWay(mOutTradeNo, subject, userID, ipAddress, moneySum);
                         } else {
-                            ToastUtils.showShort(App.getContext(), "服务忙，请稍后重试");
+                            ToastUtils.showShort(RechargeDepositActivity.this, getString(R.string.server_tip));
                         }
                     }
                 } else {
@@ -169,7 +169,7 @@ public class RechargeDepositActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINCASHPAY).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(RechargeDepositActivity.this, "服务器正忙请稍后！");
+                ToastUtils.showShort(RechargeDepositActivity.this, getString(R.string.server_tip));
             }
 
             @Override
@@ -189,7 +189,7 @@ public class RechargeDepositActivity extends BaseActivity {
                     req.extData = "app data"; // optional
                     msgApi.sendReq(req);
                 } else {
-                    ToastUtils.showShort(RechargeDepositActivity.this, "服务器正忙请稍后！");
+                    ToastUtils.showShort(RechargeDepositActivity.this, getString(R.string.server_tip));
                 }
             }
         });
@@ -205,7 +205,9 @@ public class RechargeDepositActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAYCASH).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                LogUtils.d(e.getMessage());
+
+                ToastUtils.showShort(RechargeDepositActivity.this, getString(R.string.server_tip));
+
             }
 
             @Override

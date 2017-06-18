@@ -60,8 +60,10 @@ public class InviteFriendsActivity extends BaseActivity {
                 finish();
             }
         });
-        if (!NetUtils.isConnected(App.getContext())) {
-            ToastUtils.showShort(App.getContext(), "网络无法访问，请检查网络连接！");
+        if (NetUtils.isConnected(App.getContext())) {
+
+        }else{
+            ToastUtils.showShort(InviteFriendsActivity.this, getString(R.string.no_network_tip));
         }
     }
 
@@ -134,7 +136,7 @@ public class InviteFriendsActivity extends BaseActivity {
         // titleUrl是标题的网络链接，仅在Linked-in,QQ和QQ空间使用
         oks.setTitleUrl("http://a.app.qq.com/o/simple.jsp?pkgname=com.dcch.sharebike");
         // text是分享文本，所有平台都需要这个字段
-        oks.setText(getString(R.string.publicity));
+        oks.setText(getString(R.string.propagation_language));
         //分享网络图片，新浪微博分享网络图片需要通过审核后申请高级写入接口，否则请注释掉测试新浪微博
         oks.setImageUrl("http://www.70bikes.com/MavenSSM/Images/qilin.jpg");
         // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
@@ -142,7 +144,7 @@ public class InviteFriendsActivity extends BaseActivity {
         // url仅在微信（包括好友和朋友圈）中使用
         oks.setUrl("http://a.app.qq.com/o/simple.jsp?pkgname=com.dcch.sharebike");
         // comment是我对这条分享的评论，仅在人人网和QQ空间使用
-        oks.setComment("邀请好友，一起麒行");
+        oks.setComment(getString(R.string.propagation_language_other));
         // site是分享此内容的网站名称，仅在QQ空间使用
         oks.setSite("70bikes");
         // siteUrl是分享此内容的网站地址，仅在QQ空间使用

@@ -97,7 +97,7 @@
     <string name="capture_tips">对准车上的二维码</string>
     <string name="manual_input">输入单车编号</string>
     <string name="my_location">我的位置</string>
-    <string name="error_info">抱歉，服务器正忙！</string>
+    <string name="error_info">服务器正忙，请稍后再试！</string>
     <string name="authen_ok">注册完成</string>
     <string name="person_info">个人信息</string>
     <string name="recharge_bike_fare">车费充值</string>
@@ -267,7 +267,7 @@
     <string name="complete_register">完成注册即可骑单车</string>
     <string name="login_biking">立即登录即可骑单车</string>
     <string name="sorry_no_result">抱歉，未找到结果</string>
-    <string name="server_is_busy">抱歉，服务器正忙！</string>
+    <string name="server_is_busy">服务器正忙，请稍后再试！</string>
     <string name="booking_overfulfil">抱歉，您今天已经预约5次，明天再来吧。</string>
     <string name="booking">正在预定..</string>
     <string name="cancel_fail">取消失败！</string>
@@ -300,4 +300,19 @@
     <string name="time_limit">有效期至：</string>
     <string name="report">举报违停</string>
     <string name="other_question">其他问题</string>
+    <string name="booking_riding_tip">在预约和骑行过程中，此功能不可用！</string>
+    <string name="not_sufficient_funds">余额不足，请充值后骑行！</string>
+    <string name="login_error">登录失败，网络异常！</string>
+    <string name="verifyCodeerror">验证码错误</string>
+    <string name="verifyCode_send">验证码已发送</string>
+    <string name="regain_verifyCode">重新获取验证码</string>
+    <string name="refund_error">退款失败！</string>
+    <string name="propagation_language">麒麟单车邀请您，一起骑行，麒乐无穷</string>
+    <string name="propagation_language_other">邀请好友，一起骑行,乐在麒中</string>
+    <string name="sorry">抱歉！未找到结果</string>
+    <string name="checkVersion">正在检查更新</string>
+    <string name="updateNickName_success">昵称修改成功!</string>
+    <string name="updateNickName_fail">昵称修改失败!</string>
+    <string name="submit_success">提交成功</string>
+    <string name="submit_fail">提交失败，请联系人工客服</string>
 </resources>
