@@ -82,7 +82,6 @@ import com.dcch.sharebike.moudle.user.activity.RidingResultActivity;
 import com.dcch.sharebike.moudle.user.activity.UnlockBillPageActivity;
 import com.dcch.sharebike.moudle.user.activity.UnlockProgressActivity;
 import com.dcch.sharebike.moudle.user.activity.UserAgreementActivity;
-import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.netty.NettyClient;
 import com.dcch.sharebike.overlayutil.OverlayManager;
 import com.dcch.sharebike.overlayutil.WalkingRouteOverlay;
@@ -1487,30 +1486,30 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         }
     }
 
-    private void queryUserInfo(String uID, String token) {
-        Map<String, String> map = new HashMap<>();
-        map.put("userId", uID);
-        map.put("token", token);
-        Log.d("个人信息", uID + "\n" + token);
-        OkHttpUtils.post().url(Api.BASE_URL + Api.INFOUSER).params(map).build().execute(new StringCallback() {
-            @Override
-            public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(MainActivity.this, getString(R.string.server_tip));
-            }
-
-            @Override
-            public void onResponse(String response, int id) {
-                Log.d("个人信息", response);
-                if (JsonUtils.isSuccess(response)) {
-                    Gson gson = new Gson();
-                    UserInfo userInfo = gson.fromJson(response, UserInfo.class);
-                    status = userInfo.getStatus();
-                    cashStatus = userInfo.getCashStatus();
-                    phone = userInfo.getPhone();
-                }
-            }
-        });
-    }
+//    private void queryUserInfo(String uID, String token) {
+//        Map<String, String> map = new HashMap<>();
+//        map.put("userId", uID);
+//        map.put("token", token);
+//        Log.d("个人信息", uID + "\n" + token);
+//        OkHttpUtils.post().url(Api.BASE_URL + Api.INFOUSER).params(map).build().execute(new StringCallback() {
+//            @Override
+//            public void onError(Call call, Exception e, int id) {
+//                ToastUtils.showShort(MainActivity.this, getString(R.string.server_tip));
+//            }
+//
+//            @Override
+//            public void onResponse(String response, int id) {
+//                Log.d("个人信息", response);
+//                if (JsonUtils.isSuccess(response)) {
+//                    Gson gson = new Gson();
+//                    UserInfo userInfo = gson.fromJson(response, UserInfo.class);
+//                    status = userInfo.getStatus();
+//                    cashStatus = userInfo.getCashStatus();
+//                    phone = userInfo.getPhone();
+//                }
+//            }
+//        });
+//    }
 
 
     @Override
@@ -1525,7 +1524,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     object = new JSONObject(userDetail);
                     int id = object.optInt("id");
                     uID = String.valueOf(id);
-                    phone = object.optString("phone");
+//                    phone = object.optString("phone");
 
                 } catch (JSONException e) {
                     e.printStackTrace();
