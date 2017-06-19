@@ -408,4 +408,9 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
         }
     }
 
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 }

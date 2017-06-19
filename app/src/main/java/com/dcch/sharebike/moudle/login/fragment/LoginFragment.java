@@ -3,7 +3,6 @@ package com.dcch.sharebike.moudle.login.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.Util;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.http.Api;
@@ -44,7 +44,6 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -116,7 +115,7 @@ public class LoginFragment extends Fragment {
                 try {
                     JSONObject object = new JSONObject(userDetail);
                     int userId = object.optInt("id");
-                    mToken = object.optString("token");
+                    mToken = (String)SPUtils.get(App.getContext(), "token", "");
                     uID = String.valueOf(userId);
                     mNickName = object.optString("nickName");
 
@@ -137,19 +136,19 @@ public class LoginFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mImageURL = (String) SPUtils.get(App.getContext(), "imageURL", "");
-        LogUtils.d("图片", mImageURL);
-        if (mImageURL != null && !mImageURL.equals("")) {
-            //使用用户自定义的头像
-            Glide.with(LoginFragment.this).load(Uri.fromFile(new File(mImageURL)))
-                    .crossFade()
-                    .error(R.mipmap.avatar_default_login)
-                    .thumbnail(0.1f)// 加载缩略图
-                    .into(userIcon);
-
-        } else {
-            userIcon.setImageResource(R.mipmap.avatar_default_login);
-        }
+//        mImageURL = (String) SPUtils.get(App.getContext(), "imageURL", "");
+//        LogUtils.d("图片", mImageURL);
+//        if (mImageURL != null && !mImageURL.equals("")) {
+//            //使用用户自定义的头像
+//            Glide.with(LoginFragment.this).load(Uri.fromFile(new File(mImageURL)))
+//                    .crossFade()
+//                    .error(R.mipmap.avatar_default_login)
+//                    .thumbnail(0.1f)// 加载缩略图
+//                    .into(userIcon);
+//
+//        } else {
+//            userIcon.setImageResource(R.mipmap.avatar_default_login);
+//        }
 
         if (NetUtils.isConnected(App.getContext())) {
             if (uID != null && mToken != null) {
@@ -206,21 +205,21 @@ public class LoginFragment extends Fragment {
                     sportsAchievement.setText(String.valueOf(MapUtil.changeOneDouble(mInfo.getCalorie())));
                     //用户头像
                     mUserimage = mInfo.getUserimage();
-//                    if (mUserimage != null) {
-//                        Log.d("用户头像路径", mUserimage);
-//                        if (Util.isOnMainThread()) {
-//                            //使用用户自定义的头像
-//                            Glide.with(LoginFragment.this).load(mUserimage)
-//                                    .crossFade()
-////                              .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                                    .error(R.mipmap.avatar_default_login)
-//                                    .thumbnail(0.1f)// 加载缩略图
-//                                    .into(userIcon);
-//                        }
+                    if (mUserimage != null) {
+                        Log.d("用户头像路径", mUserimage);
+                        if (Util.isOnMainThread()) {
+                            //使用用户自定义的头像
+                            Glide.with(LoginFragment.this).load(mUserimage)
+                                    .crossFade()
+//                              .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .error(R.mipmap.avatar_default_login)
+                                    .thumbnail(0.1f)// 加载缩略图
+                                    .into(userIcon);
+                        }
 
-//                    } else {
-//                        userIcon.setImageResource(R.mipmap.avatar_default_login);
-//                    }
+                    } else {
+                        userIcon.setImageResource(R.mipmap.avatar_default_login);
+                    }
                 } else {
                     LogUtils.d("状态", "您被迫下线了");
                     startActivity(new Intent(getActivity(), LoginActivity.class));

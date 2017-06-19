@@ -1,8 +1,8 @@
 package com.dcch.sharebike.alipay;
 
 import android.app.Activity;
-import android.icu.text.SimpleDateFormat;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
