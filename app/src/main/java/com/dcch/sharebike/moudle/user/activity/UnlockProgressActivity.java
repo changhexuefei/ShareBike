@@ -159,7 +159,7 @@ public class UnlockProgressActivity extends BaseActivity {
         EventBus.getDefault().register(this);
         mAnimation = AnimationUtils.loadAnimation(this, R.anim.unlock_lock_anim);
         mUnlockIcon.startAnimation(mAnimation);
-        mMenuDesc.setTextColor(getColor(R.color.white));
+        mMenuDesc.setTextColor(getResources().getColor(R.color.white));
         mMenuDesc.setSpeed(5);
         mMenuDesc.startScroll();
         final Intent main = new Intent(this, MainActivity.class); // 要转向的Activity

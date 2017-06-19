@@ -180,13 +180,13 @@ public class ChangeMobileNumActivity extends BaseActivity {
                     phone = s.toString().trim();
                     if (TextUtils.isEmpty(phone)) {
                         mGetNewSecurityCode.setEnabled(false);
-                        mGetNewSecurityCode.setBackgroundColor(getColor(R.color.btn_bg));
+                        mGetNewSecurityCode.setBackgroundColor(getResources().getColor(R.color.btn_bg));
                     } else if (!InPutUtils.isMobilePhone(phone)) {
                         mGetNewSecurityCode.setEnabled(false);
-                        mGetNewSecurityCode.setBackgroundColor(getColor(R.color.btn_bg));
+                        mGetNewSecurityCode.setBackgroundColor(getResources().getColor(R.color.btn_bg));
                     } else if (!TextUtils.isEmpty(phone) && InPutUtils.isMobilePhone(phone)) {
                         mGetNewSecurityCode.setEnabled(true);
-                        mGetNewSecurityCode.setBackgroundColor(getColor(R.color.btn_bg_other));
+                        mGetNewSecurityCode.setBackgroundColor(getResources().getColor(R.color.btn_bg_other));
                     }
                 }
             }
@@ -208,10 +208,10 @@ public class ChangeMobileNumActivity extends BaseActivity {
                     seCode = s.toString().trim();
                     if (TextUtils.isEmpty(seCode)) {
                         mChangeCellPhone.setEnabled(false);
-                        mChangeCellPhone.setBackgroundColor(getColor(R.color.btn_bg));
+                        mChangeCellPhone.setBackgroundColor(getResources().getColor(R.color.btn_bg));
                     } else if (!TextUtils.isEmpty(phone)) {
                         mChangeCellPhone.setEnabled(true);
-                        mChangeCellPhone.setBackgroundColor(getColor(R.color.btn_bg_other));
+                        mChangeCellPhone.setBackgroundColor(getResources().getColor(R.color.btn_bg_other));
                     }
                 }
             }
@@ -289,7 +289,7 @@ public class ChangeMobileNumActivity extends BaseActivity {
         if (TIME <= 0) {
             TIME = 60;
         }
-        mGetNewSecurityCode.setBackgroundColor(getColor(R.color.btn_bg));
+        mGetNewSecurityCode.setBackgroundColor(getResources().getColor(R.color.btn_bg));
         mGetNewSecurityCode.setClickable(false);
     }
 
@@ -298,7 +298,7 @@ public class ChangeMobileNumActivity extends BaseActivity {
     private void receiveRepeat(MessageEvent info) {
         LogUtils.d("输入", info.toString());
         mGetNewSecurityCode.setText("重新获取验证码");
-        mGetNewSecurityCode.setBackgroundColor(getColor(R.color.btn_bg_other));
+        mGetNewSecurityCode.setBackgroundColor(getResources().getColor(R.color.btn_bg_other));
         mGetNewSecurityCode.setClickable(true);
     }
 

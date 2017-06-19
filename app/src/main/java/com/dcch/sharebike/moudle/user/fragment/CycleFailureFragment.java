@@ -129,7 +129,7 @@ public class CycleFailureFragment extends Fragment {
                 JSONObject object = new JSONObject(userDetail);
                 int id = object.optInt("id");
                 uID = String.valueOf(id);
-                mToken = object.optString("token");
+                mToken = (String)SPUtils.get(App.getContext(), "token", "");
 
             } catch (JSONException e) {
                 e.printStackTrace();

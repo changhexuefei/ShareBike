@@ -99,7 +99,7 @@ public class WalletInfoActivity extends BaseActivity {
                     JSONObject object = new JSONObject(userDetail);
                     int userId = object.optInt("id");
                     uID = String.valueOf(userId);
-                    mToken = object.optString("token");
+                    mToken = (String)SPUtils.get(App.getContext(), "token", "");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

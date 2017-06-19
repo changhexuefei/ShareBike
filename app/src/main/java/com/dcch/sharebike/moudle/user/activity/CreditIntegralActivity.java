@@ -53,7 +53,7 @@ public class CreditIntegralActivity extends BaseActivity {
         if (intent != null) {
             mScore = intent.getStringExtra("score");
         }
-        mCreditArea.setBackgroundColor(getColor(R.color.colorHeading));
+        mCreditArea.setBackgroundColor(getResources().getColor(R.color.colorHeading));
 //        getWindow().setStatusBarColor(Color.parseColor("#FF7997"));
     }
 

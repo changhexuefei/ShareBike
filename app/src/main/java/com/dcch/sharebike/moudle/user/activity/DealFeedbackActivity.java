@@ -112,9 +112,9 @@ public class DealFeedbackActivity extends BaseActivity {
         super.onResume();
         drawable = new CircularProgressDrawable.Builder()
                 .setRingWidth(getResources().getDimensionPixelSize(R.dimen.drawable_ring_size))
-                .setOutlineColor(getColor(android.R.color.darker_gray))
-                .setRingColor(getColor(android.R.color.holo_green_light))
-                .setCenterColor(getColor(android.R.color.holo_blue_dark))
+                .setOutlineColor(getResources().getColor(android.R.color.darker_gray))
+                .setRingColor(getResources().getColor(android.R.color.holo_green_light))
+                .setCenterColor(getResources().getColor(android.R.color.holo_blue_dark))
                 .create();
         mIvDrawable.setImageDrawable(drawable);
         if (currentAnimation != null) {
