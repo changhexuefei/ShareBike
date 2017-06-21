@@ -21,7 +21,7 @@ import com.dcch.sharebike.moudle.home.bean.BikeInfo;
 public class SelectPicPopupWindow extends PopupWindow {
 
     private BikeInfo mBikeInfo;
-    private TextView mBikeLocationInfo;
+    public  TextView mBikeLocationInfo;
     private TextView mUnitPrice;
     public TextView mDistance;
     public TextView mArrivalTime;
@@ -48,15 +48,8 @@ public class SelectPicPopupWindow extends PopupWindow {
 
         //为控件赋值
         if (mBikeInfo != null && !mBikeInfo.equals("")) {
-            String address = mBikeInfo.getAddress();
-            if (address != null && !address.equals("")) {
-                mBikeLocationInfo.setText(mBikeInfo.getAddress());
-            } else {
-                mBikeLocationInfo.setText("未知地址");
-            }
             mUnitPrice.setText(String.valueOf(mBikeInfo.getUnitPrice()) + "元");
         }
-
         // 设置按钮监听
         mOrder.setOnClickListener(itemsOnClick);
 

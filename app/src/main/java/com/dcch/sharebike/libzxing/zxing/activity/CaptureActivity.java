@@ -39,6 +39,7 @@ import android.widget.ToggleButton;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.base.CodeEvent;
 import com.dcch.sharebike.libzxing.zxing.camera.CameraManager;
 import com.dcch.sharebike.libzxing.zxing.decode.DecodeThread;
 import com.dcch.sharebike.libzxing.zxing.utils.BeepManager;
@@ -50,6 +51,8 @@ import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.DensityUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.google.zxing.Result;
+
+import org.simple.eventbus.EventBus;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -124,6 +127,7 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
         animation.setRepeatCount(-1);
         animation.setRepeatMode(Animation.RESTART);
         scanLine.startAnimation(animation);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -238,6 +242,7 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
     protected void onDestroy() {
         LogUtils.d("实验", "onDestroy+cap");
         inactivityTimer.shutdown();
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
@@ -275,14 +280,14 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
         inactivityTimer.onActivity();
         beepManager.playBeepSoundAndVibrate();
         mRawResultText = rawResult.getText();
-        Intent resultIntent = new Intent();
-        bundle.putInt("width", mCropRect.width());
-        bundle.putInt("height", mCropRect.height());
-        bundle.putString("result", mRawResultText);
+//        Intent resultIntent = new Intent();
+//        bundle.putInt("width", mCropRect.width());
+//        bundle.putInt("height", mCropRect.height());
+//        bundle.putString("result", mRawResultText);
+        EventBus.getDefault().post(new CodeEvent(mRawResultText),"samsung");
         LogUtils.d("地址",mRawResultText);
-        resultIntent.putExtras(bundle);
-        CaptureActivity.this.setResult(RESULT_OK, resultIntent);
-        LogUtils.d("地址",resultIntent+"");
+//        resultIntent.putExtras(bundle);
+//        CaptureActivity.this.setResult(RESULT_OK, resultIntent);
         CaptureActivity.this.finish();
     }
 

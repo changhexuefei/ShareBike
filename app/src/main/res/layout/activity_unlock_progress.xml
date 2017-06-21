@@ -21,6 +21,7 @@
 
 
     <com.dcch.sharebike.view.MarqueeTextView
+        android:layout_below="@+id/unlockIcon"
         android:layout_marginTop="10dp"
         android:layout_marginRight="30dp"
         android:layout_marginLeft="30dp"

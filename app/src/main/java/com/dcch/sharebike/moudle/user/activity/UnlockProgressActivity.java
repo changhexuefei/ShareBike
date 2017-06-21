@@ -172,7 +172,7 @@ public class UnlockProgressActivity extends BaseActivity {
                 UnlockProgressActivity.this.finish();
             }
         };
-        mTimer.schedule(task, 1000 * 10); // 40秒后执行跳转页面的操作
+        mTimer.schedule(task, 1000 * 30); // 40秒后执行跳转页面的操作
     }
 
     @Override
