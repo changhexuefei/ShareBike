@@ -54,8 +54,8 @@ public class UserGuideActivity extends BaseActivity {
 
     }
 
-    //, R.id.allQuestion, R.id.unFindBike
-    @OnClick({R.id.lock, R.id.breakdown, R.id.depositInstructions, R.id.topUpInstructions, R.id.report})
+    //, R.id.allQuestion, R.id.unFindBike, R.id.report
+    @OnClick({R.id.lock, R.id.breakdown, R.id.depositInstructions, R.id.topUpInstructions})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.lock:
@@ -86,14 +86,14 @@ public class UserGuideActivity extends BaseActivity {
                 }
                 startActivity(new Intent(this, RechargeAgreementActivity.class));
                 break;
-            case R.id.report:
-                if (ClickUtils.isFastClick()) {
-                    return;
-                }
-                Intent reportIllegalParking = new Intent(this, CustomerServiceActivity.class);
-                reportIllegalParking.putExtra("name", "2");
-                startActivity(reportIllegalParking);
-                break;
+//            case R.id.report:
+//                if (ClickUtils.isFastClick()) {
+//                    return;
+//                }
+//                Intent reportIllegalParking = new Intent(this, CustomerServiceActivity.class);
+//                reportIllegalParking.putExtra("name", "2");
+//                startActivity(reportIllegalParking);
+//                break;
 //            case R.id.unFindBike:
 //                break;
 //            case R.id.allQuestion:

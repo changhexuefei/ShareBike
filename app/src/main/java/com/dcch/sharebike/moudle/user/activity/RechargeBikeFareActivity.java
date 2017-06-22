@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -51,8 +50,8 @@ import butterknife.OnClick;
 import okhttp3.Call;
 
 public class RechargeBikeFareActivity extends BaseActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
-    @BindView(R.id.input_moneySum)
-    EditText input_moneySum;
+//    @BindView(R.id.input_moneySum)
+//    EditText input_moneySum;
     @BindView(R.id.rb_rg1_10)
     RadioButton rbRg110;
     @BindView(R.id.rb_rg1_20)

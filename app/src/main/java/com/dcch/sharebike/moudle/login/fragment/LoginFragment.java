@@ -115,7 +115,7 @@ public class LoginFragment extends Fragment {
                 try {
                     JSONObject object = new JSONObject(userDetail);
                     int userId = object.optInt("id");
-                    mToken = (String)SPUtils.get(App.getContext(), "token", "");
+                    mToken = (String) SPUtils.get(App.getContext(), "token", "");
                     uID = String.valueOf(userId);
                     mNickName = object.optString("nickName");
 
@@ -125,7 +125,6 @@ public class LoginFragment extends Fragment {
             }
         }
     }
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -150,24 +149,6 @@ public class LoginFragment extends Fragment {
 //            userIcon.setImageResource(R.mipmap.avatar_default_login);
 //        }
 
-        if (NetUtils.isConnected(App.getContext())) {
-            if (uID != null && mToken != null) {
-                getUserInfo(uID, mToken);
-
-            }
-            if (mNickName != null && !mNickName.equals("")) {
-                nickName.setText(mNickName);
-            }
-
-            mAchievementShow.setVisibility(View.VISIBLE);
-            mNoNetworkTip.setVisibility(View.GONE);
-        } else {
-
-            mAchievementShow.setVisibility(View.GONE);
-            if (mNoNetworkTip != null) {
-                mNoNetworkTip.setVisibility(View.VISIBLE);
-            }
-        }
 
     }
 
@@ -180,7 +161,7 @@ public class LoginFragment extends Fragment {
         OkHttpUtils.post().url(Api.BASE_URL + Api.INFOUSER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(getContext(), getString(R.string.server_tip));
+                ToastUtils.showShort(App.getContext(), getString(R.string.server_tip));
             }
 
             @Override
@@ -211,7 +192,6 @@ public class LoginFragment extends Fragment {
                             //使用用户自定义的头像
                             Glide.with(LoginFragment.this).load(mUserimage)
                                     .crossFade()
-//                              .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .error(R.mipmap.avatar_default_login)
                                     .thumbnail(0.1f)// 加载缩略图
                                     .into(userIcon);
@@ -385,13 +365,26 @@ public class LoginFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        Glide.with(LoginFragment.this).pauseRequests();
-//        App.getRefWatcher().watch(this);
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        if (NetUtils.isConnected(App.getContext())) {
+            if (uID != null && mToken != null) {
+                getUserInfo(uID, mToken);
+            }
+            if (mNickName != null && !mNickName.equals("")) {
+                nickName.setText(mNickName);
+            }
+            mAchievementShow.setVisibility(View.VISIBLE);
+            mNoNetworkTip.setVisibility(View.GONE);
+        } else {
+            mAchievementShow.setVisibility(View.GONE);
+            if (mNoNetworkTip != null) {
+                mNoNetworkTip.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override

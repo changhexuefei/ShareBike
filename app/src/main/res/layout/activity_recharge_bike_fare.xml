@@ -15,96 +15,103 @@
 
     <TextView
         android:id="@+id/tv20"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:background="@color/lineColor"
+        android:layout_marginTop="10dp"
         android:gravity="center_vertical"
         android:text="@string/recharge_amount"
         android:textColor="@color/recharge_amount_color"/>
 
-    <EditText
-        android:id="@+id/input_moneySum"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
+    <!--<EditText-->
+    <!--android:id="@+id/input_moneySum"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="40dp"-->
+    <!--android:layout_below="@+id/tv20"-->
+    <!--android:layout_marginLeft="15dp"-->
+    <!--android:layout_marginRight="15dp"-->
+    <!--android:background="#e1dede"-->
+    <!--android:gravity="center"-->
+    <!--android:hint="@string/recharge_bikefare"-->
+    <!--android:inputType="number"-->
+    <!--android:textSize="12sp"-->
+    <!--android:visibility="gone"/>-->
+
+    <LinearLayout
+        android:id="@+id/money_area"
+        android:orientation="vertical"
         android:layout_below="@+id/tv20"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="#e1dede"
-        android:gravity="center"
-        android:hint="@string/recharge_bikefare"
-        android:inputType="number"
-        android:textSize="12sp"
-        android:visibility="gone"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <RadioGroup
-        android:id="@+id/rg_rec_rg"
-        style="@style/rg_money"
-        android:layout_below="@+id/input_moneySum">
+        <RadioGroup
+            android:id="@+id/rg_rec_rg"
+            style="@style/rg_money">
 
-        <RadioButton
-            android:id="@+id/rb_rg_1"
-            style="@style/rb_money_check"
-            android:text="@string/_1_00"/>
+            <RadioButton
+                android:id="@+id/rb_rg_1"
+                style="@style/rb_money_check"
+                android:text="@string/_1_00"/>
 
-        <Space
-            android:layout_width="10dp"
-            android:layout_height="match_parent"/>
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent"/>
 
-        <RadioButton
-            android:id="@+id/rb_rg_5"
-            style="@style/rb_money_check"
-            android:text="@string/_5_00"/>
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/rb_rg_5"
+                style="@style/rb_money_check"
+                android:text="@string/_5_00"/>
+        </RadioGroup>
 
 
-    <RadioGroup
-        android:id="@+id/rg_rec_rg1"
-        style="@style/rg_money"
-        android:layout_below="@+id/rg_rec_rg">
+        <RadioGroup
+            android:id="@+id/rg_rec_rg1"
+            style="@style/rg_money"
+            android:layout_below="@+id/rg_rec_rg">
 
-        <RadioButton
-            android:id="@+id/rb_rg1_10"
-            style="@style/rb_money_check"
-            android:text="@string/_10_00"/>
+            <RadioButton
+                android:id="@+id/rb_rg1_10"
+                style="@style/rb_money_check"
+                android:text="@string/_10_00"/>
 
-        <Space
-            android:layout_width="10dp"
-            android:layout_height="match_parent"/>
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent"/>
 
-        <RadioButton
-            android:id="@+id/rb_rg1_20"
-            style="@style/rb_money_check"
-            android:text="@string/_20_00"/>
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/rb_rg1_20"
+                style="@style/rb_money_check"
+                android:text="@string/_20_00"/>
+        </RadioGroup>
 
-    <RadioGroup
-        android:id="@+id/rg_rec_rg2"
-        style="@style/rg_money"
-        android:layout_below="@+id/rg_rec_rg1">
+        <RadioGroup
+            android:id="@+id/rg_rec_rg2"
+            style="@style/rg_money"
+            android:layout_below="@+id/rg_rec_rg1">
 
-        <RadioButton
-            android:id="@+id/rb_rg2_50"
-            style="@style/rb_money_check"
-            android:text="@string/_50_00"/>
+            <RadioButton
+                android:id="@+id/rb_rg2_50"
+                style="@style/rb_money_check"
+                android:text="@string/_50_00"/>
 
-        <Space
-            android:layout_width="10dp"
-            android:layout_height="match_parent"/>
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent"/>
 
-        <RadioButton
-            android:id="@+id/rb_rg2_100"
-            style="@style/rb_money_check"
-            android:text="@string/_100_00"/>
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/rb_rg2_100"
+                style="@style/rb_money_check"
+                android:text="@string/_100_00"/>
+        </RadioGroup>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/pay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rg_rec_rg2"
+        android:layout_below="@+id/money_area"
         android:layout_marginTop="10dp"
         android:background="@color/white"
         android:orientation="vertical">
@@ -112,7 +119,7 @@
         <RelativeLayout
             android:id="@+id/rbf_weixinArea"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/pay_height"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp">
 
@@ -126,7 +133,7 @@
                 android:id="@+id/rbf_weixin_checkbox"
                 style="@style/checkbox"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"/>
+                android:layout_height="wrap_content"/>
         </RelativeLayout>
 
         <View
@@ -137,7 +144,7 @@
         <RelativeLayout
             android:id="@+id/rbf_aliArea"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/pay_height"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp">
 
@@ -151,7 +158,7 @@
                 android:id="@+id/rbf_ali_checkbox"
                 style="@style/checkbox"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"/>
+                android:layout_height="wrap_content"/>
         </RelativeLayout>
 
     </LinearLayout>

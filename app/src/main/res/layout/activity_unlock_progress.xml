@@ -10,39 +10,39 @@
 
     <include layout="@layout/toolbar"/>
 
-    <ImageView
-        android:id="@+id/unlockIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+    <RelativeLayout
+        android:layout_centerInParent="true"
         android:layout_marginTop="100dp"
-        android:background="@mipmap/bg_waiting_enable"
-        android:src="@mipmap/bg_waiting_disenable"/>
-
-
-    <com.dcch.sharebike.view.MarqueeTextView
-        android:layout_below="@+id/unlockIcon"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:id="@+id/menu_desc"
+        android:layout_below="@+id/toolbar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="开锁中，请稍后"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:singleLine="true"
-        android:ellipsize="marquee"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:scrollHorizontally="true"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true">
-    </com.dcch.sharebike.view.MarqueeTextView>
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/unlockIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@mipmap/bg_waiting_enable"
+            android:src="@mipmap/bg_waiting_disenable"/>
 
 
+        <com.dcch.sharebike.view.MarqueeTextView
+            android:layout_centerInParent="true"
+            android:id="@+id/menu_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="开锁中，请勿走开"
+            android:textColor="@color/white"
+            android:textSize="14sp">
+        </com.dcch.sharebike.view.MarqueeTextView>
 
+    </RelativeLayout>
 
 
 </RelativeLayout>

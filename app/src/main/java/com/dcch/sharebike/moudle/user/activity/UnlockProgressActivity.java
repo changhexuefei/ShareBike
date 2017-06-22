@@ -199,9 +199,10 @@ public class UnlockProgressActivity extends BaseActivity {
     private void receiveFromNettyService(MessageEvent info) {
         LogUtils.d("NettyService", "成功" + info.toString());
         if (info != null) {
-            mTimer.cancel();
+
             startActivity(new Intent(UnlockProgressActivity.this, MainActivity.class));
             EventBus.getDefault().post(new MessageEvent(), "order_show");
+            mTimer.cancel();
             UnlockProgressActivity.this.finish();
 //            mMyProgressBar.beginStarting();//启动开始动画
         }
