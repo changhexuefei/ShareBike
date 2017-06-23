@@ -17,8 +17,6 @@ import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.ToastUtils;
-import com.hss01248.dialog.StyledDialog;
-import com.hss01248.dialog.interfaces.MyDialogListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -69,7 +67,7 @@ public class AuthenticationOkActivity extends BaseActivity {
 
     private void GenerateCoupon(String userId) {
         Map<String, String> map = new HashMap<>();
-        map.put("userId",userId);
+        map.put("userId", userId);
         OkHttpUtils.post().url(Api.BASE_URL + Api.ADDCOUPON).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -79,18 +77,8 @@ public class AuthenticationOkActivity extends BaseActivity {
             @Override
             public void onResponse(String response, int id) {
                 LogUtils.d("优惠", response);
-                if(JsonUtils.isSuccess(response)){
-                    StyledDialog.buildMdAlert(AuthenticationOkActivity.this, "提示", "恭喜您获得麒麟单车赠送的骑行券", new MyDialogListener() {
-                        @Override
-                        public void onFirst() {
-
-                        }
-
-                        @Override
-                        public void onSecond() {
-
-                        }
-                    });
+                if (JsonUtils.isSuccess(response)) {
+                    ToastUtils.showLong(AuthenticationOkActivity.this,"恭喜您获得麒麟单车赠送的骑行券");
                 }
 
             }

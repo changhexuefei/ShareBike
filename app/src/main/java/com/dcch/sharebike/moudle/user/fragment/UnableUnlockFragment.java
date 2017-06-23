@@ -100,16 +100,7 @@ public class UnableUnlockFragment extends Fragment {
         return view;
     }
 
-    //手工输入页面发来的消息
-    @Subscriber(tag = "unable_bikeNo", mode = ThreadMode.MAIN)
-    private void receiveFromManual(CodeEvent info) {
-        LogUtils.d("自行车", info.getBikeNo());
-        if (info != null) {
-            result = info.getBikeNo();
-            bikeCode.setText(result);
-            changeStatus();
-        }
-    }
+
 
     @Override
     public void onDestroy() {
@@ -202,20 +193,20 @@ public class UnableUnlockFragment extends Fragment {
                 });
     }
 
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == -1 && requestCode == 0) {
-            Bundle bundle = data.getExtras();
-            if (bundle != null) {
-                result = bundle.getString("result");
-                result = result.substring(result.length() - 9, result.length());
-                bikeCode.setText(result);
-                changeStatus();
-
-            }
-        }
-    }
+//
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (resultCode == -1 && requestCode == 0) {
+//            Bundle bundle = data.getExtras();
+//            if (bundle != null) {
+//                result = bundle.getString("result");
+//                result = result.substring(result.length() - 9, result.length());
+//                bikeCode.setText(result);
+//                changeStatus();
+//
+//            }
+//        }
+//    }
 
     private void changeStatus() {
         tips.setVisibility(View.VISIBLE);
@@ -234,4 +225,25 @@ public class UnableUnlockFragment extends Fragment {
     void showCamera() {
     }
 
+    //手工输入页面发来的消息
+    @Subscriber(tag = "unable_bikeNo", mode = ThreadMode.MAIN)
+    private void receiveFromManual(CodeEvent info) {
+        LogUtils.d("自行车", info.getBikeNo());
+        if (info != null) {
+            result = info.getBikeNo();
+            bikeCode.setText(result);
+            changeStatus();
+        }
+    }
+    //照相页面发来的消息
+    @Subscriber(tag = "unable_bikeNo", mode = ThreadMode.MAIN)
+    private void receiveFromCap(CodeEvent info) {
+        LogUtils.d("自行车", info.getBikeNo());
+        if (info != null) {
+            result = info.getBikeNo();
+            result = result.substring(result.length() - 9, result.length());
+            bikeCode.setText(result);
+            changeStatus();
+        }
+    }
 }

@@ -110,15 +110,12 @@ public class LoginFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (SPUtils.isLogin()) {
             String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-
             if (userDetail != null) {
                 try {
                     JSONObject object = new JSONObject(userDetail);
                     int userId = object.optInt("id");
                     mToken = (String) SPUtils.get(App.getContext(), "token", "");
                     uID = String.valueOf(userId);
-                    mNickName = object.optString("nickName");
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

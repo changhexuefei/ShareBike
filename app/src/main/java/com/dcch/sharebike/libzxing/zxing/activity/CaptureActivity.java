@@ -37,6 +37,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.CodeEvent;
@@ -46,6 +47,7 @@ import com.dcch.sharebike.libzxing.zxing.utils.BeepManager;
 import com.dcch.sharebike.libzxing.zxing.utils.CaptureActivityHandler;
 import com.dcch.sharebike.libzxing.zxing.utils.InactivityTimer;
 import com.dcch.sharebike.moudle.login.activity.OpenLockTipAcitivity;
+import com.dcch.sharebike.moudle.user.activity.CustomerServiceActivity;
 import com.dcch.sharebike.moudle.user.activity.ManualInputActivity;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.DensityUtils;
@@ -284,11 +286,43 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
 //        bundle.putInt("width", mCropRect.width());
 //        bundle.putInt("height", mCropRect.height());
 //        bundle.putString("result", mRawResultText);
-        EventBus.getDefault().post(new CodeEvent(mRawResultText),"samsung");
+        goToCorrespondingPage(mRawResultText);
+
         LogUtils.d("地址",mRawResultText);
 //        resultIntent.putExtras(bundle);
 //        CaptureActivity.this.setResult(RESULT_OK, resultIntent);
         CaptureActivity.this.finish();
+    }
+
+    private void goToCorrespondingPage(String rawResultText) {
+            switch (mMsg) {
+                case "main": {
+                    Intent bikeNoIntent = new Intent(CaptureActivity.this, MainActivity.class);
+                    EventBus.getDefault().post(new CodeEvent(mRawResultText),"samsung");
+                    startActivity(bikeNoIntent);
+
+                    break;
+                }
+                case "unable": {
+                    Intent bikeNoIntent = new Intent(CaptureActivity.this, CustomerServiceActivity.class);
+                    startActivity(bikeNoIntent);
+                    EventBus.getDefault().post(new CodeEvent(rawResultText), "unable_bikeNo");
+                    break;
+                }
+                case "reports": {
+                    Intent bikeNoIntent = new Intent(CaptureActivity.this, CustomerServiceActivity.class);
+                    startActivity(bikeNoIntent);
+                    EventBus.getDefault().post(new CodeEvent(rawResultText), "report_bikeNo");
+                    break;
+                }
+                case "fail": {
+                    Intent bikeNoIntent = new Intent(CaptureActivity.this, CustomerServiceActivity.class);
+                    startActivity(bikeNoIntent);
+                    EventBus.getDefault().post(new CodeEvent(rawResultText), "fail_bikeNo");
+                    break;
+                }
+
+        }
     }
 
     private void initCamera(SurfaceHolder surfaceHolder) {

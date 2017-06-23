@@ -136,6 +136,6 @@ dependencies {
     releaseCompile 'com.github.moduth:blockcanary-no-op:1.2.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     compile 'com.sefford:circular-progress-drawable:1.31@aar'
-    compile 'com.android.support:multidex:1.0.1'
+//    compile 'com.android.support:multidex:1.0.1'
 
 }

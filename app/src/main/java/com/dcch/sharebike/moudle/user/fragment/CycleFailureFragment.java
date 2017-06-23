@@ -58,7 +58,6 @@ import okhttp3.Call;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
-import static android.app.Activity.RESULT_OK;
 import static com.dcch.sharebike.R.id.tips;
 
 
@@ -241,7 +240,7 @@ public class CycleFailureFragment extends Fragment {
         Intent i4 = new Intent(getActivity(), CaptureActivity.class);
         i4.putExtra("msg", msg);
         i4.putExtra("token", token);
-        startActivityForResult(i4, 0);
+        startActivity(i4);
     }
 
 
@@ -277,11 +276,11 @@ public class CycleFailureFragment extends Fragment {
                             String resultStatus = object.optString("resultStatus");
 
                             if (resultStatus.equals("1")) {
-                                ToastUtils.showLong(getContext(), "提交成功！");
+                                ToastUtils.showLong(getActivity(), "提交成功！");
                                 startActivity(new Intent(getActivity(), UserGuideActivity.class));
                                 getActivity().finish();
                             } else if (resultStatus.equals("0")) {
-                                ToastUtils.showLong(getContext(), "提交失败！");
+                                ToastUtils.showLong(getActivity(), "提交失败！");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -300,19 +299,19 @@ public class CycleFailureFragment extends Fragment {
     void showCamera() {
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == 0) {
-            Bundle bundle = data.getExtras();
-            if (bundle != null) {
-                result = bundle.getString("result");
-                result = result.substring(result.length() - 9, result.length());
-                mBikeCode.setText(result);
-                changeStatus();
-            }
-        }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == RESULT_OK && requestCode == 0) {
+//            Bundle bundle = data.getExtras();
+//            if (bundle != null) {
+//                result = bundle.getString("result");
+//                result = result.substring(result.length() - 9, result.length());
+//                mBikeCode.setText(result);
+//                changeStatus();
+//            }
+//        }
+//    }
 
     //手工输入页面发来的消息
     @Subscriber(tag = "fail_bikeNo", mode = ThreadMode.MAIN)
@@ -325,12 +324,23 @@ public class CycleFailureFragment extends Fragment {
         }
 
     }
+    //从照相页面发来的消息
+    @Subscriber(tag = "fail_bikeNo", mode = ThreadMode.MAIN)
+    private void receiveFromCap(CodeEvent info) {
+        if (info != null) {
+            LogUtils.d("自行车", info.getBikeNo());
+            result = info.getBikeNo();
+            result = result.substring(result.length() - 9, result.length());
+            mBikeCode.setText(result);
+            changeStatus();
+        }
+
+    }
 
     private void changeStatus() {
         mTips.setVisibility(View.VISIBLE);
         upload.setEnabled(true);
         upload.setBackgroundColor(getResources().getColor(R.color.colorTitle));
     }
-
 
 }

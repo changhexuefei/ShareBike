@@ -323,6 +323,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     JSONObject object = new JSONObject(response);
                     verificationCode = object.optString("code");
                     if (verificationCode != null && !verificationCode.equals("")) {
+                        Log.d("测试", verificationCode);
                         securityCode.setText(verificationCode);
                     }
 
