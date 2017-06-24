@@ -90,11 +90,6 @@ public class DealFeedbackActivity extends BaseActivity {
         StyledDialog.buildIosAlert(DealFeedbackActivity.this, "提示", "拨打电话 400-660-6215", new MyDialogListener() {
             @Override
             public void onFirst() {
-//                Intent intent = new Intent();
-//                intent.setAction(Intent.ACTION_CALL);//指定意图动作
-//                intent.setData(Uri.parse("tel:400-660-6215"));//指定电话号码
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(intent);
                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "400-660-6215"));
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);

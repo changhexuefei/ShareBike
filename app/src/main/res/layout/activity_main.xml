@@ -6,7 +6,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="56dp"
@@ -26,26 +26,28 @@
             style="@style/title_bar_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:text="@string/share_title"/>
 
         <ImageView
             android:id="@+id/seek"
             android:layout_width="48dp"
             android:layout_height="match_parent"
-            android:layout_gravity="right|center_vertical"
-            android:padding="16dp"
-            android:src="@mipmap/find"
-            android:visibility="gone"/>
+            android:layout_gravity="right"
+            android:layout_toLeftOf="@+id/specialOffer"
+            android:padding="12dp"
+            android:src="@mipmap/servicetel"/>
 
         <ImageView
             android:id="@+id/specialOffer"
             android:layout_width="48dp"
             android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
             android:layout_gravity="right|center_vertical"
             android:padding="8dp"
             android:src="@mipmap/ic_activity"/>
 
-    </FrameLayout>
+    </RelativeLayout>
 
 
     <com.baidu.mapapi.map.MapView
@@ -56,9 +58,10 @@
 
     <ImageView
         android:id="@+id/centerIcon"
-        android:layout_width="20dp"
-        android:layout_height="40dp"
+        android:layout_width="15dp"
+        android:layout_height="50dp"
         android:layout_centerInParent="true"
+        android:paddingTop="20dp"
         android:src="@drawable/search_center_ic"/>
 
     <Button
@@ -83,7 +86,8 @@
         android:layout_alignBottom="@+id/btn_my_location"
         android:layout_alignParentRight="true"
         android:layout_marginRight="15dp"
-        android:background="@mipmap/intelligent_warranty"/>
+        android:background="@mipmap/intelligent_warranty"
+        android:padding="5dp"/>
 
     <TextView
         android:id="@+id/scan"

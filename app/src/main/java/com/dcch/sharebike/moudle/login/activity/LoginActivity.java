@@ -308,7 +308,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         phone = AES.encrypt(phone.getBytes(), MyContent.key);
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone);
-        LogUtils.d("手机号",phone);
+        LogUtils.d("测试",phone);
         OkHttpUtils.post().url(Api.BASE_URL + Api.REGISTER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
