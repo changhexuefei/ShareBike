@@ -84,7 +84,7 @@ public class UnableUnlockFragment extends Fragment {
                 JSONObject object = new JSONObject(userDetail);
                 int id = object.optInt("id");
                 uID = String.valueOf(id);
-                mToken = object.optString("token");
+                mToken = (String)SPUtils.get(App.getContext(), "token", "");
                 Log.d("用户ID", uID);
             } catch (JSONException e) {
                 e.printStackTrace();

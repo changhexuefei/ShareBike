@@ -23,7 +23,7 @@ import com.dcch.sharebike.moudle.home.bean.BookingBikeInfo;
 
 public class BookBikePopupWindow extends PopupWindow {
     private BookingBikeInfo bookingBikeInfo;
-    private TextView mBookBikeLocationInfo;
+    public TextView mBookBikeLocationInfo;
     private TextView mBikeNumber;
     public TextView mHoldTime;
     public ImageView forBellIcon;
@@ -44,12 +44,12 @@ public class BookBikePopupWindow extends PopupWindow {
         mCancel = (Button) mCancelBookBikeWindow.findViewById(R.id.cancel_book);
         forBellIcon = (ImageView) mCancelBookBikeWindow.findViewById(R.id.forBellIcon);
         //为控件赋值
-        String address = String.valueOf(bookingBikeInfo.getAddress());
-        if (address != null) {
-            mBookBikeLocationInfo.setText(address);
-        } else {
-            mBookBikeLocationInfo.setText("未知地址");
-        }
+//        String address = String.valueOf(bookingBikeInfo.getAddress());
+//        if (address != null) {
+//            mBookBikeLocationInfo.setText(address);
+//        } else {
+//            mBookBikeLocationInfo.setText("未知地址");
+//        }
         mBikeNumber.setText(String.valueOf(bookingBikeInfo.getBicycleNo()));
 
         // 设置按钮监听

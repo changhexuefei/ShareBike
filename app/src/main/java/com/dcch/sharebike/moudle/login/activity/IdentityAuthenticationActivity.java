@@ -90,7 +90,7 @@ public class IdentityAuthenticationActivity extends BaseActivity {
         try {
             JSONObject object = new JSONObject(userDetail);
             int id = object.getInt("id");
-            mToken = object.optString("token");
+            mToken = (String)SPUtils.get(App.getContext(), "token", "");
             uID = String.valueOf(id);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -185,7 +185,6 @@ public class IdentityAuthenticationActivity extends BaseActivity {
             OkHttpUtils.post().url(Api.BASE_URL + Api.UPDATEUSERSTATUS).params(map).build().execute(new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
-
                     ToastUtils.showShort(IdentityAuthenticationActivity.this, getString(R.string.server_tip));
                 }
 
@@ -193,10 +192,13 @@ public class IdentityAuthenticationActivity extends BaseActivity {
                 public void onResponse(String response, int id) {
                     Log.d("实名认证", response);
                     if (JsonUtils.isSuccess(response)) {
-                        Intent authentication = new Intent(IdentityAuthenticationActivity.this, AuthenticationOkActivity.class);
-                        SPUtils.put(App.getContext(),"status",1);
-                        startActivity(authentication);
-                        finish();
+                        if (uID != null && !uID.equals("")) {
+                            Intent authentication = new Intent(IdentityAuthenticationActivity.this, AuthenticationOkActivity.class);
+                            SPUtils.put(App.getContext(), "status", 1);
+                            authentication.putExtra("userId", uID);
+                            startActivity(authentication);
+                            finish();
+                        }
 
                     } else {
                         ToastUtils.showShort(IdentityAuthenticationActivity.this, getString(R.string.input_name_uuid_fail));

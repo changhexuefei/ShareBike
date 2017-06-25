@@ -84,12 +84,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     if (TIME <= 0) {
                         TIME = 60;
                     }
-                    getSecurityCode.setBackgroundColor(getColor(R.color.btn_bg));
+                    getSecurityCode.setBackgroundColor(getResources().getColor(R.color.btn_bg));
                     getSecurityCode.setClickable(false);
                     break;
                 case CODE_REPEAT://重新发送
                     getSecurityCode.setText(getString(R.string.regain_verifyCode));
-                    getSecurityCode.setBackgroundColor(getColor(R.color.btn_bg_other));
+                    getSecurityCode.setBackgroundColor(getResources().getColor(R.color.btn_bg_other));
                     getSecurityCode.setClickable(true);
                     break;
 
@@ -138,13 +138,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     phone = s.toString().trim();
                     if (TextUtils.isEmpty(phone)) {
                         getSecurityCode.setEnabled(false);
-                        getSecurityCode.setBackgroundColor(getColor(R.color.btn_bg));
+                        getSecurityCode.setBackgroundColor(getResources().getColor(R.color.btn_bg));
                     } else if (!InPutUtils.isMobilePhone(phone)) {
                         getSecurityCode.setEnabled(false);
-                        getSecurityCode.setBackgroundColor(getColor(R.color.btn_bg));
+                        getSecurityCode.setBackgroundColor(getResources().getColor(R.color.btn_bg));
                     } else if (!TextUtils.isEmpty(phone) && InPutUtils.isMobilePhone(phone)) {
                         getSecurityCode.setEnabled(true);
-                        getSecurityCode.setBackgroundColor(getColor(R.color.btn_bg_other));
+                        getSecurityCode.setBackgroundColor(getResources().getColor(R.color.btn_bg_other));
                     }
                 }
             }
@@ -166,10 +166,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     seCode = s.toString().trim();
                     if (TextUtils.isEmpty(seCode)) {
                         confirm.setEnabled(false);
-                        confirm.setBackgroundColor(getColor(R.color.btn_bg));
+                        confirm.setBackgroundColor(getResources().getColor(R.color.btn_bg));
                     } else if (!TextUtils.isEmpty(phone)) {
                         confirm.setEnabled(true);
-                        confirm.setBackgroundColor(getColor(R.color.btn_bg_other));
+                        confirm.setBackgroundColor(getResources().getColor(R.color.btn_bg_other));
                     }
                 }
             }
@@ -289,11 +289,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     //储存用户信息(登录储存一次)
                     SPUtils.clear(App.getContext());
                     SPUtils.put(App.getContext(), "userDetail", response);
+                    SPUtils.put(App.getContext(), "userId", userInfo.getId());
                     SPUtils.put(App.getContext(), "islogin", true);
                     SPUtils.put(App.getContext(), "isfirst", false);
                     SPUtils.put(App.getContext(), "cashStatus", userInfo.getCashStatus());
                     SPUtils.put(App.getContext(), "status", userInfo.getStatus());
                     SPUtils.put(App.getContext(), "phone", finalPhone);
+                    SPUtils.put(App.getContext(), "token", userInfo.getToken());
                 } else {
                     ToastUtils.showShort(LoginActivity.this, getString(R.string.login_error));
                 }

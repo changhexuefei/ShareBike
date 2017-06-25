@@ -39,6 +39,7 @@ import android.widget.ToggleButton;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.base.CodeEvent;
 import com.dcch.sharebike.libzxing.zxing.camera.CameraManager;
 import com.dcch.sharebike.libzxing.zxing.decode.DecodeThread;
 import com.dcch.sharebike.libzxing.zxing.utils.BeepManager;
@@ -48,7 +49,10 @@ import com.dcch.sharebike.moudle.login.activity.OpenLockTipAcitivity;
 import com.dcch.sharebike.moudle.user.activity.ManualInputActivity;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.DensityUtils;
+import com.dcch.sharebike.utils.LogUtils;
 import com.google.zxing.Result;
+
+import org.simple.eventbus.EventBus;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -94,6 +98,7 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
     private Camera.Parameters parameters = null;
     private String mMsg;
     private String mToken;
+    private String mRawResultText;
 
     public Handler getHandler() {
         return handler;
@@ -122,6 +127,7 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
         animation.setRepeatCount(-1);
         animation.setRepeatMode(Animation.RESTART);
         scanLine.startAnimation(animation);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -155,7 +161,7 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
                 }
                 Intent manual = new Intent(CaptureActivity.this, ManualInputActivity.class);
                 manual.putExtra("tag", mMsg);
-                manual.putExtra("token",mToken);
+                manual.putExtra("token", mToken);
                 startActivity(manual);
             }
         });
@@ -218,7 +224,7 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
 
     @Override
     protected void onPause() {
-        Log.d("实验", "onPause+3");
+        Log.d("实验", "onPause+cap");
         if (handler != null) {
             handler.quitSynchronously();
             handler = null;
@@ -234,7 +240,9 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
 
     @Override
     protected void onDestroy() {
+        LogUtils.d("实验", "onDestroy+cap");
         inactivityTimer.shutdown();
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
@@ -271,13 +279,15 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
     public void handleDecode(Result rawResult, final Bundle bundle) {
         inactivityTimer.onActivity();
         beepManager.playBeepSoundAndVibrate();
-        final String rawResultText = rawResult.getText();
-        Intent resultIntent = new Intent();
-        bundle.putInt("width", mCropRect.width());
-        bundle.putInt("height", mCropRect.height());
-        bundle.putString("result", rawResultText);
-        resultIntent.putExtras(bundle);
-        CaptureActivity.this.setResult(RESULT_OK, resultIntent);
+        mRawResultText = rawResult.getText();
+//        Intent resultIntent = new Intent();
+//        bundle.putInt("width", mCropRect.width());
+//        bundle.putInt("height", mCropRect.height());
+//        bundle.putString("result", mRawResultText);
+        EventBus.getDefault().post(new CodeEvent(mRawResultText),"samsung");
+        LogUtils.d("地址",mRawResultText);
+//        resultIntent.putExtras(bundle);
+//        CaptureActivity.this.setResult(RESULT_OK, resultIntent);
         CaptureActivity.this.finish();
     }
 
@@ -349,7 +359,7 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
         int cameraWidth = cameraManager.getCameraResolution().y;
         int cameraHeight = cameraManager.getCameraResolution().x;
 
-       // /** 获取布局中扫描框的位置信息 */
+        // /** 获取布局中扫描框的位置信息 */
         int[] location = new int[2];
         scanCropView.getLocationInWindow(location);
 
@@ -359,16 +369,16 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
         int cropWidth = scanCropView.getWidth();
         int cropHeight = scanCropView.getHeight();
 
-       // /** 获取布局容器的宽高 */
+        // /** 获取布局容器的宽高 */
         int containerWidth = scanContainer.getWidth();
         int containerHeight = scanContainer.getHeight();
 
-       // /** 计算最终截取的矩形的左上角顶点x坐标 */
+        // /** 计算最终截取的矩形的左上角顶点x坐标 */
         int x = cropLeft * cameraWidth / containerWidth;
-       // /** 计算最终截取的矩形的左上角顶点y坐标 */
+        // /** 计算最终截取的矩形的左上角顶点y坐标 */
         int y = cropTop * cameraHeight / containerHeight;
 
-       // /** 计算最终截取的矩形的宽度 */
+        // /** 计算最终截取的矩形的宽度 */
         int width = cropWidth * cameraWidth / containerWidth;
         ///** 计算最终截取的矩形的高度 */
         int height = cropHeight * cameraHeight / containerHeight;
@@ -404,8 +414,19 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
             case R.id.back:
                 finish();
                 break;
-
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+//        LogUtils.d("result",mRawResultText);
+//        outState.putString("result",mRawResultText);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LogUtils.d("实验", "onStop+cap");
+    }
 }

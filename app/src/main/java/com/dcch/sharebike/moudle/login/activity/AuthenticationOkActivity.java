@@ -14,8 +14,11 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.utils.ClickUtils;
+import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.ToastUtils;
+import com.hss01248.dialog.StyledDialog;
+import com.hss01248.dialog.interfaces.MyDialogListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -55,23 +58,40 @@ public class AuthenticationOkActivity extends BaseActivity {
                 finish();
             }
         });
-        //生成优惠券的方法
-//        GenerateCoupon();
+        Intent intent = getIntent();
+        if (intent != null && !intent.equals("")) {
+            String userId = intent.getStringExtra("userId");
+            //生成优惠券的方法
+            GenerateCoupon(userId);
+        }
 
     }
 
-    private void GenerateCoupon() {
-        Map<String,String> map = new HashMap<>();
-        OkHttpUtils.post().url(Api.BASE_URL+Api.ADDCOUPON).params(map).build().execute(new StringCallback() {
+    private void GenerateCoupon(String userId) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userId",userId);
+        OkHttpUtils.post().url(Api.BASE_URL + Api.ADDCOUPON).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-
                 ToastUtils.showShort(AuthenticationOkActivity.this, getString(R.string.server_tip));
             }
 
             @Override
             public void onResponse(String response, int id) {
-                LogUtils.d("优惠",response);
+                LogUtils.d("优惠", response);
+                if(JsonUtils.isSuccess(response)){
+                    StyledDialog.buildMdAlert(AuthenticationOkActivity.this, "提示", "恭喜您获得麒麟单车赠送的骑行券", new MyDialogListener() {
+                        @Override
+                        public void onFirst() {
+
+                        }
+
+                        @Override
+                        public void onSecond() {
+
+                        }
+                    });
+                }
 
             }
         });

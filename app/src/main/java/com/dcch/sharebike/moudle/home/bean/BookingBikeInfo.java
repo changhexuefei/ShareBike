@@ -31,8 +31,8 @@ public class BookingBikeInfo {
     private int bookingCarStatus;
     private String resultStatus;
     private Object remark;
-    private String longitude;
-    private String latitude;
+    private double longitude;
+    private double latitude;
     private Object address;
 
     public String getBookingCarId() {
@@ -108,19 +108,19 @@ public class BookingBikeInfo {
         this.remark = remark;
     }
 
-    public String getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
-    public String getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
