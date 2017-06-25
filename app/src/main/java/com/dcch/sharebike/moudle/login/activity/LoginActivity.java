@@ -89,6 +89,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     break;
                 case CODE_REPEAT://重新发送
                     getSecurityCode.setText(getString(R.string.regain_verifyCode));
+                    securityCode.setText("");
                     getSecurityCode.setBackgroundColor(getResources().getColor(R.color.btn_bg_other));
                     getSecurityCode.setClickable(true);
                     break;
@@ -307,11 +308,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         phone = AES.encrypt(phone.getBytes(), MyContent.key);
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone);
+        LogUtils.d("测试",phone);
         OkHttpUtils.post().url(Api.BASE_URL + Api.REGISTER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-
-                ToastUtils.showLong(App.getContext(), getString(R.string.server_tip));
+                ToastUtils.showLong(LoginActivity.this, getString(R.string.server_tip)+e.getMessage());
             }
 
             @Override
@@ -322,6 +323,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     JSONObject object = new JSONObject(response);
                     verificationCode = object.optString("code");
                     if (verificationCode != null && !verificationCode.equals("")) {
+                        Log.d("测试", verificationCode);
                         securityCode.setText(verificationCode);
                     }
 

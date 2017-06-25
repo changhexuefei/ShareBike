@@ -63,13 +63,12 @@ public class RechargeDepositActivity extends BaseActivity {
     private final static String orderbody = "交押金";
     private final static String subject = "押金";
     private static final int SDK_PAY_FLAG = 1;
-    //    private static final int SDK_AUTH_FLAG = 2;
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     private String userID;
-    String ipAddress = "";
+    private String ipAddress ;
     private String mOutTradeNo;
 
     @Override
@@ -165,7 +164,7 @@ public class RechargeDepositActivity extends BaseActivity {
         map.put("attach", userID);
         map.put("total_price", moneySum);
         map.put("spbill_create_ip", ipAddress);
-        LogUtils.d("微信支付", outTradeNo + "\n" + ipAddress);
+        LogUtils.d("微信支付", outTradeNo + "\n" + ipAddress+"\n"+moneySum);
         OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINCASHPAY).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -205,9 +204,7 @@ public class RechargeDepositActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAYCASH).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-
                 ToastUtils.showShort(RechargeDepositActivity.this, getString(R.string.server_tip));
-
             }
 
             @Override

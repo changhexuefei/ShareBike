@@ -122,13 +122,13 @@ public class IdentityAuthenticationActivity extends BaseActivity {
                     cardNum = editable.toString().trim();
                     if (!InPutUtils.IDCardValidate(cardNum)) {
                         btnAuthentication.setEnabled(false);
-                        btnAuthentication.setBackgroundColor(getColor(R.color.btn_bg));
+                        btnAuthentication.setBackgroundColor(getResources().getColor(R.color.btn_bg));
                     } else if (TextUtils.isEmpty(realName)) {
                         btnAuthentication.setEnabled(false);
-                        btnAuthentication.setBackgroundColor(getColor(R.color.btn_bg));
+                        btnAuthentication.setBackgroundColor(getResources().getColor(R.color.btn_bg));
                     } else if (InPutUtils.IDCardValidate(cardNum) && !TextUtils.isEmpty(realName)) {
                         btnAuthentication.setEnabled(true);
-                        btnAuthentication.setBackgroundColor(getColor(R.color.btn_bg_other));
+                        btnAuthentication.setBackgroundColor(getResources().getColor(R.color.btn_bg_other));
                     }
                 }
             }

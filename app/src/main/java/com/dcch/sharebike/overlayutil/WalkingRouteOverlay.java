@@ -15,6 +15,7 @@ import com.baidu.mapapi.map.Polyline;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.route.WalkingRouteLine;
+import com.dcch.sharebike.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,14 +77,15 @@ public class WalkingRouteOverlay extends OverlayManager {
                 }
             }
         }
-//        // starting
-//        if (mRouteLine.getStarting() != null) {
-//            overlayList.add((new MarkerOptions())
-//                    .position(mRouteLine.getStarting().getLocation())
-//                            .icon(getStartMarker() != null ? getStartMarker() :
-//                                    BitmapDescriptorFactory
-//                                            .fromAssetWithDpi("Icon_start.png")).zIndex(10));
-//        }
+        // starting .fromAssetWithDpi("Icon_start.png"))
+        if (mRouteLine.getStarting() != null) {
+            overlayList.add((new MarkerOptions())
+                    .position(mRouteLine.getStarting().getLocation())
+                            .icon(getStartMarker() != null ? getStartMarker() :
+                                    BitmapDescriptorFactory
+                                            .fromResource(R.drawable.start_ic))
+                                            .zIndex(10));
+        }
         // terminal
 //        if (mRouteLine.getTerminal() != null) {
 //            overlayList

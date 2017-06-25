@@ -207,11 +207,11 @@ public class ReportIllegalParkingFragment extends Fragment {
                     @Override
                     public void onResponse(String response, int id) {
                         if (JsonUtils.isSuccess(response)) {
-                            ToastUtils.showLong(getContext(), "提交成功！");
+                            ToastUtils.showLong(getActivity(), "提交成功！");
                             startActivity(new Intent(getActivity(), UserGuideActivity.class));
                             getActivity().finish();
                         } else {
-                            ToastUtils.showLong(getContext(), "提交失败！");
+                            ToastUtils.showLong(getActivity(), "提交失败！");
                         }
 
                     }
@@ -252,7 +252,18 @@ public class ReportIllegalParkingFragment extends Fragment {
             result = info.getBikeNo();
             mBikeCode.setText(result);
             changeStatus();
+        }
+    }
 
+    //从照相页面发来的消息
+    @Subscriber(tag = "report_bikeNo", mode = ThreadMode.MAIN)
+    private void receiveFromCap(CodeEvent info) {
+        if (info != null) {
+            LogUtils.d("自行车", info.getBikeNo());
+            result = info.getBikeNo();
+            result = result.substring(result.length() - 9, result.length());
+            mBikeCode.setText(result);
+            changeStatus();
         }
 
     }

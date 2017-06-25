@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.support.annotation.IdRes;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -46,16 +46,16 @@ public class UnlockBillPageActivity extends BaseActivity implements RadioGroup.O
     ImageView mSelectPhotoTwo;
     @BindView(R.id.select_photo_area)
     RelativeLayout mSelectPhotoArea;
-    @BindView(R.id.tv20)
-    TextView mTv20;
-    @BindView(R.id.input_moneySum)
-    EditText mInputMoneySum;
+//    @BindView(R.id.tv20)
+//    TextView mTv20;
+//    @BindView(R.id.input_moneySum)
+//    EditText mInputMoneySum;
     @BindView(R.id.rg_rec_rg_1)
     RadioGroup mRgRecRg1;
     @BindView(R.id.rg_rec_rg_2)
     RadioGroup mRgRecRg2;
     @BindView(R.id.select_bikefare)
-    RelativeLayout mSelectBikefare;
+    LinearLayout mSelectBikefare;
     @BindView(R.id.rb_rg_1)
     RadioButton mRbRg1;
     @BindView(R.id.rb_rg_2)

@@ -27,7 +27,6 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
     private IWXAPI api;
     private int mStatus;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +54,6 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
             if (resp.errCode == 0) {
                 if (mStatus == 0) {
-                    LogUtils.d("走着了", "zheli");
                     Intent intent = new Intent(WXPayEntryActivity.this, IdentityAuthenticationActivity.class);
                     intent.putExtra("PAYCODE", resp.errCode + "");
                     ToastUtils.showShort(App.getContext(), "支付成功！");
@@ -70,7 +68,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                 }
                 this.finish();
             } else if (resp.errCode == -1) {//支付失败
-                ToastUtils.showShort(App.getContext(), "支付失败！" + resp.errCode);
+//                ToastUtils.showShort(App.getContext(), "支付失败！" + resp.errCode);
+                ToastUtils.showShort(App.getContext(), "支付失败！");
                 this.finish();
             } else {//取消
                 ToastUtils.showShort(App.getContext(), "支付取消！");
