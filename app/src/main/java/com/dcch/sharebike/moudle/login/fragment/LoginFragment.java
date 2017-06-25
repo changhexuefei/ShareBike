@@ -158,7 +158,7 @@ public class LoginFragment extends Fragment {
         OkHttpUtils.post().url(Api.BASE_URL + Api.INFOUSER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(App.getContext(), getString(R.string.server_tip));
+                ToastUtils.showShort(getActivity(), getString(R.string.server_tip));
             }
 
             @Override

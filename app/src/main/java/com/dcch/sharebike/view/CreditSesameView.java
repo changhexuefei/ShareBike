@@ -184,7 +184,7 @@ public class CreditSesameView extends View {
         this.mTextPaint.setTextSize(200.0F);
         this.mTextPaint.setStyle(Style.STROKE);
         canvas.drawText(String.valueOf(this.mMinNum), (float) this.radius, (float) (this.radius + 70), this.mTextPaint);
-        this.mTextPaint.setTextSize(80.0F);
+//        this.mTextPaint.setTextSize(80.0F);
 //        canvas.drawText(this.sesameLevel, (float) this.radius, (float) (this.radius + 160), this.mTextPaint);
         this.mTextPaint.setTextSize(30.0F);
         canvas.drawText(this.evaluationTime, (float) this.radius, (float) (this.radius + 205), this.mTextPaint);

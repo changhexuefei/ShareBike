@@ -1768,6 +1768,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         isChecked = true;
         mMapView.setEnabled(true);
         mMapView.setFocusable(true);
+        mCenterIcon.setVisibility(View.VISIBLE);
         getBikeInfo(mCurrentLantitude, mCurrentLongitude);
         mScan.setVisibility(View.VISIBLE);
     }
