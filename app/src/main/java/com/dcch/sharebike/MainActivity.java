@@ -45,7 +45,11 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
 import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.baidu.mapapi.search.route.BikingRouteResult;
 import com.baidu.mapapi.search.route.DrivingRouteResult;
 import com.baidu.mapapi.search.route.IndoorRouteResult;
@@ -139,6 +143,7 @@ import okhttp3.Call;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+import static com.dcch.sharebike.R.id.btn_my_help;
 import static com.dcch.sharebike.utils.MapUtil.stringToInt;
 
 
@@ -866,7 +871,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                         JSONObject object = new JSONObject(response);
                         count = object.optString("count");
                         if (Integer.valueOf(count) < 5) {
-                            if (menuWindow != null && menuWindow.isShowing()) {
+                            if (menuWindow != null && !menuWindow.equals("")) {
                                 menuWindow.dismiss();
                             }
                             StyledDialog.buildMdLoading(MainActivity.this, getString(R.string.booking), true, false).setMsgColor(R.color.color_ff).show();
