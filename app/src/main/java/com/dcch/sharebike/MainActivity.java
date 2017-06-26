@@ -143,7 +143,6 @@ import okhttp3.Call;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
-import static com.dcch.sharebike.R.id.btn_my_help;
 import static com.dcch.sharebike.utils.MapUtil.stringToInt;
 
 
@@ -159,7 +158,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     ImageButton mBtnMyLocation;
     @BindView(R.id.instructions)
     Button mInstructions;
-    @BindView(btn_my_help)
+    @BindView(R.id.btn_my_help)
     ImageButton mBtnMyHelp;
     @BindView(R.id.scan)
     TextView mScan;
