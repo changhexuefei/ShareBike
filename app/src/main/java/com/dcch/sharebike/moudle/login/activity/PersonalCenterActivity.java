@@ -29,22 +29,22 @@ public class PersonalCenterActivity extends BaseActivity {
     Toolbar mToolbar;
     //记录Fragment的位置
     private int position = 0;
-    private static PersonalCenterActivity pca;
+//    private static PersonalCenterActivity pca;
 
     public PersonalCenterActivity() {
     }
 
-    public static PersonalCenterActivity getInstance() {
-        // 提供一个全局的静态方法
-        if (pca == null) {
-            synchronized (PersonalCenterActivity.class) {
-                if (pca == null) {
-                    pca = new PersonalCenterActivity();
-                }
-            }
-        }
-        return pca;
-    }
+//    public static PersonalCenterActivity getInstance() {
+//        // 提供一个全局的静态方法
+//        if (pca == null) {
+//            synchronized (PersonalCenterActivity.class) {
+//                if (pca == null) {
+//                    pca = new PersonalCenterActivity();
+//                }
+//            }
+//        }
+//        return pca;
+//    }
 
     @Override
     protected int getLayoutId() {
@@ -120,9 +120,9 @@ public class PersonalCenterActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (pca != null) {
-            pca = null;
-        }
+//        if (pca != null) {
+//            pca = null;
+//        }
 //        App.getRefWatcher().watch(this);
     }
 }

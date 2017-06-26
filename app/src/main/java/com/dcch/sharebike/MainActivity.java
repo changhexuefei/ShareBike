@@ -143,6 +143,7 @@ import okhttp3.Call;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+import static com.dcch.sharebike.R.id.btn_my_help;
 import static com.dcch.sharebike.utils.MapUtil.stringToInt;
 
 
@@ -158,7 +159,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     ImageButton mBtnMyLocation;
     @BindView(R.id.instructions)
     Button mInstructions;
-    @BindView(R.id.btn_my_help)
+    @BindView(btn_my_help)
     ImageButton mBtnMyHelp;
     @BindView(R.id.scan)
     TextView mScan;
@@ -389,7 +390,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     //添加覆盖物的方法
     private void forLocationAddMark(double lat, double lng) {
-
         BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.bike_icon);
         OverlayOptions options;
         LatLng latLng = transform(lat, lng);
@@ -1324,6 +1324,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     }
                 } else {
                     //根据手机定位地点，得到车辆信息的方法
+                    LogUtils.d("这里", "2");
                     if (mCurrentLantitude > 0 && mCurrentLongitude > 0) {
                         getBikeInfo(mCurrentLantitude, mCurrentLongitude);
                     }
@@ -1763,6 +1764,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         isChecked = true;
         mMapView.setEnabled(true);
         mMapView.setFocusable(true);
+        mCenterIcon.setVisibility(View.VISIBLE);
         getBikeInfo(mCurrentLantitude, mCurrentLongitude);
         mScan.setVisibility(View.VISIBLE);
     }
