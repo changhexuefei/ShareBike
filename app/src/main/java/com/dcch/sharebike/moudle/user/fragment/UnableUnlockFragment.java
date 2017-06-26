@@ -78,17 +78,8 @@ public class UnableUnlockFragment extends Fragment {
         EventBus.getDefault().register(this);
         showCamera();
         if (SPUtils.isLogin()) {
-            String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-            Log.d("用户明细", userDetail);
-            try {
-                JSONObject object = new JSONObject(userDetail);
-                int id = object.optInt("id");
-                uID = String.valueOf(id);
-                mToken = (String)SPUtils.get(App.getContext(), "token", "");
-                Log.d("用户ID", uID);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
+            mToken = (String) SPUtils.get(App.getContext(), "token", "");
         }
     }
 
@@ -99,7 +90,6 @@ public class UnableUnlockFragment extends Fragment {
         ButterKnife.bind(this, view);
         return view;
     }
-
 
 
     @Override
@@ -235,8 +225,9 @@ public class UnableUnlockFragment extends Fragment {
             changeStatus();
         }
     }
+
     //照相页面发来的消息
-    @Subscriber(tag = "unable_bikeNo", mode = ThreadMode.MAIN)
+    @Subscriber(tag = "unable_bikeNo_cam", mode = ThreadMode.MAIN)
     private void receiveFromCap(CodeEvent info) {
         LogUtils.d("自行车", info.getBikeNo());
         if (info != null) {

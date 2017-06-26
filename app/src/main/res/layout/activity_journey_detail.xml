@@ -32,7 +32,7 @@
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
-            android:src="@drawable/sharebike"
+            android:src="@mipmap/avatar_default_login"
             app:civ_border_color="@color/white"
             app:civ_border_width="2dp"/>
 

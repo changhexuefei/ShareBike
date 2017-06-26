@@ -53,7 +53,7 @@ public class ManualInputActivity extends BaseActivity {
     Button mEnsure;
     @BindView(R.id.manual_help_tip)
     TextView mManualHelpTip;
-    private String bikeNo = "";
+    private String bikeNo ;
     private String mTag;
     private Camera camera = null;
     private Camera.Parameters parameters = null;

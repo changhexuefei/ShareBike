@@ -31,7 +31,6 @@ import com.hss01248.dialog.StyledDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -83,15 +82,7 @@ public class MyJourneyActivity extends BaseActivity {
         });
 
         if (SPUtils.isLogin()) {
-            userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-            object = null;
-            try {
-                object = new JSONObject(userDetail);
-                int id = object.getInt("id");
-                uID = String.valueOf(id);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
         }
 
         Intent intent = getIntent();

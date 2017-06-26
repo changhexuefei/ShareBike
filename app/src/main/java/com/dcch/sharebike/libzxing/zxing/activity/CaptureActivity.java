@@ -287,8 +287,6 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
 //        bundle.putInt("height", mCropRect.height());
 //        bundle.putString("result", mRawResultText);
         goToCorrespondingPage(mRawResultText);
-
-        LogUtils.d("地址",mRawResultText);
 //        resultIntent.putExtras(bundle);
 //        CaptureActivity.this.setResult(RESULT_OK, resultIntent);
         CaptureActivity.this.finish();
@@ -306,19 +304,19 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
                 case "unable": {
                     Intent bikeNoIntent = new Intent(CaptureActivity.this, CustomerServiceActivity.class);
                     startActivity(bikeNoIntent);
-                    EventBus.getDefault().post(new CodeEvent(rawResultText), "unable_bikeNo");
+                    EventBus.getDefault().post(new CodeEvent(rawResultText), "unable_bikeNo_cam");
                     break;
                 }
                 case "reports": {
                     Intent bikeNoIntent = new Intent(CaptureActivity.this, CustomerServiceActivity.class);
                     startActivity(bikeNoIntent);
-                    EventBus.getDefault().post(new CodeEvent(rawResultText), "report_bikeNo");
+                    EventBus.getDefault().post(new CodeEvent(rawResultText), "report_bikeNo_cam");
                     break;
                 }
                 case "fail": {
                     Intent bikeNoIntent = new Intent(CaptureActivity.this, CustomerServiceActivity.class);
                     startActivity(bikeNoIntent);
-                    EventBus.getDefault().post(new CodeEvent(rawResultText), "fail_bikeNo");
+                    EventBus.getDefault().post(new CodeEvent(rawResultText), "fail_bikeNo_cam");
                     break;
                 }
 

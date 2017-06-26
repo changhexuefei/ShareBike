@@ -184,6 +184,10 @@ public class UnlockProgressActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
+        if (mTimer != null) {
+            mTimer.cancel();
+            mTimer = null;
+        }
         super.onDestroy();
 
     }

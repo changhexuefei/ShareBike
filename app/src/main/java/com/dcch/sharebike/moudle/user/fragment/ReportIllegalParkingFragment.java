@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,8 +32,6 @@ import com.louisgeek.multiedittextviewlib.MultiEditInputView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 import org.simple.eventbus.ThreadMode;
@@ -94,17 +91,8 @@ public class ReportIllegalParkingFragment extends Fragment {
         EventBus.getDefault().register(this);
         showCamera();
         if (SPUtils.isLogin()) {
-            String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-            Log.d("用户明细", userDetail);
-            try {
-                JSONObject object = new JSONObject(userDetail);
-                int id = object.optInt("id");
-                uID = String.valueOf(id);
-                mToken = (String)SPUtils.get(App.getContext(), "token", "");
-                Log.d("用户ID", uID);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            mToken = (String) SPUtils.get(App.getContext(), "token", "");
+            uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
         }
 
     }
@@ -200,8 +188,7 @@ public class ReportIllegalParkingFragment extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        Log.d("错误", e.getMessage());
-                        ToastUtils.showLong(getContext(), "服务器正忙！");
+                        ToastUtils.showLong(getActivity(), "服务器正忙！");
                     }
 
                     @Override
@@ -256,7 +243,7 @@ public class ReportIllegalParkingFragment extends Fragment {
     }
 
     //从照相页面发来的消息
-    @Subscriber(tag = "report_bikeNo", mode = ThreadMode.MAIN)
+    @Subscriber(tag = "report_bikeNo_cam", mode = ThreadMode.MAIN)
     private void receiveFromCap(CodeEvent info) {
         if (info != null) {
             LogUtils.d("自行车", info.getBikeNo());

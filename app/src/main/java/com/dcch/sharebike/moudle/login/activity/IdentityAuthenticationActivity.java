@@ -26,11 +26,9 @@ import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
+import com.hss01248.dialog.StyledDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -84,17 +82,11 @@ public class IdentityAuthenticationActivity extends BaseActivity {
                 finish();
             }
         });
-
-
-        String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-        try {
-            JSONObject object = new JSONObject(userDetail);
-            int id = object.getInt("id");
-            mToken = (String)SPUtils.get(App.getContext(), "token", "");
-            uID = String.valueOf(id);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (SPUtils.isLogin()) {
+            uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
+            mToken = (String) SPUtils.get(App.getContext(), "token", "");
         }
+
         mIdenStepsView.setLabels(MyContent.steps)
                 .setBarColorIndicator(getResources().getColor(R.color.colorHeading))
                 .setProgressColorIndicator(getResources().getColor(R.color.colorTitle))
@@ -162,11 +154,11 @@ public class IdentityAuthenticationActivity extends BaseActivity {
                     return;
                 }
                 if (NetUtils.isConnected(App.getContext())) {
+                    StyledDialog.buildLoading(IdentityAuthenticationActivity.this, "认证中", true, false).show();
                     verifyRealName(uID, realName, cardNum, mToken);
                 } else {
                     ToastUtils.showShort(this, getString(R.string.no_network_tip));
                 }
-
                 break;
         }
     }
@@ -185,12 +177,14 @@ public class IdentityAuthenticationActivity extends BaseActivity {
             OkHttpUtils.post().url(Api.BASE_URL + Api.UPDATEUSERSTATUS).params(map).build().execute(new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
+                    StyledDialog.dismissLoading();
                     ToastUtils.showShort(IdentityAuthenticationActivity.this, getString(R.string.server_tip));
                 }
 
                 @Override
                 public void onResponse(String response, int id) {
                     Log.d("实名认证", response);
+                    StyledDialog.dismissLoading();
                     if (JsonUtils.isSuccess(response)) {
                         if (uID != null && !uID.equals("")) {
                             Intent authentication = new Intent(IdentityAuthenticationActivity.this, AuthenticationOkActivity.class);
@@ -219,4 +213,9 @@ public class IdentityAuthenticationActivity extends BaseActivity {
         finish();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        StyledDialog.dismiss();
+    }
 }

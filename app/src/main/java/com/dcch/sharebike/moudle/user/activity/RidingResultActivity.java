@@ -158,7 +158,7 @@ public class RidingResultActivity extends BaseActivity {
         if (ClickUtils.isFastClick()) {
             return;
         }
-        StyledDialog.buildIosAlert(RidingResultActivity.this, "提示", "拨打电话 400-660-6215", new MyDialogListener() {
+        StyledDialog.buildIosAlert(RidingResultActivity.this, "提示", "拨打麒麟单车客服电话 400-660-6215", new MyDialogListener() {
             @Override
             public void onFirst() {
 //                Intent intent = new Intent();

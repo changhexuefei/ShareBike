@@ -33,14 +33,12 @@ import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.google.gson.Gson;
+import com.hss01248.dialog.StyledDialog;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +48,7 @@ import butterknife.OnClick;
 import okhttp3.Call;
 
 public class RechargeBikeFareActivity extends BaseActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
-//    @BindView(R.id.input_moneySum)
+    //    @BindView(R.id.input_moneySum)
 //    EditText input_moneySum;
     @BindView(R.id.rb_rg1_10)
     RadioButton rbRg110;
@@ -156,6 +154,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                     return;
                 }
                 if (NetUtils.isConnected(App.getContext())) {
+                    StyledDialog.buildLoading(RechargeBikeFareActivity.this, "充值中", true, false).show();
                     //这里要分两种情况，调取微信和支付宝的支付方式
                     if (rbfAliCheckbox.isChecked()) {
                         //选择支付宝，调取支付宝的支付方法
@@ -203,12 +202,14 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINPAY).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                StyledDialog.dismissLoading();
                 ToastUtils.showShort(RechargeBikeFareActivity.this, getString(R.string.server_tip));
             }
 
             @Override
             public void onResponse(String response, int id) {
                 LogUtils.d("微信支付", response);
+                StyledDialog.dismissLoading();
                 if (JsonUtils.isSuccess(response)) {
                     PayReq req = new PayReq();
                     Gson gson = new Gson();
@@ -241,11 +242,13 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAY).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                StyledDialog.dismissLoading();
                 ToastUtils.showShort(RechargeBikeFareActivity.this, getString(R.string.server_tip));
             }
 
             @Override
             public void onResponse(final String response, int id) {
+                StyledDialog.dismissLoading();
                 LogUtils.d("支付", response);
                 Runnable payRunnable = new Runnable() {
                     @Override
@@ -363,23 +366,14 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
     protected void onResume() {
         super.onResume();
         if (SPUtils.isLogin()) {
-            String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-            if (userDetail != null) {
-                try {
-                    JSONObject object = new JSONObject(userDetail);
-                    int userId = object.getInt("id");
-                    uID = String.valueOf(userId);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
+            uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
         }
-
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        StyledDialog.dismiss();
         handler.removeCallbacksAndMessages(null);
     }
 

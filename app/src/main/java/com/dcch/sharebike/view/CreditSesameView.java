@@ -181,10 +181,10 @@ public class CreditSesameView extends View {
     private void drawCenterText(Canvas canvas) {
         this.mTextPaint.setTextSize(30.0F);
         canvas.drawText("麒麟单车", (float) this.radius, (float) (this.radius - 130), this.mTextPaint);
-        this.mTextPaint.setTextSize(200.0F);
+        this.mTextPaint.setTextSize(100.0F);
         this.mTextPaint.setStyle(Style.STROKE);
         canvas.drawText(String.valueOf(this.mMinNum), (float) this.radius, (float) (this.radius + 70), this.mTextPaint);
-        this.mTextPaint.setTextSize(80.0F);
+//        this.mTextPaint.setTextSize(80.0F);
 //        canvas.drawText(this.sesameLevel, (float) this.radius, (float) (this.radius + 160), this.mTextPaint);
         this.mTextPaint.setTextSize(30.0F);
         canvas.drawText(this.evaluationTime, (float) this.radius, (float) (this.radius + 205), this.mTextPaint);
@@ -201,12 +201,10 @@ public class CreditSesameView extends View {
             if (i % 2 != 0) {
                 canvas.drawLine((float) this.radius, (float) startDst, (float) this.radius, (float) endDst, this.mCalibrationPaint);
             }
-
             float textLen = this.mCalibrationTextPaint.measureText(this.sesameStr[i - 1]);
             canvas.drawText(this.sesameStr[i - 1], (float) this.radius - textLen / 2.0F, (float) (endDst + 40), this.mCalibrationTextPaint);
             canvas.rotate((float) rotateAngle, (float) this.radius, (float) this.radius);
         }
-
         canvas.restore();
     }
 
@@ -232,7 +230,6 @@ public class CreditSesameView extends View {
             default:
                 result = defaultSize;
         }
-
         return result;
     }
 
@@ -259,7 +256,6 @@ public class CreditSesameView extends View {
 //                this.sesameLevel = "信用优秀";
                 this.mTotalAngle = (float) ((values - 300) * 120) / 150.0F + 48.0F;
             }
-
             this.evaluationTime = "评估时间:" + this.getCurrentTime();
         } else if (values <= 700) {
             this.mMaxNum = values;
@@ -269,7 +265,6 @@ public class CreditSesameView extends View {
         } else {
             this.mTotalAngle = 240.0F;
         }
-
         this.startAnim();
     }
 

@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
-import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.view.ProgressWebview;
 
 import butterknife.BindView;
@@ -39,7 +38,6 @@ public class MessageDetailActivity extends BaseActivity {
         if (intent != null) {
             mActivityUrl = intent.getStringExtra("activityUrl");
             mActivityTheme = intent.getStringExtra("theme");
-            LogUtils.d("傳值", mActivityUrl+mActivityTheme);
         }
         mToolbar.setTitle("");
         mTitle.setText(mActivityTheme);

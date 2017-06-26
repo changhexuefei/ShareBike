@@ -34,7 +34,7 @@
     <string name="option_four">踏板坏了</string>
     <string name="option_five">龙头歪斜</string>
     <string name="option_six">刹车失灵</string>
-    <string name="option_seven">其他</string>
+    <string name="option_seven">车座损坏</string>
     <string name="hint">请拍摄违规停车的照片含周围环境</string>
     <string name="upload">提交</string>
     <string name="myMessage">我的消息</string>

@@ -30,14 +30,12 @@ import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.google.gson.Gson;
+import com.hss01248.dialog.StyledDialog;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -68,7 +66,7 @@ public class RechargeDepositActivity extends BaseActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     private String userID;
-    private String ipAddress ;
+    private String ipAddress;
     private String mOutTradeNo;
 
     @Override
@@ -88,16 +86,8 @@ public class RechargeDepositActivity extends BaseActivity {
             }
         });
         rdWeixinCheckbox.setChecked(true);
-
-        try {
-            String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-            Log.d("用户明细", userDetail);
-            JSONObject object = new JSONObject(userDetail);
-            int id = object.getInt("id");
-            Log.d("手机号", id + "");
-            userID = String.valueOf(id);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (SPUtils.isLogin()) {
+            userID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
         }
     }
 
@@ -124,6 +114,7 @@ public class RechargeDepositActivity extends BaseActivity {
                 }
 //                updateUserCashstatus(userID);
                 if (NetUtils.isConnected(App.getContext())) {
+                    StyledDialog.buildLoading(RechargeDepositActivity.this, "充值中", true, false).show();
                     String moneySum = figure.getText().toString().trim();
                     moneySum = moneySum.substring(0, moneySum.length() - 1);
                     if (rdAliCheckbox.isChecked()) {
@@ -164,15 +155,17 @@ public class RechargeDepositActivity extends BaseActivity {
         map.put("attach", userID);
         map.put("total_price", moneySum);
         map.put("spbill_create_ip", ipAddress);
-        LogUtils.d("微信支付", outTradeNo + "\n" + ipAddress+"\n"+moneySum);
+        LogUtils.d("微信支付", outTradeNo + "\n" + ipAddress + "\n" + moneySum);
         OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINCASHPAY).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                StyledDialog.dismissLoading();
                 ToastUtils.showShort(RechargeDepositActivity.this, getString(R.string.server_tip));
             }
 
             @Override
             public void onResponse(String response, int id) {
+                StyledDialog.dismissLoading();
                 LogUtils.d("微信支付", response);
                 if (JsonUtils.isSuccess(response)) {
                     PayReq req = new PayReq();
@@ -204,11 +197,13 @@ public class RechargeDepositActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAYCASH).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                StyledDialog.dismissLoading();
                 ToastUtils.showShort(RechargeDepositActivity.this, getString(R.string.server_tip));
             }
 
             @Override
             public void onResponse(final String response, int id) {
+                StyledDialog.dismissLoading();
 //                        LogUtils.d("支付", response);
                 Runnable payRunnable = new Runnable() {
                     @Override
@@ -264,6 +259,7 @@ public class RechargeDepositActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        StyledDialog.dismiss();
         handler.removeCallbacksAndMessages(null);
     }
 }

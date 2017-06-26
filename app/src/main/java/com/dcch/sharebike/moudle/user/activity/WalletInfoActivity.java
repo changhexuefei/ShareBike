@@ -28,6 +28,7 @@ import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.dcch.sharebike.view.RefundPopuwindow;
 import com.google.gson.Gson;
+import com.hss01248.dialog.StyledDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -92,18 +93,9 @@ public class WalletInfoActivity extends BaseActivity {
                     chargeDeposit.setText(getString(R.string.tipFour));
                 }
             }
+            uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
+            mToken = (String) SPUtils.get(App.getContext(), "token", "");
 
-            String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-            if (userDetail != null) {
-                try {
-                    JSONObject object = new JSONObject(userDetail);
-                    int userId = object.optInt("id");
-                    uID = String.valueOf(userId);
-                    mToken = (String)SPUtils.get(App.getContext(), "token", "");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 
@@ -208,6 +200,7 @@ public class WalletInfoActivity extends BaseActivity {
                     //先进行检查余额操作
                     if (NetUtils.isConnected(App.getContext())) {
                         checkAccountBalances(uID, mToken);
+                        StyledDialog.buildLoading(WalletInfoActivity.this, "提现中", true, false).show();
                     }
                     break;
             }
@@ -235,9 +228,11 @@ public class WalletInfoActivity extends BaseActivity {
                         mOutRefundNo = weixinPay.getOutRefundNo();
                         refundPledgeCash(uID, mOutRefundNo, mToken, mTotal_fee, mRefund_fee);
                     } else if (object.optString("resultStatus").equals("0")) {
+                        StyledDialog.dismissLoading();
                         ToastUtils.showShort(WalletInfoActivity.this, "您的账户车费余额不足，请先充值后再进行退款操作！");
                         startActivity(new Intent(WalletInfoActivity.this, RechargeBikeFareActivity.class));
                     } else if (object.optString("resultStatus").equals("2")) {
+                        StyledDialog.dismissLoading();
                         ToastUtils.showShort(App.getContext(), "您的账户在其他设备上登录，您被迫下线！");
                         startActivity(new Intent(WalletInfoActivity.this, LoginActivity.class));
                         WalletInfoActivity.this.finish();
@@ -262,13 +257,13 @@ public class WalletInfoActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.REFUNDWXPAY).params(mMap).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-
                 ToastUtils.showShort(App.getContext(), getString(R.string.server_tip));
             }
 
             @Override
             public void onResponse(String response, int id) {
                 LogUtils.d("退款", response);
+                StyledDialog.dismissLoading();
                 //{"resultStatus":"0"}
                 if (JsonUtils.isSuccess(response)) {
                     SPUtils.put(App.getContext(), "cashStatus", 0);
@@ -298,7 +293,6 @@ public class WalletInfoActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.INFOUSER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-
                 ToastUtils.showShort(App.getContext(), getString(R.string.server_tip));
             }
 
@@ -328,5 +322,11 @@ public class WalletInfoActivity extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(WalletInfoActivity.this, MainActivity.class));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        StyledDialog.dismiss();
     }
 }

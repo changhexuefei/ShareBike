@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.util.Util;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
@@ -28,9 +29,6 @@ import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -114,7 +112,7 @@ public class PersonInfoActivity extends BaseActivity {
             if (mUserBundle.getUserimage() != null) {
                 LogUtils.d("图片", mUserBundle.getUserimage());
                 if (Util.isOnMainThread()) {
-                    Glide.with(this).load(mUserBundle.getUserimage()).error(R.mipmap.avatar_default_login).thumbnail(0.1f).into(userInfoIcon);
+                    Glide.with(this).load(mUserBundle.getUserimage()).diskCacheStrategy(DiskCacheStrategy.ALL).error(R.mipmap.avatar_default_login).thumbnail(0.1f).into(userInfoIcon);
                 }
             } else {
                 userInfoIcon.setImageResource(R.mipmap.avatar_default_login);
@@ -126,9 +124,7 @@ public class PersonInfoActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         if (SPUtils.isLogin()) {
-            try {
-                String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-                JSONObject object = new JSONObject(userDetail);
+
 //                if (mImageURL != null && !mImageURL.equals("")) {
 //                    Glide.with(PersonInfoActivity.this)
 //                            .load(Uri.fromFile(new File(mImageURL)))
@@ -138,13 +134,9 @@ public class PersonInfoActivity extends BaseActivity {
 //                } else {
 //                    userInfoIcon.setImageResource(R.mipmap.avatar_default_login);
 //                }
-                int id = object.optInt("id");
-                uID = String.valueOf(id);
-                mToken = (String)SPUtils.get(App.getContext(), "token", "");
+            uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
+            mToken = (String) SPUtils.get(App.getContext(), "token", "");
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
         }
     }
 

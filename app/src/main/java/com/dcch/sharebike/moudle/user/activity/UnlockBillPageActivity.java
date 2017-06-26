@@ -46,10 +46,6 @@ public class UnlockBillPageActivity extends BaseActivity implements RadioGroup.O
     ImageView mSelectPhotoTwo;
     @BindView(R.id.select_photo_area)
     RelativeLayout mSelectPhotoArea;
-//    @BindView(R.id.tv20)
-//    TextView mTv20;
-//    @BindView(R.id.input_moneySum)
-//    EditText mInputMoneySum;
     @BindView(R.id.rg_rec_rg_1)
     RadioGroup mRgRecRg1;
     @BindView(R.id.rg_rec_rg_2)

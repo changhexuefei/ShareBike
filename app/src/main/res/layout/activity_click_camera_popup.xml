@@ -24,9 +24,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/close"
         android:layout_gravity="bottom|center"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="30dp"
         app:cardCornerRadius="2dp"
         app:contentPadding="10dp">
 
@@ -39,16 +39,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tips_click_camera"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/help_unlock"/>
 
             <TextView
                 android:id="@+id/title_click_camera"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:gravity="center_horizontal"
+               android:layout_centerHorizontal="true"
                 android:text="@string/help_unlock"
                 android:textColor="@color/black"
                 android:textSize="16sp"/>
@@ -72,7 +72,7 @@
         android:layout_height="50dp"
         android:layout_below="@+id/tipsArea"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/card_login_button_normal"
         android:text="@string/login_immediately"
         android:textColor="@color/white"/>

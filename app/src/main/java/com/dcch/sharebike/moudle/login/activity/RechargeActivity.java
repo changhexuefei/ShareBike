@@ -32,14 +32,12 @@ import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.google.gson.Gson;
+import com.hss01248.dialog.StyledDialog;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -95,14 +93,8 @@ public class RechargeActivity extends BaseActivity {
 
         //默认微信选中
         weixinCheckbox.setChecked(true);
-        try {
-            String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-            JSONObject object = new JSONObject(userDetail);
-            int id = object.optInt("id");
-            String token = object.optString("token");
-            userID = String.valueOf(id);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (SPUtils.isLogin()) {
+            userID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
         }
 
         mStepsView.setLabels(MyContent.steps)
@@ -132,7 +124,9 @@ public class RechargeActivity extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
+
                 if (NetUtils.isConnected(App.getContext())) {
+                    StyledDialog.buildLoading(RechargeActivity.this, "正在支付", true, false).show();
                     String moneySum = money.getText().toString().trim();
                     String outTradeNo;
                     if (aliCheckbox.isChecked()) {
@@ -144,7 +138,6 @@ public class RechargeActivity extends BaseActivity {
                             ToastUtils.showShort(RechargeActivity.this, getString(R.string.server_tip));
                         }
                     } else if (weixinCheckbox.isChecked()) {
-
                         WeixinPay weixinPay = new WeixinPay(this);
                         String ipAddress;
                         if (NetUtils.isWifi(App.getContext())) {
@@ -180,13 +173,14 @@ public class RechargeActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINCASHPAY).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-
+                StyledDialog.dismissLoading();
                 ToastUtils.showShort(RechargeActivity.this, getString(R.string.server_tip));
             }
 
             @Override
             public void onResponse(String response, int id) {
                 LogUtils.d("微信支付", response);
+                StyledDialog.dismissLoading();
                 if (JsonUtils.isSuccess(response)) {
                     PayReq req = new PayReq();
                     Gson gson = new Gson();
@@ -218,13 +212,14 @@ public class RechargeActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAYCASH).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-
+                StyledDialog.dismissLoading();
                 ToastUtils.showShort(RechargeActivity.this, getString(R.string.server_tip));
             }
 
             @Override
             public void onResponse(final String response, int id) {
                 LogUtils.d("支付", response);
+                StyledDialog.dismissLoading();
                 Runnable payRunnable = new Runnable() {
                     @Override
                     public void run() {
@@ -290,6 +285,7 @@ public class RechargeActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        StyledDialog.dismiss();
         handler.removeCallbacksAndMessages(null);
     }
 }

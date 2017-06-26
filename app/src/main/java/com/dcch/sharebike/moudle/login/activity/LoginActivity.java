@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -33,6 +34,7 @@ import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.google.gson.Gson;
+import com.hss01248.dialog.StyledDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -58,7 +60,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @BindView(R.id.getSecurityCode)
     TextView getSecurityCode;
     @BindView(R.id.login_confirm)
-    TextView confirm;
+    Button confirm;
     @BindView(R.id.rules)
     TextView rules;
     @BindView(R.id.toolbar)
@@ -186,6 +188,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     return;
                 }
                 if (NetUtils.isConnected(App.getContext())) {
+
                     getseCode(phone);
                 } else {
                     ToastUtils.showLong(LoginActivity.this, getString(R.string.no_network_tip));
@@ -200,6 +203,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 //                SMSSDK.submitVerificationCode("86", phone, securityCode.getText().toString());
 //                compareVerificationCode("86", phone, securityCode.getText().toString());
                 if (phone != null && verificationCode != null && verificationCode.equals(seCode)) {
+                    StyledDialog.buildLoading(LoginActivity.this, "登录中", true, false).show();
                     registerAndLogin(phone);
                 } else {
                     ToastUtils.showShort(this, getString(R.string.verifyCodeerror));
@@ -258,12 +262,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         OkHttpUtils.post().url(Api.BASE_URL + Api.SAVEUSER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                StyledDialog.dismissLoading();
                 ToastUtils.showShort(LoginActivity.this, getString(R.string.login_error));
             }
 
             @Override
             public void onResponse(String response, int id) {
                 Log.d("测试", response);
+                StyledDialog.dismissLoading();
                 if (JsonUtils.isSuccess(response)) {
                     Gson gson = new Gson();
                     UserInfo userInfo = gson.fromJson(response, UserInfo.class);
@@ -277,19 +283,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     } else if (userInfo.getCashStatus() == 1 && userInfo.getStatus() == 1) {
                         goToPersonCenter();
                     }
-//                    String userId = String.valueOf(userInfo.getId());
-//                    String userPhone = userInfo.getPhone();
-//                    if (userId != null && userPhone != null) {
-//                        Intent nettyService = new Intent(LoginActivity.this, NettyService.class);
-//                        nettyService.putExtra("userId", userId);
-//                        nettyService.putExtra("phone", userPhone);
-//                        startService(nettyService);
-//                    }
                     EventBus.getDefault().post(new MessageEvent(), "gone");
                     LoginActivity.this.finish();
                     //储存用户信息(登录储存一次)
                     SPUtils.clear(App.getContext());
-                    SPUtils.put(App.getContext(), "userDetail", response);
+//                    SPUtils.put(App.getContext(), "userDetail", response);
                     SPUtils.put(App.getContext(), "userId", userInfo.getId());
                     SPUtils.put(App.getContext(), "islogin", true);
                     SPUtils.put(App.getContext(), "isfirst", false);
@@ -308,11 +306,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         phone = AES.encrypt(phone.getBytes(), MyContent.key);
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone);
-        LogUtils.d("测试",phone);
+        LogUtils.d("测试", phone);
         OkHttpUtils.post().url(Api.BASE_URL + Api.REGISTER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showLong(LoginActivity.this, getString(R.string.server_tip)+e.getMessage());
+                ToastUtils.showLong(LoginActivity.this, getString(R.string.server_tip));
             }
 
             @Override
@@ -322,10 +320,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 try {
                     JSONObject object = new JSONObject(response);
                     verificationCode = object.optString("code");
-                    if (verificationCode != null && !verificationCode.equals("")) {
-                        Log.d("测试", verificationCode);
-                        securityCode.setText(verificationCode);
-                    }
+//                    if (verificationCode != null && !verificationCode.equals("")) {
+//                        Log.d("测试", verificationCode);
+//                        securityCode.setText(verificationCode);
+//                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -359,6 +357,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     protected void onDestroy() {
         super.onDestroy();
         LogUtils.d("实验", "Login+onDestroy");
+        StyledDialog.dismiss();
         handler.removeCallbacksAndMessages(null);
 //        EventBus.getDefault().unregister(this);
     }

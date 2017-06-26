@@ -123,16 +123,8 @@ public class CycleFailureFragment extends Fragment {
         showCamera();
         EventBus.getDefault().register(this);
         if (SPUtils.isLogin()) {
-            String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-            try {
-                JSONObject object = new JSONObject(userDetail);
-                int id = object.optInt("id");
-                uID = String.valueOf(id);
-                mToken = (String)SPUtils.get(App.getContext(), "token", "");
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
+            mToken = (String) SPUtils.get(App.getContext(), "token", "");
         }
     }
 
@@ -324,13 +316,15 @@ public class CycleFailureFragment extends Fragment {
         }
 
     }
+
     //从照相页面发来的消息
-    @Subscriber(tag = "fail_bikeNo", mode = ThreadMode.MAIN)
+    @Subscriber(tag = "fail_bikeNo_cam", mode = ThreadMode.MAIN)
     private void receiveFromCap(CodeEvent info) {
         if (info != null) {
             LogUtils.d("自行车", info.getBikeNo());
             result = info.getBikeNo();
             result = result.substring(result.length() - 9, result.length());
+            LogUtils.d("自行车", result);
             mBikeCode.setText(result);
             changeStatus();
         }

@@ -81,8 +81,6 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
     TextView mKCal;
     private BaiduMap mRouteBaiduMap;
     private BitmapDescriptor startBmp, endBmp;
-    //    private MylocationListener mlistener;
-//    LocationClient mlocationClient;
     private List<LatLng> mPoints;
     PlanNode startNodeStr, endNodeStr;
     OverlayManager routeOverlay = null;//该类提供一个能够显示和管理多个Overlay的基类

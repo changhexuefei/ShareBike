@@ -426,11 +426,13 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 }
                 //由于menuWindow会和地图抢夺焦点，所以在设置他的属性时设置为不能获得焦点
                 //就能够满足一起消失的功能menuWindow != null &&
-                if (menuWindow != null && routeOverlay != null && menuWindow.isShowing()) {
+                if (menuWindow != null && menuWindow.isShowing()) {
                     menuWindow.dismiss();
                     isShowMenu = false;
                     mCenterIcon.setVisibility(View.VISIBLE);
-                    routeOverlay.removeFromMap();
+                    if (routeOverlay != null) {
+                        routeOverlay.removeFromMap();
+                    }
                     setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
                 }
                 if (SPUtils.isLogin()) {
@@ -522,6 +524,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (SPUtils.isLogin()) {
                     popupDialog();
                 } else {
+                    //没有登录的情况设置Activity
+                    mBtnMyHelp.setVisibility(View.GONE);
+                    mBtnMyLocation.setVisibility(View.GONE);
+                    mScan.setVisibility(View.GONE);
                     startActivity(new Intent(MainActivity.this, ClickMyHelpActivity.class));
                 }
                 break;
@@ -537,7 +543,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                StyledDialog.buildIosAlert(MainActivity.this, "提示", "拨打电话 400-660-6215", new MyDialogListener() {
+                StyledDialog.buildIosAlert(MainActivity.this, "提示", "拨打麒麟单车客服电话 400-660-6215", new MyDialogListener() {
                     @Override
                     public void onFirst() {
                         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "400-660-6215"));
@@ -565,9 +571,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (routeOverlay != null && menuWindow != null && menuWindow.isShowing()) {
                     menuWindow.dismiss();
                     routeOverlay.removeFromMap();
-//                    mMap.clear();
+                    mMap.clear();
                     mCenterIcon.setVisibility(View.VISIBLE);
-//                    addOverlays(bikeInfos);
+                    addOverlays(bikeInfos);
                 }
                 setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
 //                getMyLocation();
@@ -578,6 +584,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     return;
                 }
                 if (SPUtils.isLogin()) {
+                    LogUtils.d("余额情况", "123456789" + cashStatus + "\n" + status + "\n" + mToken);
                     if (mToken != null) {
                         if (cashStatus == 1 && status == 1) {
                             if (NetUtils.isConnected(App.getContext())) {
@@ -607,7 +614,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 }
                 if (SPUtils.isLogin()) {
                     goToMessageList(uID, mToken);
-                    //startActivity(new Intent(MainActivity.this, PropagandaPosterActivity.class));
                 } else {
                     startActivity(new Intent(MainActivity.this, PropagandaPosterActivity.class));
                 }
@@ -656,10 +662,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 double lng = bikeInfo.getLongitude();
                 LatLng latLng = transform(lat, lng);
                 double distance = DistanceUtil.getDistance(latLng, mMCenterLatLng);
-                if (distance < 4000) {
-                    Log.d("你好", "456");
-                    forLocationAddMark(lat, lng);
-                }
+//                if (distance < 4000) {
+                Log.d("你好", "456");
+                forLocationAddMark(lat, lng);
+//                }
 
             }
         }
@@ -676,15 +682,19 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 //                    return false;
 //                }
                 if (marker.getExtraInfo() != null && isChecked && isFirst) {
-                    StyledDialog.buildMdLoading(MainActivity.this, getString(R.string.route_planning), true, false).show();
                     int zIndex = marker.getZIndex();
                     integers.add(zIndex);
                     LogUtils.d("覆盖物", zIndex + "\n" + integers.size());
                     Bundle bundle = marker.getExtraInfo();
                     bikeInfo = (BikeInfo) bundle.getSerializable("bikeInfo");
                     if (bikeInfo != null) {
-                        bicycleNo = bikeInfo.getBicycleNo() + "";
-                        updateBikeInfo(bikeInfo);
+                        bicycleNo = bikeInfo.getBicycleNo();
+                        if (NetUtils.isConnected(App.getContext())) {
+                            updateBikeInfo(bikeInfo);
+                            StyledDialog.buildMdLoading(MainActivity.this, getString(R.string.route_planning), true, false).show();
+                        } else {
+                            ToastUtils.showShort(MainActivity.this, getString(R.string.no_network_tip));
+                        }
                         if (menuWindow == null || !menuWindow.isShowing()) {
                             showMenuWindow(bikeInfo);
                             isShowMenu = true;
@@ -975,7 +985,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                         mMapView.setFocusable(false);
                         mMapView.setEnabled(false);
                         Log.d("你好", "789");
-                        forLocationAddMark(mDoulat, mDoulon);
+                        if (mDoulat != null && mDoulon != null) {
+                            forLocationAddMark(mDoulat, mDoulon);
+                        }
                         drawPlanRoute(endNodeStr);
                         bookingCarId = bookingBikeInfo.getBookingCarId();
 //                        bookingCarDate = bookingBikeInfo.getBookingCarDate();
@@ -1306,8 +1318,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 startNodeStr = PlanNode.withLocation(new LatLng(mChangeLatitude, mChangeLongitude));
                 Log.d("中心点坐标", location.getAddrStr() + "\n" + mChangeLatitude + "\n" + mChangeLongitude);
                 setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
-                if (uID != null && !uID.equals("")) {
-                    checkBookingBikeInfoByUserID(uID);
+                if (SPUtils.isLogin()) {
+                    if (cashStatus == 1 && status == 1 && uID != null) {
+                        checkBookingBikeInfoByUserID(uID);
+                    }
                 } else {
                     //根据手机定位地点，得到车辆信息的方法
                     if (mCurrentLantitude > 0 && mCurrentLongitude > 0) {
@@ -1428,6 +1442,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         Map<String, String> map = new HashMap<>();
         map.put("userId", uID);
         map.put("token", mToken);
+        LogUtils.d("余额情况", uID + "\n" + mToken);
         OkHttpUtils.post().url(Api.BASE_URL + Api.CHECKAGGREGATE).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -1459,30 +1474,22 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         mMapView.onResume();
         if (SPUtils.isLogin()) {
             mInstructions.setVisibility(View.GONE);
-            String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-            JSONObject object;
-            try {
-                object = new JSONObject(userDetail);
-                int id = object.optInt("id");
-                mToken = (String) SPUtils.get(App.getContext(), "token", "");
-                uID = String.valueOf(id);
-                if (uID != null && mToken != null) {
-                    phone = AES.decrypt((String) SPUtils.get(App.getContext(), "phone", ""), MyContent.key);
-                    cashStatus = (Integer) SPUtils.get(App.getContext(), "cashStatus", 0);
-                    status = (Integer) SPUtils.get(App.getContext(), "status", 0);
-                    LogUtils.d("netty", "用户信息" + phone + cashStatus + status + (String) SPUtils.get(App.getContext(), "phone", ""));
-                    LogUtils.d("netty", "我将要执行建立长连接" + !IsConnect + mNettyService);
-                    if (!IsConnect && mNettyService == null) {
-                        IsConnect = true;
-                        mNettyService = new Intent(MainActivity.this, NettyService.class);
-                        mNettyService.putExtra("userId", uID);
-                        mNettyService.putExtra("phone", phone);
-                        startService(mNettyService);
-                        LogUtils.d("netty", "我建立了长连接");
-                    }
+            mToken = (String) SPUtils.get(App.getContext(), "token", "");
+            uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
+            if (uID != null && mToken != null) {
+                phone = AES.decrypt((String) SPUtils.get(App.getContext(), "phone", ""), MyContent.key);
+                cashStatus = (Integer) SPUtils.get(App.getContext(), "cashStatus", 0);
+                status = (Integer) SPUtils.get(App.getContext(), "status", 0);
+                LogUtils.d("netty", "用户信息" + phone + cashStatus + status + (String) SPUtils.get(App.getContext(), "phone", ""));
+                LogUtils.d("netty", "我将要执行建立长连接" + !IsConnect + mNettyService);
+                if (!IsConnect && mNettyService == null) {
+                    IsConnect = true;
+                    mNettyService = new Intent(MainActivity.this, NettyService.class);
+                    mNettyService.putExtra("userId", uID);
+                    mNettyService.putExtra("phone", phone);
+                    startService(mNettyService);
+                    LogUtils.d("netty", "我建立了长连接");
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
         } else {
             mInstructions.setVisibility(View.VISIBLE);
@@ -1504,20 +1511,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         if (NetUtils.isConnected(App.getContext())) {
             if (SPUtils.isLogin()) {
                 mInstructions.setVisibility(View.GONE);
-                try {
-                    String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-                    JSONObject object;
-                    object = new JSONObject(userDetail);
-                    int id = object.optInt("id");
-                    uID = String.valueOf(id);
-                    phone = object.optString("phone");
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
             } else {
                 mInstructions.setVisibility(View.VISIBLE);
-                LogUtils.d("这里", "5");
                 addOverlays(bikeInfos);
             }
         } else {

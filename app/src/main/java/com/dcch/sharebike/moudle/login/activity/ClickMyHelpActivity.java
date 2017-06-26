@@ -6,13 +6,17 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.utils.MapUtil;
+
+import org.simple.eventbus.EventBus;
 
 import java.util.ArrayList;
 
@@ -26,6 +30,8 @@ public class ClickMyHelpActivity extends BaseActivity {
     ViewPager pager;
     @BindView(R.id.linear_dot)
     LinearLayout mLinearDot;
+    @BindView(R.id.go_to_login)
+    Button mGoToLogin;
     private ArrayList<View> pageViews;
     private boolean misScrolled;
     private ArrayList<ImageView> mDots;
@@ -126,6 +132,7 @@ public class ClickMyHelpActivity extends BaseActivity {
                         if (pager.getCurrentItem() == pager.getAdapter().getCount() - 1 && !misScrolled) {
                             startActivity(new Intent(ClickMyHelpActivity.this, MainActivity.class));
                             ClickMyHelpActivity.this.finish();
+                            EventBus.getDefault().post(new MessageEvent(), "allShow");
                         }
                         misScrolled = true;
                         break;
@@ -137,6 +144,20 @@ public class ClickMyHelpActivity extends BaseActivity {
     @OnClick(R.id.close_view_pager)
     public void onClick() {
         finish();
+        EventBus.getDefault().post(new MessageEvent(), "allShow");
     }
 
+
+    @OnClick(R.id.go_to_login)
+    public void onViewClicked() {
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
+        EventBus.getDefault().post(new MessageEvent(), "allShow");
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        EventBus.getDefault().post(new MessageEvent(), "allShow");
+    }
 }

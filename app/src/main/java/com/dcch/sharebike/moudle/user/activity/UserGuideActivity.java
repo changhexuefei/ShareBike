@@ -26,8 +26,6 @@ public class UserGuideActivity extends BaseActivity {
     LinearLayout topUpInstructions;
     @BindView(R.id.report)
     LinearLayout report;
-    //    @BindView(R.id.unFindBike)
-//    LinearLayout unFindBike;
     @BindView(R.id.allQuestion)
     LinearLayout allQuestion;
     @BindView(R.id.title)

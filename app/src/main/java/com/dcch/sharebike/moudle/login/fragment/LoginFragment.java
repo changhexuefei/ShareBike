@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.util.Util;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
@@ -40,9 +41,6 @@ import com.dcch.sharebike.utils.ToastUtils;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -109,17 +107,8 @@ public class LoginFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (SPUtils.isLogin()) {
-            String userDetail = (String) SPUtils.get(App.getContext(), "userDetail", "");
-            if (userDetail != null) {
-                try {
-                    JSONObject object = new JSONObject(userDetail);
-                    int userId = object.optInt("id");
-                    mToken = (String) SPUtils.get(App.getContext(), "token", "");
-                    uID = String.valueOf(userId);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
+            uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
+            mToken = (String) SPUtils.get(App.getContext(), "token", "");
         }
     }
 
@@ -189,13 +178,15 @@ public class LoginFragment extends Fragment {
                             //使用用户自定义的头像
                             Glide.with(LoginFragment.this).load(mUserimage)
                                     .crossFade()
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .error(R.mipmap.avatar_default_login)
-                                    .thumbnail(0.1f)// 加载缩略图
+//                                    .thumbnail(0.1f)// 加载缩略图
                                     .into(userIcon);
                         }
 
                     } else {
                         userIcon.setImageResource(R.mipmap.avatar_default_login);
+
                     }
                 } else {
                     LogUtils.d("状态", "您被迫下线了");
@@ -232,8 +223,12 @@ public class LoginFragment extends Fragment {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                if (mInfo != null) {
-                    goPersonInfo(mInfo);
+                if (NetUtils.isConnected(App.getContext())) {
+                    if (mInfo != null) {
+                        goPersonInfo(mInfo);
+                    }
+                } else {
+                    ToastUtils.showShort(getActivity(), getString(R.string.no_network_tip));
                 }
                 break;
             case R.id.wallet:

@@ -21,7 +21,6 @@ import com.dcch.sharebike.moudle.user.bean.MessageInfo;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.ToastUtils;
-import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.view.CommonFooter;
@@ -121,19 +120,19 @@ public class MyMessageActivity extends BaseActivity {
                         mMyMessageList.setPullRefreshEnabled(false);
                         //禁用自动加载更多功能
                         mMyMessageList.setLoadMoreEnabled(false);
-                        adapter.setOnItemClickListener(new OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                                String activityurl = mMessageInfo.getActivitys().get(position).getActivityurl();
-                                String activityname = mMessageInfo.getActivitys().get(position).getActivityname();
-                                if (activityurl != null && activityname != null) {
-                                    Intent messageDetail = new Intent(MyMessageActivity.this, MessageDetailActivity.class);
-                                    messageDetail.putExtra("activityUrl", activityurl);
-                                    messageDetail.putExtra("theme", activityname);
-                                    startActivity(messageDetail);
-                                }
-                            }
-                        });
+//                        adapter.setOnItemClickListener(new OnItemClickListener() {
+//                            @Override
+//                            public void onItemClick(View view, int position) {
+//                                String activityurl = mMessageInfo.getActivitys().get(position).getActivityurl();
+//                                String activityname = mMessageInfo.getActivitys().get(position).getActivityname();
+//                                if (activityurl != null && activityname != null) {
+//                                    Intent messageDetail = new Intent(MyMessageActivity.this, MessageDetailActivity.class);
+//                                    messageDetail.putExtra("activityUrl", activityurl);
+//                                    messageDetail.putExtra("theme", activityname);
+//                                    startActivity(messageDetail);
+//                                }
+//                            }
+//                        });
                     }
                 } else {
                     StyledDialog.dismissLoading();

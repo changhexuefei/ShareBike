@@ -24,7 +24,6 @@ public class PropagandaPosterActivity extends BaseActivity {
 
     }
 
-
     @OnClick(R.id.close)
     public void onViewClicked() {
         finish();
