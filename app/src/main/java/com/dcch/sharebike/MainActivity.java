@@ -555,7 +555,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                         return;
                     }
                 }).setMsgColor(R.color.colorHeading).setMsgSize(16).show();
-
 //                if (isClick) {
 //                    Intent seek = new Intent(MainActivity.this, SeekActivity.class);
 //                    seek.putExtra("address", address1);
