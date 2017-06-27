@@ -35,9 +35,9 @@ public class BikeRentalOrderInfo {
     private int bicycleId;
 
     private String bicycleNo;
-    private int tripDist;
+    private float tripDist;
     private int tripTime;
-    private int rideCost;
+    private float rideCost;
 
     private String carRentalOrderDate;
 
@@ -85,11 +85,11 @@ public class BikeRentalOrderInfo {
         this.bicycleNo = bicycleNo;
     }
 
-    public int getTripDist() {
+    public float getTripDist() {
         return tripDist;
     }
 
-    public void setTripDist(int tripDist) {
+    public void setTripDist(float tripDist) {
         this.tripDist = tripDist;
     }
 
@@ -101,11 +101,11 @@ public class BikeRentalOrderInfo {
         this.tripTime = tripTime;
     }
 
-    public int getRideCost() {
+    public float getRideCost() {
         return rideCost;
     }
 
-    public void setRideCost(int rideCost) {
+    public void setRideCost(float rideCost) {
         this.rideCost = rideCost;
     }
 

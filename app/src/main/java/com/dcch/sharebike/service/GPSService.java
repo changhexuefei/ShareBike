@@ -370,7 +370,7 @@ public class GPSService extends Service {
                 map.put("lng", mRouteLng + "");
                 map.put("lat", mRouteLat + "");
                 map.put("mile", totalDistance / 1000 + "");
-                LogUtils.d("看看数据", mToken + "\n" + mCarRentalOrderDate + "\n" + mBicycleNo + "\n" + mCarRentalOrderId + "\n" + mUserId);
+                LogUtils.d("看看数据", mToken + "\n" + mCarRentalOrderDate + "\n" + mRouteLat + "\n" + mCarRentalOrderId + "\n" + mRouteLng);
 //                byte[] encryptBytes = MapUtil.transMapToString(map).getBytes();
 //                NettyClient.getInstance().sendMsgToServer(encryptBytes, new ChannelFutureListener() {
 //                    @Override

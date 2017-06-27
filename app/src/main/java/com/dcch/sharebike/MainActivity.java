@@ -1,7 +1,6 @@
 package com.dcch.sharebike;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -218,7 +217,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     Marker mMarker = null;
     private String mToken;
     private boolean mHasPlanRoute;
-    private ProgressDialog mDialog;
     private String mCarRentalOrderId;
     private Intent mNettyService;
     private boolean IsConnect;
@@ -230,6 +228,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private double mChangeLatitude;
     private LatLng mLlr;
     private LatLng mLl;
+
+    public MainActivity() {
+    }
 
 
     @Override
@@ -266,7 +267,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         initOritationListener();
         //注册EventBus
         EventBus.getDefault().register(this);
-//        AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         lr = new LocationReceiver();
 //
         updataApp();
@@ -1488,7 +1488,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     mNettyService.putExtra("userId", uID);
                     mNettyService.putExtra("phone", phone);
                     startService(mNettyService);
-                    LogUtils.d("netty", "我建立了长连接");
                 }
             }
         } else {
