@@ -3,6 +3,7 @@ package com.dcch.sharebike.moudle.login.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,9 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.util.Util;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.http.Api;
@@ -31,6 +29,7 @@ import com.dcch.sharebike.moudle.user.activity.SettingActivity;
 import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
 import com.dcch.sharebike.moudle.user.activity.WalletInfoActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
+import com.dcch.sharebike.utils.BitmapUtil;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
@@ -121,6 +120,21 @@ public class LoginFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (NetUtils.isConnected(App.getContext())) {
+            if (uID != null && mToken != null) {
+                getUserInfo(uID, mToken);
+            }
+            if (mNickName != null && !mNickName.equals("")) {
+                nickName.setText(mNickName);
+            }
+            mAchievementShow.setVisibility(View.VISIBLE);
+            mNoNetworkTip.setVisibility(View.GONE);
+        } else {
+            mAchievementShow.setVisibility(View.GONE);
+            if (mNoNetworkTip != null) {
+                mNoNetworkTip.setVisibility(View.VISIBLE);
+            }
+        }
 //        mImageURL = (String) SPUtils.get(App.getContext(), "imageURL", "");
 //        LogUtils.d("图片", mImageURL);
 //        if (mImageURL != null && !mImageURL.equals("")) {
@@ -173,20 +187,31 @@ public class LoginFragment extends Fragment {
                     //用户头像
                     mUserimage = mInfo.getUserimage();
                     if (mUserimage != null) {
-                        Log.d("用户头像路径", mUserimage);
-                        if (Util.isOnMainThread()) {
-                            //使用用户自定义的头像
-                            Glide.with(LoginFragment.this).load(mUserimage)
-                                    .crossFade()
-                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                    .error(R.mipmap.avatar_default_login)
-//                                    .thumbnail(0.1f)// 加载缩略图
-                                    .into(userIcon);
-                        }
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                final Bitmap bitmapFromNetWork = BitmapUtil.getBitmapFromNetWork(mUserimage);
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        userIcon.setImageBitmap(bitmapFromNetWork);
+                                    }
+                                });
+                            }
+                        }).start();
 
+//                        Log.d("用户头像路径", mUserimage+"\n");
+//                        if (Util.isOnMainThread()) {
+//                            //使用用户自定义的头像
+//                            Glide.with(LoginFragment.this).load(mUserimage)
+//                                    .crossFade()
+//                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                                    .error(R.mipmap.avatar_default_login)
+////                                    .thumbnail(0.1f)// 加载缩略图
+//                                    .into(userIcon);
+//                        }
                     } else {
                         userIcon.setImageResource(R.mipmap.avatar_default_login);
-
                     }
                 } else {
                     LogUtils.d("状态", "您被迫下线了");
@@ -362,21 +387,7 @@ public class LoginFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if (NetUtils.isConnected(App.getContext())) {
-            if (uID != null && mToken != null) {
-                getUserInfo(uID, mToken);
-            }
-            if (mNickName != null && !mNickName.equals("")) {
-                nickName.setText(mNickName);
-            }
-            mAchievementShow.setVisibility(View.VISIBLE);
-            mNoNetworkTip.setVisibility(View.GONE);
-        } else {
-            mAchievementShow.setVisibility(View.GONE);
-            if (mNoNetworkTip != null) {
-                mNoNetworkTip.setVisibility(View.VISIBLE);
-            }
-        }
+
     }
 
     @Override

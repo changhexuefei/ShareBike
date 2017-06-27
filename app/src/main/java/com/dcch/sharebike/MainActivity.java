@@ -362,7 +362,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                                              public void onFinish() {
                                                  super.onFinish();
                                                  cancelBookingBike(bookingCarId, bicycleNo, uID, mToken);
-
                                              }
                                          }.start();
                                      } else {
@@ -415,13 +414,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 //当客户已经约车，这时客户点击地图，只显示预约的车辆和路线的覆盖物，其余消失。
                 if (isBook) {
                     mMapView.setEnabled(false);
-//                    isChecked = false;
                 } else if (isShowRideOrder) {
                     mMapView.setEnabled(false);
-
                 } else if (isShowBookOrder) {
                     mMapView.setEnabled(false);
-//                    isChecked = false;
                 }
                 //由于menuWindow会和地图抢夺焦点，所以在设置他的属性时设置为不能获得焦点
                 //就能够满足一起消失的功能menuWindow != null &&
@@ -575,6 +571,11 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 }
                 setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
 //                getMyLocation();
+                if (SPUtils.isLogin()) {
+                    mInstructions.setVisibility(View.GONE);
+                } else {
+                    mInstructions.setVisibility(View.VISIBLE);
+                }
                 break;
 
             case R.id.scan:
@@ -1295,13 +1296,13 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             mCurrentLantitude = location.getLatitude();
             mCurrentLongitude = location.getLongitude();
             LatLng currentLatLng = new LatLng(mCurrentLantitude, mCurrentLongitude);
+            Log.d("中心点坐标", location.getAddrStr() + "\n" + mCurrentLantitude + "\n" + mCurrentLongitude);
 //            BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory
 //                    .fromResource(R.mipmap.map_pin);
             //不设置bitmapDescriptor时代表默认使用百度地图图标
             MyLocationConfiguration config = new MyLocationConfiguration(
                     mCurrentMode, true, null);
             mMap.setMyLocationConfigeration(config);
-
             // 第一次定位时，将地图位置移动到当前位置
             if (isFristLocation) {
                 isFristLocation = false;

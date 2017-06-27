@@ -8,7 +8,43 @@
     android:orientation="vertical"
     tools:context="com.dcch.sharebike.moudle.user.activity.JourneyDetailActivity">
 
-    <include layout="@layout/toolbar"/>
+    <!--<include layout="@layout/toolbar"/>-->
+
+    <RelativeLayout
+        android:id="@+id/journeyDetail"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorHeading">
+
+        <ImageView
+            android:id="@+id/go_back"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:padding="14dp"
+            android:src="@mipmap/back"/>
+
+        <TextView
+            style="@style/title_bar_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/journey_detail"/>
+
+
+        <TextView
+            android:id="@+id/shareJouerney"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:gravity="center"
+            android:text="@string/shareJouerney"
+            android:textColor="@color/white"/>
+
+    </RelativeLayout>
 
 
     <com.baidu.mapapi.map.MapView
@@ -16,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/detail_desc"
-        android:layout_below="@+id/toolbar">
+        android:layout_below="@+id/journeyDetail">
 
     </com.baidu.mapapi.map.MapView>
 

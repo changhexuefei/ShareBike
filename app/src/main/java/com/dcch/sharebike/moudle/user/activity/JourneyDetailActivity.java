@@ -1,9 +1,9 @@
 package com.dcch.sharebike.moudle.user.activity;
 
 import android.content.Intent;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,11 +37,14 @@ import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.home.bean.RoutePoint;
 import com.dcch.sharebike.overlayutil.BikingRouteOverlay;
 import com.dcch.sharebike.overlayutil.OverlayManager;
+import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.MapUtil;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.hss01248.dialog.StyledDialog;
+import com.hss01248.dialog.bottomsheet.BottomSheetBean;
+import com.hss01248.dialog.interfaces.MyItemDialogListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -55,6 +58,15 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.OnClick;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.onekeyshare.OnekeyShare;
+import cn.sharesdk.sina.weibo.SinaWeibo;
+import cn.sharesdk.tencent.qq.QQ;
+import cn.sharesdk.tencent.qzone.QZone;
+import cn.sharesdk.wechat.friends.Wechat;
+import cn.sharesdk.wechat.moments.WechatMoments;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 
@@ -63,10 +75,10 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
     @BindView(R.id.journey_mapView)
     MapView mJourneyMapView;
     public ArrayList<RoutePoint> routePoints;
-    @BindView(R.id.title)
-    TextView mTitle;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+    //    @BindView(R.id.title)
+//    TextView mTitle;
+//    @BindView(R.id.toolbar)
+//    Toolbar mToolbar;
     @BindView(R.id.icon)
     CircleImageView mIcon;
     @BindView(R.id.name)
@@ -79,12 +91,21 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
     TextView mDistanceshow;
     @BindView(R.id.kCal)
     TextView mKCal;
+    @BindView(R.id.go_back)
+    ImageView mGoBack;
+    @BindView(R.id.shareJouerney)
+    TextView mShareJouerney;
     private BaiduMap mRouteBaiduMap;
     private BitmapDescriptor startBmp, endBmp;
     private List<LatLng> mPoints;
     PlanNode startNodeStr, endNodeStr;
     OverlayManager routeOverlay = null;//该类提供一个能够显示和管理多个Overlay的基类
     RoutePlanSearch mRPSearch = null;    // 搜索模块，也可去掉地图模块独立使用
+    private List<BottomSheetBean> shareBtn;
+    private double i;
+    private double mTripDist;
+    private double mCalorie;
+    private int mTripTime;
 
     @Override
     protected int getLayoutId() {
@@ -93,15 +114,15 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
 
     @Override
     protected void initData() {
-        mToolbar.setTitle("");
-        mTitle.setText(getResources().getString(R.string.journey_detail));
-        setSupportActionBar(mToolbar);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+//        mToolbar.setTitle("");
+//        mTitle.setText(getResources().getString(R.string.journey_detail));
+//        setSupportActionBar(mToolbar);
+//        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                finish();
+//            }
+//        });
         Intent intent = getIntent();
         if (intent != null) {
             String bicycleNo = intent.getStringExtra("bicycleNo");
@@ -110,14 +131,14 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
             String token = intent.getStringExtra("token");
             String nickname = intent.getStringExtra("nickname");
             String image = intent.getStringExtra("image");
-            double calorie = intent.getDoubleExtra("calorie", 0);
-            int tripTime = intent.getIntExtra("tripTime", 0);
-            double tripDist = intent.getDoubleExtra("tripDist", 0);
+            mCalorie = intent.getDoubleExtra("calorie", 0);
+            mTripTime = intent.getIntExtra("tripTime", 0);
+            mTripDist = intent.getDoubleExtra("tripDist", 0);
             mBikeNO.setText(bicycleNo);
             mName.setText(nickname);
-            mRidetime.setText(String.valueOf(tripTime));
-            mDistanceshow.setText(String.valueOf(MapUtil.changeDouble(tripDist)));
-            mKCal.setText(String.valueOf(MapUtil.changeDouble(calorie)));
+            mRidetime.setText(String.valueOf(mTripTime));
+            mDistanceshow.setText(String.valueOf(MapUtil.changeDouble(mTripDist)));
+            mKCal.setText(String.valueOf(MapUtil.changeDouble(mCalorie)));
             Glide.with(this).load(image).error(R.drawable.sharebike).into(mIcon);
             if (bicycleNo != null && !bicycleNo.equals("") && carRentalOrderId != null
                     && !carRentalOrderId.equals("") && !userId.equals("") && userId != null
@@ -223,15 +244,11 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
     @Override
     protected void onStart() {
         super.onStart();
-//        if (!mlocationClient.isStarted()) {
-//            mlocationClient.start();
-//        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-//        mlocationClient.stop();
     }
 
     public void onDestroy() {
@@ -240,11 +257,6 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
         mJourneyMapView.onDestroy();
         mJourneyMapView = null;
         StyledDialog.dismiss();
-
-//        if (mlocationClient != null) {
-//            mlocationClient.unRegisterLocationListener(mlistener);
-//            mlocationClient.stop();
-//        }
     }
 
     @Override
@@ -328,5 +340,88 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
                 }
             }
         });
+    }
+
+    @OnClick({R.id.go_back, R.id.shareJouerney})
+    public void onViewClicked(View view) {
+
+        switch (view.getId()) {
+            case R.id.go_back:
+                if (ClickUtils.isFastClick()) {
+                    return;
+                }
+                finish();
+                break;
+            case R.id.shareJouerney:
+                if (ClickUtils.isFastClick()) {
+                    return;
+                }
+                shareBtn = new ArrayList<>();
+                shareBtn.add(new BottomSheetBean(R.mipmap.umeng_socialize_wechat, "微信"));
+                shareBtn.add(new BottomSheetBean(R.mipmap.umeng_socialize_wxcircle, "微信朋友圈"));
+                shareBtn.add(new BottomSheetBean(R.mipmap.umeng_socialize_qq_on, "QQ好友"));
+                shareBtn.add(new BottomSheetBean(R.mipmap.umeng_socialize_qzone_on, "QQ空间"));
+                shareBtn.add(new BottomSheetBean(R.mipmap.umeng_socialize_sina_on, "微博"));
+                StyledDialog.buildBottomSheetGv(JourneyDetailActivity.this, "", shareBtn, "", 3, new MyItemDialogListener() {
+                    @Override
+                    public void onItemClick(CharSequence charSequence, int i) {
+                        if (i == 0) {
+                            //分享到微信
+                            Platform platWeiChat = ShareSDK.getPlatform(Wechat.NAME);
+                            showShare(platWeiChat.getName());
+                        }
+                        if (i == 1) {
+                            //分享到微信朋友圈
+                            Platform platWeiChatCircle = ShareSDK.getPlatform(WechatMoments.NAME);
+                            showShare(platWeiChatCircle.getName());
+                        }
+                        if (i == 2) {
+                            //比如分享到QQ，其他平台则只需要更换平台类名，例如Wechat.NAME则是微信
+                            Platform plat = ShareSDK.getPlatform(QQ.NAME);
+                            showShare(plat.getName());
+                        }
+                        if (i == 3) {
+                            //比如分享到QQ，其他平台则只需要更换平台类名，例如Wechat.NAME则是微信
+                            Platform platQQZONE = ShareSDK.getPlatform(QZone.NAME);
+                            showShare(platQQZONE.getName());
+                        }
+                        if (i == 4) {
+                            //比如分享到QQ，其他平台则只需要更换平台类名，例如Wechat.NAME则是微信
+                            Platform platSina = ShareSDK.getPlatform(SinaWeibo.NAME);
+                            showShare(platSina.getName());
+                        }
+                    }
+                }).setMsgSize(12).setCancelable(true, true).show();
+        }
+    }
+
+    private void showShare(String platform) {
+        final OnekeyShare oks = new OnekeyShare();
+        //指定分享的平台，如果为空，还是会调用九宫格的平台列表界面
+        if (platform != null) {
+            oks.setPlatform(platform);
+        }
+        //关闭sso授权
+        oks.disableSSOWhenAuthorize();
+        // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
+        oks.setTitle(getString(R.string.publicity));
+        // titleUrl是标题的网络链接，仅在Linked-in,QQ和QQ空间使用
+        oks.setTitleUrl("http://a.app.qq.com/o/simple.jsp?pkgname=com.dcch.sharebike");
+        // text是分享文本，所有平台都需要这个字段
+        oks.setText("我用麒麟单车骑行"+mTripTime+",消耗"+mCalorie+"千卡");
+        //分享网络图片，新浪微博分享网络图片需要通过审核后申请高级写入接口，否则请注释掉测试新浪微博
+        oks.setImageUrl("http://www.70bikes.com/MavenSSM/Images/qilin.jpg");
+        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+//        oks.setImagePath();//确保SDcard下面存在此张图片
+        // url仅在微信（包括好友和朋友圈）中使用
+        oks.setUrl("http://a.app.qq.com/o/simple.jsp?pkgname=com.dcch.sharebike");
+        // comment是我对这条分享的评论，仅在人人网和QQ空间使用
+        oks.setComment(getString(R.string.propagation_language_other));
+        // site是分享此内容的网站名称，仅在QQ空间使用
+        oks.setSite("70bikes");
+        // siteUrl是分享此内容的网站地址，仅在QQ空间使用
+        oks.setSiteUrl("http://a.app.qq.com/o/simple.jsp?pkgname=com.dcch.sharebike");
+        //启动分享
+        oks.show(this);
     }
 }

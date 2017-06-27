@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +25,7 @@ import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
+import com.hss01248.dialog.StyledDialog;
 import com.louisgeek.multiedittextviewlib.MultiEditInputView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -123,6 +123,7 @@ public class UnableUnlockFragment extends Fragment {
                     if (!uID.equals("") && uID != null && !bikeNo.equals("") && bikeNo != null && mToken != null && !mToken.equals("")) {
                         String selectResult = "";
                         String mImageResult = "";
+                        StyledDialog.buildLoading(getContext(), "提交中", true, false).show();
                         upLoad(uID, bikeNo, mToken, contentText, selectResult, mImageResult);
                     } else {
                         ToastUtils.showShort(getContext(), getString(R.string.input_tip));
@@ -158,17 +159,17 @@ public class UnableUnlockFragment extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        Log.d("错误", e.getMessage());
-                        ToastUtils.showLong(getActivity(), "服务器正忙！");
+                        StyledDialog.dismissLoading();
+                        ToastUtils.showLong(getActivity(), getResources().getString(R.string.server_tip));
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         //{"resultStatus":"1"}
+                        StyledDialog.dismissLoading();
                         try {
                             JSONObject object = new JSONObject(response);
                             String resultStatus = object.optString("resultStatus");
-
                             if (resultStatus.equals("1")) {
                                 ToastUtils.showLong(getActivity(), "提交成功！");
                                 startActivity(new Intent(getActivity(), UserGuideActivity.class));

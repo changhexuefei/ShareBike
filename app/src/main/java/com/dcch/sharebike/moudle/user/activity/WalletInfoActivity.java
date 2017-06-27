@@ -257,6 +257,7 @@ public class WalletInfoActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.REFUNDWXPAY).params(mMap).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                StyledDialog.dismissLoading();
                 ToastUtils.showShort(App.getContext(), getString(R.string.server_tip));
             }
 
@@ -267,6 +268,7 @@ public class WalletInfoActivity extends BaseActivity {
                 //{"resultStatus":"0"}
                 if (JsonUtils.isSuccess(response)) {
                     SPUtils.put(App.getContext(), "cashStatus", 0);
+                    LogUtils.d("退款",(String)SPUtils.get(App.getContext(),"cashStatus",0));
                     startActivity(new Intent(WalletInfoActivity.this, ShowRefundResultsActivity.class));
                 } else {
 //                    startActivity(new Intent(WalletInfoActivity.this, ShowRefundResultsActivity.class));

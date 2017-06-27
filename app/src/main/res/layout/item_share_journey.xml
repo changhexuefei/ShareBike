@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/sharePlatform"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="30dp"
+        android:paddingTop="30dp">
+
+        <Button
+            android:id="@+id/shareJourneyToWeiChat"
+            style="@style/share_style"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableTop="@mipmap/umeng_socialize_wechat"
+            android:text="@string/weixin"/>
+
+        <Button
+            android:id="@+id/shareJourneyToWeiChatCircle"
+            style="@style/share_style"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableTop="@mipmap/umeng_socialize_wxcircle"
+            android:text="@string/CircleFriends"/>
+
+        <Button
+            android:id="@+id/shareJourneyToQQ"
+            style="@style/share_style"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableTop="@mipmap/umeng_socialize_qq_on"
+            android:text="@string/qq"/>
+
+        <Button
+            android:id="@+id/shareJourneyToQQZONE"
+            style="@style/share_style"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableTop="@mipmap/umeng_socialize_qzone_on"
+            android:text="@string/qq_zone"/>
+
+        <Button
+            android:id="@+id/shareJourneyToSina"
+            style="@style/share_style"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableTop="@mipmap/umeng_socialize_sina_on"
+            android:text="@string/sina"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

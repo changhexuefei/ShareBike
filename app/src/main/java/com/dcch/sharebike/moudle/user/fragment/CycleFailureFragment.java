@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +31,7 @@ import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.PictureProcessingUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
+import com.hss01248.dialog.StyledDialog;
 import com.louisgeek.multiedittextviewlib.MultiEditInputView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -132,6 +132,7 @@ public class CycleFailureFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         //反注册EventBus
+        StyledDialog.dismiss();
         EventBus.getDefault().unregister(this);
     }
 
@@ -148,7 +149,6 @@ public class CycleFailureFragment extends Fragment {
         checkBoxes.add(questionFive);
         checkBoxes.add(questionSix);
         checkBoxes.add(questionSeven);
-
         return view;
     }
 
@@ -215,8 +215,8 @@ public class CycleFailureFragment extends Fragment {
                 }
                 if (NetUtils.isConnected(App.getContext())) {
                     if (!uID.equals("") && uID != null && !bikeNo.equals("") && bikeNo != null && mToken != null && !mToken.equals("")) {
+                        StyledDialog.buildLoading(getContext(), "提交中", true, false).show();
                         upLoad(uID, bikeNo, mToken, contentText, selectResult, mImageResult);
-
                     } else {
                         ToastUtils.showShort(getContext(), getString(R.string.input_tip));
                     }
@@ -253,15 +253,13 @@ public class CycleFailureFragment extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        if (!e.equals("") && e != null) {
-                            Log.d("错误", e.getMessage());
-                        }
-                        ToastUtils.showLong(getContext(), "服务器正忙！");
+                        StyledDialog.dismissLoading();
+                        ToastUtils.showLong(getContext(), getResources().getString(R.string.server_tip));
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
-
+                        StyledDialog.dismissLoading();
                         //{"resultStatus":"1"}
                         try {
                             JSONObject object = new JSONObject(response);
@@ -336,5 +334,6 @@ public class CycleFailureFragment extends Fragment {
         upload.setEnabled(true);
         upload.setBackgroundColor(getResources().getColor(R.color.colorTitle));
     }
+
 
 }

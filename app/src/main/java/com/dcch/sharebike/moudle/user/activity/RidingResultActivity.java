@@ -117,12 +117,6 @@ public class RidingResultActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (NetUtils.isConnected(App.getContext())) {
-            if (mImei != null && mUserId != null) {
-                LogUtils.d("骑行结果", mImei + "\n" + mUserId);
-                getResult(mImei, mUserId);
-            }
-        }
     }
 
     @Override
@@ -132,6 +126,12 @@ public class RidingResultActivity extends BaseActivity {
         Intent intent = getIntent();
         mImei = intent.getStringExtra("IMEI");
         mUserId = intent.getStringExtra("userId");
+        if (NetUtils.isConnected(App.getContext())) {
+            if (mImei != null && mUserId != null) {
+                LogUtils.d("骑行结果", mImei + "\n" + mUserId);
+                getResult(mImei, mUserId);
+            }
+        }
     }
 
     @Override
