@@ -19,11 +19,11 @@ public class JsonUtils {
             if (resultStatus.equals("1")) {
                 return true;
             } else if (resultStatus.equals("2")) {
-                ToastUtils.showShort(App.getContext(),"您的账号已经在其他设备登录，您已经被迫下线");
+                ToastUtils.showShort(App.getContext(), "您的账号已经在其他设备登录，您已经被迫下线");
                 SPUtils.clear(App.getContext());
-                SPUtils.put(App.getContext(),"islogin",false);
-                SPUtils.put(App.getContext(),"isfirst",false);
-                SPUtils.put(App.getContext(),"isStartGuide",true);
+                SPUtils.put(App.getContext(), "islogin", false);
+                SPUtils.put(App.getContext(), "isfirst", false);
+//                SPUtils.put(App.getContext(), "isStartGuide", true);
                 return false;
             } else {
                 return false;

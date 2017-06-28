@@ -32,6 +32,16 @@ android {
         }
     }
 
+    signingConfigs {
+        release {
+            storeFile file("E:\\jks\\mykey.jks")
+            storePassword "dcchadmin"
+            keyAlias "onekey"
+            keyPassword "dcchadmin"
+        }
+    }
+
+
     buildTypes {
         release {
             //启用混淆配置
