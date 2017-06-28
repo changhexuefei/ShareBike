@@ -974,53 +974,116 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
                 @Override
                 public void onResponse(String response, int id) {
-                    if (JsonUtils.isSuccess(response)) {
-                        LogUtils.d("查看信息", response);
-                        Gson gson = new Gson();
-                        bookingBikeInfo = gson.fromJson(response, BookingBikeInfo.class);
-                        mMap.clear();
+
+                    try {
+                        JSONObject bookObject = new JSONObject(response);
+                        String resultStatus = bookObject.optString("resultStatus");
+                        switch (resultStatus) {
+                            case "0":
+                                ToastUtils.showShort(MainActivity.this, getString(R.string.book_again));
+                                break;
+                            case "1":
+                                Gson gson = new Gson();
+                                bookingBikeInfo = gson.fromJson(response, BookingBikeInfo.class);
+                                mMap.clear();
 //                        mMarker.remove();
-                        StyledDialog.dismissLoading();
-                        mMapView.setFocusable(false);
-                        mMapView.setEnabled(false);
-                        Log.d("你好", "789");
-                        if (mDoulat != null && mDoulon != null) {
-                            forLocationAddMark(mDoulat, mDoulon);
-                        }
-                        drawPlanRoute(endNodeStr);
-                        bookingCarId = bookingBikeInfo.getBookingCarId();
+                                StyledDialog.dismissLoading();
+                                mMapView.setFocusable(false);
+                                mMapView.setEnabled(false);
+                                Log.d("你好", "789");
+                                if (mDoulat != null && mDoulon != null) {
+                                    forLocationAddMark(mDoulat, mDoulon);
+                                }
+                                drawPlanRoute(endNodeStr);
+                                bookingCarId = bookingBikeInfo.getBookingCarId();
 //                        bookingCarDate = bookingBikeInfo.getBookingCarDate();
-                        final String bicycleNo = bookingBikeInfo.getBicycleNo();
-                        isChecked = false;
-                        isBook = true;
-                        isClick = false;
-                        bookBikePopupWindow = new BookBikePopupWindow(MainActivity.this, bookingBikeInfo, bookBikeItemsOnClick);
-                        //指定父视图，显示在父控件的某个位置（Gravity.TOP,Gravity.RIGHT等）
-                        //  menuWindow.showAtLocation(findViewById(R.id.mapView), Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, -48);
-                        //设置显示在某个指定控件的下方
-                        bookBikePopupWindow.showAsDropDown(findViewById(R.id.top));
-                        timer = (MyCountDownTimer) new MyCountDownTimer(600000, 1000) {
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-                                bookBikePopupWindow.mBookBikeLocationInfo.setText(mReverseGeoCodeResultAddress);
-                                bookBikePopupWindow.mHoldTime.setText(toClock(millisUntilFinished));
-                            }
+                                final String bicycleNo = bookingBikeInfo.getBicycleNo();
+                                isChecked = false;
+                                isBook = true;
+                                isClick = false;
+                                bookBikePopupWindow = new BookBikePopupWindow(MainActivity.this, bookingBikeInfo, bookBikeItemsOnClick);
+                                //指定父视图，显示在父控件的某个位置（Gravity.TOP,Gravity.RIGHT等）
+                                //  menuWindow.showAtLocation(findViewById(R.id.mapView), Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, -48);
+                                //设置显示在某个指定控件的下方
+                                bookBikePopupWindow.showAsDropDown(findViewById(R.id.top));
+                                timer = (MyCountDownTimer) new MyCountDownTimer(600000, 1000) {
+                                    @Override
+                                    public void onTick(long millisUntilFinished) {
+                                        bookBikePopupWindow.mBookBikeLocationInfo.setText(mReverseGeoCodeResultAddress);
+                                        bookBikePopupWindow.mHoldTime.setText(toClock(millisUntilFinished));
+                                    }
 
-                            @Override
-                            public String toClock(long millis) {
-                                return super.toClock(millis);
-                            }
+                                    @Override
+                                    public String toClock(long millis) {
+                                        return super.toClock(millis);
+                                    }
 
-                            @Override
-                            public void onFinish() {
-                                super.onFinish();
-                                cancelBookingBike(bookingCarId, bicycleNo, uID, mToken);
-                            }
-                        }.start();
+                                    @Override
+                                    public void onFinish() {
+                                        super.onFinish();
+                                        cancelBookingBike(bookingCarId, bicycleNo, uID, mToken);
+                                    }
+                                }.start();
+                                break;
+                            case "2":
+                                break;
+                            case "3":
+                                ToastUtils.showShort(MainActivity.this, getString(R.string.biking));
+                                break;
 
-                    } else {
-                        ToastUtils.showShort(MainActivity.this, getString(R.string.book_again));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+//
+//
+//                    if (JsonUtils.isSuccess(response)) {
+//                        LogUtils.d("查看信息", response);
+//                        Gson gson = new Gson();
+//                        bookingBikeInfo = gson.fromJson(response, BookingBikeInfo.class);
+//                        mMap.clear();
+////                        mMarker.remove();
+//                        StyledDialog.dismissLoading();
+//                        mMapView.setFocusable(false);
+//                        mMapView.setEnabled(false);
+//                        Log.d("你好", "789");
+//                        if (mDoulat != null && mDoulon != null) {
+//                            forLocationAddMark(mDoulat, mDoulon);
+//                        }
+//                        drawPlanRoute(endNodeStr);
+//                        bookingCarId = bookingBikeInfo.getBookingCarId();
+////                        bookingCarDate = bookingBikeInfo.getBookingCarDate();
+//                        final String bicycleNo = bookingBikeInfo.getBicycleNo();
+//                        isChecked = false;
+//                        isBook = true;
+//                        isClick = false;
+//                        bookBikePopupWindow = new BookBikePopupWindow(MainActivity.this, bookingBikeInfo, bookBikeItemsOnClick);
+//                        //指定父视图，显示在父控件的某个位置（Gravity.TOP,Gravity.RIGHT等）
+//                        //  menuWindow.showAtLocation(findViewById(R.id.mapView), Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, -48);
+//                        //设置显示在某个指定控件的下方
+//                        bookBikePopupWindow.showAsDropDown(findViewById(R.id.top));
+//                        timer = (MyCountDownTimer) new MyCountDownTimer(600000, 1000) {
+//                            @Override
+//                            public void onTick(long millisUntilFinished) {
+//                                bookBikePopupWindow.mBookBikeLocationInfo.setText(mReverseGeoCodeResultAddress);
+//                                bookBikePopupWindow.mHoldTime.setText(toClock(millisUntilFinished));
+//                            }
+//
+//                            @Override
+//                            public String toClock(long millis) {
+//                                return super.toClock(millis);
+//                            }
+//
+//                            @Override
+//                            public void onFinish() {
+//                                super.onFinish();
+//                                cancelBookingBike(bookingCarId, bicycleNo, uID, mToken);
+//                            }
+//                        }.start();
+//
+//                    } else {
+//                        ToastUtils.showShort(MainActivity.this, getString(R.string.book_again));
+//                    }
 
                 }
             });
@@ -1070,7 +1133,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         Map<String, String> map = new HashMap<>();
         map.put("lockremark", result);
         map.put("userId", userId);
-//        map.put("token", token);
         LogUtils.d("檢查", result + "\n" + userId);
         OkHttpUtils.post().url(Api.BASE_URL + Api.CHECKBICYCLENO).params(map).build().execute(new StringCallback() {
             @Override
