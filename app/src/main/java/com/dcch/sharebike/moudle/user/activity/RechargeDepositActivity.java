@@ -117,6 +117,7 @@ public class RechargeDepositActivity extends BaseActivity {
                     StyledDialog.buildLoading(RechargeDepositActivity.this, "充值中", true, false).show();
                     String moneySum = figure.getText().toString().trim();
                     moneySum = moneySum.substring(0, moneySum.length() - 1);
+//                    String moneySum = "0.01";
                     if (rdAliCheckbox.isChecked()) {
                         final AliPay aliPay = new AliPay(this);
                         mOutTradeNo = aliPay.getOutTradeNo();

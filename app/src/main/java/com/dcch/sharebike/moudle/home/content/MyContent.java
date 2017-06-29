@@ -10,9 +10,10 @@ public class MyContent {
     public static final String APP_ID = "wxd4b5d5e34b0dd095";
     // **
     public static final String key = "DitekVIMDHxjOqus";
-     public static final String HOST = "www.70bikes.cn";
-//    public static final String HOST = "192.168.1.130";
-//    public static final String HOST = "101.251.245.158";
+    public static final String HOST = "www.70bikes.cn";
+    //    public static final String HOST = "192.168.1.130";
+//    public static final String HOST = "101.251.246.10";
     public static final int TCP_PORT = 8899;
+    //    public static final int TCP_PORT = 18899;
     public static final String BOUNDARY = "ZnGpDtePMx0KrHh_G0X99Yef9r8JZsRJSXC";
 }

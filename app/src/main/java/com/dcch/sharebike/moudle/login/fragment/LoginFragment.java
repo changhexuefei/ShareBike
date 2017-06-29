@@ -106,16 +106,8 @@ public class LoginFragment extends Fragment {
         super.onCreate(savedInstanceState);
         uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
         mToken = (String) SPUtils.get(App.getContext(), "token", "");
-        mURL = (String) SPUtils.get(App.getContext(), "imageURL", "");
-        LogUtils.d("状态", mURL+"1111112121212");
         mPhone = AES.decrypt((String) SPUtils.get(App.getContext(), "phone", ""), MyContent.key);
-        if (uID != null && mToken != null) {
-            if (NetUtils.isConnected(App.getContext())) {
-                getUserInfo(uID, mToken);
-            } else {
-                ToastUtils.showShort(getActivity(), getString(R.string.no_network_tip));
-            }
-        }
+
     }
 
     @Override
@@ -127,7 +119,8 @@ public class LoginFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
+        mURL = (String) SPUtils.get(App.getContext(), "imageURL", "");
+        LogUtils.d("状态", mURL + "1111112121212");
         if (!mURL.equals("")) {
             LogUtils.d("状态", mURL);
             Glide.with(LoginFragment.this)
@@ -135,6 +128,13 @@ public class LoginFragment extends Fragment {
                     .error(R.mipmap.avatar_default_login)
                     .thumbnail(0.1f)// 加载缩略图
                     .into(userIcon);
+        }
+        if (uID != null && mToken != null) {
+            if (NetUtils.isConnected(App.getContext())) {
+                getUserInfo(uID, mToken);
+            } else {
+                ToastUtils.showShort(getActivity(), getString(R.string.no_network_tip));
+            }
         }
     }
 

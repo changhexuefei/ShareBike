@@ -136,7 +136,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.GuideActivity"/>
+            android:name=".activity.GuideActivity"
+            android:launchMode="singleTask"
+            />
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -184,11 +186,17 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".moudle.login.activity.PersonalCenterActivity"/>
         <activity
-            android:name=".moudle.login.activity.LoginActivity"/>
+            android:name=".moudle.login.activity.PersonalCenterActivity"/>
+        <activity
+            android:name=".moudle.login.activity.LoginActivity"
+            android:launchMode="singleTask"
+            />
         <activity android:name=".moudle.search.activity.SeekActivity"/>
-        <activity android:name=".moudle.login.activity.AgreementActivity"/>
+        <activity
+            android:name=".moudle.login.activity.AgreementActivity"
+            android:launchMode="singleTask"
+            />
         <activity
             android:name=".moudle.login.activity.RechargeActivity"
             android:launchMode="singleTask"/>
@@ -205,10 +213,18 @@
             android:name=".moudle.user.activity.WalletInfoActivity"
             android:launchMode="singleTask"/>
         <activity
-            android:name=".moudle.user.activity.TransactionDetailActivity"/>
-        <activity android:name=".moudle.user.activity.SettingActivity"/>
+            android:name=".moudle.user.activity.TransactionDetailActivity"
+            android:launchMode="singleTask"
+            />
+        <activity
+            android:name=".moudle.user.activity.SettingActivity"
+            android:launchMode="singleTask"
+            />
         <activity android:name=".moudle.user.activity.UsualAddressActivity"/>
-        <activity android:name=".moudle.user.activity.ChangeUserNickNameActivity"/>
+        <activity
+            android:name=".moudle.user.activity.ChangeUserNickNameActivity"
+            android:launchMode="singleTask"
+            />
         <activity
             android:name=".moudle.user.activity.MyJourneyActivity"
             android:launchMode="singleTask"/>
@@ -347,13 +363,21 @@
 
         <activity
             android:name=".moudle.login.activity.ClickCameraPopupActivity"
+            android:launchMode="singleTask"
             android:theme="@style/translucent">
         </activity>
         <activity
             android:name=".moudle.login.activity.ClickMyHelpActivity"
+            android:launchMode="singleTask"
             android:theme="@style/translucent"/>
-        <activity android:name=".moudle.user.activity.MobileNumActivity"/>
-        <activity android:name=".moudle.user.activity.ChangeMobileNumActivity"/>
+        <activity
+            android:name=".moudle.user.activity.MobileNumActivity"
+            android:launchMode="singleTask"
+            />
+        <activity
+            android:name=".moudle.user.activity.ChangeMobileNumActivity"
+            android:launchMode="singleTask"
+            />
         <activity
             android:name="cn.finalteam.rxgalleryfinal.ui.activity.MediaActivity"
             android:exported="true"
@@ -374,10 +398,19 @@
 
         <service android:name=".service.GPSService"/>
 
-        <activity android:name=".moudle.user.activity.InviteFriendsActivity"/>
-        <activity android:name=".moudle.user.activity.AboutUsActivity"/>
+        <activity
+            android:name=".moudle.user.activity.InviteFriendsActivity"
+            android:launchMode="singleTask"
+            />
+        <activity
+            android:name=".moudle.user.activity.AboutUsActivity"
+            android:launchMode="singleTask"
+            />
         <activity android:name=".moudle.user.activity.SetAddressActivity"/>
-        <activity android:name=".moudle.user.activity.ShowRefundResultsActivity"/>
+        <activity
+            android:name=".moudle.user.activity.ShowRefundResultsActivity"
+            android:launchMode="singleTask"
+            />
         <activity
             android:name=".moudle.user.activity.ManualInputActivity"
             android:launchMode="singleTask"/>
@@ -420,7 +453,10 @@
             android:name=".moudle.user.activity.UserAgreementActivity"
             android:launchMode="singleTask">
         </activity>
-        <activity android:name=".moudle.user.activity.RefundExplainActivity">
+        <activity
+            android:name=".moudle.user.activity.RefundExplainActivity"
+            android:launchMode="singleTask"
+            >
         </activity>
         <activity
             android:name=".moudle.user.activity.CashPledgeExplainActivity"
@@ -435,12 +471,18 @@
             android:launchMode="singleTask"
             android:theme="@style/translucent">
         </activity>
-        <activity android:name=".moudle.user.activity.CouponListActivity">
+        <activity
+            android:name=".moudle.user.activity.CouponListActivity"
+            android:launchMode="singleTask"
+            >
         </activity>
         <activity
             android:name=".moudle.login.activity.PropagandaPosterActivity"
             android:theme="@style/translucent"/>
-        <activity android:name=".moudle.user.activity.MessageDetailActivity">
+        <activity
+            android:name=".moudle.user.activity.MessageDetailActivity"
+            android:launchMode="singleTask"
+            >
         </activity>
 
         <service android:name=".service.InitializeService"/>
@@ -453,7 +495,10 @@
             android:name=".moudle.user.activity.UnlockBillPageActivity"
             android:launchMode="singleTask">
         </activity>
-        <activity android:name=".moudle.user.activity.DealFeedbackActivity">
+        <activity
+            android:name=".moudle.user.activity.DealFeedbackActivity"
+            android:launchMode="singleTask"
+            >
         </activity>
     </application>
 
