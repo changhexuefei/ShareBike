@@ -80,7 +80,6 @@ import com.dcch.sharebike.moudle.login.activity.ClickMyHelpActivity;
 import com.dcch.sharebike.moudle.login.activity.IdentityAuthenticationActivity;
 import com.dcch.sharebike.moudle.login.activity.LoginActivity;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
-import com.dcch.sharebike.moudle.login.activity.PropagandaPosterActivity;
 import com.dcch.sharebike.moudle.login.activity.RechargeActivity;
 import com.dcch.sharebike.moudle.user.activity.CustomerServiceActivity;
 import com.dcch.sharebike.moudle.user.activity.MyMessageActivity;
@@ -615,7 +614,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (SPUtils.isLogin()) {
                     goToMessageList(uID, mToken);
                 } else {
-                    startActivity(new Intent(MainActivity.this, PropagandaPosterActivity.class));
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 }
                 break;
         }
