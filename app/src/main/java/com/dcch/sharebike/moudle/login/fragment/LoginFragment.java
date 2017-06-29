@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.util.Util;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.http.Api;
@@ -33,7 +32,6 @@ import com.dcch.sharebike.moudle.user.activity.WalletInfoActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.utils.AES;
 import com.dcch.sharebike.utils.ClickUtils;
-import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.MapUtil;
 import com.dcch.sharebike.utils.NetUtils;
@@ -42,6 +40,9 @@ import com.dcch.sharebike.utils.ToastUtils;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.HashMap;
@@ -106,6 +107,7 @@ public class LoginFragment extends Fragment {
         uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
         mToken = (String) SPUtils.get(App.getContext(), "token", "");
         mURL = (String) SPUtils.get(App.getContext(), "imageURL", "");
+        LogUtils.d("状态", mURL+"1111112121212");
         mPhone = AES.decrypt((String) SPUtils.get(App.getContext(), "phone", ""), MyContent.key);
         if (uID != null && mToken != null) {
             if (NetUtils.isConnected(App.getContext())) {
@@ -125,25 +127,14 @@ public class LoginFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("用户头像路径1111111", mURL + "onResume" + mUserimage);
+
         if (!mURL.equals("")) {
+            LogUtils.d("状态", mURL);
             Glide.with(LoginFragment.this)
                     .load(Uri.fromFile(new File(mURL)))
                     .error(R.mipmap.avatar_default_login)
                     .thumbnail(0.1f)// 加载缩略图
                     .into(userIcon);
-        } else {
-            if (mUserimage != null) {
-                if (Util.isOnMainThread()) {
-                    //使用用户自定义的头像
-                    Glide.with(LoginFragment.this).load(mUserimage)
-                            .error(R.mipmap.avatar_default_login)
-                            .thumbnail(0.1f)// 加载缩略图
-                            .into(userIcon);
-                }
-            } else {
-                userIcon.setImageResource(R.mipmap.avatar_default_login);
-            }
         }
     }
 
@@ -162,30 +153,56 @@ public class LoginFragment extends Fragment {
             @Override
             public void onResponse(String response, int id) {
                 Log.d("用户的信息", response);
-                if (JsonUtils.isSuccess(response)) {
-                    Gson gson = new Gson();
-                    mInfo = gson.fromJson(response, UserInfo.class);
-                    //手机号中间四位数字用*号代替的做法
-                    if (mInfo.getNickName() != null && !mInfo.getNickName().equals("")) {
-                        String nn = mInfo.getNickName().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
-                        nickName.setText(nn);
+                try {
+                    JSONObject userObject = new JSONObject(response);
+                    String resultStatus = userObject.optString("resultStatus");
+                    switch (resultStatus) {
+                        case "0":
+                            ToastUtils.showShort(getActivity(), getString(R.string.server_tip));
+                            break;
+                        case "1":
+                            Gson gson = new Gson();
+                            mInfo = gson.fromJson(response, UserInfo.class);
+                            //手机号中间四位数字用*号代替的做法
+                            if (mInfo.getNickName() != null && !mInfo.getNickName().equals("")) {
+                                String nn = mInfo.getNickName().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
+                                nickName.setText(nn);
+                            }
+                            if (mInfo.getIntegral() != 0) {
+                                creditScore.setText("信用积分 " + String.valueOf(mInfo.getIntegral()));
+                            }
+                            remainSum.setText(String.valueOf(mInfo.getAggregateAmount()));
+                            //骑行距离
+                            person_distance.setText(String.valueOf(mInfo.getMileage()));
+                            //运动成就
+                            sportsAchievement.setText(String.valueOf(MapUtil.changeOneDouble(mInfo.getCalorie())));
+                            //用户头像
+                            mUserimage = mInfo.getUserimage();
+                            if (mURL.equals("")) {
+                                if (mUserimage != null) {
+                                    //使用用户自定义的头像
+                                    LogUtils.d("状态", mUserimage);
+                                    Glide.with(LoginFragment.this).load(mUserimage)
+                                            .error(R.mipmap.avatar_default_login)
+                                            .thumbnail(0.1f)// 加载缩略图
+                                            .into(userIcon);
+
+                                } else {
+                                    LogUtils.d("状态", "1111111");
+                                    userIcon.setImageResource(R.mipmap.avatar_default_login);
+                                }
+                            }
+                            break;
+                        case "2":
+                            LogUtils.d("状态", "您被迫下线了");
+                            startActivity(new Intent(getActivity(), LoginActivity.class));
+                            getActivity().finish();
+                            break;
                     }
-                    if (mInfo.getIntegral() != 0) {
-                        creditScore.setText("信用积分 " + String.valueOf(mInfo.getIntegral()));
-                    }
-                    remainSum.setText(String.valueOf(mInfo.getAggregateAmount()));
-                    //骑行距离
-                    person_distance.setText(String.valueOf(mInfo.getMileage()));
-                    //运动成就
-                    sportsAchievement.setText(String.valueOf(MapUtil.changeOneDouble(mInfo.getCalorie())));
-                    //用户头像
-                    mUserimage = mInfo.getUserimage();
-                    Log.d("用户头像路径1111111", mUserimage);
-                } else {
-                    LogUtils.d("状态", "您被迫下线了");
-                    startActivity(new Intent(getActivity(), LoginActivity.class));
-                    getActivity().finish();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+
             }
         });
     }
@@ -343,7 +360,6 @@ public class LoginFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d("用户头像路径1111111", mURL + "onDestroy");
     }
 
     @Override
