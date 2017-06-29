@@ -1,6 +1,7 @@
 package com.dcch.sharebike.moudle.user.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,6 +32,7 @@ import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.bumptech.glide.Glide;
 import com.dcch.sharebike.R;
+import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.home.bean.RoutePoint;
@@ -40,6 +42,7 @@ import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.MapUtil;
+import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.hss01248.dialog.StyledDialog;
 import com.hss01248.dialog.bottomsheet.BottomSheetBean;
@@ -51,6 +54,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -105,6 +109,7 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
     private double mTripDist;
     private double mCalorie;
     private int mTripTime;
+    private String mURL;
 
     @Override
     protected int getLayoutId() {
@@ -122,6 +127,18 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
 //                finish();
 //            }
 //        });
+
+        mURL = (String) SPUtils.get(App.getContext(), "imageURL", "");
+        if (!mURL.equals("")) {
+            LogUtils.d("状态", mURL);
+            Glide.with(JourneyDetailActivity.this)
+                    .load(Uri.fromFile(new File(mURL)))
+                    .error(R.mipmap.avatar_default_login)
+                    .thumbnail(0.1f)// 加载缩略图
+                    .into(mIcon);
+        }
+
+
         Intent intent = getIntent();
         if (intent != null) {
             String bicycleNo = intent.getStringExtra("bicycleNo");
@@ -138,11 +155,20 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
             mRidetime.setText(String.valueOf(mTripTime));
             mDistanceshow.setText(String.valueOf(MapUtil.changeDouble(mTripDist)));
             mKCal.setText(String.valueOf(MapUtil.changeDouble(mCalorie)));
-            Glide.with(this).load(image).error(R.drawable.sharebike).into(mIcon);
+            if (mURL.equals("")) {
+                if (image != null) {
+                    Glide.with(JourneyDetailActivity.this).load(image)
+                            .error(R.mipmap.avatar_default_login)
+                            .thumbnail(0.1f)// 加载缩略图
+                            .into(mIcon);
+                } else {
+                    LogUtils.d("状态", "1111111");
+                    mIcon.setImageResource(R.mipmap.avatar_default_login);
+                }
+            }
             if (bicycleNo != null && !bicycleNo.equals("") && carRentalOrderId != null
                     && !carRentalOrderId.equals("") && !userId.equals("") && userId != null
                     && !token.equals("") && token != null) {
-
                 checkTrip(bicycleNo, carRentalOrderId, userId, token);
             }
         }
@@ -154,8 +180,14 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
         mRPSearch.setOnGetRoutePlanResultListener(this);
         startBmp = BitmapDescriptorFactory.fromResource(R.mipmap.route_start);
         endBmp = BitmapDescriptorFactory.fromResource(R.mipmap.route_end);
+
         initMap();
-        StyledDialog.buildLoading(JourneyDetailActivity.this, "正在加载..", true, false).setMsgColor(R.color.color_ff).show();
+        StyledDialog.buildLoading(JourneyDetailActivity.this, "正在加载..", true, false).
+
+                setMsgColor(R.color.color_ff).
+
+                show();
+
     }
 
     private void addOverLayout(LatLng startPosition, LatLng endPosition) {
