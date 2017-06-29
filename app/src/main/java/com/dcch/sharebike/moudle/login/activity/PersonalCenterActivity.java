@@ -107,7 +107,7 @@ public class PersonalCenterActivity extends BaseActivity {
     private void goToMain() {
         Intent backToLoginMain = new Intent(PersonalCenterActivity.this, MainActivity.class);
         startActivity(backToLoginMain);
-//        finish();
+        finish();
     }
 
     @Override
