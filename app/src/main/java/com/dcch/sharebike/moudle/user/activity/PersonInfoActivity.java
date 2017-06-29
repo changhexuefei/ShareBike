@@ -1,9 +1,12 @@
 package com.dcch.sharebike.moudle.user.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -44,7 +47,10 @@ import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultSubscriber;
 import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 
+@RuntimePermissions
 public class PersonInfoActivity extends BaseActivity {
 
     @BindView(R.id.userInfoIcon)
@@ -73,6 +79,7 @@ public class PersonInfoActivity extends BaseActivity {
     private String mToken;
     private String mImageURL;
     private String mMImageResult;
+
 
     @Override
     protected int getLayoutId() {
@@ -124,20 +131,17 @@ public class PersonInfoActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (SPUtils.isLogin()) {
 
-//                if (mImageURL != null && !mImageURL.equals("")) {
-//                    Glide.with(PersonInfoActivity.this)
-//                            .load(Uri.fromFile(new File(mImageURL)))
-//                            .error(R.mipmap.avatar_default_login)
-//                            .thumbnail(0.1f)// 加载缩略图
-//                            .into(userInfoIcon);
-//                } else {
-//                    userInfoIcon.setImageResource(R.mipmap.avatar_default_login);
-//                }
-            uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
-            mToken = (String) SPUtils.get(App.getContext(), "token", "");
-        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PersonInfoActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @NeedsPermission(Manifest.permission.CAMERA)
+    void showCamera() {
     }
 
     @OnClick({R.id.userIcon, R.id.userNickname, R.id.phone})
@@ -147,6 +151,8 @@ public class PersonInfoActivity extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
+                PersonInfoActivityPermissionsDispatcher.showCameraWithCheck(PersonInfoActivity.this);
+                showCamera();
                 RxGalleryFinal.with(App.getContext())
                         .cropHideBottomControls(true)
                         .cropOvalDimmedLayer(false)
@@ -184,7 +190,7 @@ public class PersonInfoActivity extends BaseActivity {
 
                             }
                         }).openGallery();
-                //下一步将选择的图片上传到服务器
+//                //下一步将选择的图片上传到服务器
 
                 break;
             case R.id.userNickname:
@@ -277,8 +283,30 @@ public class PersonInfoActivity extends BaseActivity {
                         }
                     }
                     break;
+//
             }
         }
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (SPUtils.isLogin()) {
+
+//                if (mImageURL != null && !mImageURL.equals("")) {
+//                    Glide.with(PersonInfoActivity.this)
+//                            .load(Uri.fromFile(new File(mImageURL)))
+//                            .error(R.mipmap.avatar_default_login)
+//                            .thumbnail(0.1f)// 加载缩略图
+//                            .into(userInfoIcon);
+//                } else {
+//                    userInfoIcon.setImageResource(R.mipmap.avatar_default_login);
+//                }
+            uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
+            mToken = (String) SPUtils.get(App.getContext(), "token", "");
+        }
+
+
     }
 
     private void updateUserNickName(String token, String encode, String uID) {
@@ -311,6 +339,6 @@ public class PersonInfoActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        Glide.with(this).pauseRequests();
     }
+
 }

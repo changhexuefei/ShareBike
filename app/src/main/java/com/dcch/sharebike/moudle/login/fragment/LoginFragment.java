@@ -1,7 +1,6 @@
 package com.dcch.sharebike.moudle.login.fragment;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +19,7 @@ import com.bumptech.glide.util.Util;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.http.Api;
+import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.moudle.login.activity.LoginActivity;
 import com.dcch.sharebike.moudle.user.activity.CouponListActivity;
 import com.dcch.sharebike.moudle.user.activity.CreditIntegralActivity;
@@ -31,6 +31,7 @@ import com.dcch.sharebike.moudle.user.activity.SettingActivity;
 import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
 import com.dcch.sharebike.moudle.user.activity.WalletInfoActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
+import com.dcch.sharebike.utils.AES;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
@@ -99,55 +100,18 @@ public class LoginFragment extends Fragment {
     public LoginFragment() {
     }
 
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (SPUtils.isLogin()) {
-            uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
-            mToken = (String) SPUtils.get(App.getContext(), "token", "");
-            mURL = (String) SPUtils.get(App.getContext(), "imageURL", "");
+        uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
+        mToken = (String) SPUtils.get(App.getContext(), "token", "");
+        mURL = (String) SPUtils.get(App.getContext(), "imageURL", "");
+        mPhone = AES.decrypt((String) SPUtils.get(App.getContext(), "phone", ""), MyContent.key);
+        if (uID != null && mToken != null) {
             if (NetUtils.isConnected(App.getContext())) {
-                if (uID != null && mToken != null) {
-                    getUserInfo(uID, mToken);
-                }
-                if (mNickName != null && !mNickName.equals("")) {
-                    nickName.setText(mNickName);
-                }
-                mAchievementShow.setVisibility(View.VISIBLE);
-                mNoNetworkTip.setVisibility(View.GONE);
+                getUserInfo(uID, mToken);
             } else {
-                mAchievementShow.setVisibility(View.GONE);
-                if (mNoNetworkTip != null) {
-                    mNoNetworkTip.setVisibility(View.VISIBLE);
-                }
-            }
-        }
-        Log.d("用户头像路径", mUserimage + "\n" + mURL);
-        if (!mURL.equals("")) {
-            Log.d("用户头像路径1111111", mURL);
-            Glide.with(LoginFragment.this)
-                    .load(Uri.fromFile(new File(mURL)))
-                    .error(R.mipmap.avatar_default_login)
-                    .thumbnail(0.1f)// 加载缩略图
-                    .into(userIcon);
-
-        } else {
-            if (mUserimage != null) {
-                if (Util.isOnMainThread()) {
-                    //使用用户自定义的头像
-                    Glide.with(LoginFragment.this).load(mUserimage)
-                            .error(R.mipmap.avatar_default_login)
-                            .thumbnail(0.1f)// 加载缩略图
-                            .into(userIcon);
-                }
-            } else {
-                userIcon.setImageResource(R.mipmap.avatar_default_login);
+                ToastUtils.showShort(getActivity(), getString(R.string.no_network_tip));
             }
         }
     }
@@ -161,6 +125,26 @@ public class LoginFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("用户头像路径1111111", mURL + "onResume" + mUserimage);
+        if (!mURL.equals("")) {
+            Glide.with(LoginFragment.this)
+                    .load(Uri.fromFile(new File(mURL)))
+                    .error(R.mipmap.avatar_default_login)
+                    .thumbnail(0.1f)// 加载缩略图
+                    .into(userIcon);
+        } else {
+            if (mUserimage != null) {
+                if (Util.isOnMainThread()) {
+                    //使用用户自定义的头像
+                    Glide.with(LoginFragment.this).load(mUserimage)
+                            .error(R.mipmap.avatar_default_login)
+                            .thumbnail(0.1f)// 加载缩略图
+                            .into(userIcon);
+                }
+            } else {
+                userIcon.setImageResource(R.mipmap.avatar_default_login);
+            }
+        }
     }
 
     //从服务端拿到客户信息
@@ -182,8 +166,7 @@ public class LoginFragment extends Fragment {
                     Gson gson = new Gson();
                     mInfo = gson.fromJson(response, UserInfo.class);
                     //手机号中间四位数字用*号代替的做法
-                    mPhone = mInfo.getPhone();
-                    if (mPhone != null) {
+                    if (mInfo.getNickName() != null && !mInfo.getNickName().equals("")) {
                         String nn = mInfo.getNickName().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
                         nickName.setText(nn);
                     }
@@ -197,7 +180,7 @@ public class LoginFragment extends Fragment {
                     sportsAchievement.setText(String.valueOf(MapUtil.changeOneDouble(mInfo.getCalorie())));
                     //用户头像
                     mUserimage = mInfo.getUserimage();
-
+                    Log.d("用户头像路径1111111", mUserimage);
                 } else {
                     LogUtils.d("状态", "您被迫下线了");
                     startActivity(new Intent(getActivity(), LoginActivity.class));
@@ -224,7 +207,6 @@ public class LoginFragment extends Fragment {
                 }
                 String mCreditScore = creditScore.getText().toString().trim();
                 mCreditScore = mCreditScore.substring(5, mCreditScore.length());
-                LogUtils.d("积分", mCreditScore);
                 if (mCreditScore != null) {
                     goCreditIntegral(mCreditScore);
                 }
@@ -253,7 +235,6 @@ public class LoginFragment extends Fragment {
                 } else {
                     ToastUtils.showShort(getActivity(), getString(R.string.no_network_tip));
                 }
-
                 break;
             case R.id.favorable:
                 if (ClickUtils.isFastClick()) {
@@ -268,12 +249,8 @@ public class LoginFragment extends Fragment {
                     return;
                 }
                 LogUtils.d("点击", "行程");
-                if (NetUtils.isConnected(App.getContext())) {
-                    if (mPhone != null && mToken != null) {
-                        goMyJourney(mPhone, mToken);
-                    }
-                } else {
-                    ToastUtils.showShort(getActivity(), getString(R.string.no_network_tip));
+                if (mPhone != null && mToken != null) {
+                    goMyJourney(mPhone, mToken);
                 }
                 break;
             case R.id.message:
@@ -284,7 +261,6 @@ public class LoginFragment extends Fragment {
                 if (uID != null && mToken != null) {
                     goMyMessage(uID, mToken);
                 }
-
                 break;
             case R.id.friend:
                 if (ClickUtils.isFastClick()) {
@@ -367,15 +343,33 @@ public class LoginFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.d("用户头像路径1111111", mURL + "onDestroy");
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        Log.d("用户头像路径1111111", mURL + "onStart");
+        if (SPUtils.isLogin()) {
+            if (NetUtils.isConnected(App.getContext())) {
+                if (mNickName != null && !mNickName.equals("")) {
+                    nickName.setText(mNickName);
+                }
+                mAchievementShow.setVisibility(View.VISIBLE);
+                mNoNetworkTip.setVisibility(View.GONE);
+            } else {
+                mAchievementShow.setVisibility(View.GONE);
+                if (mNoNetworkTip != null) {
+                    mNoNetworkTip.setVisibility(View.VISIBLE);
+                }
+            }
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
     }
+
+
 }

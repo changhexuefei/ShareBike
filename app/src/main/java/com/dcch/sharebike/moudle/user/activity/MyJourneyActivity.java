@@ -80,7 +80,6 @@ public class MyJourneyActivity extends BaseActivity {
                 finish();
             }
         });
-
         if (SPUtils.isLogin()) {
             uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
         }

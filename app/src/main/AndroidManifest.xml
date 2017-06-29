@@ -35,6 +35,7 @@
     <!-- <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/> -->
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"/>
     <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <!-- Optional. Required for location feature -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
@@ -126,7 +127,7 @@
         </activity>
         <activity
             android:name=".activity.SplashActivity"
-            android:launchMode="singleTask"
+            android:launchMode="standard"
             android:theme="@style/Splash_Theme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -135,8 +136,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.GuideActivity"
-            android:launchMode="singleTask"/>
+            android:name=".activity.GuideActivity"/>
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -186,8 +186,7 @@
 
         <activity android:name=".moudle.login.activity.PersonalCenterActivity"/>
         <activity
-            android:name=".moudle.login.activity.LoginActivity"
-            android:launchMode="singleTask"/>
+            android:name=".moudle.login.activity.LoginActivity"/>
         <activity android:name=".moudle.search.activity.SeekActivity"/>
         <activity android:name=".moudle.login.activity.AgreementActivity"/>
         <activity
@@ -206,8 +205,7 @@
             android:name=".moudle.user.activity.WalletInfoActivity"
             android:launchMode="singleTask"/>
         <activity
-            android:name=".moudle.user.activity.TransactionDetailActivity"
-            android:launchMode="singleTask"/>
+            android:name=".moudle.user.activity.TransactionDetailActivity"/>
         <activity android:name=".moudle.user.activity.SettingActivity"/>
         <activity android:name=".moudle.user.activity.UsualAddressActivity"/>
         <activity android:name=".moudle.user.activity.ChangeUserNickNameActivity"/>
