@@ -21,6 +21,7 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
+import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.db.DatabaseHelper;
 import com.dcch.sharebike.http.Api;
@@ -370,7 +371,7 @@ public class GPSService extends Service {
                 map.put("lng", mRouteLng + "");
                 map.put("lat", mRouteLat + "");
                 map.put("mile", totalDistance / 1000 + "");
-                LogUtils.d("看看数据", mToken + "\n" + mCarRentalOrderDate + "\n" + mRouteLat + "\n" + mCarRentalOrderId + "\n" + mRouteLng);
+                LogUtils.d("看看数据", mToken + "\n" + mCarRentalOrderDate + "\n" + mRouteLat + "\n" + mCarRentalOrderId + "\n" + mRouteLng+"\n"+ totalDistance / 1000 );
 //                byte[] encryptBytes = MapUtil.transMapToString(map).getBytes();
 //                NettyClient.getInstance().sendMsgToServer(encryptBytes, new ChannelFutureListener() {
 //                    @Override
@@ -386,7 +387,7 @@ public class GPSService extends Service {
                     @Override
                     public void onError(Call call, Exception e, int id) {
 //                        LogUtils.d("后台",e.getMessage());
-                        ToastUtils.showShort(App.getContext(), "服务正忙！");
+                        ToastUtils.showShort(App.getContext(), getString(R.string.server_tip));
                     }
 
                     @Override

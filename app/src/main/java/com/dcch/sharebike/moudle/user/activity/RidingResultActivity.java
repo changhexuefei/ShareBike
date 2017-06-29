@@ -17,6 +17,7 @@ import com.dcch.sharebike.moudle.home.bean.RideResultInfo;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.MapUtil;
 import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.google.gson.Gson;
@@ -84,7 +85,6 @@ public class RidingResultActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.ORDERBALANCE).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-
                 ToastUtils.showShort(RidingResultActivity.this, getString(R.string.server_tip));
             }
 
@@ -99,8 +99,12 @@ public class RidingResultActivity extends BaseActivity {
                     mRideCost.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getRideCost()) + "元");
                     mRideTime.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getTripTime()) + "分钟");
                     mBalance.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getFinalCast()) + "元");
-                    mCouponCost.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getCouponAmount()) + "元");
-                    mCalorimeter.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getCalorie()) + "大卡");
+                    if (rideResultInfo.getCarRentalInfo().getCouponno().equals("nocoupon")) {
+                        mCouponCost.setText("无优惠券抵扣");
+                    } else {
+                        mCouponCost.setText("优惠券抵扣1张");
+                    }
+                    mCalorimeter.setText(String.valueOf(MapUtil.changeDouble(rideResultInfo.getCarRentalInfo().getCalorie())) + "大卡");
                     mRideDis.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getTripDist()) + "千米");
                 } else {
                     ToastUtils.showShort(RidingResultActivity.this, getString(R.string.server_tip));

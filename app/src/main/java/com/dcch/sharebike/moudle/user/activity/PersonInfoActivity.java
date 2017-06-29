@@ -72,6 +72,7 @@ public class PersonInfoActivity extends BaseActivity {
     private String result;
     private String mToken;
     private String mImageURL;
+    private String mMImageResult;
 
     @Override
     protected int getLayoutId() {
@@ -136,7 +137,6 @@ public class PersonInfoActivity extends BaseActivity {
 //                }
             uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
             mToken = (String) SPUtils.get(App.getContext(), "token", "");
-
         }
     }
 
@@ -162,29 +162,30 @@ public class PersonInfoActivity extends BaseActivity {
                                 //得到图片的路径
                                 result = imageRadioResultEvent.getResult().getOriginalPath();
                                 Bitmap bitmap = PictureProcessingUtils.getimage(result);
-                                String mImageResult = PictureProcessingUtils.bitmapToBase64(bitmap);
+                                mMImageResult = PictureProcessingUtils.bitmapToBase64(bitmap);
                                 //将图片赋值给图片控件
                                 if (result != null && !result.equals("")) {
                                     Log.d("图片", result);
-
                                     Glide.with(PersonInfoActivity.this)
                                             .load(Uri.fromFile(new File(result)))
                                             .error(R.mipmap.avatar_default_login)
                                             .thumbnail(0.1f)// 加载缩略图
                                             .into(userInfoIcon);
-                                }
 
-                                //下一步将选择的图片上传到服务器
-                                if (NetUtils.isConnected(App.getContext())) {
-                                    if (mImageResult != null && mToken != null && uID != null) {
-                                        upLoadIcon(mImageResult, mToken, uID);
+                                    if (NetUtils.isConnected(App.getContext())) {
+                                        if (mMImageResult != null && mToken != null && uID != null) {
+                                            upLoadIcon(mMImageResult, mToken, uID);
+                                        }
+                                    } else {
+                                        ToastUtils.showShort(PersonInfoActivity.this, getString(R.string.no_network_tip));
                                     }
-                                } else {
-                                    ToastUtils.showShort(PersonInfoActivity.this, getString(R.string.no_network_tip));
+
                                 }
 
                             }
                         }).openGallery();
+                //下一步将选择的图片上传到服务器
+
                 break;
             case R.id.userNickname:
                 if (ClickUtils.isFastClick()) {
@@ -217,7 +218,7 @@ public class PersonInfoActivity extends BaseActivity {
         }
     }
 
-    private void upLoadIcon(String mImageResult, String token, String uID) {
+    private void upLoadIcon(final String mImageResult, String token, String uID) {
         Map<String, String> map = new HashMap<>();
         map.put("token", token);
         map.put("userId", uID);
@@ -231,7 +232,6 @@ public class PersonInfoActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
                         ToastUtils.showShort(PersonInfoActivity.this, getString(R.string.server_tip));
                     }
 

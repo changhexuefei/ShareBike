@@ -52,7 +52,7 @@ public class RideResultInfo {
         private String bicycleNo;
         private double calorie;
         private String carRentalOrderId;
-        private int couponAmount;
+        private float couponAmount;
         private String couponno;
         private double finalCast;
         private double orderCast;
@@ -93,11 +93,11 @@ public class RideResultInfo {
             this.carRentalOrderId = carRentalOrderId;
         }
 
-        public int getCouponAmount() {
+        public float getCouponAmount() {
             return couponAmount;
         }
 
-        public void setCouponAmount(int couponAmount) {
+        public void setCouponAmount(float couponAmount) {
             this.couponAmount = couponAmount;
         }
 

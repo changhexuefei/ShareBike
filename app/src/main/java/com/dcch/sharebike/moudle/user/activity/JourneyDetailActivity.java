@@ -15,12 +15,11 @@ import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MarkerOptions;
-import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.route.BikingRouteLine;
+import com.baidu.mapapi.search.route.BikingRoutePlanOption;
 import com.baidu.mapapi.search.route.BikingRouteResult;
 import com.baidu.mapapi.search.route.DrivingRouteResult;
 import com.baidu.mapapi.search.route.IndoorRouteResult;
@@ -314,21 +313,21 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
                         }
                         if (mPoints.size() > 2) {
                             //.color()
-                            BitmapDescriptor descriptor = BitmapDescriptorFactory.fromResource(R.mipmap.icon_road_blue_arrow);
-                            OverlayOptions ooPolyline = new PolylineOptions().width(10).customTexture(descriptor).points(mPoints);
-                            mRouteBaiduMap.addOverlay(ooPolyline);
+//                            BitmapDescriptor descriptor = BitmapDescriptorFactory.fromResource(R.mipmap.icon_road_blue_arrow);
+//                            OverlayOptions ooPolyline = new PolylineOptions().width(10).customTexture(descriptor).points(mPoints);
+//                            mRouteBaiduMap.addOverlay(ooPolyline);
 
                             RoutePoint startPoint = routePoints.get(0);
-//                            startNodeStr = PlanNode.withLocation(new LatLng(startPoint.getRouteLat(), startPoint.getRouteLng()));
+                            startNodeStr = PlanNode.withLocation(new LatLng(startPoint.getRouteLat(), startPoint.getRouteLng()));
                             LatLng startPosition = new LatLng(startPoint.getRouteLat(), startPoint.getRouteLng());
                             MapStatus.Builder builder = new MapStatus.Builder();
                             builder.target(startPosition).zoom(18.0f);
                             mRouteBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
                             RoutePoint endPoint = routePoints.get(routePoints.size() - 1);
-//                            endNodeStr = PlanNode.withLocation(new LatLng(endPoint.getRouteLat(), endPoint.getRouteLng()));
+                            endNodeStr = PlanNode.withLocation(new LatLng(endPoint.getRouteLat(), endPoint.getRouteLng()));
                             LatLng endPosition = new LatLng(endPoint.getRouteLat(), endPoint.getRouteLng());
-//                            mRPSearch.bikingSearch((new BikingRoutePlanOption()).from(startNodeStr).to(endNodeStr));
-                            addOverLayout(startPosition, endPosition);
+                            mRPSearch.bikingSearch((new BikingRoutePlanOption()).from(startNodeStr).to(endNodeStr));
+//                            addOverLayout(startPosition, endPosition);
 
                         }
                     } catch (JSONException e) {

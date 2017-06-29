@@ -9,15 +9,6 @@
     tools:context="com.dcch.sharebike.moudle.user.activity.RidingResultActivity">
 
     <include layout="@layout/toolbar"/>
-    <!--//  app:cardBackgroundColor="@color/colorTitle"-->
-    <!--app:contentPaddingLeft="15dp"-->
-    <!--app:contentPaddingRight="15dp"-->
-    <!--<RelativeLayout-->
-    <!--android:id="@+id/card_show"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_below="@+id/toolbar"-->
-    <!--android:background="@color/colorTitle">-->
 
     <RelativeLayout
         android:id="@+id/card_show"
@@ -83,7 +74,8 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/sum_cost_show"
             android:layout_marginBottom="10dp"
@@ -93,17 +85,9 @@
             android:gravity="center">
 
             <TextView
-                android:id="@+id/text6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/coupon_deduction"
-                android:textColor="@color/color_ff"/>
-
-            <TextView
                 android:id="@+id/coupon_cost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/text6"
                 android:paddingLeft="5dp"
                 android:textColor="@color/color_ff"/>
         </RelativeLayout>
@@ -229,17 +213,24 @@
 
 
     <Button
+        android:layout_above="@+id/work_time"
         android:id="@+id/callCenter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:layout_marginBottom="15dp"
         android:background="@null"
         android:text="@string/callphone"
         android:textColor="@color/colorHeading"
         android:textSize="14sp"/>
 
+    <TextView
+        android:layout_marginBottom="20dp"
+        android:id="@+id/work_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/working_time"/>
 
 </RelativeLayout>
