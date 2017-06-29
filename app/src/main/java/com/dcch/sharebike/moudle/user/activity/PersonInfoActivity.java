@@ -148,7 +148,6 @@ public class PersonInfoActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     @Override
