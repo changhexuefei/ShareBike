@@ -14,8 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.util.Util;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
@@ -79,6 +77,7 @@ public class PersonInfoActivity extends BaseActivity {
     private String mToken;
     private String mImageURL;
     private String mMImageResult;
+    private String mURL;
 
 
     @Override
@@ -98,6 +97,16 @@ public class PersonInfoActivity extends BaseActivity {
                 finish();
             }
         });
+        mURL = (String) SPUtils.get(App.getContext(), "imageURL", "");
+        if (!mURL.equals("")) {
+            LogUtils.d("状态", mURL);
+            Glide.with(PersonInfoActivity.this)
+                    .load(Uri.fromFile(new File(mURL)))
+                    .error(R.mipmap.avatar_default_login)
+                    .thumbnail(0.1f)// 加载缩略图
+                    .into(userInfoIcon);
+        }
+
         Intent intent = getIntent();
 //        if (intent != null) {
 //            mImageURL = intent.getStringExtra("imageURL");
@@ -118,12 +127,20 @@ public class PersonInfoActivity extends BaseActivity {
                 realName.setText(mUserBundle.getName());
             }
             if (mUserBundle.getUserimage() != null) {
-                LogUtils.d("图片", mUserBundle.getUserimage());
-                if (Util.isOnMainThread()) {
-                    Glide.with(this).load(mUserBundle.getUserimage()).diskCacheStrategy(DiskCacheStrategy.ALL).error(R.mipmap.avatar_default_login).thumbnail(0.1f).into(userInfoIcon);
+                if (mURL.equals("")) {
+                    if (mUserBundle.getUserimage() != null) {
+                        //使用用户自定义的头像
+                        LogUtils.d("状态", mUserBundle.getUserimage());
+                        Glide.with(PersonInfoActivity.this).load(mUserBundle.getUserimage())
+                                .error(R.mipmap.avatar_default_login)
+                                .thumbnail(0.1f)// 加载缩略图
+                                .into(userInfoIcon);
+
+                    } else {
+                        LogUtils.d("状态", "1111111");
+                        userInfoIcon.setImageResource(R.mipmap.avatar_default_login);
+                    }
                 }
-            } else {
-                userInfoIcon.setImageResource(R.mipmap.avatar_default_login);
             }
         }
     }
