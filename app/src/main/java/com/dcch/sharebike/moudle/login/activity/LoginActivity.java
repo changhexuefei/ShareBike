@@ -25,7 +25,7 @@ import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
-import com.dcch.sharebike.utils.AES;
+import com.dcch.sharebike.utils.AESUtil;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.InPutUtils;
 import com.dcch.sharebike.utils.JsonUtils;
@@ -67,7 +67,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     Toolbar mToolbar;
     @BindView(R.id.title)
     TextView mTitle;
-    String ciphertext;
 
     private static final int CODE_ING = 1;   //已发送，倒计时
     private static final int CODE_REPEAT = 2;  //重新发送
@@ -188,7 +187,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     return;
                 }
                 if (NetUtils.isConnected(App.getContext())) {
-
                     getseCode(phone);
                 } else {
                     ToastUtils.showLong(LoginActivity.this, getString(R.string.no_network_tip));
@@ -255,7 +253,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
 
     private void registerAndLogin(String phone) {
-        phone = AES.encrypt(phone.getBytes(), MyContent.key);
+//        phone = AES.encrypt(phone.getBytes(), MyContent.key);
+        byte[] encrypt = AESUtil.encrypt(phone, MyContent.key);
+        phone = AESUtil.parseByte2HexStr(encrypt);
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone);
         final String finalPhone = phone;
@@ -303,7 +303,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     public void getSecurityCode(String phone) {
-        phone = AES.encrypt(phone.getBytes(), MyContent.key);
+//        phone = AES.encrypt(phone.getBytes(), MyContent.key);
+        byte[] encrypt = AESUtil.encrypt(phone, MyContent.key);
+        phone = AESUtil.parseByte2HexStr(encrypt);
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone);
         LogUtils.d("测试", phone);
@@ -324,7 +326,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 //                        Log.d("测试", verificationCode);
 //                        securityCode.setText(verificationCode);
 //                    }
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

@@ -14,7 +14,6 @@ import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
-import com.dcch.sharebike.moudle.login.activity.IdentityAuthenticationActivity;
 import com.dcch.sharebike.moudle.user.adapter.CouponInfoAdapter;
 import com.dcch.sharebike.moudle.user.bean.CouponInfo;
 import com.dcch.sharebike.utils.JsonUtils;
@@ -79,7 +78,6 @@ public class CouponListActivity extends BaseActivity {
 //                finish();
 //            }
 //        });
-
         Intent intent = getIntent();
         if (intent != null) {
             mUserId = intent.getStringExtra("userId");

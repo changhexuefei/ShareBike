@@ -19,26 +19,26 @@ public class DownService extends Service {
 
     private String TAG = "Debug";
     private ServiceAndroidContact serviceAndroidContact = new ServiceAndroidContact();
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i(TAG,"运行到了服务阶段"+ intent.getExtras());
+        Log.i(TAG, "运行到了服务阶段" + intent.getExtras());
         final String downUrl = intent.getExtras().getString("DateUrl");
-        Log.i(TAG,downUrl+"123456789");
+        Log.i(TAG, downUrl + "123456789");
 //               UpdateManager updateManager = new UpdateManager(App.getContext());
 //        updateManager.checkVersion();
 //
-
         new Thread(new Runnable() {
             @Override
             public void run() {
                 DownloadFile downloadFile = new DownloadFile();
                 try {
-                    downloadFile.downloadFile(downUrl,"","app-release.apk");
+                    downloadFile.downloadFile(downUrl, "", "app-release.apk");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                if(!Thread.currentThread().isAlive()){
-                    Log.i(TAG,"Thread Over");
+                if (!Thread.currentThread().isAlive()) {
+                    Log.i(TAG, "Thread Over");
                 }
             }
         }).start();

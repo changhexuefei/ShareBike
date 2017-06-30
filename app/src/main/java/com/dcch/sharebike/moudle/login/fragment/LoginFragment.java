@@ -30,7 +30,7 @@ import com.dcch.sharebike.moudle.user.activity.SettingActivity;
 import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
 import com.dcch.sharebike.moudle.user.activity.WalletInfoActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
-import com.dcch.sharebike.utils.AES;
+import com.dcch.sharebike.utils.AESUtil;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.MapUtil;
@@ -106,14 +106,15 @@ public class LoginFragment extends Fragment {
         super.onCreate(savedInstanceState);
         uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
         mToken = (String) SPUtils.get(App.getContext(), "token", "");
-        mPhone = AES.decrypt((String) SPUtils.get(App.getContext(), "phone", ""), MyContent.key);
-
+//        mPhone = AES.decrypt((String) SPUtils.get(App.getContext(), "phone", ""), MyContent.key);
+        byte[] decryptFrom = AESUtil.parseHexStr2Byte((String) SPUtils.get(App.getContext(), "phone", ""));
+        byte[] decryptResult = AESUtil.decrypt(decryptFrom, MyContent.key);
+        mPhone = new String(decryptResult);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
     }
 
     @Override
@@ -194,9 +195,7 @@ public class LoginFragment extends Fragment {
                             }
                             break;
                         case "2":
-                            LogUtils.d("状态", "您被迫下线了");
-                            startActivity(new Intent(getActivity(), LoginActivity.class));
-                            getActivity().finish();
+                            goToLogin();
                             break;
                     }
                 } catch (JSONException e) {
@@ -205,6 +204,15 @@ public class LoginFragment extends Fragment {
 
             }
         });
+    }
+
+    private void goToLogin() {
+        ToastUtils.showShort(App.getContext(), "您的账号已经在其他设备登录，您已经被迫下线");
+        startActivity(new Intent(getActivity(), LoginActivity.class));
+        SPUtils.put(App.getContext(), "islogin", false);
+        SPUtils.put(App.getContext(), "cashStatus", 0);
+        SPUtils.put(App.getContext(), "status", 0);
+        getActivity().finish();
     }
 
     @Override
@@ -386,6 +394,4 @@ public class LoginFragment extends Fragment {
     public void onStop() {
         super.onStop();
     }
-
-
 }

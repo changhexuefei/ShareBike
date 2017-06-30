@@ -94,7 +94,7 @@ import com.dcch.sharebike.overlayutil.OverlayManager;
 import com.dcch.sharebike.overlayutil.WalkingRouteOverlay;
 import com.dcch.sharebike.service.GPSService;
 import com.dcch.sharebike.service.NettyService;
-import com.dcch.sharebike.utils.AES;
+import com.dcch.sharebike.utils.AESUtil;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
@@ -944,7 +944,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                         isShowBookOrder = false;
                         LogUtils.d("进度条页面的数据", isShowRideOrder + "");
                         if (!isShowRideOrder) {
-                            LogUtils.d("进度条页面的数据", !isShowRideOrder + "22222222222222");
                             mCenterIcon.setVisibility(View.VISIBLE);
                             getBikeInfo(mCurrentLantitude, mCurrentLongitude);
                             setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
@@ -1025,6 +1024,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                                 }.start();
                                 break;
                             case "2":
+                                goToLogin();
                                 break;
                             case "3":
                                 ToastUtils.showShort(MainActivity.this, getString(R.string.biking));
@@ -1034,58 +1034,19 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                         e.printStackTrace();
                     }
 //
-//
-//                    if (JsonUtils.isSuccess(response)) {
-//                        LogUtils.d("查看信息", response);
-//                        Gson gson = new Gson();
-//                        bookingBikeInfo = gson.fromJson(response, BookingBikeInfo.class);
-//                        mMap.clear();
-////                        mMarker.remove();
-//                        StyledDialog.dismissLoading();
-//                        mMapView.setFocusable(false);
-//                        mMapView.setEnabled(false);
-//                        Log.d("你好", "789");
-//                        if (mDoulat != null && mDoulon != null) {
-//                            forLocationAddMark(mDoulat, mDoulon);
-//                        }
-//                        drawPlanRoute(endNodeStr);
-//                        bookingCarId = bookingBikeInfo.getBookingCarId();
-////                        bookingCarDate = bookingBikeInfo.getBookingCarDate();
-//                        final String bicycleNo = bookingBikeInfo.getBicycleNo();
-//                        isChecked = false;
-//                        isBook = true;
-//                        isClick = false;
-//                        bookBikePopupWindow = new BookBikePopupWindow(MainActivity.this, bookingBikeInfo, bookBikeItemsOnClick);
-//                        //指定父视图，显示在父控件的某个位置（Gravity.TOP,Gravity.RIGHT等）
-//                        //  menuWindow.showAtLocation(findViewById(R.id.mapView), Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, -48);
-//                        //设置显示在某个指定控件的下方
-//                        bookBikePopupWindow.showAsDropDown(findViewById(R.id.top));
-//                        timer = (MyCountDownTimer) new MyCountDownTimer(600000, 1000) {
-//                            @Override
-//                            public void onTick(long millisUntilFinished) {
-//                                bookBikePopupWindow.mBookBikeLocationInfo.setText(mReverseGeoCodeResultAddress);
-//                                bookBikePopupWindow.mHoldTime.setText(toClock(millisUntilFinished));
-//                            }
-//
-//                            @Override
-//                            public String toClock(long millis) {
-//                                return super.toClock(millis);
-//                            }
-//
-//                            @Override
-//                            public void onFinish() {
-//                                super.onFinish();
-//                                cancelBookingBike(bookingCarId, bicycleNo, uID, mToken);
-//                            }
-//                        }.start();
-//
-//                    } else {
-//                        ToastUtils.showShort(MainActivity.this, getString(R.string.book_again));
-//                    }
 
                 }
             });
         }
+    }
+
+    private void goToLogin() {
+        ToastUtils.showShort(App.getContext(), "您的账号已经在其他设备登录，您已经被迫下线");
+        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        SPUtils.put(App.getContext(), "islogin", false);
+        SPUtils.put(App.getContext(), "cashStatus", 0);
+        SPUtils.put(App.getContext(), "status", 0);
+        this.finish();
     }
 
     private void popupDialog() {
@@ -1135,7 +1096,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         OkHttpUtils.post().url(Api.BASE_URL + Api.CHECKBICYCLENO).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-
                 ToastUtils.showShort(MainActivity.this, getString(R.string.server_tip));
             }
 
@@ -1154,6 +1114,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                             Intent intent = new Intent(MainActivity.this, UnlockProgressActivity.class);
                             startActivity(intent);
                             openScan(uID, result);
+                            break;
+                        case "2":
+                            goToLogin();
                             break;
                         case "3":
                             ToastUtils.showLong(MainActivity.this, getString(R.string.using));
@@ -1537,7 +1500,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             mToken = (String) SPUtils.get(App.getContext(), "token", "");
             uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
             if (uID != null && mToken != null) {
-                phone = AES.decrypt((String) SPUtils.get(App.getContext(), "phone", ""), MyContent.key);
+                byte[] decryptFrom = AESUtil.parseHexStr2Byte((String) SPUtils.get(App.getContext(), "phone", ""));
+                byte[] decryptResult = AESUtil.decrypt(decryptFrom, MyContent.key);
+                phone = new String(decryptResult);
+//                phone = AES.decrypt((String) SPUtils.get(App.getContext(), "phone", ""), MyContent.key);
                 cashStatus = (Integer) SPUtils.get(App.getContext(), "cashStatus", 0);
                 status = (Integer) SPUtils.get(App.getContext(), "status", 0);
                 LogUtils.d("netty", "用户信息" + phone + cashStatus + status + (String) SPUtils.get(App.getContext(), "phone", ""));

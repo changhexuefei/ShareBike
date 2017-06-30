@@ -36,7 +36,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        AppManager.finishActivity(this);
+        AppManager.finishActivity(this);
     }
 
     @Override

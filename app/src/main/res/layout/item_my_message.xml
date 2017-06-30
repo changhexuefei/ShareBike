@@ -13,13 +13,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="主题"
-        android:textSize="16sp"/>
+        android:textSize="12sp"/>
 
     <ImageView
+        android:scaleType="fitXY"
         android:id="@+id/message_image"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/message_theme"
         android:layout_marginTop="5dp"/>
 
