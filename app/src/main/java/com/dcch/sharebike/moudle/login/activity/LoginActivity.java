@@ -25,7 +25,7 @@ import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
-import com.dcch.sharebike.utils.AESUtil;
+import com.dcch.sharebike.utils.AES;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.InPutUtils;
 import com.dcch.sharebike.utils.JsonUtils;
@@ -253,9 +253,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
 
     private void registerAndLogin(String phone) {
-//        phone = AES.encrypt(phone.getBytes(), MyContent.key);
-        byte[] encrypt = AESUtil.encrypt(phone, MyContent.key);
-        phone = AESUtil.parseByte2HexStr(encrypt);
+        phone = AES.encrypt(phone.getBytes(), MyContent.key);
+//        byte[] encrypt = AESUtil.encrypt(phone, MyContent.key);
+//        phone = AESUtil.parseByte2HexStr(encrypt);
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone);
         final String finalPhone = phone;
@@ -303,12 +303,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     public void getSecurityCode(String phone) {
-//        phone = AES.encrypt(phone.getBytes(), MyContent.key);
-        byte[] encrypt = AESUtil.encrypt(phone, MyContent.key);
-        phone = AESUtil.parseByte2HexStr(encrypt);
+        phone = AES.encrypt(phone.getBytes(), MyContent.key);
+//        byte[] encrypt = AESUtil.encrypt(phone, MyContent.key);
+//        phone = AESUtil.parseByte2HexStr(encrypt);
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone);
-        LogUtils.d("测试", phone);
+//        byte[] decryptFrom = AESUtil.parseHexStr2Byte(phone);
+//        byte[] decryptResult = AESUtil.decrypt(decryptFrom, MyContent.key);
+
+//        LogUtils.d("测试", phone+"\n"+decryptFrom+"\n"+encrypt+"\n"+decryptResult);
         OkHttpUtils.post().url(Api.BASE_URL + Api.REGISTER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {

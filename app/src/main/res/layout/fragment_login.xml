@@ -385,8 +385,7 @@
                     android:layout_below="@+id/userIcon"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="6dp"
-                    android:minLines="1"
-                    android:text="@string/come_on"/>
+                    android:minLines="1"/>
                 <!--信用积分-->
                 <TextView
                     android:id="@+id/creditScore"

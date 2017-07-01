@@ -30,7 +30,7 @@ import com.dcch.sharebike.moudle.user.activity.SettingActivity;
 import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
 import com.dcch.sharebike.moudle.user.activity.WalletInfoActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
-import com.dcch.sharebike.utils.AESUtil;
+import com.dcch.sharebike.utils.AES;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.MapUtil;
@@ -106,10 +106,10 @@ public class LoginFragment extends Fragment {
         super.onCreate(savedInstanceState);
         uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
         mToken = (String) SPUtils.get(App.getContext(), "token", "");
-//        mPhone = AES.decrypt((String) SPUtils.get(App.getContext(), "phone", ""), MyContent.key);
-        byte[] decryptFrom = AESUtil.parseHexStr2Byte((String) SPUtils.get(App.getContext(), "phone", ""));
-        byte[] decryptResult = AESUtil.decrypt(decryptFrom, MyContent.key);
-        mPhone = new String(decryptResult);
+        mPhone = AES.decrypt((String) SPUtils.get(App.getContext(), "phone", ""), MyContent.key);
+//        byte[] decryptFrom = AESUtil.parseHexStr2Byte((String) SPUtils.get(App.getContext(), "phone", ""));
+//        byte[] decryptResult = AESUtil.decrypt(decryptFrom, MyContent.key);
+//        mPhone = new String(decryptResult);
     }
 
     @Override
@@ -312,6 +312,9 @@ public class LoginFragment extends Fragment {
                 }
                 if (NetUtils.isConnected(getContext())) {
                     onResume();
+                    if (mNoNetworkTip != null) {
+                        mNoNetworkTip.setVisibility(View.GONE);
+                    }
                 } else {
                     ToastUtils.showShort(getActivity(), getString(R.string.no_network_tip));
                 }

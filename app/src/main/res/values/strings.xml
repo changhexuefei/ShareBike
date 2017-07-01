@@ -306,7 +306,7 @@
     <string name="verifyCodeerror">验证码错误</string>
     <string name="verifyCode_send">验证码已发送</string>
     <string name="regain_verifyCode">重新获取验证码</string>
-    <string name="refund_error">退款失败！</string>
+    <string name="refund_error">退款失败！请稍后再试</string>
     <string name="propagation_language">注册麒麟单车,得麒麟单车骑行券</string>
     <string name="propagation_language_other">邀请好友，一起骑行,乐在麒中</string>
     <string name="sorry">抱歉！未找到结果</string>

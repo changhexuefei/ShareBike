@@ -94,7 +94,7 @@ import com.dcch.sharebike.overlayutil.OverlayManager;
 import com.dcch.sharebike.overlayutil.WalkingRouteOverlay;
 import com.dcch.sharebike.service.GPSService;
 import com.dcch.sharebike.service.NettyService;
-import com.dcch.sharebike.utils.AESUtil;
+import com.dcch.sharebike.utils.AES;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
@@ -1500,10 +1500,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             mToken = (String) SPUtils.get(App.getContext(), "token", "");
             uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
             if (uID != null && mToken != null) {
-                byte[] decryptFrom = AESUtil.parseHexStr2Byte((String) SPUtils.get(App.getContext(), "phone", ""));
-                byte[] decryptResult = AESUtil.decrypt(decryptFrom, MyContent.key);
-                phone = new String(decryptResult);
-//                phone = AES.decrypt((String) SPUtils.get(App.getContext(), "phone", ""), MyContent.key);
+//                byte[] decryptFrom = AESUtil.parseHexStr2Byte((String) SPUtils.get(App.getContext(), "phone", ""));
+//                byte[] decryptResult = AESUtil.decrypt(decryptFrom, MyContent.key);
+//                phone = new String(decryptResult);
+                phone = AES.decrypt((String) SPUtils.get(App.getContext(), "phone", ""), MyContent.key);
                 cashStatus = (Integer) SPUtils.get(App.getContext(), "cashStatus", 0);
                 status = (Integer) SPUtils.get(App.getContext(), "status", 0);
                 LogUtils.d("netty", "用户信息" + phone + cashStatus + status + (String) SPUtils.get(App.getContext(), "phone", ""));

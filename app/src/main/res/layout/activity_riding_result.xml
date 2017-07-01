@@ -211,6 +211,11 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:layout_below="@+id/myKcal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
 
     <Button
         android:layout_above="@+id/work_time"

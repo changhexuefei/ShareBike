@@ -223,19 +223,23 @@ public class WalletInfoActivity extends BaseActivity {
                 LogUtils.d("余额", response);
                 try {
                     JSONObject object = new JSONObject(response);
-                    if (object.optString("resultStatus").equals("1")) {
-                        WeixinPay weixinPay = new WeixinPay(WalletInfoActivity.this);
-                        mOutRefundNo = weixinPay.getOutRefundNo();
-                        refundPledgeCash(uID, mOutRefundNo, mToken, mTotal_fee, mRefund_fee);
-                    } else if (object.optString("resultStatus").equals("0")) {
-                        StyledDialog.dismissLoading();
-                        ToastUtils.showShort(WalletInfoActivity.this, "您的账户车费余额不足，请先充值后再进行退款操作！");
-                        startActivity(new Intent(WalletInfoActivity.this, RechargeBikeFareActivity.class));
-                    } else if (object.optString("resultStatus").equals("2")) {
-                        StyledDialog.dismissLoading();
-                        ToastUtils.showShort(App.getContext(), "您的账户在其他设备上登录，您被迫下线！");
-                        startActivity(new Intent(WalletInfoActivity.this, LoginActivity.class));
-                        WalletInfoActivity.this.finish();
+                    String resultStatus = object.optString("resultStatus");
+                    switch (resultStatus) {
+                        case "1":
+                            WeixinPay weixinPay = new WeixinPay(WalletInfoActivity.this);
+                            mOutRefundNo = weixinPay.getOutRefundNo();
+                            refundPledgeCash(uID, mOutRefundNo, mToken, mTotal_fee, mRefund_fee);
+                            break;
+                        case "0":
+                            StyledDialog.dismissLoading();
+                            ToastUtils.showShort(WalletInfoActivity.this, "您的账户车费余额不足，请先充值后再进行退款操作！");
+                            startActivity(new Intent(WalletInfoActivity.this, RechargeBikeFareActivity.class));
+                            break;
+
+                        case "2":
+                            StyledDialog.dismissLoading();
+                            goToLogin();
+                            break;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -245,6 +249,15 @@ public class WalletInfoActivity extends BaseActivity {
         });
 
     }
+    private void goToLogin() {
+        ToastUtils.showShort(App.getContext(), "您的账号已经在其他设备登录，您已经被迫下线");
+        startActivity(new Intent(WalletInfoActivity.this, LoginActivity.class));
+        SPUtils.put(App.getContext(), "islogin", false);
+        SPUtils.put(App.getContext(), "cashStatus", 0);
+        SPUtils.put(App.getContext(), "status", 0);
+        this.finish();
+    }
+
 
     private void refundPledgeCash(String uID, String outRefundNo, String mToken, String mTotal_fee, String mRefund_fee) {
         mMap = new HashMap<>();
@@ -253,7 +266,7 @@ public class WalletInfoActivity extends BaseActivity {
         mMap.put("total_fee", mTotal_fee);
         mMap.put("refund_fee", mRefund_fee);
         mMap.put("token", mToken);
-        LogUtils.e("错误", uID + "\n" + outRefundNo + "\n" + mTotal_fee + "\n" + mRefund_fee + "\n" + mToken);
+        LogUtils.e("退款", uID + "\n" + outRefundNo + "\n" + mTotal_fee + "\n" + mRefund_fee + "\n" + mToken);
         OkHttpUtils.post().url(Api.BASE_URL + Api.REFUNDWXPAY).params(mMap).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -268,7 +281,7 @@ public class WalletInfoActivity extends BaseActivity {
                 //{"resultStatus":"0"}
                 if (JsonUtils.isSuccess(response)) {
                     SPUtils.put(App.getContext(), "cashStatus", 0);
-                    LogUtils.d("退款",(String)SPUtils.get(App.getContext(),"cashStatus",0));
+                    LogUtils.d("退款",SPUtils.get(App.getContext(), "cashStatus", 0)+"");
                     startActivity(new Intent(WalletInfoActivity.this, ShowRefundResultsActivity.class));
                 } else {
 //                    startActivity(new Intent(WalletInfoActivity.this, ShowRefundResultsActivity.class));
