@@ -79,7 +79,6 @@ public class AuthenticationOkActivity extends BaseActivity {
             public void onResponse(String response, int id) {
                 LogUtils.d("优惠", response);
                 if (JsonUtils.isSuccess(response)) {
-                    ToastUtils.showLong(AuthenticationOkActivity.this, "恭喜您获得麒麟单车赠送的骑行券");
                     AlertDialog alertDialog = new AlertDialog.Builder(AuthenticationOkActivity.this)
                             .setTitle("提示")
                             .setMessage("恭喜您获得麒麟单车赠送的骑行券")

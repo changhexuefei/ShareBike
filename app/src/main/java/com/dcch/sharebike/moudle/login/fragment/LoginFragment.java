@@ -189,7 +189,6 @@ public class LoginFragment extends Fragment {
                                             .into(userIcon);
 
                                 } else {
-                                    LogUtils.d("状态", "1111111");
                                     userIcon.setImageResource(R.mipmap.avatar_default_login);
                                 }
                             }
@@ -207,7 +206,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void goToLogin() {
-        ToastUtils.showShort(App.getContext(), "您的账号已经在其他设备登录，您已经被迫下线");
+        ToastUtils.showShort(App.getContext(), getString(R.string.logged_in_other_devices));
         startActivity(new Intent(getActivity(), LoginActivity.class));
         SPUtils.put(App.getContext(), "islogin", false);
         SPUtils.put(App.getContext(), "cashStatus", 0);
@@ -273,7 +272,6 @@ public class LoginFragment extends Fragment {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                LogUtils.d("点击", "行程");
                 if (mPhone != null && mToken != null) {
                     goMyJourney(mPhone, mToken);
                 }

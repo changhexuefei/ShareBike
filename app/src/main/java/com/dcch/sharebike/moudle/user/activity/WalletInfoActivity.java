@@ -232,7 +232,7 @@ public class WalletInfoActivity extends BaseActivity {
                             break;
                         case "0":
                             StyledDialog.dismissLoading();
-                            ToastUtils.showShort(WalletInfoActivity.this, "您的账户车费余额不足，请先充值后再进行退款操作！");
+                            ToastUtils.showShort(WalletInfoActivity.this, getString(R.string.balance_outstanding));
                             startActivity(new Intent(WalletInfoActivity.this, RechargeBikeFareActivity.class));
                             break;
 
@@ -250,7 +250,7 @@ public class WalletInfoActivity extends BaseActivity {
 
     }
     private void goToLogin() {
-        ToastUtils.showShort(App.getContext(), "您的账号已经在其他设备登录，您已经被迫下线");
+        ToastUtils.showShort(App.getContext(), getString(R.string.logged_in_other_devices));
         startActivity(new Intent(WalletInfoActivity.this, LoginActivity.class));
         SPUtils.put(App.getContext(), "islogin", false);
         SPUtils.put(App.getContext(), "cashStatus", 0);
@@ -281,7 +281,6 @@ public class WalletInfoActivity extends BaseActivity {
                 //{"resultStatus":"0"}
                 if (JsonUtils.isSuccess(response)) {
                     SPUtils.put(App.getContext(), "cashStatus", 0);
-                    LogUtils.d("退款",SPUtils.get(App.getContext(), "cashStatus", 0)+"");
                     startActivity(new Intent(WalletInfoActivity.this, ShowRefundResultsActivity.class));
                 } else {
 //                    startActivity(new Intent(WalletInfoActivity.this, ShowRefundResultsActivity.class));

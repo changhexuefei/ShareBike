@@ -1033,15 +1033,13 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-//
-
                 }
             });
         }
     }
 
     private void goToLogin() {
-        ToastUtils.showShort(App.getContext(), "您的账号已经在其他设备登录，您已经被迫下线");
+        ToastUtils.showShort(App.getContext(), getString(R.string.logged_in_other_devices));
         startActivity(new Intent(MainActivity.this, LoginActivity.class));
         SPUtils.put(App.getContext(), "islogin", false);
         SPUtils.put(App.getContext(), "cashStatus", 0);

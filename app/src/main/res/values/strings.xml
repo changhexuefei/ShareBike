@@ -317,4 +317,6 @@
     <string name="submit_fail">提交失败，请联系人工客服</string>
     <string name="shareJouerney">分享行程</string>
     <string name="working_time">工作时间：09：00-17：00</string>
+    <string name="balance_outstanding">您的账户余额不足，请先充值后再进行退款操作！</string>
+    <string name="logged_in_other_devices">您的账号已经在其他设备登录，您已经被迫下线</string>
 </resources>
