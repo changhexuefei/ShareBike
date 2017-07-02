@@ -21,6 +21,7 @@ import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.ToastUtils;
+import com.dcch.sharebike.view.MyDividerItemDecoration;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.google.gson.Gson;
@@ -118,7 +119,7 @@ public class TransactionDetailActivity extends BaseActivity {
                         mAdapter = new TransactionDetailInfoAdapter(TransactionDetailActivity.this, R.layout.item_transaction_detail, mTransactionDetailInfo.getPayBills());
                         LRecyclerViewAdapter adapter = new LRecyclerViewAdapter(mAdapter);
                         //添加分割线
-                        mTransactList.addItemDecoration(new DividerItemDecoration(TransactionDetailActivity.this, DividerItemDecoration.VERTICAL));
+                        mTransactList.addItemDecoration(new MyDividerItemDecoration(TransactionDetailActivity.this, DividerItemDecoration.VERTICAL));
                         mTransactList.setAdapter(adapter);
                         //禁用下拉刷新功能
                         mTransactList.setPullRefreshEnabled(false);

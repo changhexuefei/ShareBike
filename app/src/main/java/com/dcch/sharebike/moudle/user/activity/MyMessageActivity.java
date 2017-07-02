@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
@@ -19,8 +18,10 @@ import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.user.adapter.MessageInfoAdapter;
 import com.dcch.sharebike.moudle.user.bean.MessageInfo;
 import com.dcch.sharebike.utils.JsonUtils;
+import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.ToastUtils;
+import com.dcch.sharebike.view.MyDividerItemDecoration;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.view.CommonFooter;
@@ -76,7 +77,6 @@ public class MyMessageActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (NetUtils.isConnected(App.getContext())) {
             if (mUserId != null && mToken != null) {
                 getMessageInfo(mUserId, mToken);
@@ -95,13 +95,13 @@ public class MyMessageActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.GETACTIVITYS).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-
                 ToastUtils.showShort(MyMessageActivity.this, getString(R.string.server_tip));
             }
 
             @Override
             public void onResponse(String response, int id) {
                 if (JsonUtils.isSuccess(response)) {
+                    LogUtils.d("反应",response);
                     Gson gson = new Gson();
                     mMessageInfo = gson.fromJson(response, MessageInfo.class);
                     if (mMessageInfo.getActivitys().size() > 0) {
@@ -112,7 +112,8 @@ public class MyMessageActivity extends BaseActivity {
                         mMyMessageList.setLayoutManager(new LinearLayoutManager(MyMessageActivity.this, OrientationHelper.VERTICAL, false));
                         LRecyclerViewAdapter adapter = new LRecyclerViewAdapter(mMessageInfoAdapter);
                         //添加分割线
-                        mMyMessageList.addItemDecoration(new DividerItemDecoration(MyMessageActivity.this, DividerItemDecoration.VERTICAL));
+//                        mMyMessageList.addItemDecoration(new DividerItemDecoration(MyMessageActivity.this, DividerItemDecoration.VERTICAL));
+                        mMyMessageList.addItemDecoration(new MyDividerItemDecoration(MyMessageActivity.this, DividerItemDecoration.VERTICAL));
                         mMyMessageList.setAdapter(adapter);
                         CommonFooter footerView = new CommonFooter(MyMessageActivity.this, R.layout.footer);
                         adapter.addFooterView(footerView);
@@ -151,7 +152,6 @@ public class MyMessageActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Glide.with(App.getContext()).pauseRequests();
         StyledDialog.dismiss();
     }
 }

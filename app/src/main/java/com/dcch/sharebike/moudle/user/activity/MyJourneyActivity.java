@@ -22,6 +22,7 @@ import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
+import com.dcch.sharebike.view.MyDividerItemDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
@@ -132,7 +133,8 @@ public class MyJourneyActivity extends BaseActivity {
                         journeyList.setLayoutManager(new LinearLayoutManager(MyJourneyActivity.this, OrientationHelper.VERTICAL, false));
                         LRecyclerViewAdapter adapter = new LRecyclerViewAdapter(mAdapter);
 //                        //添加分割线
-                        journeyList.addItemDecoration(new DividerItemDecoration(MyJourneyActivity.this, DividerItemDecoration.VERTICAL));
+                        journeyList.addItemDecoration(new MyDividerItemDecoration(MyJourneyActivity.this, DividerItemDecoration.VERTICAL));
+//                        journeyList.addItemDecoration(new DividerItemDecoration(MyJourneyActivity.this, DividerItemDecoration.VERTICAL));
                         journeyList.setAdapter(adapter);
                         CommonFooter footerView = new CommonFooter(MyJourneyActivity.this, R.layout.footer);
                         adapter.addFooterView(footerView);

@@ -25,8 +25,6 @@ public class MessageInfoAdapter extends CommonAdapter<MessageInfo.ActivitysBean>
     protected void convert(ViewHolder holder, MessageInfo.ActivitysBean activitysBean, int position) {
         holder.setText(R.id.message_theme,activitysBean.getActivityname());
         Glide.with(App.getContext()).load(activitysBean.getActivityimage()).error(R.drawable.sharebike).into((ImageView) holder.getView(R.id.message_image));
-//        holder.setText(R.id.start_time, activitysBean.getStarttime());
-//        holder.setText(R.id.end_time, activitysBean.getEndtime());
     }
 
 
