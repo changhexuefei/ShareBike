@@ -201,13 +201,10 @@ public class PersonInfoActivity extends BaseActivity {
                                     } else {
                                         ToastUtils.showShort(PersonInfoActivity.this, getString(R.string.no_network_tip));
                                     }
-
                                 }
-
                             }
                         }).openGallery();
 //                //下一步将选择的图片上传到服务器
-
                 break;
             case R.id.userNickname:
                 if (ClickUtils.isFastClick()) {
@@ -299,7 +296,6 @@ public class PersonInfoActivity extends BaseActivity {
                         }
                     }
                     break;
-//
             }
         }
     }

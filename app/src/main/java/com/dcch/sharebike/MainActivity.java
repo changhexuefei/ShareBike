@@ -184,7 +184,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     //POI搜索相关
     // public PoiSearch mPoiSearch = null;
     private SelectPicPopupWindow menuWindow; // 自定义弹出框
-    private String address1;
     private List<BikeInfo> bikeInfos;
     private BikeInfo bikeInfo;
     private BookBikePopupWindow bookBikePopupWindow;
@@ -267,7 +266,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         //注册EventBus
         EventBus.getDefault().register(this);
         lr = new LocationReceiver();
-//
         updataApp();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("NEW LOCATION SENT");
@@ -567,8 +565,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     routeOverlay.removeFromMap();
                     mMap.clear();
                     mCenterIcon.setVisibility(View.VISIBLE);
-                    addOverlays(bikeInfos);
                 }
+                getBikeInfo(mCurrentLantitude, mCurrentLongitude);
                 setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
 //                getMyLocation();
                 if (SPUtils.isLogin()) {
@@ -1124,7 +1122,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                             break;
                         case "5":
                             ToastUtils.showLong(MainActivity.this, getString(R.string.biking));
-                            break;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1339,12 +1336,11 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 Log.d("中心点坐标", location.getAddrStr() + "\n" + mChangeLatitude + "\n" + mChangeLongitude);
                 setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
                 if (SPUtils.isLogin()) {
-                    if (cashStatus == 1 && status == 1 && uID != null) {
+                    if (!uID.equals("") && uID != null) {
                         checkBookingBikeInfoByUserID(uID);
                     }
                 } else {
                     //根据手机定位地点，得到车辆信息的方法
-                    LogUtils.d("这里", "2");
                     if (mCurrentLantitude > 0 && mCurrentLongitude > 0) {
                         getBikeInfo(mCurrentLantitude, mCurrentLongitude);
                     }
