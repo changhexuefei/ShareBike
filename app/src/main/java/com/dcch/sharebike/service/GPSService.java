@@ -23,6 +23,7 @@ import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
+import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.db.DatabaseHelper;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.listener.MyOrientationListener;
@@ -35,6 +36,8 @@ import com.dcch.sharebike.utils.ToastUtils;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.simple.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -403,9 +406,7 @@ public class GPSService extends Service {
                                     sendToActivity(bundle);
                                 }
                             } else if (ridingInfo.getStatus() == 1) {
-//                                        Bundle bundle = new Bundle();
-//                                        bundle.putSerializable("ridingInfo", ridingInfo);
-//                                        sendToRidingResult(bundle);
+                                EventBus.getDefault().post(new MessageEvent(),"disappear");
                                 stopSelf();
                             }
                         }

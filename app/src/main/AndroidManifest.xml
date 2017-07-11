@@ -35,7 +35,7 @@
     <!-- <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/> -->
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"/>
     <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <!--<uses-permission android:name="android.permission.CAMERA"/>-->
 
     <!-- Optional. Required for location feature -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
@@ -223,8 +223,7 @@
         <activity android:name=".moudle.user.activity.UsualAddressActivity"/>
         <activity
             android:name=".moudle.user.activity.ChangeUserNickNameActivity"
-            android:launchMode="singleTask"
-            />
+            android:launchMode="singleTask"/>
         <activity
             android:name=".moudle.user.activity.MyJourneyActivity"
             android:launchMode="singleTask"/>
@@ -372,12 +371,11 @@
             android:theme="@style/translucent"/>
         <activity
             android:name=".moudle.user.activity.MobileNumActivity"
-            android:launchMode="singleTask"
-            />
+            android:launchMode="singleTask"/>
         <activity
             android:name=".moudle.user.activity.ChangeMobileNumActivity"
-            android:launchMode="singleTask"
-            />
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="cn.finalteam.rxgalleryfinal.ui.activity.MediaActivity"
             android:exported="true"
@@ -400,17 +398,14 @@
 
         <activity
             android:name=".moudle.user.activity.InviteFriendsActivity"
-            android:launchMode="singleTask"
-            />
+            android:launchMode="singleTask"/>
         <activity
             android:name=".moudle.user.activity.AboutUsActivity"
-            android:launchMode="singleTask"
-            />
+            android:launchMode="singleTask"/>
         <activity android:name=".moudle.user.activity.SetAddressActivity"/>
         <activity
             android:name=".moudle.user.activity.ShowRefundResultsActivity"
-            android:launchMode="singleTask"
-            />
+            android:launchMode="singleTask"/>
         <activity
             android:name=".moudle.user.activity.ManualInputActivity"
             android:launchMode="singleTask"/>
@@ -455,8 +450,7 @@
         </activity>
         <activity
             android:name=".moudle.user.activity.RefundExplainActivity"
-            android:launchMode="singleTask"
-            >
+            android:launchMode="singleTask">
         </activity>
         <activity
             android:name=".moudle.user.activity.CashPledgeExplainActivity"
@@ -473,16 +467,14 @@
         </activity>
         <activity
             android:name=".moudle.user.activity.CouponListActivity"
-            android:launchMode="singleTask"
-            >
+            android:launchMode="singleTask">
         </activity>
         <activity
             android:name=".moudle.login.activity.PropagandaPosterActivity"
             android:theme="@style/translucent"/>
         <activity
             android:name=".moudle.user.activity.MessageDetailActivity"
-            android:launchMode="singleTask"
-            >
+            android:launchMode="singleTask">
         </activity>
 
         <service android:name=".service.InitializeService"/>
@@ -497,9 +489,19 @@
         </activity>
         <activity
             android:name=".moudle.user.activity.DealFeedbackActivity"
-            android:launchMode="singleTask"
-            >
+            android:launchMode="singleTask">
         </activity>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.dcch.sharebike.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
     </application>
+
 
 </manifest>

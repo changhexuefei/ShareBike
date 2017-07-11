@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.dcch.sharebike.app.App;
+import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.moudle.login.activity.IdentityAuthenticationActivity;
 import com.dcch.sharebike.moudle.user.activity.WalletInfoActivity;
@@ -19,6 +20,8 @@ import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import org.simple.eventbus.EventBus;
 
 
 public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
@@ -57,12 +60,14 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                     Intent intent = new Intent(WXPayEntryActivity.this, IdentityAuthenticationActivity.class);
                     intent.putExtra("PAYCODE", resp.errCode + "");
                     ToastUtils.showShort(App.getContext(), "支付成功！");
+                    EventBus.getDefault().post(new MessageEvent(),"page_disappear");
                     SPUtils.put(App.getContext(), "cashStatus", 1);
                     startActivity(intent);
                 } else if (mStatus == 1) {
                     Intent intent = new Intent(WXPayEntryActivity.this, WalletInfoActivity.class);
                     intent.putExtra("PAYCODE", resp.errCode + "");
                     ToastUtils.showShort(App.getContext(), "支付成功！");
+                    EventBus.getDefault().post(new MessageEvent(),"page_disappear");
                     SPUtils.put(App.getContext(), "cashStatus", 1);
                     startActivity(intent);
                 }

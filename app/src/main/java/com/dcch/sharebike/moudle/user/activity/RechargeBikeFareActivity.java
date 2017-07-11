@@ -1,8 +1,10 @@
 package com.dcch.sharebike.moudle.user.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -23,6 +25,7 @@ import com.dcch.sharebike.alipay.PayResult;
 import com.dcch.sharebike.alipay.WeixinPay;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.moudle.user.bean.WeixinReturnInfo;
@@ -39,6 +42,10 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.simple.eventbus.EventBus;
+import org.simple.eventbus.Subscriber;
+import org.simple.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -371,10 +378,24 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
     }
 
     @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         StyledDialog.dismiss();
         handler.removeCallbacksAndMessages(null);
     }
 
+    //微信支付传过来的消息
+    @Subscriber(tag = "page_disappear", mode = ThreadMode.MAIN)
+    private void receiveFromWXPayEntry(MessageEvent info) {
+        if (info != null) {
+            this.finish();
+        }
+    }
 }

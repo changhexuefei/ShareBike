@@ -1,27 +1,26 @@
 package com.dcch.sharebike.app;
 
 import android.content.Context;
+import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.service.InitializeService;
+import com.dcch.sharebike.utils.NetUtils;
 
 import timber.log.BuildConfig;
 import timber.log.Timber;
 
+
 public class App extends MultiDexApplication {
-    //    private static List<Activity> activityList = Collections
-//            .synchronizedList(new LinkedList<Activity>());
+
     private static App instance;
     private static Context mContext;
-    //    private static LocationInfo mLocationInfo;
-    public static int code = 0;
-//    private static RefWatcher sRefWatcher;
+    public static int mNetWorkState;
 
     public App() {
     }
-
 
     //单例模式中获取唯一的Application实例
     public static App getInstance() {
@@ -46,6 +45,7 @@ public class App extends MultiDexApplication {
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
+        mNetWorkState = NetUtils.getNetworkState(this);
 //        if (LeakCanary.isInAnalyzerProcess(this)) {
 //            // This process is dedicated to LeakCanary for heap analysis.
 //            // You should not init your app in this process.
@@ -95,6 +95,11 @@ public class App extends MultiDexApplication {
         return mContext;
     }
 
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 
 //    // * get current Activity 获取当前Activity（栈中最后一个压入的）
 //
@@ -288,6 +293,5 @@ public class App extends MultiDexApplication {
 //            });
 //        }
 //    }
-
 
 }

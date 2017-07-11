@@ -19,10 +19,36 @@ import com.dcch.sharebike.base.AppManager;
  * @author zhy
  */
 public class NetUtils {
+
+    public static final int NETWORN_NONE = 0;
+    public static final int NETWORN_WIFI = 1;
+    public static final int NETWORN_MOBILE = 2;
+
     private NetUtils() {
         /* cannot be instantiated */
         throw new UnsupportedOperationException("cannot be instantiated");
     }
+
+    public static int getNetworkState(Context context) {
+        ConnectivityManager connManager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        // Wifi
+        NetworkInfo.State state = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+                .getState();
+        if (state == NetworkInfo.State.CONNECTED || state == NetworkInfo.State.CONNECTING) {
+            return NETWORN_WIFI;
+        }
+
+        // 3G
+        state = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
+                .getState();
+        if (state == NetworkInfo.State.CONNECTED || state == NetworkInfo.State.CONNECTING) {
+            return NETWORN_MOBILE;
+        }
+        return NETWORN_NONE;
+    }
+
 
     /**
      * 判断网络是否连接
@@ -59,7 +85,6 @@ public class NetUtils {
         }
         return false;
     }
-
 
 
     /**
@@ -120,7 +145,7 @@ public class NetUtils {
     /**
      * 判断网络情况
      *
-     * @param context  上下文
+     * @param context 上下文
      * @return false 表示没有网络 true 表示有网络
      */
     // check all network connect, WIFI or mobile
@@ -133,7 +158,7 @@ public class NetUtils {
         for (NetworkInfo net : netInfos) {
             String type = net.getTypeName();
             if (type.equalsIgnoreCase("WIFI")) {
-              LogUtils.i("get Wifi connection");
+                LogUtils.i("get Wifi connection");
                 if (net.isConnected()) {
                     hasWifoCon = true;
                 }
@@ -149,6 +174,7 @@ public class NetUtils {
         return hasWifoCon || hasMobileCon;
 
     }
+
     /**
      * 判断网络是否连接
      **/

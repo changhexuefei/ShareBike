@@ -3,7 +3,6 @@ package com.dcch.sharebike.moudle.user.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -67,6 +66,7 @@ public class WalletInfoActivity extends BaseActivity {
     private Map<String, String> mMap;
     private int mStatus;
 
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_wallet_info;
@@ -75,27 +75,9 @@ public class WalletInfoActivity extends BaseActivity {
     @Override
     protected void initData() {
         if (SPUtils.isLogin()) {
-            Intent intent = getIntent();
-            Bundle bundle = intent.getExtras();//"bundle"
-            if (bundle != null) {
-                mInfo = (UserInfo) bundle.getSerializable("bundle");
-                mCashStatus = mInfo.getCashStatus();
-                mStatus = mInfo.getStatus();
-                remainingSum.setText(String.valueOf(mInfo.getAggregateAmount()));
-                if (mInfo.getCashStatus() == 1) {
-                    mTotal_fee = String.valueOf(mInfo.getPledgeCash());
-                    mRefund_fee = mTotal_fee;
-                    showArea.setText("押金" + mTotal_fee + "元");
-                    chargeDeposit.setText(getString(R.string.tipThere));
-                } else if (mInfo.getCashStatus() == 0) {
-                    mTotal_fee = String.valueOf(mInfo.getPledgeCash());
-                    showArea.setText("押金" + mTotal_fee + "元");
-                    chargeDeposit.setText(getString(R.string.tipFour));
-                }
-            }
             uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
             mToken = (String) SPUtils.get(App.getContext(), "token", "");
-
+            LogUtils.d("用户的信息", uID + "\n" + mToken);
         }
     }
 
@@ -141,20 +123,13 @@ public class WalletInfoActivity extends BaseActivity {
 
     private void choosePrepaid() {
         if (mCashStatus == 1 && mStatus == 1) {
-            Intent intent = new Intent(WalletInfoActivity.this, RechargeBikeFareActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(WalletInfoActivity.this, RechargeBikeFareActivity.class));
         } else if (mCashStatus == 0 && mStatus == 0) {
             startActivity(new Intent(WalletInfoActivity.this, RechargeDepositActivity.class));
         } else if (mCashStatus == 0 && mStatus == 1) {
             popupDialog();
         }
     }
-
-    private void rechargeBikeFare() {
-        Intent intent = new Intent(WalletInfoActivity.this, RechargeBikeFareActivity.class);
-        startActivity(intent);
-    }
-
 
     private void showRefundPopuwindow() {
         if (refundPopuwindow != null && !refundPopuwindow.equals("")) {
@@ -249,6 +224,7 @@ public class WalletInfoActivity extends BaseActivity {
         });
 
     }
+
     private void goToLogin() {
         ToastUtils.showShort(App.getContext(), getString(R.string.logged_in_other_devices));
         startActivity(new Intent(WalletInfoActivity.this, LoginActivity.class));
@@ -294,8 +270,14 @@ public class WalletInfoActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        mCashStatus = (Integer) SPUtils.get(App.getContext(), "cashStatus", 0);
+        mStatus = (Integer) SPUtils.get(App.getContext(), "status", 0);
         if (uID != null && mToken != null) {
-            getUserInfo(uID, mToken);
+            if (NetUtils.isConnected(App.getContext())) {
+                getUserInfo(uID, mToken);
+            } else {
+                ToastUtils.showShort(WalletInfoActivity.this, getResources().getString(R.string.no_network_tip));
+            }
         }
     }
 
@@ -316,16 +298,20 @@ public class WalletInfoActivity extends BaseActivity {
                 if (JsonUtils.isSuccess(response)) {
                     Gson gson = new Gson();
                     mInfo = gson.fromJson(response, UserInfo.class);
-                    mCashStatus = mInfo.getCashStatus();
-                    if (mCashStatus == 0) {
-                        remainingSum.setText(String.valueOf(mInfo.getAggregateAmount()));
-                        showArea.setText("押金" + String.valueOf(mInfo.getPledgeCash()) + "元");
-                        chargeDeposit.setText(R.string.tipFour);
+                    if (mInfo != null && !mInfo.equals("")) {
+                        mTotal_fee = String.valueOf(mInfo.getPledgeCash());
+                        mRefund_fee = mTotal_fee;
+                        mCashStatus = mInfo.getCashStatus();
+                        if (mCashStatus == 0) {
+                            remainingSum.setText(String.valueOf(mInfo.getAggregateAmount()));
+                            showArea.setText("押金" + String.valueOf(mInfo.getPledgeCash()) + "元");
+                            chargeDeposit.setText(R.string.tipFour);
 
-                    } else if (mCashStatus == 1) {
-                        remainingSum.setText(String.valueOf(mInfo.getAggregateAmount()));
-                        showArea.setText("押金" + String.valueOf(mInfo.getPledgeCash()) + "元");
-                        chargeDeposit.setText(R.string.tipThere);
+                        } else if (mCashStatus == 1) {
+                            remainingSum.setText(String.valueOf(mInfo.getAggregateAmount()));
+                            showArea.setText("押金" + String.valueOf(mInfo.getPledgeCash()) + "元");
+                            chargeDeposit.setText(R.string.tipThere);
+                        }
                     }
                 }
             }

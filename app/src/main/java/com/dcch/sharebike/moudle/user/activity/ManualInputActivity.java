@@ -27,6 +27,8 @@ import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.dcch.sharebike.view.CodeInputEditText;
+import com.hss01248.dialog.StyledDialog;
+import com.hss01248.dialog.interfaces.MyDialogListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -53,7 +55,7 @@ public class ManualInputActivity extends BaseActivity {
     Button mEnsure;
     @BindView(R.id.manual_help_tip)
     TextView mManualHelpTip;
-    private String bikeNo ;
+    private String bikeNo;
     private String mTag;
     private Camera camera = null;
     private Camera.Parameters parameters = null;
@@ -138,12 +140,23 @@ public class ManualInputActivity extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                if (NetUtils.isConnected(App.getContext())) {
-                    if (bikeNo != null && mToken != null) {
-                        ensureBikeNo(bikeNo, mToken);
-                    }
-                } else {
-                    ToastUtils.showShort(ManualInputActivity.this, getString(R.string.no_network_tip));
+                if (bikeNo != null && mToken != null) {
+                    StyledDialog.buildMdAlert(ManualInputActivity.this, "提示", "确定打开编号为" + bikeNo + "的车辆", new MyDialogListener() {
+                        @Override
+                        public void onFirst() {
+                            if (NetUtils.isConnected(App.getContext())) {
+                                ensureBikeNo(bikeNo, mToken);
+                            } else {
+                                ToastUtils.showShort(ManualInputActivity.this, getString(R.string.no_network_tip));
+                            }
+                        }
+
+                        @Override
+                        public void onSecond() {
+                            return;
+                        }
+                    }).show();
+
                 }
                 break;
 
@@ -180,7 +193,6 @@ public class ManualInputActivity extends BaseActivity {
                                 Intent bikeNoIntent = new Intent(ManualInputActivity.this, UnlockProgressActivity.class);
                                 EventBus.getDefault().post(new CodeEvent(bikeNo), "bikeNo");
                                 startActivity(bikeNoIntent);
-
                                 break;
                             }
                             case "unable": {
@@ -214,27 +226,24 @@ public class ManualInputActivity extends BaseActivity {
                     } else if (resultStatus.equals("3")) {
                         clearTextView();
                         ToastUtils.showLong(ManualInputActivity.this, getString(R.string.being_use));
-
                     } else if (resultStatus.equals("4")) {
                         clearTextView();
                         ToastUtils.showLong(ManualInputActivity.this, getString(R.string.trouble));
                     } else if (resultStatus.equals("5")) {
                         clearTextView();
                         ToastUtils.showLong(ManualInputActivity.this, getString(R.string.preengaged));
-
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
-
     }
 
     private void clearTextView() {
         mManualInputArea.clearText();
         mEnsure.setEnabled(false);
-        mEnsure.setBackgroundColor(getColor(R.color.input_btn_color));
+        mEnsure.setBackgroundColor(getResources().getColor(R.color.input_btn_color));
     }
 
     @Override

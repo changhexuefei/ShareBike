@@ -9,11 +9,21 @@
 
     <include layout="@layout/toolbar"/>
 
+    <TextView
+        android:background="@color/lineColor"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:text="@string/warning_12"
+        android:id="@+id/warning"
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"/>
+
     <LinearLayout
         android:id="@+id/userName"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/warning"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"

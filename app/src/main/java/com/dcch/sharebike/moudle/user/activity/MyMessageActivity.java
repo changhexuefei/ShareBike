@@ -95,6 +95,7 @@ public class MyMessageActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.GETACTIVITYS).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                StyledDialog.dismissLoading();
                 ToastUtils.showShort(MyMessageActivity.this, getString(R.string.server_tip));
             }
 

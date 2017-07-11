@@ -189,7 +189,9 @@ public class LoginFragment extends Fragment {
                                             .into(userIcon);
 
                                 } else {
-                                    userIcon.setImageResource(R.mipmap.avatar_default_login);
+                                    if (isAdded()) {
+                                        userIcon.setImageResource(R.mipmap.avatar_default_login);
+                                    }
                                 }
                             }
                             break;
@@ -253,9 +255,9 @@ public class LoginFragment extends Fragment {
                 }
                 LogUtils.d("点击", "钱包");
                 if (NetUtils.isConnected(App.getContext())) {
-                    if (mInfo != null) {
-                        goWalletInfo(mInfo);
-                    }
+//                    if (mInfo != null) {mInfo
+                    goWalletInfo();
+//                    }
                 } else {
                     ToastUtils.showShort(getActivity(), getString(R.string.no_network_tip));
                 }
@@ -341,11 +343,12 @@ public class LoginFragment extends Fragment {
         startActivity(coupon);
     }
 
-    private void goWalletInfo(UserInfo info) {
+    //UserInfo info
+    private void goWalletInfo() {
         Intent walletInfo = new Intent(getActivity(), WalletInfoActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("bundle", info);
-        walletInfo.putExtras(bundle);
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable("bundle", info);
+//        walletInfo.putExtras(bundle);
         startActivity(walletInfo);
     }
 

@@ -32,7 +32,7 @@ public class InPutUtils {
 
 	public static boolean IDCardValidate(String IDStr) {
 		errorInfo = "";// 记录错误信息
-		String[] ValCodeArr = {"1", "0", "x", "9", "8", "7", "6", "5", "4",
+		String[] ValCodeArr = {"1", "0", "X", "9", "8", "7", "6", "5", "4",
 				"3", "2"};
 		String[] Wi = {"7", "9", "10", "5", "8", "4", "2", "1", "6", "3", "7",
 				"9", "10", "5", "8", "4", "2"};
@@ -137,7 +137,7 @@ public class InPutUtils {
 
 	// 判断手机号
 	public static boolean isMobilePhone(String mobiles) {
-		Pattern p = Pattern.compile("^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\\d{8}$");
+		Pattern p = Pattern.compile("^((13[0-9])|(15[^4])|(18[0,1,2,3,4,5-9])|(17[0-8])|(147))\\d{8}$");
 		Matcher m = p.matcher(mobiles);
 		return m.matches();
 	}

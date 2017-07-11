@@ -293,32 +293,32 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
     }
 
     private void goToCorrespondingPage(String rawResultText) {
-            switch (mMsg) {
-                case "main": {
-                    Intent bikeNoIntent = new Intent(CaptureActivity.this, MainActivity.class);
-                    EventBus.getDefault().post(new CodeEvent(mRawResultText),"samsung");
-                    startActivity(bikeNoIntent);
+        switch (mMsg) {
+            case "main": {
+                Intent bikeNoIntent = new Intent(CaptureActivity.this, MainActivity.class);
+                EventBus.getDefault().post(new CodeEvent(mRawResultText), "samsung");
+                startActivity(bikeNoIntent);
 
-                    break;
-                }
-                case "unable": {
-                    Intent bikeNoIntent = new Intent(CaptureActivity.this, CustomerServiceActivity.class);
-                    startActivity(bikeNoIntent);
-                    EventBus.getDefault().post(new CodeEvent(rawResultText), "unable_bikeNo_cam");
-                    break;
-                }
-                case "reports": {
-                    Intent bikeNoIntent = new Intent(CaptureActivity.this, CustomerServiceActivity.class);
-                    startActivity(bikeNoIntent);
-                    EventBus.getDefault().post(new CodeEvent(rawResultText), "report_bikeNo_cam");
-                    break;
-                }
-                case "fail": {
-                    Intent bikeNoIntent = new Intent(CaptureActivity.this, CustomerServiceActivity.class);
-                    startActivity(bikeNoIntent);
-                    EventBus.getDefault().post(new CodeEvent(rawResultText), "fail_bikeNo_cam");
-                    break;
-                }
+                break;
+            }
+            case "unable": {
+                Intent bikeNoIntent = new Intent(CaptureActivity.this, CustomerServiceActivity.class);
+                startActivity(bikeNoIntent);
+                EventBus.getDefault().post(new CodeEvent(rawResultText), "unable_bikeNo_cam");
+                break;
+            }
+            case "reports": {
+                Intent bikeNoIntent = new Intent(CaptureActivity.this, CustomerServiceActivity.class);
+                startActivity(bikeNoIntent);
+                EventBus.getDefault().post(new CodeEvent(rawResultText), "report_bikeNo_cam");
+                break;
+            }
+            case "fail": {
+                Intent bikeNoIntent = new Intent(CaptureActivity.this, CustomerServiceActivity.class);
+                startActivity(bikeNoIntent);
+                EventBus.getDefault().post(new CodeEvent(rawResultText), "fail_bikeNo_cam");
+                break;
+            }
 
         }
     }

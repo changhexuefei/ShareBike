@@ -82,11 +82,11 @@ public class IdentityAuthenticationActivity extends BaseActivity {
                 finish();
             }
         });
+
         if (SPUtils.isLogin()) {
             uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
             mToken = (String) SPUtils.get(App.getContext(), "token", "");
         }
-
         mIdenStepsView.setLabels(MyContent.steps)
                 .setBarColorIndicator(getResources().getColor(R.color.colorHeading))
                 .setProgressColorIndicator(getResources().getColor(R.color.colorTitle))
@@ -97,6 +97,7 @@ public class IdentityAuthenticationActivity extends BaseActivity {
 
     @Override
     protected void initListener() {
+
         IDCardNo.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -111,7 +112,9 @@ public class IdentityAuthenticationActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 if (!editable.toString().trim().equals("") && editable != null) {
-                    cardNum = editable.toString().trim();
+                    cardNum = editable.toString().toUpperCase().trim();
+
+                    LogUtils.d("身份证",cardNum);
                     if (!InPutUtils.IDCardValidate(cardNum)) {
                         btnAuthentication.setEnabled(false);
                         btnAuthentication.setBackgroundColor(getResources().getColor(R.color.btn_bg));
@@ -218,4 +221,22 @@ public class IdentityAuthenticationActivity extends BaseActivity {
         super.onDestroy();
         StyledDialog.dismiss();
     }
+//
+//    public class A2bigA extends ReplacementTransformationMethod {
+//
+//        @Override
+//        protected char[] getOriginal() {
+//            char[] aa = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+//            return aa;
+//        }
+//
+//        @Override
+//        protected char[] getReplacement() {
+//            char[] cc = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+//            return cc;
+//        }
+//
+//    }
+
+
 }

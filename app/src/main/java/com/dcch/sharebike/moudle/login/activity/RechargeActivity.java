@@ -1,8 +1,10 @@
 package com.dcch.sharebike.moudle.login.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,6 +24,7 @@ import com.dcch.sharebike.alipay.PayResult;
 import com.dcch.sharebike.alipay.WeixinPay;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.moudle.user.bean.WeixinReturnInfo;
@@ -38,6 +41,10 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.simple.eventbus.EventBus;
+import org.simple.eventbus.Subscriber;
+import org.simple.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -199,7 +206,6 @@ public class RechargeActivity extends BaseActivity {
                 }
             }
         });
-
     }
 
     private void aliPayWay(String userID, String outTradeNo, String moneySum, String orderbodydesc, String subjectdes) {
@@ -256,7 +262,7 @@ public class RechargeActivity extends BaseActivity {
                                 Toast.LENGTH_SHORT).show();
                         SPUtils.put(App.getContext(), "cashStatus", 1);
                         startActivity(new Intent(RechargeActivity.this, IdentityAuthenticationActivity.class));
-                        finish();
+                        RechargeActivity.this.finish();
 
                     } else {
                         // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
@@ -285,7 +291,22 @@ public class RechargeActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         StyledDialog.dismiss();
         handler.removeCallbacksAndMessages(null);
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    //微信支付传过来的消息
+    @Subscriber(tag = "page_disappear", mode = ThreadMode.MAIN)
+    private void receiveFromWXPayEntry(MessageEvent info) {
+        if (info != null) {
+            this.finish();
+        }
     }
 }
