@@ -246,6 +246,7 @@ public class RechargeDepositActivity extends BaseActivity {
                     if (TextUtils.equals(resultStatus, "9000")) {
                         Toast.makeText(RechargeDepositActivity.this, "支付成功",
                                 Toast.LENGTH_SHORT).show();
+                        SPUtils.put(App.getContext(), "cashStatus", 1);
                         startActivity(new Intent(RechargeDepositActivity.this, WalletInfoActivity.class));
                         finish();
                     } else {

@@ -225,7 +225,7 @@ public class ManualInputActivity extends BaseActivity {
                         finish();
                     } else if (resultStatus.equals("3")) {
                         clearTextView();
-                        ToastUtils.showLong(ManualInputActivity.this, getString(R.string.being_use));
+                        ToastUtils.showLong(ManualInputActivity.this, getString(R.string.using));
                     } else if (resultStatus.equals("4")) {
                         clearTextView();
                         ToastUtils.showLong(ManualInputActivity.this, getString(R.string.trouble));

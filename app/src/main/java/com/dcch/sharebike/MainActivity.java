@@ -9,13 +9,13 @@ import android.content.IntentFilter;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -59,6 +59,7 @@ import com.baidu.mapapi.search.route.WalkingRouteLine;
 import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.baidu.mapapi.utils.CoordinateConverter;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.AppManager;
 import com.dcch.sharebike.base.BaseActivity;
@@ -86,6 +87,7 @@ import com.dcch.sharebike.moudle.user.activity.RidingResultActivity;
 import com.dcch.sharebike.moudle.user.activity.UnlockBillPageActivity;
 import com.dcch.sharebike.moudle.user.activity.UnlockProgressActivity;
 import com.dcch.sharebike.moudle.user.activity.UserAgreementActivity;
+import com.dcch.sharebike.moudle.user.bean.ImageInfo;
 import com.dcch.sharebike.netty.NettyClient;
 import com.dcch.sharebike.overlayutil.OverlayManager;
 import com.dcch.sharebike.overlayutil.WalkingRouteOverlay;
@@ -114,6 +116,7 @@ import com.iflytek.autoupdate.UpdateConstants;
 import com.iflytek.autoupdate.UpdateErrorCode;
 import com.iflytek.autoupdate.UpdateInfo;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.FileCallBack;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONArray;
@@ -123,6 +126,7 @@ import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 import org.simple.eventbus.ThreadMode;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -228,6 +232,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private float x2 = 0;
     private float y1 = 0;
     private float y2 = 0;
+    private String mAbsolutePath;
 
 
     public MainActivity() {
@@ -247,7 +252,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         showCamera();
         initPermission();
         bikeInfos = new ArrayList<>();
-
+        getBicycleImage();
         // 初始化GeoCoder模块，注册事件监听
         mSearch = GeoCoder.newInstance();
         mSearch.setOnGetGeoCodeResultListener(this);
@@ -271,6 +276,39 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         intentFilter.addAction("RESULT SENT");
 //        registerReceiver(mResultReceiver, intentFilter);
         Log.d("实验", "onCreate");
+    }
+
+
+    private void getBicycleImage() {
+        OkHttpUtils.get().url(Api.BASE_URL + Api.CHANGEBICYCLEIMAGE).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                if (JsonUtils.isSuccess(response)) {
+                    LogUtils.d("图片信息", response);
+                    Gson gson = new Gson();
+                    ImageInfo imageInfo = gson.fromJson(response, ImageInfo.class);
+                    String imageURL = imageInfo.getBicycleImage().getImageUrl();
+                    OkHttpUtils.get().url(imageURL).build().execute(new FileCallBack(Environment.getExternalStorageDirectory().getAbsolutePath(),
+                            "image.png") {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+
+                        }
+
+                        @Override
+                        public void onResponse(File response, int id) {
+                            mAbsolutePath = response.getAbsolutePath();
+                            LogUtils.d("怎么回事",mAbsolutePath);
+                        }
+                    });
+                }
+            }
+        });
     }
 
     private void initMap() {
@@ -391,7 +429,16 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     //添加覆盖物的方法
     private void forLocationAddMark(double lat, double lng) {
-        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.bike_icon);
+//        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.bike_icon);
+        BitmapDescriptor bitmap;
+        if (mAbsolutePath != null && !mAbsolutePath.equals("")) {
+            bitmap = BitmapDescriptorFactory.fromPath(mAbsolutePath);
+            LogUtils.d("图片", bitmap + "1111");
+        } else {
+            bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.bike_icon);
+            LogUtils.d("图片", bitmap + "3333");
+        }
+
         OverlayOptions options;
         LatLng latLng = transform(lat, lng);
         //设置marker
@@ -678,11 +725,11 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 double lat = bikeInfo.getLatitude();
                 double lng = bikeInfo.getLongitude();
                 LatLng latLng = transform(lat, lng);
-//                double distance = DistanceUtil.getDistance(latLng, mMCenterLatLng);
-//                if (distance < 400) {
+                double distance = DistanceUtil.getDistance(latLng, mMCenterLatLng);
+                if (distance < 400) {
 //                    Log.d("你好", distance + "");
                     forLocationAddMark(lat, lng);
-//                }
+                }
             }
         }
     }
@@ -1006,7 +1053,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                                 StyledDialog.dismissLoading();
                                 mMapView.setFocusable(false);
                                 mMapView.setEnabled(false);
-                                Log.d("你好", "789");
                                 if (mDoulat != null && mDoulon != null) {
                                     forLocationAddMark(mDoulat, mDoulon);
                                 }
@@ -1015,7 +1061,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 //                              bookingCarDate = bookingBikeInfo.getBookingCarDate();
                                 final String bicycleNo = bookingBikeInfo.getBicycleNo();
                                 isChecked = false;
-//                                isBook = true;
                                 isClick = false;
                                 isShowBookOrder = true;
                                 bookBikePopupWindow = new BookBikePopupWindow(MainActivity.this, bookingBikeInfo, bookBikeItemsOnClick);
@@ -1093,7 +1138,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     startActivity(reportIllegalParking);
                 }
                 if (position == 3) {
-//                  ToastUtils.showShort(MainActivity.this, "敬请期待");
                     Intent otherProblem = new Intent(MainActivity.this, CustomerServiceActivity.class);
                     otherProblem.putExtra("name", "3");
                     startActivity(otherProblem);
@@ -1216,7 +1260,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
         if (!isShowMenu && !isShowBookOrder && !isShowRideOrder) {
             LogUtils.d("移动", "进来了");
-//            updateMapStatus(mapStatus);
+            updateMapStatus(mapStatus);
         }
     }
 
@@ -1226,28 +1270,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         mChangeLatitude = mMCenterLatLng.latitude;
         mChangeLongitude = mMCenterLatLng.longitude;
         Log.i("中心点坐标", mChangeLatitude + "," + mChangeLongitude);
-        WindowManager wm = this.getWindowManager();
         startNodeStr = PlanNode.withLocation(new LatLng(mChangeLatitude, mChangeLongitude));
         LogUtils.d("请求车辆数量", "there");
         getBikeInfo(mChangeLatitude, mChangeLongitude);
-//        addOverlays(bikeInfos);
-//        DisplayMetrics outMetrics = new DisplayMetrics();
-//        wm.getDefaultDisplay().getMetrics(outMetrics);
-//        int width = outMetrics.widthPixels;
-//        int height = outMetrics.heightPixels;
-//
-//        Log.i("屏幕宽度和高度", width + "," + height);
-//        Point pt = new Point();
-//        pt.x = 0;
-//        pt.y = 0;
-//        mLl = mMap.getProjection().fromScreenLocation(pt);
-//        Log.i("左上角经纬度", mLl.latitude + "," + mLl.longitude);
-//
-//        Point ptr = new Point();
-//        ptr.x = width;
-//        ptr.y = height;
-//        mLlr = mMap.getProjection().fromScreenLocation(ptr);
-//        Log.i("右下角经纬度", mLlr.latitude + "," + mLlr.longitude);
 
     }
 
@@ -1355,7 +1380,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 mMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
                 mChangeLatitude = location.getLatitude();
                 mChangeLongitude = location.getLongitude();
-                mMCenterLatLng=new LatLng(mChangeLatitude, mChangeLongitude);
+                mMCenterLatLng = new LatLng(mChangeLatitude, mChangeLongitude);
                 startNodeStr = PlanNode.withLocation(new LatLng(mChangeLatitude, mChangeLongitude));
                 Log.d("中心点坐标", location.getAddrStr() + "\n" + mChangeLatitude + "\n" + mChangeLongitude);
                 setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
@@ -1937,29 +1962,5 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(latlng));
     }
 
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        switch (event.getAction()) {
-//
-//            case MotionEvent.ACTION_DOWN:
-//                //当手指按下的时候
-//                x1 = event.getX();
-//                y1 = event.getY();
-//                LogUtils.d("手指", x1 + "\none" + y1);
-//                break;
-//
-//            case MotionEvent.ACTION_HOVER_MOVE:
-//                float moveX = event.getX() - x1;//X轴距离
-//                float moveY = event.getY() - y1;//y轴距离
-//
-//                if (moveX - x1 > 5 || moveY - y1 > 5) {
-//                    LogUtils.d("手指","成功了");
-//                }
-//                break;
-//            case MotionEvent.ACTION_UP:
-//
-//                break;
-//        }
-//        return super.onTouchEvent(event);
-//    }
+
 }

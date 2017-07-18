@@ -124,11 +124,14 @@ public class LoginFragment extends Fragment {
         LogUtils.d("状态", mURL + "1111112121212");
         if (!mURL.equals("")) {
             LogUtils.d("状态", mURL);
-            Glide.with(LoginFragment.this)
-                    .load(Uri.fromFile(new File(mURL)))
-                    .error(R.mipmap.avatar_default_login)
-                    .thumbnail(0.1f)// 加载缩略图
-                    .into(userIcon);
+            if (getActivity() != null) {
+                Glide.with(getActivity())
+                        .load(Uri.fromFile(new File(mURL)))
+                        .error(R.mipmap.avatar_default_login)
+                        .thumbnail(0.1f)// 加载缩略图
+                        .into(userIcon);
+            }
+
         }
         if (uID != null && mToken != null) {
             if (NetUtils.isConnected(App.getContext())) {
@@ -183,13 +186,14 @@ public class LoginFragment extends Fragment {
                                 if (mUserimage != null) {
                                     //使用用户自定义的头像
                                     LogUtils.d("状态", mUserimage);
-                                    Glide.with(LoginFragment.this).load(mUserimage)
-                                            .error(R.mipmap.avatar_default_login)
-                                            .thumbnail(0.1f)// 加载缩略图
-                                            .into(userIcon);
-
+                                    if (getActivity() != null) {
+                                        Glide.with(LoginFragment.this).load(mUserimage)
+                                                .error(R.mipmap.avatar_default_login)
+                                                .thumbnail(0.1f)// 加载缩略图
+                                                .into(userIcon);
+                                    }
                                 } else {
-                                    if (isAdded()) {
+                                    if (getActivity() != null && isAdded()) {
                                         userIcon.setImageResource(R.mipmap.avatar_default_login);
                                     }
                                 }
@@ -208,7 +212,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void goToLogin() {
-        ToastUtils.showShort(App.getContext(), getString(R.string.logged_in_other_devices));
+        ToastUtils.showShort(getActivity(), getString(R.string.logged_in_other_devices));
         startActivity(new Intent(getActivity(), LoginActivity.class));
         SPUtils.put(App.getContext(), "islogin", false);
         SPUtils.put(App.getContext(), "cashStatus", 0);

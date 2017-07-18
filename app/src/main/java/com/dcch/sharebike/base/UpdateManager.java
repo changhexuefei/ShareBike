@@ -31,7 +31,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 
-
 public class UpdateManager {
     private Context mContext;
     private VersionInfo versionInfo;
@@ -177,10 +176,12 @@ public class UpdateManager {
                 dialog.dismiss();
                 // 显示下载对话框
                 //5:
-                if(NetUtils.isWifi(mContext)){
-                    showDownloadDialog();
-                }else{
-                    ToastUtils.showShort(mContext,"当前为手机网络，请切换到无线网络进行下载！");
+                if (NetUtils.isConnected(mContext)) {
+                    if (NetUtils.isWifi(mContext)) {
+                        showDownloadDialog();
+                    } else {
+                        ToastUtils.showShort(mContext, "当前为手机网络，请切换到无线网络进行下载！");
+                    }
                 }
             }
         });
@@ -243,7 +244,7 @@ public class UpdateManager {
                 String sdpath = Environment.getExternalStorageDirectory() + "/";
                 fileSavePath = sdpath;
                 try {
-                    LogUtils.d("监听", "1223333++++++" + sdpath+versionInfo.getLoadUrl());
+                    LogUtils.d("监听", "1223333++++++" + sdpath + versionInfo.getLoadUrl());
                     URL url = new URL(versionInfo.getLoadUrl());
                     // 创建连接
                     conn = (HttpURLConnection) url.openConnection();
@@ -320,21 +321,20 @@ public class UpdateManager {
     }
 
     private void installAPK() {
-        File apkfile = new File(fileSavePath, versionInfo.getFileName() + ".apk");
-        if (!apkfile.exists()) {
+        File apkFile = new File(fileSavePath, versionInfo.getFileName() + ".apk");
+        if (!apkFile.exists()) {
             return;
         }
         // 通过Intent安装APK文件
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        i.setDataAndType(Uri.parse("file://" + apkfile.toString()), "application/vnd.android.package-archive");
-        mContext.startActivity(i);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        FileProvider7.setIntentDataAndType(mContext,
+                intent, "application/vnd.android.package-archive", apkFile, true);
+        mContext.startActivity(intent);
         android.os.Process.killProcess(android.os.Process.myPid());
-//        uninstallApk(mContext, apkfile.getAbsolutePath());
     }
 
-
-    /* 卸载apk */
+    //如何监控在安装包完成安装后，将apk文件删除掉？
     public static void uninstallApk(Context context, String packageName) {
         Uri uri = Uri.parse("package:" + packageName);
         Intent intent = new Intent(Intent.ACTION_DELETE, uri);

@@ -105,6 +105,7 @@
             android:value="&apos;591ec095&apos;"/>
 
         <activity
+
             android:name="com.iflytek.autoupdate.IFlytekUpdateDialog"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:exported="true"
@@ -120,14 +121,17 @@
 
         <activity
             android:name=".libzxing.zxing.activity.CaptureActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activity.SplashActivity"
             android:launchMode="standard"
+            android:screenOrientation="portrait"
             android:theme="@style/Splash_Theme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -138,6 +142,7 @@
         <activity
             android:name=".activity.GuideActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             />
         <activity
             android:name="com.mob.tools.MobUIShell"
@@ -187,64 +192,88 @@
         </service>
 
         <activity
-            android:name=".moudle.login.activity.PersonalCenterActivity"/>
+            android:name=".moudle.login.activity.PersonalCenterActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.login.activity.LoginActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             />
-        <activity android:name=".moudle.search.activity.SeekActivity"/>
+        <activity
+            android:name=".moudle.search.activity.SeekActivity"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".moudle.login.activity.AgreementActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             />
         <activity
             android:name=".moudle.login.activity.RechargeActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.login.activity.IdentityAuthenticationActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.user.activity.PersonInfoActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.user.activity.CreditIntegralActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.user.activity.WalletInfoActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.user.activity.TransactionDetailActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             />
         <activity
             android:name=".moudle.user.activity.SettingActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             />
-        <activity android:name=".moudle.user.activity.UsualAddressActivity"/>
+        <activity
+            android:name=".moudle.user.activity.UsualAddressActivity"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".moudle.user.activity.ChangeUserNickNameActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.user.activity.MyJourneyActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.user.activity.UserGuideActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.user.activity.MyMessageActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.login.activity.AuthenticationOkActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.user.activity.CustomerServiceActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.user.activity.RechargeDepositActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.user.activity.RechargeBikeFareActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
@@ -307,6 +336,7 @@
             android:name="cn.jpush.android.ui.PushActivity"
             android:configChanges="orientation|keyboardHidden"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="cn.jpush.android.ui.PushActivity"/>
@@ -363,20 +393,25 @@
         <activity
             android:name=".moudle.login.activity.ClickCameraPopupActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/translucent">
         </activity>
         <activity
             android:name=".moudle.login.activity.ClickMyHelpActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/translucent"/>
         <activity
             android:name=".moudle.user.activity.MobileNumActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.user.activity.ChangeMobileNumActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
 
         <activity
+
             android:name="cn.finalteam.rxgalleryfinal.ui.activity.MediaActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
@@ -398,28 +433,38 @@
 
         <activity
             android:name=".moudle.user.activity.InviteFriendsActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.user.activity.AboutUsActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".moudle.user.activity.SetAddressActivity"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".moudle.user.activity.SetAddressActivity"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".moudle.user.activity.ShowRefundResultsActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.user.activity.ManualInputActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.user.activity.RidingResultActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".moudle.user.activity.UnlockProgressActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
@@ -441,38 +486,47 @@
         </receiver>
 
         <activity
+            android:screenOrientation="portrait"
             android:name=".moudle.user.activity.JourneyDetailActivity"
             android:launchMode="singleTask">
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".moudle.user.activity.UserAgreementActivity"
             android:launchMode="singleTask">
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".moudle.user.activity.RefundExplainActivity"
             android:launchMode="singleTask">
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".moudle.user.activity.CashPledgeExplainActivity"
             android:launchMode="singleTask">
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".moudle.user.activity.RechargeAgreementActivity"
             android:launchMode="singleTask">
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".moudle.login.activity.OpenLockTipAcitivity"
             android:launchMode="singleTask"
             android:theme="@style/translucent">
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".moudle.user.activity.CouponListActivity"
             android:launchMode="singleTask">
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".moudle.login.activity.PropagandaPosterActivity"
             android:theme="@style/translucent"/>
         <activity
+            android:screenOrientation="portrait"
             android:name=".moudle.user.activity.MessageDetailActivity"
             android:launchMode="singleTask">
         </activity>
@@ -480,14 +534,17 @@
         <service android:name=".service.InitializeService"/>
 
         <activity
+            android:screenOrientation="portrait"
             android:name=".moudle.user.activity.CouponRuleActivity"
             android:launchMode="singleTask">
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".moudle.user.activity.UnlockBillPageActivity"
             android:launchMode="singleTask">
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".moudle.user.activity.DealFeedbackActivity"
             android:launchMode="singleTask">
         </activity>

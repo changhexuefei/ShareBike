@@ -83,6 +83,8 @@ public class Api {
     public static final String CLOSELOCK = "CloseLock.do?";
     //寻车铃
     public static final String FINDBIKERING = "FindBikeRing.do?";
+    //更换车辆图标的接口
+    public static final String CHANGEBICYCLEIMAGE = "bicycleImage.do?";
     //活动页面
     public static final String GETACTIVITYS = "getActivitys.do?";
     //用户协议
