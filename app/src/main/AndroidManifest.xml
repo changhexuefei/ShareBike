@@ -35,7 +35,8 @@
     <!-- <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/> -->
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"/>
     <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <!--<uses-permission android:name="android.permission.CAMERA"/>-->
+    <!-- <uses-permission android:name="android.permission.CAMERA"/> -->
+
 
     <!-- Optional. Required for location feature -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
@@ -105,7 +106,6 @@
             android:value="&apos;591ec095&apos;"/>
 
         <activity
-
             android:name="com.iflytek.autoupdate.IFlytekUpdateDialog"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:exported="true"
@@ -142,8 +142,7 @@
         <activity
             android:name=".activity.GuideActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -197,17 +196,14 @@
         <activity
             android:name=".moudle.login.activity.LoginActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.search.activity.SeekActivity"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.login.activity.AgreementActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.login.activity.RechargeActivity"
             android:launchMode="singleTask"
@@ -231,17 +227,14 @@
         <activity
             android:name=".moudle.user.activity.TransactionDetailActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.user.activity.SettingActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.user.activity.UsualAddressActivity"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.user.activity.ChangeUserNickNameActivity"
             android:launchMode="singleTask"
@@ -409,9 +402,7 @@
             android:name=".moudle.user.activity.ChangeMobileNumActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
-
         <activity
-
             android:name="cn.finalteam.rxgalleryfinal.ui.activity.MediaActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
@@ -441,8 +432,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.user.activity.SetAddressActivity"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".moudle.user.activity.ShowRefundResultsActivity"
             android:launchMode="singleTask"
@@ -486,67 +476,67 @@
         </receiver>
 
         <activity
-            android:screenOrientation="portrait"
             android:name=".moudle.user.activity.JourneyDetailActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".moudle.user.activity.UserAgreementActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".moudle.user.activity.RefundExplainActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".moudle.user.activity.CashPledgeExplainActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".moudle.user.activity.RechargeAgreementActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".moudle.login.activity.OpenLockTipAcitivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/translucent">
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".moudle.user.activity.CouponListActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".moudle.login.activity.PropagandaPosterActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/translucent"/>
         <activity
-            android:screenOrientation="portrait"
             android:name=".moudle.user.activity.MessageDetailActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
         </activity>
 
         <service android:name=".service.InitializeService"/>
 
         <activity
-            android:screenOrientation="portrait"
             android:name=".moudle.user.activity.CouponRuleActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".moudle.user.activity.UnlockBillPageActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".moudle.user.activity.DealFeedbackActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
         </activity>
 
         <provider
@@ -558,7 +548,9 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"/>
         </provider>
-    </application>
 
+        <activity android:name=".moudle.login.activity.AdvertisementActivity">
+        </activity>
+    </application>
 
 </manifest>

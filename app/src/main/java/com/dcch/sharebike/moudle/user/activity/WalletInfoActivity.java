@@ -16,6 +16,7 @@ import com.dcch.sharebike.alipay.WeixinPay;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
+import com.dcch.sharebike.moudle.login.activity.IdentityAuthenticationActivity;
 import com.dcch.sharebike.moudle.login.activity.LoginActivity;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
@@ -104,6 +105,7 @@ public class WalletInfoActivity extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
+                LogUtils.d("nihao","点击我了");
 //                rechargeBikeFare();
                 choosePrepaid();
                 break;
@@ -128,6 +130,8 @@ public class WalletInfoActivity extends BaseActivity {
             startActivity(new Intent(WalletInfoActivity.this, RechargeDepositActivity.class));
         } else if (mCashStatus == 0 && mStatus == 1) {
             popupDialog();
+        }else if(mCashStatus == 1 && mStatus == 0){
+            startActivity(new Intent(WalletInfoActivity.this, IdentityAuthenticationActivity.class));
         }
     }
 
@@ -219,10 +223,8 @@ public class WalletInfoActivity extends BaseActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
         });
-
     }
 
     private void goToLogin() {

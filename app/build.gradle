@@ -27,8 +27,8 @@ android {
         multiDexEnabled true
         ndk {
             //选择要添加的对应cpu类型的.so库。
-            abiFilters 'armeabi', 'armeabi-v8a', 'mips', 'mips64','armeabi-v7a'
-            // 还可以添加   , 'x86_64',, 'x86'
+            abiFilters 'armeabi', 'armeabi-v8a', 'armeabi-v7a'
+            // 还可以添加   , 'x86_64',, 'x86' 'mips', 'mips64',
         }
     }
 
@@ -107,6 +107,12 @@ dependencies {
     compile files('libs/AutoUpdate_SDK.jar')
     compile files('libs/netty-all-4.1.11.Final.jar')
     compile files('libs/netty-all-4.1.6.Final.jar')
+    compile files('libs/baidumapapi_base_v4_1_1.jar')
+    compile files('libs/baidumapapi_cloud_v4_1_1.jar')
+    compile files('libs/baidumapapi_map_v4_1_1.jar')
+    compile files('libs/baidumapapi_radar_v4_1_1.jar')
+    compile files('libs/baidumapapi_search_v4_1_1.jar')
+    compile files('libs/baidumapapi_util_v4_1_1.jar')
     compile 'com.jakewharton:butterknife:8.4.0'
     compile 'com.belerweb:pinyin4j:2.5.1'
     compile 'de.hdodenhof:circleimageview:2.1.0'
@@ -141,10 +147,4 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
     releaseCompile 'com.github.moduth:blockcanary-no-op:1.2.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
-    compile files('libs/baidumapapi_base_v4_1_1.jar')
-    compile files('libs/baidumapapi_cloud_v4_1_1.jar')
-    compile files('libs/baidumapapi_map_v4_1_1.jar')
-    compile files('libs/baidumapapi_radar_v4_1_1.jar')
-    compile files('libs/baidumapapi_search_v4_1_1.jar')
-    compile files('libs/baidumapapi_util_v4_1_1.jar')
 }

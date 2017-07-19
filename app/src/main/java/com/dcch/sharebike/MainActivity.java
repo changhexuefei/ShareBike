@@ -71,6 +71,7 @@ import com.dcch.sharebike.listener.MyOrientationListener;
 import com.dcch.sharebike.moudle.home.bean.BikeInfo;
 import com.dcch.sharebike.moudle.home.bean.BikeRentalOrderInfo;
 import com.dcch.sharebike.moudle.home.bean.BookingBikeInfo;
+import com.dcch.sharebike.moudle.home.bean.PopupInfo;
 import com.dcch.sharebike.moudle.home.bean.RidingInfo;
 import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.moudle.login.activity.ClickCameraPopupActivity;
@@ -78,6 +79,7 @@ import com.dcch.sharebike.moudle.login.activity.ClickMyHelpActivity;
 import com.dcch.sharebike.moudle.login.activity.IdentityAuthenticationActivity;
 import com.dcch.sharebike.moudle.login.activity.LoginActivity;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
+import com.dcch.sharebike.moudle.login.activity.PropagandaPosterActivity;
 import com.dcch.sharebike.moudle.login.activity.RechargeActivity;
 import com.dcch.sharebike.moudle.user.activity.CustomerServiceActivity;
 import com.dcch.sharebike.moudle.user.activity.MyMessageActivity;
@@ -170,6 +172,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     boolean useDefaultIcon = false;
     @BindView(R.id.centerIcon)
     ImageView mCenterIcon;
+    @BindView(R.id.headAdvertisement)
+    ImageButton mHeadAdvertisement;
     private long mExitTime; //退出时间
     OverlayManager routeOverlay = null;//该类提供一个能够显示和管理多个Overlay的基类
     private LocationClient mLocationClient;//定位的客户端
@@ -253,6 +257,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         initPermission();
         bikeInfos = new ArrayList<>();
         getBicycleImage();
+        if (SPUtils.isLogin()) {
+            getHeadAdvertisement();
+            getPopAdvertisement();
+        }
         // 初始化GeoCoder模块，注册事件监听
         mSearch = GeoCoder.newInstance();
         mSearch.setOnGetGeoCodeResultListener(this);
@@ -278,12 +286,59 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         Log.d("实验", "onCreate");
     }
 
+    private void getPopAdvertisement() {
+        OkHttpUtils.post().url(Api.BASE_URL + Api.ADVERTISEMENT).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                ToastUtils.showShort(MainActivity.this, getString(R.string.server_tip));
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                if (JsonUtils.isSuccess(response)) {
+                    LogUtils.d("弹出层", response);
+                    Gson gson = new Gson();
+                    PopupInfo popupInfo = gson.fromJson(response, PopupInfo.class);
+//                    String activityUrl = popupInfo.getAdvertisement().getActivityUrl();
+                    String imageUrl = popupInfo.getAdvertisement().getImageUrl();
+//                    if (activityUrl != null && !activityUrl.equals("") && imageUrl != null && !imageUrl.equals("")) {
+                    Intent popIntent = new Intent(MainActivity.this, PropagandaPosterActivity.class);
+//                        popIntent.putExtra("activityUrl", activityUrl);
+                    popIntent.putExtra("imageUrl", imageUrl);
+                    startActivity(popIntent);
+//                    }
+                } else {
+
+                }
+            }
+        });
+    }
+
+    private void getHeadAdvertisement() {
+        OkHttpUtils.post().url(Api.BASE_URL + Api.HEADADVERTISEMENT).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                ToastUtils.showShort(MainActivity.this, getString(R.string.server_tip));
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                if (JsonUtils.isSuccess(response)) {
+                    LogUtils.d("顶部广告", response);
+                    mHeadAdvertisement.setVisibility(View.VISIBLE);
+                } else {
+                    mHeadAdvertisement.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
 
     private void getBicycleImage() {
         OkHttpUtils.get().url(Api.BASE_URL + Api.CHANGEBICYCLEIMAGE).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-
+                ToastUtils.showShort(MainActivity.this, getString(R.string.server_tip));
             }
 
             @Override
@@ -297,15 +352,17 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                             "image.png") {
                         @Override
                         public void onError(Call call, Exception e, int id) {
-
+                            ToastUtils.showShort(MainActivity.this, getString(R.string.server_tip));
                         }
 
                         @Override
                         public void onResponse(File response, int id) {
                             mAbsolutePath = response.getAbsolutePath();
-                            LogUtils.d("怎么回事",mAbsolutePath);
+                            LogUtils.d("怎么回事", mAbsolutePath);
                         }
                     });
+                } else {
+                    mAbsolutePath = "";
                 }
             }
         });
@@ -438,7 +495,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.bike_icon);
             LogUtils.d("图片", bitmap + "3333");
         }
-
         OverlayOptions options;
         LatLng latLng = transform(lat, lng);
         //设置marker
@@ -558,7 +614,12 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         clickDismissOverlay();
     }
 
-    @OnClick({R.id.MyCenter, R.id.btn_my_location, R.id.scan, R.id.seek, R.id.instructions, R.id.btn_my_help, R.id.specialOffer})
+    @OnClick(R.id.headAdvertisement)
+    public void onViewClicked() {
+    }
+
+
+    @OnClick({R.id.headAdvertisement, R.id.MyCenter, R.id.btn_my_location, R.id.scan, R.id.seek, R.id.instructions, R.id.btn_my_help, R.id.specialOffer})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.MyCenter:
@@ -623,7 +684,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 //                StyledDialog.buildLoading(MainActivity.this, "加载中...", true, false).show();
                 LogUtils.d("回歸", isShowBookOrder + "\n" + isShowRideOrder + "\n" + isShowMenu);
                 if (isShowMenu && !isShowBookOrder && !isShowRideOrder) {
-                    LogUtils.d("回歸", "1235555555");
                     menuWindow.dismiss();
                     isShowMenu = false;
                     routeOverlay.removeFromMap();
@@ -680,6 +740,12 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 } else {
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 }
+                break;
+            case R.id.headAdvertisement:
+                if (ClickUtils.isFastClick()) {
+                    return;
+                }
+
                 break;
         }
     }
@@ -1254,10 +1320,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     @Override
     public void onMapStatusChangeFinish(MapStatus mapStatus) {
-
         float zoom = mapStatus.zoom;
         LogUtils.d("移动", isShowMenu + "\n" + isShowBookOrder + "\n" + isShowRideOrder + "\n" + zoom);
-
         if (!isShowMenu && !isShowBookOrder && !isShowRideOrder) {
             LogUtils.d("移动", "进来了");
             updateMapStatus(mapStatus);
@@ -1340,7 +1404,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     public void onGetBikingRouteResult(BikingRouteResult bikingRouteResult) {
 
     }
-
 
     //实现定位回调监听
     private class MyLocationListener implements BDLocationListener {

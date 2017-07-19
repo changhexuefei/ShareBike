@@ -252,7 +252,7 @@
     <string name="whole_problem">全部问题</string>
     <string name="inputBikeNo">输入编号开锁</string>
     <string name="usinghelp">使用帮助</string>
-    <string name="input_tips">请确认您输入了正确的自行车编号</string>
+    <string name="input_tips">若因输错自行车标号造成自行车丢失，您将承担相应的赔偿责任</string>
     <string name="qilin_coupon">麒麟单车骑行券</string>
     <string name="couponNo">骑行券编号：</string>
     <string name="_091700001">091700001</string>

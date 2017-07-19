@@ -121,7 +121,6 @@ public class LoginFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mURL = (String) SPUtils.get(App.getContext(), "imageURL", "");
-        LogUtils.d("状态", mURL + "1111112121212");
         if (!mURL.equals("")) {
             LogUtils.d("状态", mURL);
             if (getActivity() != null) {

@@ -59,7 +59,7 @@
             android:background="@null"
             android:digits="01234567890123456xX"
             android:hint="@string/indetity_tip_two"
-            android:inputType="number"
+            android:inputType="text"
             android:maxLength="18"
             android:padding="15dp"
             android:textSize="14sp"/>

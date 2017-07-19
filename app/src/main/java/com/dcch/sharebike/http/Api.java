@@ -4,11 +4,11 @@ package com.dcch.sharebike.http;
 public class Api {
     //public static final String BASE_URL = "http://192.168.1.159:8080/MavenSSM/mobile/";
 //    public static final String BASE_URL = "http://192.168.1.142:8080/MavenSSM/mobile/";
-//    public static final String BASE_URL = "http://192.168.1.130:8080/MavenSSM/mobile/";
+    public static final String BASE_URL = "http://192.168.1.130:8080/MavenSSM/mobile/";
 //    public static final String BASE_URL = "http://114.112.86.38/MavenSSM/mobile/";
 //    public static final String BASE_URL = "http://101.251.245.158/MavenSSM/mobile/";
 //    public static final String BASE_URL = "http://101.251.246.10/MavenSSM/mobile/";
-        public static final String BASE_URL = "http://www.70bikes.cn/MavenSSM/mobile/";
+//    public static final String BASE_URL = "http://www.70bikes.cn/MavenSSM/mobile/";
     //获取验证码
     public static final String REGISTER = "register.do?";
     //注册登录
@@ -80,11 +80,15 @@ public class Api {
     public static final String REFUNDWXPAY = "refundWXPay.do?";
     //关锁未结费
     public static final String FORCECLOSELOCK = "forceCloseLock.do?";
-    public static final String CLOSELOCK = "CloseLock.do?";
+//    public static final String CLOSELOCK = "CloseLock.do?";
     //寻车铃
     public static final String FINDBIKERING = "FindBikeRing.do?";
     //更换车辆图标的接口
     public static final String CHANGEBICYCLEIMAGE = "bicycleImage.do?";
+    //顶部广告
+    public static final String HEADADVERTISEMENT = "headAdvertisement.do?";
+    //弹出窗广告
+    public static final String ADVERTISEMENT = "advertisement.do?";
     //活动页面
     public static final String GETACTIVITYS = "getActivitys.do?";
     //用户协议

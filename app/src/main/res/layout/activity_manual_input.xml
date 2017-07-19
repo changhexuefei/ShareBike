@@ -90,9 +90,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/manualInputArea"
             android:layout_centerInParent="true"
-            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
             android:text="@string/input_tips"
-            android:textColor="@color/white"/>
+            android:textColor="@color/colorTitle"
+            android:textSize="12sp"/>
 
     </RelativeLayout>
 
