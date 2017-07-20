@@ -1,18 +1,19 @@
 package com.dcch.sharebike.moudle.home.bean;
 
 /**
- * Created by Administrator on 2017/7/19 0019.
+ * Created by Administrator on 2017/7/20 0020.
  */
 
-public class PopupInfo {
+public class HeadInfo {
+
 
     /**
      * resultStatus : 1
-     * advertisement : {"activityUrl":"http://www.70bikes.com/","delflag":0,"headactivityUrl":"","headimageUrl":"","imageUrl":"http://www.70bikes.com/bikeImage/advertisement/ktv.jpg","merchantid":"1","remark":"test","title":"爱尚ktv"}
+     * headAdvertisement : {"activityUrl":"","delflag":0,"headactivityUrl":"http://www.70bikes.com/","headimageUrl":"http://www.70bikes.com/bikeImage/headadvertisement/headktv.jpg","imageUrl":"","merchantid":"1","remark":"test","title":""}
      */
 
     private String resultStatus;
-    private AdvertisementBean advertisement;
+    private HeadAdvertisementBean headAdvertisement;
 
     public String getResultStatus() {
         return resultStatus;
@@ -22,24 +23,24 @@ public class PopupInfo {
         this.resultStatus = resultStatus;
     }
 
-    public AdvertisementBean getAdvertisement() {
-        return advertisement;
+    public HeadAdvertisementBean getHeadAdvertisement() {
+        return headAdvertisement;
     }
 
-    public void setAdvertisement(AdvertisementBean advertisement) {
-        this.advertisement = advertisement;
+    public void setHeadAdvertisement(HeadAdvertisementBean headAdvertisement) {
+        this.headAdvertisement = headAdvertisement;
     }
 
-    public static class AdvertisementBean {
+    public static class HeadAdvertisementBean {
         /**
-         * activityUrl : http://www.70bikes.com/
+         * activityUrl :
          * delflag : 0
-         * headactivityUrl :
-         * headimageUrl :
-         * imageUrl : http://www.70bikes.com/bikeImage/advertisement/ktv.jpg
+         * headactivityUrl : http://www.70bikes.com/
+         * headimageUrl : http://www.70bikes.com/bikeImage/headadvertisement/headktv.jpg
+         * imageUrl :
          * merchantid : 1
          * remark : test
-         * title : 爱尚ktv
+         * title :
          */
 
         private String activityUrl;

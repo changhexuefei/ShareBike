@@ -168,7 +168,7 @@ public class UpdateManager {
         // 构造对话框
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle("软件更新");
-        builder.setMessage("检测到新版本,是否下载更新");
+        builder.setMessage(versionInfo.getDescription());
         // 更新
         builder.setPositiveButton("更新", new DialogInterface.OnClickListener() {
             @Override

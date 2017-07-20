@@ -14,12 +14,12 @@ import butterknife.OnClick;
 
 public class PropagandaPosterActivity extends BaseActivity {
 
-
     @BindView(R.id.adversimg)
     ImageView mImg;
     @BindView(R.id.close)
     ImageView mClose;
     private String mActivityUrl;
+    private String mTitle;
 
     @Override
     protected int getLayoutId() {
@@ -32,6 +32,7 @@ public class PropagandaPosterActivity extends BaseActivity {
         if (intent != null) {
             mActivityUrl = intent.getStringExtra("activityUrl");
             String imageUrl = intent.getStringExtra("imageUrl");
+            mTitle = intent.getStringExtra("title");
             LogUtils.d("弹出层", imageUrl);
             Glide.with(this).load(imageUrl).error(R.mipmap.bike_icon).into(mImg);
         }
@@ -41,11 +42,12 @@ public class PropagandaPosterActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.adversimg:
-                Intent webActivity = new Intent(PropagandaPosterActivity.this, AdvertisementActivity.class);
-                if (mActivityUrl != null && !mActivityUrl.equals("")) {
+                if (mActivityUrl != null && !mActivityUrl.equals("") && mTitle != null && !mTitle.equals("")) {
+                    Intent webActivity = new Intent(PropagandaPosterActivity.this, AdvertisementActivity.class);
                     webActivity.putExtra("activityWebView", mActivityUrl);
+                    webActivity.putExtra("title", mTitle);
+                    startActivity(webActivity);
                 }
-                startActivity(webActivity);
                 finish();
                 break;
             case R.id.close:

@@ -60,6 +60,7 @@ import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.baidu.mapapi.utils.CoordinateConverter;
 import com.baidu.mapapi.utils.DistanceUtil;
+import com.bumptech.glide.Glide;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.AppManager;
 import com.dcch.sharebike.base.BaseActivity;
@@ -71,9 +72,11 @@ import com.dcch.sharebike.listener.MyOrientationListener;
 import com.dcch.sharebike.moudle.home.bean.BikeInfo;
 import com.dcch.sharebike.moudle.home.bean.BikeRentalOrderInfo;
 import com.dcch.sharebike.moudle.home.bean.BookingBikeInfo;
+import com.dcch.sharebike.moudle.home.bean.HeadInfo;
 import com.dcch.sharebike.moudle.home.bean.PopupInfo;
 import com.dcch.sharebike.moudle.home.bean.RidingInfo;
 import com.dcch.sharebike.moudle.home.content.MyContent;
+import com.dcch.sharebike.moudle.login.activity.AdvertisementActivity;
 import com.dcch.sharebike.moudle.login.activity.ClickCameraPopupActivity;
 import com.dcch.sharebike.moudle.login.activity.ClickMyHelpActivity;
 import com.dcch.sharebike.moudle.login.activity.IdentityAuthenticationActivity;
@@ -173,7 +176,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     @BindView(R.id.centerIcon)
     ImageView mCenterIcon;
     @BindView(R.id.headAdvertisement)
-    ImageButton mHeadAdvertisement;
+    ImageView mHeadAdvertisement;
     private long mExitTime; //退出时间
     OverlayManager routeOverlay = null;//该类提供一个能够显示和管理多个Overlay的基类
     private LocationClient mLocationClient;//定位的客户端
@@ -237,6 +240,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private float y1 = 0;
     private float y2 = 0;
     private String mAbsolutePath;
+    private String mHeadactivityUrl;
+    private String mTitle;
 
 
     public MainActivity() {
@@ -299,14 +304,16 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     LogUtils.d("弹出层", response);
                     Gson gson = new Gson();
                     PopupInfo popupInfo = gson.fromJson(response, PopupInfo.class);
-//                    String activityUrl = popupInfo.getAdvertisement().getActivityUrl();
+                    String activityUrl = popupInfo.getAdvertisement().getActivityUrl();
                     String imageUrl = popupInfo.getAdvertisement().getImageUrl();
-//                    if (activityUrl != null && !activityUrl.equals("") && imageUrl != null && !imageUrl.equals("")) {
-                    Intent popIntent = new Intent(MainActivity.this, PropagandaPosterActivity.class);
-//                        popIntent.putExtra("activityUrl", activityUrl);
-                    popIntent.putExtra("imageUrl", imageUrl);
-                    startActivity(popIntent);
-//                    }
+                    String title = popupInfo.getAdvertisement().getTitle();
+                    if (imageUrl != null && !imageUrl.equals("")) {
+                        Intent popIntent = new Intent(MainActivity.this, PropagandaPosterActivity.class);
+                        popIntent.putExtra("activityUrl", activityUrl);
+                        popIntent.putExtra("imageUrl", imageUrl);
+                        popIntent.putExtra("title", title);
+                        startActivity(popIntent);
+                    }
                 } else {
 
                 }
@@ -326,6 +333,12 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (JsonUtils.isSuccess(response)) {
                     LogUtils.d("顶部广告", response);
                     mHeadAdvertisement.setVisibility(View.VISIBLE);
+                    Gson gson = new Gson();
+                    HeadInfo headInfo = gson.fromJson(response, HeadInfo.class);
+                    String headimageUrl = headInfo.getHeadAdvertisement().getHeadimageUrl();
+                    mTitle = headInfo.getHeadAdvertisement().getTitle();
+                    mHeadactivityUrl = headInfo.getHeadAdvertisement().getHeadactivityUrl();
+                    Glide.with(MainActivity.this).load(headimageUrl).into(mHeadAdvertisement);
                 } else {
                     mHeadAdvertisement.setVisibility(View.GONE);
                 }
@@ -745,7 +758,12 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-
+                if (mHeadactivityUrl != null && !mHeadactivityUrl.equals("") && mTitle != null && !mTitle.equals("")) {
+                    Intent webActivity = new Intent(MainActivity.this, AdvertisementActivity.class);
+                    webActivity.putExtra("activityWebView", mHeadactivityUrl);
+                    webActivity.putExtra("title", mTitle);
+                    startActivity(webActivity);
+                }
                 break;
         }
     }
@@ -792,7 +810,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 double lng = bikeInfo.getLongitude();
                 LatLng latLng = transform(lat, lng);
                 double distance = DistanceUtil.getDistance(latLng, mMCenterLatLng);
-                if (distance < 400) {
+                if (distance < 500) {
 //                    Log.d("你好", distance + "");
                     forLocationAddMark(lat, lng);
                 }

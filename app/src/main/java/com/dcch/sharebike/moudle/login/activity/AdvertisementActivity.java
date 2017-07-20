@@ -21,6 +21,7 @@ public class AdvertisementActivity extends BaseActivity {
     @BindView(R.id.advertisement_webview)
     WebView mAdvertisementWebview;
     private String mActivityWebView;
+    private String titleName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +39,15 @@ public class AdvertisementActivity extends BaseActivity {
         Intent intent = getIntent();
         if (intent != null && !intent.equals("")) {
             mActivityWebView = intent.getStringExtra("activityWebView");
+            titleName = intent.getStringExtra("title");
             mAdvertisementWebview.loadUrl(mActivityWebView);
         }
         mToolbar.setTitle("");
-        mTitle.setText(getResources().getString(R.string.bike_service_regulations));
+        if (titleName != null && !titleName.equals("")) {
+            mTitle.setText(titleName);
+        } else {
+            mTitle.setText("麒麟单车");
+        }
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
