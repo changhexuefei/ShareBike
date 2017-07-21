@@ -21,7 +21,8 @@ import com.dcch.sharebike.moudle.home.bean.VersionInfo;
 import com.dcch.sharebike.moudle.home.parse.ParseXmlService;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.NetUtils;
-import com.dcch.sharebike.utils.ToastUtils;
+import com.hss01248.dialog.StyledDialog;
+import com.hss01248.dialog.interfaces.MyDialogListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -169,6 +170,7 @@ public class UpdateManager {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle("软件更新");
         builder.setMessage(versionInfo.getDescription());
+        builder.setCancelable(false);
         // 更新
         builder.setPositiveButton("更新", new DialogInterface.OnClickListener() {
             @Override
@@ -180,7 +182,17 @@ public class UpdateManager {
                     if (NetUtils.isWifi(mContext)) {
                         showDownloadDialog();
                     } else {
-                        ToastUtils.showShort(mContext, "当前为手机网络，请切换到无线网络进行下载！");
+                        StyledDialog.buildIosAlert(mContext, "提示", "您当前使用的是手机网络，确定更新？", new MyDialogListener() {
+                            @Override
+                            public void onFirst() {
+                                showDownloadDialog();
+                            }
+
+                            @Override
+                            public void onSecond() {
+                                return;
+                            }
+                        }).show();
                     }
                 }
             }

@@ -136,7 +136,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -242,6 +241,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private String mAbsolutePath;
     private String mHeadactivityUrl;
     private String mTitle;
+    private float zoom;
 
 
     public MainActivity() {
@@ -262,10 +262,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         initPermission();
         bikeInfos = new ArrayList<>();
         getBicycleImage();
-        if (SPUtils.isLogin()) {
-            getHeadAdvertisement();
-            getPopAdvertisement();
-        }
         // 初始化GeoCoder模块，注册事件监听
         mSearch = GeoCoder.newInstance();
         mSearch.setOnGetGeoCodeResultListener(this);
@@ -277,9 +273,16 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         initMyLocation();
         // 初始化传感器
         initOritationListener();
+
+        if (SPUtils.isLogin()) {
+            getHeadAdvertisement();
+            getPopAdvertisement();
+        }
         //注册EventBus
         EventBus.getDefault().register(this);
         lr = new LocationReceiver();
+//        UpdateManager updateManager = new UpdateManager(this);
+//        updateManager.checkVersion();
         updataApp();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("NEW LOCATION SENT");
@@ -571,8 +574,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     protected void initListener() {
         //地图状态改变相关监听
         mMap.setOnMapStatusChangeListener(this);
-
     }
+
 
     private void initOritationListener() {
         myOrientationListener = new MyOrientationListener(
@@ -627,11 +630,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         clickDismissOverlay();
     }
 
-    @OnClick(R.id.headAdvertisement)
-    public void onViewClicked() {
-    }
-
-
     @OnClick({R.id.headAdvertisement, R.id.MyCenter, R.id.btn_my_location, R.id.scan, R.id.seek, R.id.instructions, R.id.btn_my_help, R.id.specialOffer})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -667,7 +665,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                StyledDialog.buildIosAlert(MainActivity.this, "提示", "拨打麒麟单车客服电话 400-660-6215(工作时间：09:00-17:00)", new MyDialogListener() {
+                StyledDialog.buildIosAlert(MainActivity.this, "提示", getResources().getString(R.string.customserver_tip), new MyDialogListener() {
                     @Override
                     public void onFirst() {
                         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "400-660-6215"));
@@ -679,30 +677,22 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     public void onSecond() {
                         return;
                     }
-                }).setMsgColor(R.color.colorHeading).setMsgSize(16).show();
-//                if (isClick) {
-//                    Intent seek = new Intent(MainActivity.this, SeekActivity.class);
-//                    seek.putExtra("address", address1);
-//                    startActivityForResult(seek, 1);
-//                }
-//                if (!isClick) {
-//                    ToastUtils.showShort(MainActivity.this, getString(R.string.booking_riding_tip));
-//                }
+                }).setMsgColor(R.color.colorHeading).setMsgSize(14).show();
                 break;
 
             case R.id.btn_my_location:
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-//                StyledDialog.buildLoading(MainActivity.this, "加载中...", true, false).show();
-                LogUtils.d("回歸", isShowBookOrder + "\n" + isShowRideOrder + "\n" + isShowMenu);
-                if (isShowMenu && !isShowBookOrder && !isShowRideOrder) {
+                if (isShowMenu) {
                     menuWindow.dismiss();
                     isShowMenu = false;
                     routeOverlay.removeFromMap();
-                    mMap.clear();
                     mCenterIcon.setVisibility(View.VISIBLE);
-                    getBikeInfo(mCurrentLantitude, mCurrentLongitude);
+                    addOverlays(bikeInfos);
+                }
+                if (isShowBookOrder || isShowRideOrder) {
+                    setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
 //                    addOverlays(bikeInfos);
                 }
 //                getBikeInfo(mCurrentLantitude, mCurrentLongitude);
@@ -782,7 +772,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         startActivity(personal);
     }
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -802,15 +791,14 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private void addOverlays(List bikeInfos) {
         LogUtils.d("数量", bikeInfos.size() + "");
         if (bikeInfos.size() > 0) {
-            //清空地图
-            mMap.clear();
+            mMap.clear();  //清空地图
             for (int i = 0; i < bikeInfos.size(); i++) {
                 bikeInfo = (BikeInfo) bikeInfos.get(i);
                 double lat = bikeInfo.getLatitude();
                 double lng = bikeInfo.getLongitude();
                 LatLng latLng = transform(lat, lng);
                 double distance = DistanceUtil.getDistance(latLng, mMCenterLatLng);
-                if (distance < 500) {
+                if (distance < 400) {
 //                    Log.d("你好", distance + "");
                     forLocationAddMark(lat, lng);
                 }
@@ -820,7 +808,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     //百度地图的覆盖物点击方法
     private void clickBaiduMapMark() {
-        final TreeSet<Integer> integers = new TreeSet<>();
         mMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(final Marker marker) {
@@ -829,9 +816,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 //                    return false;
 //                }
                 if (marker.getExtraInfo() != null && isChecked && isFirst) {
-                    int zIndex = marker.getZIndex();
-                    integers.add(zIndex);
-                    LogUtils.d("覆盖物", zIndex + "\n" + integers.size());
                     Bundle bundle = marker.getExtraInfo();
                     bikeInfo = (BikeInfo) bundle.getSerializable("bikeInfo");
                     if (bikeInfo != null) {
@@ -919,7 +903,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                             startActivity(new Intent(MainActivity.this, LoginActivity.class));
                             menuWindow.setFocusable(true);
                             menuWindow.dismiss();
-                            Log.d("你好", "4");
                             if (routeOverlay != null) {
                                 routeOverlay.removeFromMap();
                             }
@@ -1144,6 +1127,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                                 bookingCarId = bookingBikeInfo.getBookingCarId();
 //                              bookingCarDate = bookingBikeInfo.getBookingCarDate();
                                 final String bicycleNo = bookingBikeInfo.getBicycleNo();
+                                isShowMenu = false;
                                 isChecked = false;
                                 isClick = false;
                                 isShowBookOrder = true;
@@ -1338,8 +1322,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     @Override
     public void onMapStatusChangeFinish(MapStatus mapStatus) {
-        float zoom = mapStatus.zoom;
-        LogUtils.d("移动", isShowMenu + "\n" + isShowBookOrder + "\n" + isShowRideOrder + "\n" + zoom);
+//        zoom = mapStatus.zoom;
+
+        LogUtils.d("移动", isShowMenu + "\n" + isShowBookOrder + "\n" + isShowRideOrder);
         if (!isShowMenu && !isShowBookOrder && !isShowRideOrder) {
             LogUtils.d("移动", "进来了");
             updateMapStatus(mapStatus);
@@ -1347,7 +1332,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     }
 
     private void updateMapStatus(MapStatus mapStatus) {
-//        mMap.clear();
+        mMap.clear();
         mMCenterLatLng = mapStatus.target;
         mChangeLatitude = mMCenterLatLng.latitude;
         mChangeLongitude = mMCenterLatLng.longitude;
@@ -1452,6 +1437,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             mMap.setMyLocationConfigeration(config);
             // 第一次定位时，将地图位置移动到当前位置
             if (isFristLocation) {
+                LogUtils.d("移动", isFristLocation + "");
                 isFristLocation = false;
                 LatLng ll = new LatLng(location.getLatitude(),
                         location.getLongitude());
@@ -2042,6 +2028,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private void reverseGeoCoder(LatLng latlng) {
         mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(latlng));
     }
+
 
 
 }

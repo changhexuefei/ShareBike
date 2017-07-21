@@ -89,6 +89,8 @@ public class SettingActivity extends BaseActivity {
                 ToastUtils.showShort(this, getString(R.string.checkVersion));
                 if (NetUtils.isConnected(this)) {
                     checkUpDate();
+//                    UpdateManager updateManager = new UpdateManager(this);
+//                    updateManager.checkVersion();
                 } else {
                     ToastUtils.showShort(this, getString(R.string.no_network_tip));
                 }

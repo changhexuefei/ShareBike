@@ -4,11 +4,11 @@ package com.dcch.sharebike.http;
 public class Api {
     //public static final String BASE_URL = "http://192.168.1.159:8080/MavenSSM/mobile/";
 //    public static final String BASE_URL = "http://192.168.1.142:8080/MavenSSM/mobile/";
-    public static final String BASE_URL = "http://192.168.1.131:8080/MavenSSM/mobile/";
+//    public static final String BASE_URL = "http://192.168.1.131:8080/MavenSSM/mobile/";
 //    public static final String BASE_URL = "http://114.112.86.38/MavenSSM/mobile/";
 //    public static final String BASE_URL = "http://101.251.245.158/MavenSSM/mobile/";
 //    public static final String BASE_URL = "http://101.251.246.10/MavenSSM/mobile/";
-//    public static final String BASE_URL = "http://www.70bikes.cn/MavenSSM/mobile/";
+    public static final String BASE_URL = "http://www.70bikes.cn/MavenSSM/mobile/";
     //获取验证码
     public static final String REGISTER = "register.do?";
     //注册登录
@@ -102,5 +102,9 @@ public class Api {
     //优惠券使用规则
     public static final String FAVORABLERULE = "http://www.70bikes.com/MavenSSM/Explain/couponAgreement.jsp";
     //
-    public static final String VERSION = "http://www.70bikes.com/MavenSSM/version/version.xml";
+    public static final String VERSION = "http://www.70bikes.com/version/version.xml ";
+//    public static final String VERSION = "http://114.112.86.38/MavenSSM/version/version.xml";
+
+
+
 }
