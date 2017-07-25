@@ -20,12 +20,13 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.hardware.Camera;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.RejectedExecutionException;
+
+import static android.os.Build.VERSION.SDK_INT;
 
 public class AutoFocusManager implements Camera.AutoFocusCallback {
 
@@ -65,7 +66,7 @@ public class AutoFocusManager implements Camera.AutoFocusCallback {
         if (!stopped && outstandingTask == null) {
             AutoFocusTask newTask = new AutoFocusTask();
             try {
-                if (Build.VERSION.SDK_INT >= 11) {
+                if (SDK_INT >= 15) {
                     newTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 } else {
                     newTask.execute();

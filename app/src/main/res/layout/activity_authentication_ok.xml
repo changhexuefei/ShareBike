@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
+            android:contentDescription="@string/desc"
             android:src="@drawable/register_complete_ic"/>
     </RelativeLayout>
 

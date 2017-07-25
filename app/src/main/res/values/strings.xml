@@ -321,4 +321,5 @@
     <string name="logged_in_other_devices">您的账号已经在其他设备登录，您已经被迫下线</string>
     <string name="warning_12">麒麟单车 谢绝12岁以下未成年人注册及骑行</string>
     <string name="customserver_tip">拨打麒麟单车客服电话 400-660-6215(工作时间：09:00-17:00)</string>
+    <string name="desc">YOUR_DESCRIPTION_HERE</string>
 </resources>

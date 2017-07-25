@@ -17,6 +17,7 @@
             android:id="@+id/back"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:contentDescription="@string/desc"
             android:padding="12dp"
             android:src="@mipmap/back"/>
 

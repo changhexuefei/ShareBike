@@ -16,6 +16,7 @@
             android:layout_width="48dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
+            android:contentDescription="@string/desc"
             android:padding="12dp"
             android:src="@drawable/back"/>
 
@@ -58,6 +59,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:background="@drawable/shadow"
+            android:contentDescription="@string/desc"
             android:src="@mipmap/unlock_qr_tip"/>
 
 
@@ -76,6 +78,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
+                android:contentDescription="@string/desc"
                 android:src="@drawable/scan_line"/>
         </RelativeLayout>
 
@@ -138,7 +141,8 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@id/capture_mask_top"
             android:layout_toLeftOf="@id/capture_crop_view"
-            android:background="@drawable/shadow"/>
+            android:background="@drawable/shadow"
+            android:contentDescription="@string/desc"/>
 
         <ImageView
             android:id="@+id/capture_mask_right"
@@ -148,7 +152,8 @@
             android:layout_alignParentRight="true"
             android:layout_below="@id/capture_mask_top"
             android:layout_toRightOf="@id/capture_crop_view"
-            android:background="@drawable/shadow"/>
+            android:background="@drawable/shadow"
+            android:contentDescription="@string/desc"/>
     </RelativeLayout>
 
 </RelativeLayout>

@@ -336,7 +336,7 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
             // Creating the handler starts the preview, which can also throw a
             // RuntimeException.
             if (handler == null) {
-                handler = new CaptureActivityHandler(this, cameraManager, DecodeThread.ALL_MODE);
+                handler = new CaptureActivityHandler(this, cameraManager, DecodeThread.QRCODE_MODE);
             }
 
             initCrop();

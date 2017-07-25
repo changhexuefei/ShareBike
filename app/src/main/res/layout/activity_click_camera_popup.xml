@@ -15,6 +15,7 @@
         android:layout_centerHorizontal="true"
         android:layout_gravity="right"
         android:layout_marginTop="40dp"
+        android:contentDescription="@string/desc"
         android:src="@mipmap/hintcard_close"/>
 
 
@@ -40,6 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tips_click_camera"
                 android:layout_marginTop="10dp"
+                android:contentDescription="@string/desc"
                 android:scaleType="fitXY"
                 android:src="@drawable/help_unlock"/>
 
@@ -47,8 +49,8 @@
                 android:id="@+id/title_click_camera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
-               android:layout_centerHorizontal="true"
                 android:text="@string/help_unlock"
                 android:textColor="@color/black"
                 android:textSize="16sp"/>

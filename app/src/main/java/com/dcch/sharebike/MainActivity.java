@@ -616,7 +616,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         option.setOpenGps(true);// 打开gps
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);// 设置定位模式
         option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(60000);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
+        option.setScanSpan(1000);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
         option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
         option.setIsNeedLocationDescribe(true);//可选，设置是否需要地址描述
         option.setNeedDeviceDirect(false);//可选，设置是否需要设备方向结果
