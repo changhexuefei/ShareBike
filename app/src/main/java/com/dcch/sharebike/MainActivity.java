@@ -241,7 +241,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     public MainActivity() {
     }
 
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
@@ -249,7 +248,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     @Override
     protected void initData() {
-//        classify.check(R.id.allBike);
         ButterKnife.bind(this);
         MainActivityPermissionsDispatcher.initPermissionWithCheck(this);
         showCamera();
