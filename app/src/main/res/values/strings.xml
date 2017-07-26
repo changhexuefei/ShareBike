@@ -16,7 +16,7 @@
     <string name="share_title">麒麟单车</string>
     <string name="people_center">个人中心</string>
     <string name="unlocking">扫码开锁</string>
-    <string name="mobile_tip_one">原手机号退押金(1-7个工作日到帐)</string>
+    <string name="mobile_tip_one">原手机号退押金(1–7个工作日到帐)</string>
     <string name="mobile_tip_two">更换手机号，登录重新交押金</string>
     <string name="mobile_tip_there">车费余额，行程等信息不变</string>
     <string name="mobile_title">手机号</string>
@@ -77,7 +77,7 @@
     <string name="cancel">取消</string>
     <string name="no_result">未找到结果</string>
     <string name="refund_result">退款结果</string>
-    <string name="refund_tip_two">退款将在1-7个工作日内到账</string>
+    <string name="refund_tip_two">退款将在1–7个工作日内到账</string>
     <string name="verify">确认</string>
     <string name="refund_success_tip">申请退款成功</string>
     <string name="question_describe">补充问题描述</string>
@@ -99,7 +99,7 @@
     <string name="refund_instructions">退款说明</string>
     <string name="transaction_detail">明细</string>
     <string name="customer_service">客户服务</string>
-    <string name="refund_tips">押金退还时间为1-7个工作日，在此期间您的账号将无法用车。是否仍然退押金？</string>
+    <string name="refund_tips">押金退还时间为1–7个工作日，在此期间您的账号将无法用车。是否仍然退押金？</string>
     <string name="refund_cancel">取消</string>
     <string name="refund_cash_pledge">退押金</string>
     <string name="journey_detail">行程详情</string>
@@ -169,7 +169,7 @@
     <string name="feedbackcost">你选择的用车费用</string>
     <string name="costnum">0.5元</string>
     <string name="_123456">123456</string>
-    <string name="time">2017-06-09 21:21</string>
+    <string name="time">2017–06–09 21:21</string>
     <string name="feedbackshowTip">关锁不结束计费</string>
     <string name="callphone">联系人工客服</string>
     <string name="exercise_burns">运动燃烧</string>
@@ -288,10 +288,13 @@
     <string name="submit_success">提交成功</string>
     <string name="submit_fail">提交失败，请联系人工客服</string>
     <string name="shareJouerney">分享行程</string>
-    <string name="working_time">工作时间：09：00-17：00</string>
+    <string name="working_time">工作时间：09：00–17：00</string>
     <string name="balance_outstanding">您的账户余额不足，请先充值后再进行退款操作！</string>
     <string name="logged_in_other_devices">您的账号已经在其他设备登录，您已经被迫下线</string>
     <string name="warning_12">麒麟单车 谢绝12岁以下未成年人注册及骑行</string>
-    <string name="customserver_tip">拨打麒麟单车客服电话 400-660-6215(工作时间：09:00-17:00)</string>
+    <string name="customserver_tip">拨打麒麟单车客服电话 400–660–6215(工作时间：09:00–17:00)</string>
     <string name="desc">YOUR_DESCRIPTION_HERE</string>
+    <string name="refund_tip">您当前有未结束的骑行订单，无法退还押金</string>
+    <string name="unLock_timeout">开锁超时，请找其他麒麟单车使用！</string>
+    <string name="unLock_fail">开锁失败，请找其他麒麟单车使用！</string>
 </resources>

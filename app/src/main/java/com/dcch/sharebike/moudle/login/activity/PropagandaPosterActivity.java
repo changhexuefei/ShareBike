@@ -34,7 +34,7 @@ public class PropagandaPosterActivity extends BaseActivity {
             String imageUrl = intent.getStringExtra("imageUrl");
             mTitle = intent.getStringExtra("title");
             LogUtils.d("弹出层", imageUrl);
-            Glide.with(this).load(imageUrl).error(R.mipmap.bike_icon).into(mImg);
+            Glide.with(this).load(imageUrl).into(mImg);
         }
     }
 

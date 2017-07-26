@@ -105,7 +105,7 @@ public class WalletInfoActivity extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                LogUtils.d("nihao","点击我了");
+                LogUtils.d("nihao", "点击我了");
 //                rechargeBikeFare();
                 choosePrepaid();
                 break;
@@ -130,7 +130,7 @@ public class WalletInfoActivity extends BaseActivity {
             startActivity(new Intent(WalletInfoActivity.this, RechargeDepositActivity.class));
         } else if (mCashStatus == 0 && mStatus == 1) {
             popupDialog();
-        }else if(mCashStatus == 1 && mStatus == 0){
+        } else if (mCashStatus == 1 && mStatus == 0) {
             startActivity(new Intent(WalletInfoActivity.this, IdentityAuthenticationActivity.class));
         }
     }
@@ -255,14 +255,28 @@ public class WalletInfoActivity extends BaseActivity {
             @Override
             public void onResponse(String response, int id) {
                 LogUtils.d("退款", response);
-                StyledDialog.dismissLoading();
                 //{"resultStatus":"0"}
-                if (JsonUtils.isSuccess(response)) {
-                    SPUtils.put(App.getContext(), "cashStatus", 0);
-                    startActivity(new Intent(WalletInfoActivity.this, ShowRefundResultsActivity.class));
-                } else {
-//                    startActivity(new Intent(WalletInfoActivity.this, ShowRefundResultsActivity.class));
-                    ToastUtils.showShort(WalletInfoActivity.this, getString(R.string.refund_error));
+                StyledDialog.dismissLoading();
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String resultStatus = object.optString("resultStatus");
+                    switch (resultStatus) {
+                        case "0":
+                            ToastUtils.showShort(WalletInfoActivity.this, getString(R.string.refund_error));
+                            break;
+                        case "1":
+                            SPUtils.put(App.getContext(), "cashStatus", 0);
+                            startActivity(new Intent(WalletInfoActivity.this, ShowRefundResultsActivity.class));
+                            break;
+                        case "2":
+
+                            break;
+                        case "3":
+                            ToastUtils.showShort(WalletInfoActivity.this, getString(R.string.refund_tip));
+                            break;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
                 refundPopuwindow.dismiss();
             }
