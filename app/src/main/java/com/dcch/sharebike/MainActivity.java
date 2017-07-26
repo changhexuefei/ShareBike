@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,6 +42,7 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.Projection;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.geocode.GeoCodeResult;
@@ -99,6 +102,7 @@ import com.dcch.sharebike.overlayutil.WalkingRouteOverlay;
 import com.dcch.sharebike.service.GPSService;
 import com.dcch.sharebike.service.NettyService;
 import com.dcch.sharebike.utils.AES;
+import com.dcch.sharebike.utils.AppUtils;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
@@ -115,11 +119,7 @@ import com.hss01248.dialog.StyledDialog;
 import com.hss01248.dialog.bottomsheet.BottomSheetBean;
 import com.hss01248.dialog.interfaces.MyDialogListener;
 import com.hss01248.dialog.interfaces.MyItemDialogListener;
-import com.iflytek.autoupdate.IFlytekUpdate;
-import com.iflytek.autoupdate.IFlytekUpdateListener;
-import com.iflytek.autoupdate.UpdateConstants;
-import com.iflytek.autoupdate.UpdateErrorCode;
-import com.iflytek.autoupdate.UpdateInfo;
+import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.FileCallBack;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -242,7 +242,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private String mHeadactivityUrl;
     private String mTitle;
     private float zoom;
-
+    LatLng startLng, finishLng;
+    private double moveDist = 50.0;
 
     public MainActivity() {
     }
@@ -273,7 +274,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         initMyLocation();
         // 初始化传感器
         initOritationListener();
-
         if (SPUtils.isLogin()) {
             getHeadAdvertisement();
             getPopAdvertisement();
@@ -398,28 +398,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     //自动更新的方法
     private void updataApp() {
-        //初始化自动更新对象
-        final IFlytekUpdate updManager = IFlytekUpdate.getInstance(App.getContext());
-        //开启调试模式，默认不开启
-        updManager.setDebugMode(false);
-        //开启wifi环境下检测更新，仅对自动更新有效，强制更新则生效
-        updManager.setParameter(UpdateConstants.EXTRA_WIFIONLY, "true");
-        //设置通知栏使用应用icon，详情请见示例
-        updManager.setParameter(UpdateConstants.EXTRA_NOTI_ICON, "true");
-        //设置更新提示类型，默认为通知栏提示
-        updManager.setParameter(UpdateConstants.EXTRA_STYLE, UpdateConstants.UPDATE_UI_DIALOG);
-        //自动更新回调方法，详情参考demo
-        IFlytekUpdateListener updateListener = new IFlytekUpdateListener() {
-            @Override
-            public void onResult(int errorcode, UpdateInfo result) {
-                if (errorcode == UpdateErrorCode.OK && result != null) {
-                    updManager.showUpdateInfo(MainActivity.this, result);
-                }
-            }
-        };
-        // 启动自动更新
-//        updManager.autoUpdate(this, updateListener);
-        updManager.forceUpdate(this, updateListener);
+        UpdateHelper.getInstance().init(getApplicationContext(), Color.parseColor("#0A93DB"));
+        UpdateHelper.getInstance().setDebugMode(false);
+        long intervalMillis = 10 * 1000L;           //第一次调用startUpdateSilent出现弹窗后，如果10秒内进行第二次调用不会查询更新
+        UpdateHelper.getInstance().autoUpdate(AppUtils.getPackageName(this), false, intervalMillis);
     }
 
     //进入主页面检查客户是否有预约订单的方法
@@ -574,6 +556,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     protected void initListener() {
         //地图状态改变相关监听
         mMap.setOnMapStatusChangeListener(this);
+//        mMapView.setOnTouchListener(this);
     }
 
 
@@ -1312,7 +1295,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     @Override
     public void onMapStatusChangeStart(MapStatus mapStatus) {
-
+        startLng = mapStatus.target;
     }
 
     @Override
@@ -1322,13 +1305,26 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     @Override
     public void onMapStatusChangeFinish(MapStatus mapStatus) {
-//        zoom = mapStatus.zoom;
-
-        LogUtils.d("移动", isShowMenu + "\n" + isShowBookOrder + "\n" + isShowRideOrder);
-        if (!isShowMenu && !isShowBookOrder && !isShowRideOrder) {
-            LogUtils.d("移动", "进来了");
-            updateMapStatus(mapStatus);
+        finishLng = mapStatus.target;
+        if (startLng.latitude != finishLng.latitude
+                || startLng.longitude != finishLng.longitude) {
+            Projection ject = mMap.getProjection();
+            Point startPoint = ject.toScreenLocation(startLng);
+            Point finishPoint = ject.toScreenLocation(finishLng);
+            double x = Math.abs(finishPoint.x - startPoint.x);
+            double y = Math.abs(finishPoint.y - startPoint.y);
+            LogUtils.d("移动", x + "\n" + y);
+            if (x > moveDist || y > moveDist) {
+                //在这处理滑动
+                LogUtils.d("移动", isShowMenu + "\n" + isShowBookOrder + "\n" + isShowRideOrder);
+                if (!isShowMenu && !isShowBookOrder && !isShowRideOrder) {
+                    LogUtils.d("移动", "进来了");
+                    updateMapStatus(mapStatus);
+                }
+            }
         }
+
+
     }
 
     private void updateMapStatus(MapStatus mapStatus) {
@@ -1408,6 +1404,11 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     }
 
+//    @Override
+//    public boolean onTouch(View v, MotionEvent event) {
+//        return mGestureDetector.onTouchEvent(event);
+//    }
+
     //实现定位回调监听
     private class MyLocationListener implements BDLocationListener {
         @Override
@@ -1441,10 +1442,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 isFristLocation = false;
                 LatLng ll = new LatLng(location.getLatitude(),
                         location.getLongitude());
-                MapStatus.Builder builder = new MapStatus.Builder();
-                //地图缩放比设置为18
-                builder.target(ll).zoom(18.0f);
-                mMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+//                MapStatus.Builder builder = new MapStatus.Builder();
+//                //地图缩放比设置为18
+//                builder.target(ll).zoom(18.0f);
+                mMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder().target(ll).zoom(18.0f).build()));
                 mChangeLatitude = location.getLatitude();
                 mChangeLongitude = location.getLongitude();
                 mMCenterLatLng = new LatLng(mChangeLatitude, mChangeLongitude);
@@ -1625,9 +1626,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             mToken = (String) SPUtils.get(App.getContext(), "token", "");
             uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
             if (uID != null && mToken != null) {
-//                byte[] decryptFrom = AESUtil.parseHexStr2Byte((String) SPUtils.get(App.getContext(), "phone", ""));
-//                byte[] decryptResult = AESUtil.decrypt(decryptFrom, MyContent.key);
-//                phone = new String(decryptResult);
                 phone = AES.decrypt((String) SPUtils.get(App.getContext(), "phone", ""), MyContent.key);
                 cashStatus = (Integer) SPUtils.get(App.getContext(), "cashStatus", 0);
                 status = (Integer) SPUtils.get(App.getContext(), "status", 0);
@@ -1648,11 +1646,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 //                getBikeInfo(mCurrentLantitude, mCurrentLongitude);
 //                setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
         }
-//        if (menuWindow == null && bookBikePopupWindow == null && orderPopupWindow == null) {
-//            LogUtils.d("这里", "6");
-//            addOverlays(bikeInfos);
-////          setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
-//        }
+
     }
 
     @Override
@@ -2028,7 +2022,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private void reverseGeoCoder(LatLng latlng) {
         mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(latlng));
     }
-
 
 
 }

@@ -12,6 +12,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
  * Created by Administrator on 2017/4/1 0001.
  */
 
+@SuppressWarnings("ALL")
 public class AppRegister extends BroadcastReceiver {
 
     @Override

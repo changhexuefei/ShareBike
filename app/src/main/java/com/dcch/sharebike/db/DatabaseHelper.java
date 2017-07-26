@@ -13,6 +13,7 @@ import com.dcch.sharebike.utils.LogUtils;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int VERSION = 1;
     private static final String DATABASE_NAME = "shareBike.db";
+    private static String DB_PATH = "/data/data/com.dcch.sharebike/databases/";
     private SQLiteDatabase mDatabase;
     private static final String TABLE_NAME = "routePoint";
 

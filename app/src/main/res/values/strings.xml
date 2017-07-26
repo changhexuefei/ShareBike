@@ -16,9 +16,6 @@
     <string name="share_title">麒麟单车</string>
     <string name="people_center">个人中心</string>
     <string name="unlocking">扫码开锁</string>
-    <string name="all">全部单车</string>
-    <string name="one">一类车</string>
-    <string name="two">二类车</string>
     <string name="mobile_tip_one">原手机号退押金(1-7个工作日到帐)</string>
     <string name="mobile_tip_two">更换手机号，登录重新交押金</string>
     <string name="mobile_tip_there">车费余额，行程等信息不变</string>
@@ -41,18 +38,12 @@
     <string name="inviteFriends">邀请好友</string>
     <string name="inviteTipTwo">来一场说走就走的麒行之旅</string>
     <string name="inviteTipOne">邀请好友一起骑行</string>
-    <string name="inviteTipThere">您的专属邀请码为：</string>
-    <string name="inviteUpdateCode">修改</string>
     <string name="inviteShare">分享到</string>
     <string name="guide_tips">立刻体验</string>
     <string name="to_identity">去认证</string>
-    <string name="register_OK">注册完成</string>
-    <string name="realName_identity">实名认证</string>
-    <string name="deposit_pay">押金交纳</string>
     <string name="phone_verification">手机验证</string>
     <string name="unlock_fare">关锁不结束计费</string>
     <string name="feedback_detail">反馈详情</string>
-    <string name="agreement">用车服务条款</string>
     <string name="ride_result">骑行结束页</string>
     <string name="bike_service_regulations">用车服务条例</string>
     <string name="realName_identity_title">实名认证</string>
@@ -63,7 +54,6 @@
     <string name="company_phone">4006606215</string>
     <string name="phone">联系电话</string>
     <string name="weixinpublic">微信公众号</string>
-    <string name="public_name">麒麟单车</string>
     <string name="about_us">关于我们</string>
     <string name="qilinbikes">麒麟单车</string>
     <string name="publicity">绿色出行，麒乐无穷</string>
@@ -97,16 +87,12 @@
     <string name="capture_tips">对准车上的二维码</string>
     <string name="manual_input">输入单车编号</string>
     <string name="my_location">我的位置</string>
-    <string name="error_info">服务器正忙，请稍后再试！</string>
     <string name="authen_ok">注册完成</string>
     <string name="person_info">个人信息</string>
     <string name="recharge_bike_fare">车费充值</string>
     <string name="unlock_progress">扫码开锁</string>
     <string name="usual_address">常用地址</string>
-    <string name="app_tip">提示</string>
-    <string name="pay_result_callback_msg" formatted="false">微信支付结果：%s</string>
     <!-- WXPayEntryActivity -->
-    <string name="pay_result_tip">这个界面用于显示第三方app通过微信支付的结果</string>
     <string name="cancel_tip">每天可预约5次，确认要取消吗?</string>
     <string name="cancel_title">取消预约</string>
     <string name="transaction_tip">您还没有充值，去充值吧</string>
@@ -114,14 +100,11 @@
     <string name="transaction_detail">明细</string>
     <string name="customer_service">客户服务</string>
     <string name="refund_tips">押金退还时间为1-7个工作日，在此期间您的账号将无法用车。是否仍然退押金？</string>
-    <string name="coupon_tips">麒麟单车骑行券</string>
     <string name="refund_cancel">取消</string>
     <string name="refund_cash_pledge">退押金</string>
     <string name="journey_detail">行程详情</string>
     <string name="ride_disance">骑行距离</string>
     <string name="consumption">热量消耗</string>
-    <string name="splash_tip_one">绿色出行</string>
-    <string name="splash_tip_two">麒乐无穷</string>
     <string name="cashPledge_explain">押金说明</string>
     <string name="coupon_explain">优惠券规则</string>
     <string name="transport_regulations">《用车服务条例》</string>
@@ -150,10 +133,6 @@
     <string name="_3_tip">多次尝试仍开锁失败，请描述现象并提交，麒麟单车会因您的关怀越变越好</string>
     <string name="coupon_tip">没有可用优惠券</string>
     <string name="journey_cost">行程总费用</string>
-    <string name="coupon_deduction">优惠券抵扣</string>
-    <string name="riding_result_tip_one">拍停车照或分享行程增加信用分</string>
-    <string name="taking_pictures">停车拍照</string>
-    <string name="share_schedule">分享行程</string>
     <string name="ride_time">骑行时间</string>
     <string name="from_deposit">押金充值</string>
     <string name="cell_phone_number">手机号</string>
@@ -174,11 +153,8 @@
     <string name="server_tip">网络正忙，请稍后再试！</string>
     <string name="no_has_bikeNo">该车辆编号不存在，请重新输入！</string>
     <string name="forced_to_logoff">您的账号在其他设备上登录，您被迫下线！</string>
-    <string name="being_use">我正在被使用！</string>
     <string name="trouble">我是故障车！</string>
     <string name="preengaged">我已经被预约！</string>
-    <string name="switching_network_tip">你当前使用的手机网络,请切换到无线网络进行下载</string>
-    <string name="recharge_bikefare">按需输入充值金额，最低1元</string>
     <string name="transaction_tip_two">交易成功</string>
     <string name="inputbikefare_tip">请选择你真实的用车费用</string>
     <string name="uploadimage_tip">上传照片</string>
@@ -189,7 +165,6 @@
     <string name="_2_0">2.0元</string>
     <string name="_2_5">2.5元</string>
     <string name="_3_0">3.0元</string>
-    <string name="pay_now">立即支付</string>
     <string name="feedbacktime">反馈时间</string>
     <string name="feedbackcost">你选择的用车费用</string>
     <string name="costnum">0.5元</string>
@@ -203,7 +178,6 @@
     <string name="go_biking">去骑车</string>
     <string name="congratulation">恭喜您注册成功!</string>
     <string name="_100">信用积分 100</string>
-    <string name="come_on">加油</string>
     <string name="official_website">官方网站</string>
     <string name="_70bikes_cn">70bikes.cn</string>
     <string name="nickName">昵称</string>
@@ -267,7 +241,6 @@
     <string name="complete_register">完成注册即可骑单车</string>
     <string name="login_biking">立即登录即可骑单车</string>
     <string name="sorry_no_result">抱歉，未找到结果</string>
-    <string name="server_is_busy">服务器正忙，请稍后再试！</string>
     <string name="booking_overfulfil">抱歉，您今天已经预约5次，明天再来吧。</string>
     <string name="booking">正在预定..</string>
     <string name="cancel_fail">取消失败！</string>
@@ -300,7 +273,6 @@
     <string name="time_limit">有效期至：</string>
     <string name="report">举报违停</string>
     <string name="other_question">其他问题</string>
-    <string name="booking_riding_tip">在预约和骑行过程中，此功能不可用！</string>
     <string name="not_sufficient_funds">余额不足，请充值后骑行！</string>
     <string name="login_error">登录失败，网络异常！</string>
     <string name="verifyCodeerror">验证码错误</string>

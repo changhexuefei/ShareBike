@@ -3,9 +3,6 @@ package com.dcch.sharebike.app;
 import com.github.moduth.blockcanary.BlockCanaryContext;
 import com.github.moduth.blockcanary.android.BuildConfig;
 
-/**
- * Created by gao on 2017/5/11.
- */
 
 public class AppBlockCanaryContext  extends BlockCanaryContext {
 

@@ -8,14 +8,12 @@
     tools:context="com.dcch.sharebike.moudle.login.fragment.UnLoginFragment">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
         android:transitionName="translate_view">
 
         <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/detail_image_height"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
@@ -49,7 +47,6 @@
                     android:textColor="#ffffff"/>
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/circleImageView"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_gravity="center_horizontal"
@@ -59,7 +56,6 @@
                     app:civ_border_width="2dp"/>
 
                 <ImageView
-                    android:id="@+id/detail_bar_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
@@ -113,7 +109,6 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_margin="10dp"

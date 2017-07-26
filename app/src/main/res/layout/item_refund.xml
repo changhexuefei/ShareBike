@@ -28,7 +28,6 @@
     <LinearLayout
         android:layout_marginBottom="10dp"
         android:layout_below="@+id/tv_tip"
-        android:id="@+id/btn_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

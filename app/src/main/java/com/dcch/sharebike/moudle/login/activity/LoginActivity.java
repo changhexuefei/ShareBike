@@ -386,7 +386,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         if (TIME <= 0) {
             TIME = 60;
         }
-        getSecurityCode.setBackgroundColor(getColor(R.color.btn_bg));
+        getSecurityCode.setBackgroundColor(getResources().getColor(R.color.btn_bg));
         getSecurityCode.setClickable(false);
     }
 
@@ -395,7 +395,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void receiveRepeat(MessageEvent info) {
         LogUtils.d("输入", info.toString());
         getSecurityCode.setText(getString(R.string.regain_verifyCode));
-        getSecurityCode.setBackgroundColor(getColor(R.color.btn_bg_other));
+        getSecurityCode.setBackgroundColor(getResources().getColor(R.color.btn_bg_other));
         getSecurityCode.setClickable(true);
     }
 

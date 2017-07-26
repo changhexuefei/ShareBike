@@ -39,34 +39,12 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
-    <style name="NavPage">
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">fill_parent</item>
-        <item name="android:orientation">vertical</item>
-        <item name="android:gravity">center_horizontal</item>
-        <!-- <item name="android:background">@drawable/nav_page</item> -->
-        <item name="android:background">@color/navpage</item>
-
-    </style>
-
 
     <!-- 为 Theme 设置背景图 -->
     <style name="Splash_Theme" parent="AppTheme">
         <item name="android:windowBackground">@drawable/timg</item>
     </style>
 
-
-    <style name="titleStyle">
-        <item name="android:button">@null</item>
-        <item name="android:background">@drawable/selector_title_style</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">10dp</item>
-        <item name="android:paddingTop">-8dp</item>
-        <item name="android:paddingBottom">-8dp</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">#ffffff</item>
-    </style>
 
     <style name="rb_pay_type">
         <item name="android:gravity">center_vertical</item>

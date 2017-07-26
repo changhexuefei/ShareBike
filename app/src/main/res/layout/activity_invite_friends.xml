@@ -31,7 +31,6 @@
         android:textStyle="bold"/>
 
     <TextView
-        android:id="@+id/tv_tip_two"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_tip_one"
@@ -86,14 +85,12 @@
     <!--</RelativeLayout>-->
 
     <RelativeLayout
-        android:id="@+id/rl_tip"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_above="@+id/view_line"
         android:layout_marginTop="10dp">
 
         <TextView
-            android:id="@+id/shareArea"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"

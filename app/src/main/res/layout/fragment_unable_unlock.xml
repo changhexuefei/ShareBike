@@ -78,7 +78,6 @@
 
             <TextView
                 android:visibility="gone"
-                android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -97,7 +96,6 @@
                 android:textSize="16sp"/>
 
             <TextView
-                android:id="@+id/textView5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"

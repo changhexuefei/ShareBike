@@ -103,8 +103,8 @@ public class CouponListActivity extends BaseActivity {
     private void getCouponListInfo(String userId, String token) {
         Map<String, String> map = new HashMap<>();
         map.put("userId", userId);
-        map.put("token", mToken);
-        LogUtils.d("空空", userId + "\n" + mToken);
+        map.put("token", token);
+        LogUtils.d("空空", userId + "\n" + token);
         OkHttpUtils.post().url(Api.BASE_URL + Api.GETCOUPON).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {

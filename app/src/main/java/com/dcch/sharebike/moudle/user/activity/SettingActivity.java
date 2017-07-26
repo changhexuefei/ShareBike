@@ -3,6 +3,7 @@ package com.dcch.sharebike.moudle.user.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -14,16 +15,12 @@ import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
+import com.dcch.sharebike.utils.AppUtils;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
-import com.iflytek.autoupdate.IFlytekUpdate;
-import com.iflytek.autoupdate.IFlytekUpdateListener;
-import com.iflytek.autoupdate.UpdateConstants;
-import com.iflytek.autoupdate.UpdateErrorCode;
-import com.iflytek.autoupdate.UpdateInfo;
-import com.iflytek.autoupdate.UpdateType;
+import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
 
 import org.simple.eventbus.EventBus;
 
@@ -53,7 +50,6 @@ public class SettingActivity extends BaseActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    private IFlytekUpdate updManager;
 
 
     @Override
@@ -146,7 +142,6 @@ public class SettingActivity extends BaseActivity {
                         SPUtils.clear(App.getContext());
                         SPUtils.put(App.getContext(), "islogin", false);
                         SPUtils.put(App.getContext(), "isfirst", false);
-//                        SPUtils.put(App.getContext(), "isStartGuide", true);
                         startActivity(i1);
                         finish();
                     }
@@ -155,35 +150,8 @@ public class SettingActivity extends BaseActivity {
     }
 
     private void checkUpDate() {
-        //初始化自动更新对象
-        final IFlytekUpdate updManager = IFlytekUpdate.getInstance(App.getContext());
-        //开启调试模式，默认不开启
-        updManager.setDebugMode(true);
-        //开启wifi环境下检测更新，仅对自动更新有效，强制更新则无效
-        updManager.setParameter(UpdateConstants.EXTRA_WIFIONLY, "true");
-        //设置通知栏使用应用icon，详情请见示例
-        updManager.setParameter(UpdateConstants.EXTRA_NOTI_ICON, "true");
-        //设置更新提示类型，默认为通知栏提示
-        updManager.setParameter(UpdateConstants.EXTRA_STYLE, UpdateConstants.UPDATE_UI_DIALOG);
-        //自动更新回调方法，详情参考demo
-        IFlytekUpdateListener updateListener = new IFlytekUpdateListener() {
-            @Override
-            public void onResult(int errorcode, final UpdateInfo result) {
-
-                if (errorcode == UpdateErrorCode.OK && result != null) {
-                    if (result.getUpdateType() == UpdateType.NoNeed) {
-                        showTip("当前为最新版本");
-                        return;
-                    }
-                    updManager.showUpdateInfo(SettingActivity.this, result);
-                } else {
-                    showTip("请求更新失败");
-                }
-            }
-        };
-// 启动自动更新
-//        updManager.autoUpdate(this, updateListener);
-        updManager.forceUpdate(this, updateListener);
+        UpdateHelper.getInstance().init(getApplicationContext(), Color.parseColor("#0A93DB"));
+        UpdateHelper.getInstance().manualUpdate(AppUtils.getPackageName(this));
 
     }
 

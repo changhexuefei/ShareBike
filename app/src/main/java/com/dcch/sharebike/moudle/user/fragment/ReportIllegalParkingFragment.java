@@ -178,8 +178,8 @@ public class ReportIllegalParkingFragment extends Fragment {
         map.put("bicycleNo", bikeNo);
         map.put("faultDescription", contentText);
         map.put("selectFaultDescription", selectResult);
-        map.put("imageFile", mImageResult);
-        map.put("token", mToken);
+        map.put("imageFile", imageResult);
+        map.put("token", token);
         OkHttpUtils.post()
                 .url(Api.BASE_URL + Api.ADDTROUBLEORDER)
                 .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)

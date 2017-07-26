@@ -134,7 +134,6 @@
         </RelativeLayout>
 
         <ImageView
-            android:id="@+id/capture_mask_left"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_above="@+id/capture_mask_bottom"
@@ -145,7 +144,6 @@
             android:contentDescription="@string/desc"/>
 
         <ImageView
-            android:id="@+id/capture_mask_right"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_above="@+id/capture_mask_bottom"

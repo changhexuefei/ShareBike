@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/activity_recharge"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:context="com.dcch.sharebike.moudle.login.activity.RechargeActivity">
@@ -85,7 +84,6 @@
             android:background="@color/white">
 
             <TextView
-                android:id="@+id/ali"
                 style="@style/rb_pay_type"
                 android:drawableLeft="@drawable/alipay_ic"
                 android:text="@string/zhifubao"/>
@@ -148,7 +146,6 @@
         android:text="@string/tip1"/>
 
     <TextView
-        android:id="@+id/text3"
         style="@style/recharge_text_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

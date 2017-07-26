@@ -22,8 +22,8 @@ android {
         applicationId "com.dcch.sharebike"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 14
-        versionName "1.0.6"
+        versionCode 13
+        versionName "1.0.5"
         multiDexEnabled true
         ndk {
             //选择要添加的对应cpu类型的.so库。
@@ -147,6 +147,7 @@ dependencies {
     releaseCompile 'com.github.moduth:blockcanary-no-op:1.2.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     compile 'com.android.support:support-annotations:26.0.0-alpha1'
+    compile files('libs/360update-7.0.3.jar')
 }
 
 

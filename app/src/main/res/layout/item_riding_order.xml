@@ -70,7 +70,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/ride_distance_area"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/ride_time_area"
@@ -151,7 +150,6 @@
 
 
         <TextView
-            android:id="@+id/tv_show2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
