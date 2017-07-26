@@ -1,5 +1,6 @@
 package com.dcch.sharebike.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -10,6 +11,7 @@ import android.widget.TextView;
  * Created by Administrator on 2017/6/16 0016.
  */
 
+@SuppressLint("AppCompatCustomView")
 public class MarqueeTextView extends TextView
 {
 

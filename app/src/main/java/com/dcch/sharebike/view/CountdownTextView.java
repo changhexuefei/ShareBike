@@ -1,5 +1,6 @@
 package com.dcch.sharebike.view;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Handler;
@@ -17,6 +18,7 @@ import java.util.TimerTask;
  * Created by Administrator on 2017/2/24 0024.
  */
 
+@SuppressLint("AppCompatCustomView")
 public class CountdownTextView extends TextView {
 
     long mSeconds;

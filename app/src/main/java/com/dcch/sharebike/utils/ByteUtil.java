@@ -3,6 +3,8 @@ package com.dcch.sharebike.utils;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import static java.lang.Long.BYTES;
+
 /**
  * 处理各种类型转换
  */
@@ -386,7 +388,7 @@ public class ByteUtil {
         return ByteBuffer.wrap(bytes).order(ByteOrder.BIG_ENDIAN).getShort();
     }
 
-    private static ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+    private static ByteBuffer buffer = ByteBuffer.allocate(BYTES);
 
     public static byte[] longToBytes(long x) {
         buffer.putLong(0, x);

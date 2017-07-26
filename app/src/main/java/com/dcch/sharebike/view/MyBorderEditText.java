@@ -1,5 +1,6 @@
 package com.dcch.sharebike.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -11,6 +12,7 @@ import android.widget.EditText;
  * 自定义TextView
  */
 
+@SuppressLint("AppCompatCustomView")
 public class MyBorderEditText extends EditText {
     Paint paint = new Paint();
     public MyBorderEditText(Context context, AttributeSet attrs) {
