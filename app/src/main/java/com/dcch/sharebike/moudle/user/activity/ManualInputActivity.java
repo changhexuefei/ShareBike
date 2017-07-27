@@ -25,6 +25,7 @@ import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.DensityUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.NetUtils;
+import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.dcch.sharebike.view.CodeInputEditText;
 import com.hss01248.dialog.StyledDialog;
@@ -224,9 +225,7 @@ public class ManualInputActivity extends BaseActivity {
 
                             break;
                         case "2":
-                            ToastUtils.showShort(ManualInputActivity.this, getString(R.string.forced_to_logoff));
-                            startActivity(new Intent(ManualInputActivity.this, LoginActivity.class));
-                            finish();
+                            goToLogin();
                             break;
                         case "3":
                             clearTextView();
@@ -247,6 +246,16 @@ public class ManualInputActivity extends BaseActivity {
             }
         });
     }
+
+    private void goToLogin() {
+        ToastUtils.showShort(App.getContext(), getString(R.string.logged_in_other_devices));
+        startActivity(new Intent(this, LoginActivity.class));
+        SPUtils.put(App.getContext(), "islogin", false);
+        SPUtils.put(App.getContext(), "cashStatus", 0);
+        SPUtils.put(App.getContext(), "status", 0);
+        this.finish();
+    }
+
 
     private void clearTextView() {
         mManualInputArea.clearText();
