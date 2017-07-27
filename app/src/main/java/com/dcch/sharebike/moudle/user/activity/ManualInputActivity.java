@@ -142,7 +142,8 @@ public class ManualInputActivity extends BaseActivity {
                     return;
                 }
                 if (bikeNo != null && mToken != null) {
-                    StyledDialog.buildMdAlert(ManualInputActivity.this, "提示", "确定打开编号为" + bikeNo + "的车辆", new MyDialogListener() {
+
+                    StyledDialog.buildMdAlert(ManualInputActivity.this, "提示", "请确认您输入的车辆编号：" + bikeNo + "，是否正确?", new MyDialogListener() {
                         @Override
                         public void onFirst() {
                             if (NetUtils.isConnected(App.getContext())) {

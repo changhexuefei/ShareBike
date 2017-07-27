@@ -516,6 +516,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     mInstructions.setVisibility(View.VISIBLE);
                 }
             }
+
             @Override
             public boolean onMapPoiClick(MapPoi mapPoi) {
                 return false;
@@ -1574,6 +1575,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         Log.d("实验", "onResume+1");
         mMapView.onResume();
         if (SPUtils.isLogin()) {
+            mHeadAdvertisement.setVisibility(View.VISIBLE);
             mInstructions.setVisibility(View.GONE);
             mToken = (String) SPUtils.get(App.getContext(), "token", "");
             uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
@@ -1593,10 +1595,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             }
         } else {
             mInstructions.setVisibility(View.VISIBLE);
-            LogUtils.d("这里", "5");
-//            addOverlays(bikeInfos);
-//                getBikeInfo(mCurrentLantitude, mCurrentLongitude);
-//                setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
+            mHeadAdvertisement.setVisibility(View.GONE);
+//          setUserMapCenter(mCurrentLantitude, mCurrentLongitude);
         }
 
     }
