@@ -17,6 +17,7 @@
             android:id="@+id/back"
             android:layout_width="48dp"
             android:layout_height="match_parent"
+            android:contentDescription="@string/desc"
             android:padding="12dp"
             android:src="@mipmap/back"/>
 
@@ -31,6 +32,7 @@
             android:layout_width="48dp"
             android:layout_height="match_parent"
             android:layout_gravity="end"
+            android:contentDescription="@string/desc"
             android:padding="6dp"
             android:src="@mipmap/common_info"/>
 
@@ -60,6 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
+            android:contentDescription="@string/desc"
             android:src="@drawable/empty_view_img"/>
 
         <TextView
@@ -78,6 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="90dp"
+            android:contentDescription="@string/desc"
             android:src="@mipmap/network_unavailable_img"
             android:visibility="gone"/>
 

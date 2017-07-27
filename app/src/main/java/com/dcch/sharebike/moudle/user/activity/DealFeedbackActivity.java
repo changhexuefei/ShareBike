@@ -26,9 +26,10 @@ import com.sefford.circularprogressdrawable.CircularProgressDrawable;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+@SuppressWarnings("ALL")
 public class DealFeedbackActivity extends BaseActivity {
 
-    Animator currentAnimation;
+    private Animator currentAnimation;
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.toolbar)
@@ -43,7 +44,7 @@ public class DealFeedbackActivity extends BaseActivity {
     TextView mFeedbackDetail;
     @BindView(R.id.customer_service)
     Button mCustomerService;
-    CircularProgressDrawable drawable;
+    private CircularProgressDrawable drawable;
     @BindView(R.id.reminder)
     TextView mReminder;
     private String mRechargeNumber;

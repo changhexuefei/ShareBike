@@ -232,7 +232,7 @@ public class RechargeDepositActivity extends BaseActivity {
         });
     }
 
-    Handler handler = new Handler() {
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);

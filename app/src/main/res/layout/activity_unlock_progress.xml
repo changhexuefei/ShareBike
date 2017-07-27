@@ -11,11 +11,11 @@
     <include layout="@layout/toolbar"/>
 
     <RelativeLayout
-        android:layout_centerInParent="true"
-        android:layout_marginTop="100dp"
-        android:layout_below="@+id/toolbar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="100dp">
 
         <ImageView
             android:id="@+id/unlockIcon"
@@ -23,23 +23,24 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:background="@mipmap/bg_waiting_enable"
+            android:contentDescription="@string/desc"
             android:src="@mipmap/bg_waiting_disenable"/>
 
 
         <com.dcch.sharebike.view.MarqueeTextView
-            android:layout_centerInParent="true"
             android:id="@+id/menu_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:ellipsize="marquee"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
-            android:singleLine="true"
-            android:text="开锁中，请勿走开"
+            android:text="@string/unlocking_do_not_go_away"
             android:textColor="@color/white"
-            android:textSize="14sp">
+            android:textSize="14sp"
+            android:maxLines="1">
         </com.dcch.sharebike.view.MarqueeTextView>
 
     </RelativeLayout>

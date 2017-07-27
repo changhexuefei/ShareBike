@@ -83,9 +83,8 @@ public class Base64Decoder extends FilterInputStream {
             return decoded;  
         }  
         // Fourth char use previous two bits and all six new bits  
-        else if (mode == 3) {  
-            int decoded = ((carryOver << 6) + x) & 255;  
-            return decoded;  
+        else if (mode == 3) {
+            return ((carryOver << 6) + x) & 255;
         }  
         return -1; // can't actually reach this line  
     }  

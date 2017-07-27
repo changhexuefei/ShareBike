@@ -15,6 +15,7 @@
         android:layout_below="@+id/toolbar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
+        android:contentDescription="@string/desc"
         android:src="@mipmap/mobile_phone_ic"/>
 
     <TextView
@@ -56,16 +57,16 @@
 
     <Button
         android:id="@+id/replace_mobile_num"
-        android:textSize="14sp"
-        android:textColor="@color/common"
-        android:text="@string/chagePhoneNum"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="30dp"
-        android:background="@color/colorTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/colorTitle"
+        android:text="@string/chagePhoneNum"
+        android:textColor="@color/common"
+        android:textSize="14sp"/>
 
 
 </RelativeLayout>

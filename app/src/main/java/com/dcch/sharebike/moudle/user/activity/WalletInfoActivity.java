@@ -105,7 +105,6 @@ public class WalletInfoActivity extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                LogUtils.d("nihao", "点击我了");
 //                rechargeBikeFare();
                 choosePrepaid();
                 break;
@@ -162,7 +161,7 @@ public class WalletInfoActivity extends BaseActivity {
                 .show();
     }
 
-    View.OnClickListener refundViewOnClick = new View.OnClickListener() {
+    private final View.OnClickListener refundViewOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {

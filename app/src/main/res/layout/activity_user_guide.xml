@@ -103,7 +103,7 @@
             style="@style/user_guide_info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="unfind_bike"/>
+            android:text="@string/unfind_bike"/>
 
     </LinearLayout>
 

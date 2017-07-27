@@ -23,6 +23,7 @@
             android:layout_width="48dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
+            android:contentDescription="@string/desc"
             android:padding="14dp"
             android:src="@mipmap/back"/>
 

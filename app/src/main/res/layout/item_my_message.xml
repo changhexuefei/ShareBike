@@ -16,34 +16,35 @@
         android:textSize="12sp"/>
 
     <ImageView
-        android:scaleType="fitXY"
         android:id="@+id/message_image"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_below="@+id/message_theme"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginTop="5dp"
+        android:contentDescription="@string/desc"
+        android:scaleType="fitXY"/>
 
     <!--<TextView-->
-        <!--android:id="@+id/active_time"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@+id/message_image"-->
-        <!--android:layout_marginTop="5dp"-->
-        <!--android:text="活动时间："-->
-        <!--android:textSize="16sp"/>-->
+    <!--android:id="@+id/active_time"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@+id/message_image"-->
+    <!--android:layout_marginTop="5dp"-->
+    <!--android:text="活动时间："-->
+    <!--android:textSize="16sp"/>-->
 
     <!--<TextView-->
-        <!--android:id="@+id/start_time"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignTop="@+id/active_time"-->
-        <!--android:layout_toRightOf="@+id/active_time"/>-->
+    <!--android:id="@+id/start_time"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignTop="@+id/active_time"-->
+    <!--android:layout_toRightOf="@+id/active_time"/>-->
 
     <!--<TextView-->
-        <!--android:id="@+id/end_time"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignTop="@+id/active_time"-->
-        <!--android:layout_toRightOf="@+id/start_time"/>-->
+    <!--android:id="@+id/end_time"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignTop="@+id/active_time"-->
+    <!--android:layout_toRightOf="@+id/start_time"/>-->
 
 </RelativeLayout>

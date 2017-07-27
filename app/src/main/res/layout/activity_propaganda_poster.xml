@@ -20,6 +20,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="30dp"
+            android:contentDescription="@string/desc"
             android:scaleType="fitXY"/>
 
 
@@ -29,6 +30,7 @@
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="8dp"
+            android:contentDescription="@string/desc"
             android:src="@mipmap/hintcard_close"/>
     </RelativeLayout>
 

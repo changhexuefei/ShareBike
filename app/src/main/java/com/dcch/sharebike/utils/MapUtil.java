@@ -53,8 +53,7 @@ public class MapUtil {
     public static String getDateFromMillisecond(Long millisecond) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date(millisecond);
-        String dateStr = simpleDateFormat.format(date);
-        return dateStr;
+        return simpleDateFormat.format(date);
     }
 
     //将TextView中的图片转化为规定大小的方法
@@ -80,8 +79,7 @@ public class MapUtil {
 
     public static int stringToInt(String string) {
         String str = string.substring(0, string.indexOf("."));
-        int intgeo = Integer.parseInt(str);
-        return intgeo;
+        return Integer.parseInt(str);
     }
 
     //获取系统的北京时间
@@ -89,8 +87,7 @@ public class MapUtil {
         Date currentTime = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         formatter.setTimeZone(TimeZone.getTimeZone("GMT+08"));
-        String dateString = formatter.format(currentTime);
-        return dateString;
+        return formatter.format(currentTime);
     }
 
     //计算系统时间和车辆预定时间的时间差
@@ -140,9 +137,8 @@ public class MapUtil {
     public static double[] gaoDeToBaidu(double gd_lon, double gd_lat) {
         double[] bd_lat_lon = new double[2];
         double PI = 3.14159265358979324 * 3000.0 / 180.0;
-        double x = gd_lon, y = gd_lat;
-        double z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * PI);
-        double theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * PI);
+        double z = Math.sqrt(gd_lon * gd_lon + gd_lat * gd_lat) + 0.00002 * Math.sin(gd_lat * PI);
+        double theta = Math.atan2(gd_lat, gd_lon) + 0.000003 * Math.cos(gd_lon * PI);
         bd_lat_lon[0] = z * Math.cos(theta) + 0.0065;
         bd_lat_lon[1] = z * Math.sin(theta) + 0.006;
         return bd_lat_lon;

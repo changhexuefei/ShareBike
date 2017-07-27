@@ -35,6 +35,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginLeft="20dp"
+            android:contentDescription="@string/desc"
             android:src="@mipmap/report_violation_default"/>
 
         <TextView
@@ -48,12 +49,12 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:orientation="vertical"
         android:id="@+id/select_bikefare"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/select_photo_area"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_tips"
@@ -66,18 +67,18 @@
             android:textColor="@color/recharge_amount_color"/>
 
         <!--<EditText-->
-            <!--android:id="@+id/input_moneySum"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="40dp"-->
-            <!--android:layout_below="@+id/tv20"-->
-            <!--android:layout_marginLeft="15dp"-->
-            <!--android:layout_marginRight="15dp"-->
-            <!--android:background="#e1dede"-->
-            <!--android:gravity="center"-->
-            <!--android:hint="@string/recharge_bikefare"-->
-            <!--android:inputType="number"-->
-            <!--android:textSize="12sp"-->
-            <!--android:visibility="gone"/>-->
+        <!--android:id="@+id/input_moneySum"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:layout_below="@+id/tv20"-->
+        <!--android:layout_marginLeft="15dp"-->
+        <!--android:layout_marginRight="15dp"-->
+        <!--android:background="#e1dede"-->
+        <!--android:gravity="center"-->
+        <!--android:hint="@string/recharge_bikefare"-->
+        <!--android:inputType="number"-->
+        <!--android:textSize="12sp"-->
+        <!--android:visibility="gone"/>-->
         <RadioGroup
             android:id="@+id/rg_rec_rg_1"
             style="@style/rg_money"

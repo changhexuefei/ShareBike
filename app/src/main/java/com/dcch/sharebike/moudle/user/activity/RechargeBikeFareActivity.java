@@ -81,9 +81,9 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
     LinearLayout pay;
     @BindView(R.id.btn_rbf_recharge)
     Button btnRbfRecharge;
-    String rechargeNumber = "";
-    String uID;
-    String ipAddress = "";
+    private String rechargeNumber = "";
+    private String uID;
+    private String ipAddress = "";
 
     private static final int SDK_PAY_FLAG = 1;
     //    private static final int SDK_AUTH_FLAG = 2;
@@ -335,7 +335,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         }
     }
 
-    Handler handler = new Handler() {
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);

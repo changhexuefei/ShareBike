@@ -65,35 +65,30 @@ public class OtherQuestionFragment extends Fragment {
                 if(ClickUtils.isFastClick()){
                     return;
                 }
-//                ToastUtils.showShort(getContext(),"发现故障");
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.customerService, new CycleFailureFragment()).commit();
                 break;
             case R.id.unlock:
                 if(ClickUtils.isFastClick()){
                     return;
                 }
-//                ToastUtils.showShort(getContext(),"开不了锁");
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.customerService, new UnableUnlockFragment()).commit();
                 break;
             case R.id.FuserAgreement:
                 if(ClickUtils.isFastClick()){
                     return;
                 }
-//                ToastUtils.showShort(getContext(),"用户协议");
                 startActivity(new Intent(getActivity(), UserAgreementActivity.class));
                 break;
             case R.id.FcashPledgeExplain:
                 if(ClickUtils.isFastClick()){
                     return;
                 }
-//                ToastUtils.showShort(getContext(),"充值协议");
                 startActivity(new Intent(getActivity(), CashPledgeExplainActivity.class));
                 break;
             case R.id.FrechargeAgreement:
                 if(ClickUtils.isFastClick()){
                     return;
                 }
-//                ToastUtils.showShort(getContext(),"发现故障");
                 startActivity(new Intent(getActivity(), RechargeAgreementActivity.class));
                 break;
         }

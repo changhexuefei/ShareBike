@@ -25,7 +25,7 @@
         android:layout_below="@+id/dealResult"
         android:layout_marginTop="5dp"
         android:gravity="center"
-        android:text="2017-02-22  17:00"
+        android:text="@string/_2017_02_22_17_00"
         android:textSize="14sp"/>
 
 
@@ -36,7 +36,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/dealResult"
         android:layout_marginRight="20dp"
-        android:text="1元"
+        android:text="@string/trade_1"
         android:textColor="@color/colorTitle"
         android:textSize="16sp"/>
 

@@ -17,4 +17,5 @@ public class MyContent {
     public static final int TCP_PORT = 8899;
 //        public static final int TCP_PORT = 18899;
     public static final String BOUNDARY = "ZnGpDtePMx0KrHh_G0X99Yef9r8JZsRJSXC";
+    public static final String APPURL = "http://a.app.qq.com/o/simple.jsp?pkgname=com.dcch.sharebike";
 }

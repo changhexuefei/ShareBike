@@ -43,6 +43,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 
+@SuppressWarnings("ALL")
 public class ManualInputActivity extends BaseActivity {
 
     @BindView(R.id.back)
@@ -78,7 +79,7 @@ public class ManualInputActivity extends BaseActivity {
     }
 
     //将TextView中的图片转化为规定大小的方法
-    public void initDrawable(TextView v) {
+    private void initDrawable(TextView v) {
         Drawable drawable = v.getCompoundDrawables()[1];
         drawable.setBounds(0, 0, DensityUtils.dp2px(ManualInputActivity.this, 50), DensityUtils.dp2px(ManualInputActivity.this, 50));
         v.setCompoundDrawables(null, drawable, null, null);
@@ -153,7 +154,6 @@ public class ManualInputActivity extends BaseActivity {
 
                         @Override
                         public void onSecond() {
-                            return;
                         }
                     }).show();
 
@@ -187,51 +187,58 @@ public class ManualInputActivity extends BaseActivity {
                 try {
                     JSONObject object = new JSONObject(response);
                     String resultStatus = object.optString("resultStatus");
-                    if (resultStatus.equals("1")) {
-                        switch (mTag) {
-                            case "main": {
-                                Intent bikeNoIntent = new Intent(ManualInputActivity.this, UnlockProgressActivity.class);
-                                EventBus.getDefault().post(new CodeEvent(bikeNo), "bikeNo");
-                                startActivity(bikeNoIntent);
-                                break;
+                    switch (resultStatus) {
+                        case "1":
+                            switch (mTag) {
+                                case "main": {
+                                    Intent bikeNoIntent = new Intent(ManualInputActivity.this, UnlockProgressActivity.class);
+                                    EventBus.getDefault().post(new CodeEvent(bikeNo), "bikeNo");
+                                    startActivity(bikeNoIntent);
+                                    break;
+                                }
+                                case "unable": {
+                                    Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
+                                    startActivity(bikeNoIntent);
+                                    EventBus.getDefault().post(new CodeEvent(bikeNo), "unable_bikeNo");
+                                    break;
+                                }
+                                case "reports": {
+                                    Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
+                                    startActivity(bikeNoIntent);
+                                    EventBus.getDefault().post(new CodeEvent(bikeNo), "report_bikeNo");
+                                    break;
+                                }
+                                case "fail": {
+                                    Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
+                                    startActivity(bikeNoIntent);
+                                    EventBus.getDefault().post(new CodeEvent(bikeNo), "fail_bikeNo");
+                                    break;
+                                }
                             }
-                            case "unable": {
-                                Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
-                                startActivity(bikeNoIntent);
-                                EventBus.getDefault().post(new CodeEvent(bikeNo), "unable_bikeNo");
-                                break;
-                            }
-                            case "reports": {
-                                Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
-                                startActivity(bikeNoIntent);
-                                EventBus.getDefault().post(new CodeEvent(bikeNo), "report_bikeNo");
-                                break;
-                            }
-                            case "fail": {
-                                Intent bikeNoIntent = new Intent(ManualInputActivity.this, CustomerServiceActivity.class);
-                                startActivity(bikeNoIntent);
-                                EventBus.getDefault().post(new CodeEvent(bikeNo), "fail_bikeNo");
-                                break;
-                            }
-                        }
-                        finish();
-                    } else if (resultStatus.equals("0")) {
-                        clearTextView();
-                        ToastUtils.showShort(ManualInputActivity.this, getString(R.string.no_has_bikeNo));
+                            finish();
+                            break;
+                        case "0":
+                            clearTextView();
+                            ToastUtils.showShort(ManualInputActivity.this, getString(R.string.no_has_bikeNo));
 
-                    } else if (resultStatus.equals("2")) {
-                        ToastUtils.showShort(ManualInputActivity.this, getString(R.string.forced_to_logoff));
-                        startActivity(new Intent(ManualInputActivity.this, LoginActivity.class));
-                        finish();
-                    } else if (resultStatus.equals("3")) {
-                        clearTextView();
-                        ToastUtils.showLong(ManualInputActivity.this, getString(R.string.using));
-                    } else if (resultStatus.equals("4")) {
-                        clearTextView();
-                        ToastUtils.showLong(ManualInputActivity.this, getString(R.string.trouble));
-                    } else if (resultStatus.equals("5")) {
-                        clearTextView();
-                        ToastUtils.showLong(ManualInputActivity.this, getString(R.string.preengaged));
+                            break;
+                        case "2":
+                            ToastUtils.showShort(ManualInputActivity.this, getString(R.string.forced_to_logoff));
+                            startActivity(new Intent(ManualInputActivity.this, LoginActivity.class));
+                            finish();
+                            break;
+                        case "3":
+                            clearTextView();
+                            ToastUtils.showLong(ManualInputActivity.this, getString(R.string.using));
+                            break;
+                        case "4":
+                            clearTextView();
+                            ToastUtils.showLong(ManualInputActivity.this, getString(R.string.trouble));
+                            break;
+                        case "5":
+                            clearTextView();
+                            ToastUtils.showLong(ManualInputActivity.this, getString(R.string.preengaged));
+                            break;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

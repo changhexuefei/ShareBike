@@ -100,7 +100,6 @@
     <string name="transaction_detail">明细</string>
     <string name="customer_service">客户服务</string>
     <string name="refund_tips">押金退还时间为1–7个工作日，在此期间您的账号将无法用车。是否仍然退押金？</string>
-    <string name="refund_cancel">取消</string>
     <string name="refund_cash_pledge">退押金</string>
     <string name="journey_detail">行程详情</string>
     <string name="ride_disance">骑行距离</string>
@@ -297,4 +296,25 @@
     <string name="refund_tip">您当前有未结束的骑行订单，无法退还押金</string>
     <string name="unLock_timeout">开锁超时，请找其他麒麟单车使用！</string>
     <string name="unLock_fail">开锁失败，请找其他麒麟单车使用！</string>
+    <string name="v1_0_0">v1.0.0</string>
+    <string name="processing">处理中.......</string>
+    <string name="find_me">去哪找我</string>
+    <string name="unlocking_do_not_go_away">开锁中，请勿走开</string>
+    <string name="unfind_bike">unfind_bike</string>
+    <string name="loading">正在加载...</string>
+    <string name="value_0">0</string>
+    <string name="take_pictures_parking">请拍摄违规停车的照片含周围环境</string>
+    <string name="login_register">登录/注册</string>
+    <string name="_0000000000">0000000000</string>
+    <string name="_00_00">00:00</string>
+    <string name="_2017_02_22_17_00">2017-02-22 17:00</string>
+    <string name="unit_0_5">0.5元</string>
+    <string name="dis_1_0">1.0米</string>
+    <string name="time_1_0">1.0分钟</string>
+    <string name="_14">地铁14号线</string>
+    <string name="trade_1">1元</string>
+    <string name="photograph">拍照</string>
+    <string name="from_album">从相册选择</string>
+    <string name="no_data">暂无数据！</string>
+    <string name="network_error">网络错误！</string>
 </resources>

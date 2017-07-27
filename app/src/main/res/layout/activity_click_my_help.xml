@@ -11,6 +11,7 @@
         android:layout_height="36dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
+        android:contentDescription="@string/desc"
         android:src="@mipmap/hintcard_close"/>
 
 

@@ -28,6 +28,7 @@
                 android:layout_below="@+id/tips_click_camera"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="10dp"
+                android:contentDescription="@string/desc"
                 android:scaleType="fitXY"
                 android:src="@drawable/help_unlock"/>
 

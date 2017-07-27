@@ -15,6 +15,7 @@
             android:id="@+id/back"
             android:layout_width="48dp"
             android:layout_height="match_parent"
+            android:contentDescription="@string/desc"
             android:padding="12dp"
             android:src="@mipmap/back"/>
 
@@ -59,6 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:contentDescription="@string/desc"
             android:src="@drawable/recharge_history_empty_img"
             android:visibility="gone"/>
 
@@ -78,6 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="90dp"
+            android:contentDescription="@string/desc"
             android:src="@mipmap/network_unavailable_img"
             android:visibility="gone"/>
 

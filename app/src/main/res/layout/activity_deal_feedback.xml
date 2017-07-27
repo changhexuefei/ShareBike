@@ -11,28 +11,29 @@
     <include layout="@layout/toolbar"/>
 
     <ImageView
-        android:layout_below="@+id/toolbar"
         android:id="@+id/iv_drawable"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:layout_below="@+id/toolbar"
+        android:contentDescription="@string/desc"
         android:padding="12dp"/>
 
     <TextView
-        android:visibility="gone"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/iv_drawable"
-        android:text="处理中......."
         android:id="@+id/reminder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_drawable"
+        android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:textSize="14sp"/>
+        android:text="@string/processing"
+        android:textSize="14sp"
+        android:visibility="gone"/>
 
     <android.support.v7.widget.CardView
-        android:layout_below="@+id/reminder"
         android:id="@+id/card_show"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:layout_below="@+id/reminder"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="15dp"
@@ -148,24 +149,24 @@
     </android.support.v7.widget.CardView>
 
     <Button
-        android:layout_marginTop="10dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/card_show"
         android:id="@+id/customer_service"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/card_show"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
         android:background="@null"
         android:text="@string/callphone"
         android:textColor="@color/colorHeading"/>
 
     <TextView
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
         android:text="@string/working_time"/>
 
 </RelativeLayout>

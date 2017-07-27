@@ -145,7 +145,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/tv_show1"
-            android:text="000000000"
+            android:text="@string/_0000000000"
             android:textColor="@color/color_ff"/>
 
 

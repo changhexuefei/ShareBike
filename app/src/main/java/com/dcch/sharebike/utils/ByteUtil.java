@@ -40,9 +40,8 @@ public class ByteUtil {
 //                (b[0] & 0xFF) << 24;
         // 一个byte数据左移24位变成0x??000000，再右移8位变成0x00??0000
 
-        int targets = (b[0] & 0xff) | ((b[1] << 8) & 0xff00) // | 表示安位或
+        return (b[0] & 0xff) | ((b[1] << 8) & 0xff00) // | 表示安位或
                 | ((b[2] << 24) >>> 8) | (b[3] << 24);
-        return targets;
     }
 
     public static String getLongHex(byte[] buf) {
@@ -182,8 +181,7 @@ public class ByteUtil {
             s += b[index + 1];
         else
             s += 256 + b[index + 0];
-        char ch = (char) s;
-        return ch;
+        return (char) s;
     }
 
     /**
@@ -378,8 +376,7 @@ public class ByteUtil {
     public static int byte2int(byte[] res) {
         // res = InversionByte(res);
         // 一个byte数据左移24位变成0x??000000，再右移8位变成0x00??0000
-        int targets = (res[0] & 0xff) | ((res[1] << 8) & 0xff00); // | 表示安位或
-        return targets;
+        return (res[0] & 0xff) | ((res[1] << 8) & 0xff00);
     }
 
     public static short bytesToShort(byte[] bytes) {

@@ -33,6 +33,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 
+@SuppressWarnings("ALL")
 public class RidingResultActivity extends BaseActivity {
 
     @BindView(R.id.moneyResult_show)

@@ -30,6 +30,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 
+@SuppressWarnings("ALL")
 public class AuthenticationOkActivity extends BaseActivity {
 
     @BindView(R.id.back_to_main)

@@ -123,13 +123,12 @@ public class LoginFragment extends Fragment {
         mURL = (String) SPUtils.get(App.getContext(), "imageURL", "");
         if (!mURL.equals("")) {
             LogUtils.d("状态", mURL);
-            if (getActivity() != null) {
-                Glide.with(getActivity())
-                        .load(Uri.fromFile(new File(mURL)))
-                        .error(R.mipmap.avatar_default_login)
-                        .thumbnail(0.1f)// 加载缩略图
-                        .into(userIcon);
-            }
+
+            Glide.with(App.getContext())
+                    .load(Uri.fromFile(new File(mURL)))
+                    .error(R.mipmap.avatar_default_login)
+                    .thumbnail(0.1f)// 加载缩略图
+                    .into(userIcon);
 
         }
         if (uID != null && mToken != null) {
@@ -187,12 +186,11 @@ public class LoginFragment extends Fragment {
                                 if (mUserimage != null) {
                                     //使用用户自定义的头像
                                     LogUtils.d("状态", mUserimage);
-                                    if (getActivity() != null) {
-                                        Glide.with(LoginFragment.this).load(mUserimage)
-                                                .error(R.mipmap.avatar_default_login)
-                                                .thumbnail(0.1f)// 加载缩略图
-                                                .into(userIcon);
-                                    }
+                                    Glide.with(App.getContext()).load(mUserimage)
+                                            .error(R.mipmap.avatar_default_login)
+                                            .thumbnail(0.1f)// 加载缩略图
+                                            .into(userIcon);
+
                                 } else {
                                     if (getActivity() != null && isAdded()) {
                                         userIcon.setImageResource(R.mipmap.avatar_default_login);

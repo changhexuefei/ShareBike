@@ -36,7 +36,7 @@ public class SetAddressActivity extends BaseActivity {
     ListView setInfoList;
     @BindView(R.id.no_result)
     TextView mNoResult;
-    SuggestionSearch mSuggestionSearch;
+    private SuggestionSearch mSuggestionSearch;
 
     private SetAddressAdapter mAdapter;
     private List<SuggestionResult.SuggestionInfo> allSuggestions;
@@ -96,7 +96,7 @@ public class SetAddressActivity extends BaseActivity {
         }
     }
 
-    OnGetSuggestionResultListener listener = new OnGetSuggestionResultListener() {
+    private OnGetSuggestionResultListener listener = new OnGetSuggestionResultListener() {
         public void onGetSuggestionResult(SuggestionResult res) {
             if (res == null || res.getAllSuggestions() == null) {
                 mNoResult.setVisibility(View.VISIBLE);

@@ -12,6 +12,7 @@ import com.tencent.smtt.sdk.WebView;
 
 import butterknife.BindView;
 
+@SuppressWarnings("ALL")
 public class AdvertisementActivity extends BaseActivity {
 
     @BindView(R.id.title)

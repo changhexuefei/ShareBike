@@ -30,6 +30,7 @@
                 android:id="@+id/ride_money"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:contentDescription="@string/desc"
                 android:src="@mipmap/ride_money_background"/>
 
             <TextView
@@ -73,10 +74,10 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/sum_cost_show"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
@@ -178,20 +179,20 @@
     </RelativeLayout>
 
     <View
+        android:id="@+id/view2"
         android:layout_width="match_parent"
         android:layout_height="0.2dp"
         android:layout_below="@+id/myDistance"
-        android:background="@color/lineColor"
-        android:id="@+id/view2"/>
+        android:background="@color/lineColor"/>
 
     <RelativeLayout
         android:id="@+id/myKcal"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:gravity="center_vertical"
+        android:layout_alignLeft="@+id/myDistance"
         android:layout_below="@+id/view2"
         android:layout_marginRight="15dp"
-        android:layout_alignLeft="@+id/myDistance">
+        android:gravity="center_vertical">
 
         <TextView
             android:layout_width="wrap_content"
@@ -211,16 +212,16 @@
     </RelativeLayout>
 
     <TextView
-        android:layout_below="@+id/myKcal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/myKcal"/>
 
 
     <Button
-        android:layout_above="@+id/work_time"
         android:id="@+id/callCenter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/work_time"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:background="@null"
@@ -229,12 +230,12 @@
         android:textSize="14sp"/>
 
     <TextView
-        android:layout_marginBottom="20dp"
         android:id="@+id/work_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
         android:text="@string/working_time"/>
 
 </RelativeLayout>

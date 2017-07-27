@@ -1,5 +1,7 @@
 package com.dcch.sharebike.utils;
 
+import android.annotation.SuppressLint;
+
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -29,11 +31,10 @@ public class AESUtil {
                    SecretKey secretKey = kgen.generateKey();
                    byte[] enCodeFormat = secretKey.getEncoded();
                    SecretKeySpec key = new SecretKeySpec(enCodeFormat, "AES");
-                   Cipher cipher = Cipher.getInstance("AES");// 创建密码器
+                   @SuppressLint("GetInstance") Cipher cipher = Cipher.getInstance("AES");// 创建密码器
                    byte[] byteContent = content.getBytes("utf-8");
                    cipher.init(Cipher.ENCRYPT_MODE, key);// 初始化
-                   byte[] result = cipher.doFinal(byteContent);
-                   return result; // 加密
+               return cipher.doFinal(byteContent); // 加密
            } catch (NoSuchAlgorithmException e) {
                    e.printStackTrace();
            } catch (NoSuchPaddingException e) {
@@ -64,10 +65,9 @@ public class AESUtil {
                     SecretKey secretKey = kgen.generateKey();
                     byte[] enCodeFormat = secretKey.getEncoded();
                     SecretKeySpec key = new SecretKeySpec(enCodeFormat, "AES");            
-                    Cipher cipher = Cipher.getInstance("AES");// 创建密码器
+                    @SuppressLint("GetInstance") Cipher cipher = Cipher.getInstance("AES");// 创建密码器
                    cipher.init(Cipher.DECRYPT_MODE, key);// 初始化
-                   byte[] result = cipher.doFinal(content);
-                   return result; // 加密
+               return cipher.doFinal(content); // 加密
            } catch (NoSuchAlgorithmException e) {
                    e.printStackTrace();
            } catch (NoSuchPaddingException e) {

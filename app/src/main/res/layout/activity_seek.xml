@@ -21,7 +21,7 @@
             android:layout_alignParentRight="true"
             android:background="#00000000"
             android:padding="8dp"
-            android:text="取消"
+            android:text="@string/cancel"
             android:textColor="#ffffff"/>
 
         <EditText
@@ -33,13 +33,13 @@
             android:layout_marginLeft="10dp"
             android:background="@null"
             android:cursorVisible="true"
-            android:drawablePadding="4dp"
             android:drawableLeft="@mipmap/search"
+            android:drawablePadding="4dp"
             android:gravity="center_vertical"
-            android:hint="去哪找我"
+            android:hint="@string/find_me"
             android:imeOptions="actionSearch"
             android:inputType="text"
-            android:singleLine="true"
+            android:maxLines="1"
             android:textColor="#ffffff"
             android:textColorHint="#c7c2c2"
             android:textCursorDrawable="@null"/>
@@ -50,6 +50,7 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/search"
             android:background="#000000"
+            android:contentDescription="@string/desc"
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
             android:src="@mipmap/delete"/>

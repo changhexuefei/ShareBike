@@ -50,7 +50,7 @@ public class InPutUtils {
 		} else if (IDStr.length() == 15) {
 			Ai = IDStr.substring(0, 6) + "19" + IDStr.substring(6, 15);
 		}
-		if (isNumeric(Ai) == false) {
+		if (!isNumeric(Ai)) {
 			errorInfo = "身份证15位号码都应为数字 ; 18位号码除最后一位外，都应为数字。";
 			return false;
 		}
@@ -60,7 +60,7 @@ public class InPutUtils {
 		String strYear = Ai.substring(6, 10);// 年份
 		String strMonth = Ai.substring(10, 12);// 月份
 		String strDay = Ai.substring(12, 14);// 月份
-		if (isDataFormat(strYear + "-" + strMonth + "-" + strDay) == false) {
+		if (!isDataFormat(strYear + "-" + strMonth + "-" + strDay)) {
 			errorInfo = "身份证生日无效。";
 			return false;
 		}
@@ -108,7 +108,7 @@ public class InPutUtils {
 		Ai = Ai + strVerifyCode;
 
 		if (IDStr.length() == 18) {
-			if (Ai.equals(IDStr) == false) {
+			if (!Ai.equals(IDStr)) {
 				errorInfo = "身份证无效，不是合法的身份证号码";
 				return false;
 			}

@@ -104,12 +104,12 @@ public class CycleFailureFragment extends Fragment {
     LinearLayout four;
     private String uID;
     private String result;
-    List<CheckBox> checkBoxes = new ArrayList<>();
+    private List<CheckBox> checkBoxes = new ArrayList<>();
     private String bikeNo = "";
     private String contentText = "";
     private String mImageResult = "";
     private String selectResult = "";
-    String content = "";
+    private String content = "";
     private String mToken;
 
     public CycleFailureFragment() {
@@ -152,7 +152,7 @@ public class CycleFailureFragment extends Fragment {
         return view;
     }
 
-    public String getTag(List<CheckBox> checkBoxes) {
+    private String getTag(List<CheckBox> checkBoxes) {
         for (CheckBox cbx : checkBoxes) {
             if (cbx.isChecked()) {
                 content += String.valueOf(cbx.getTag()) + ";";

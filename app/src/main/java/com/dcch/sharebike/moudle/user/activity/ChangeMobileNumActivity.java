@@ -48,6 +48,7 @@ import butterknife.OnClick;
 import okhttp3.Call;
 
 
+@SuppressWarnings("ALL")
 public class ChangeMobileNumActivity extends BaseActivity {
 
     @BindView(R.id.title)
@@ -167,22 +168,26 @@ public class ChangeMobileNumActivity extends BaseActivity {
                 try {
                     JSONObject object = new JSONObject(response);
                     String resultStatus = object.optString("resultStatus");
-                    if (resultStatus.equals("0")) {
-                        ToastUtils.showLong(ChangeMobileNumActivity.this, "更换手机号失败，请重试！");
-                    } else if (resultStatus.equals("1")) {
-                        ToastUtils.showLong(ChangeMobileNumActivity.this, "手机号更换成功！");
-                        //执行退出登录，让用户重新登录
-                        Intent i1 = new Intent(ChangeMobileNumActivity.this, LoginActivity.class);
-                        startActivity(i1);
-                        SPUtils.clear(App.getContext());
-                        SPUtils.put(App.getContext(), "islogin", false);
-                        SPUtils.put(App.getContext(), "isfirst", false);
-//                        SPUtils.put(App.getContext(), "isStartGuide", true);
-                        finish();
-                    } else if (resultStatus.equals("2")) {
-                        ToastUtils.showLong(ChangeMobileNumActivity.this, "您的账号在其他设备登录，您被迫下线！");
-                    } else if (resultStatus.equals("3")) {
-                        ToastUtils.showLong(ChangeMobileNumActivity.this, "该手机号已注册，请重试！");
+                    switch (resultStatus) {
+                        case "0":
+                            ToastUtils.showLong(ChangeMobileNumActivity.this, "更换手机号失败，请重试！");
+                            break;
+                        case "1":
+                            ToastUtils.showLong(ChangeMobileNumActivity.this, "手机号更换成功！");
+                            //执行退出登录，让用户重新登录
+                            Intent i1 = new Intent(ChangeMobileNumActivity.this, LoginActivity.class);
+                            startActivity(i1);
+                            SPUtils.clear(App.getContext());
+                            SPUtils.put(App.getContext(), "islogin", false);
+                            SPUtils.put(App.getContext(), "isfirst", false);
+                            finish();
+                            break;
+                        case "2":
+                            ToastUtils.showLong(ChangeMobileNumActivity.this, "您的账号在其他设备登录，您被迫下线！");
+                            break;
+                        case "3":
+                            ToastUtils.showLong(ChangeMobileNumActivity.this, "该手机号已注册，请重试！");
+                            break;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -287,7 +292,7 @@ public class ChangeMobileNumActivity extends BaseActivity {
                 .show();
     }
 
-    public void getSecurityCode(String phone) {
+    private void getSecurityCode(String phone) {
         phone = AES.encrypt(phone.getBytes(), MyContent.key);
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone);

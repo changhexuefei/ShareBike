@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+@SuppressWarnings("ALL")
 public class ClickMyHelpActivity extends BaseActivity {
     @BindView(R.id.close_view_pager)
     ImageView mCloseViewPager;
@@ -55,7 +56,7 @@ public class ClickMyHelpActivity extends BaseActivity {
         pageViews.add(viewFour);
 
         //通过循环动态的添加点。
-        mDots = new ArrayList<ImageView>();
+        mDots = new ArrayList<>();
         for (int i = 0; i < pageViews.size(); i++) {
             ImageView imageView = new ImageView(this);
             int width = MapUtil.Dp2Px(this, 6);

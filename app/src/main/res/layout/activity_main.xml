@@ -18,6 +18,7 @@
             android:layout_width="48dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
+            android:contentDescription="@string/desc"
             android:padding="14dp"
             android:src="@mipmap/menu"/>
 
@@ -34,6 +35,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:layout_toLeftOf="@+id/specialOffer"
+            android:contentDescription="@string/desc"
             android:padding="12dp"
             android:src="@mipmap/servicetel"/>
 
@@ -43,6 +45,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_gravity="right|center_vertical"
+            android:contentDescription="@string/desc"
             android:padding="8dp"
             android:src="@mipmap/ic_activity"/>
 
@@ -60,6 +63,7 @@
         android:layout_width="15dp"
         android:layout_height="50dp"
         android:layout_centerInParent="true"
+        android:contentDescription="@string/desc"
         android:paddingTop="20dp"
         android:src="@drawable/search_center_ic"/>
 
@@ -86,6 +90,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
+        android:contentDescription="@string/desc"
         android:scaleType="fitXY"
         android:visibility="gone"/>
 
@@ -97,6 +102,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="15dp"
         android:background="@mipmap/intelligent_warranty"
+        android:contentDescription="@string/desc"
         android:padding="5dp"/>
 
     <TextView
@@ -127,6 +133,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="36dp"
         android:layout_marginLeft="10dp"
-        android:background="@drawable/selector_map"/>
+        android:background="@drawable/selector_map"
+        android:contentDescription="@string/desc"/>
 
 </RelativeLayout>

@@ -13,10 +13,11 @@
         android:id="@+id/invite_icon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        android:src="@drawable/menu_bg"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/toolbar"
-        android:layout_alignParentLeft="true"/>
+        android:contentDescription="@string/desc"
+        android:scaleType="fitXY"
+        android:src="@drawable/menu_bg"/>
 
     <TextView
         android:id="@+id/tv_tip_one"
@@ -43,45 +44,45 @@
         android:textStyle="bold"/>
 
     <!--<TextView-->
-        <!--android:id="@+id/tv_tip_there"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@+id/tv_tip_two"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginTop="25dp"-->
-        <!--android:text="@string/inviteTipThere"-->
-        <!--android:textSize="12sp"-->
-        <!--android:visibility="gone"/>-->
+    <!--android:id="@+id/tv_tip_there"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@+id/tv_tip_two"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_marginTop="25dp"-->
+    <!--android:text="@string/inviteTipThere"-->
+    <!--android:textSize="12sp"-->
+    <!--android:visibility="gone"/>-->
 
     <!--<TextView-->
-        <!--android:id="@+id/tv_tip_four"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@+id/tv_tip_there"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:text="XXX635535"-->
-        <!--android:textColor="#000000"-->
-        <!--android:textSize="16sp"-->
-        <!--android:textStyle="bold"-->
-        <!--android:visibility="gone"/>-->
+    <!--android:id="@+id/tv_tip_four"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@+id/tv_tip_there"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:text="XXX635535"-->
+    <!--android:textColor="#000000"-->
+    <!--android:textSize="16sp"-->
+    <!--android:textStyle="bold"-->
+    <!--android:visibility="gone"/>-->
 
 
     <!--<RelativeLayout-->
-        <!--android:id="@+id/updateArea"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:layout_below="@+id/tv_tip_four">-->
+    <!--android:id="@+id/updateArea"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:layout_below="@+id/tv_tip_four">-->
 
-        <!--<TextView-->
-            <!--android:id="@+id/updateInvitationCode"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:text="@string/inviteUpdateCode"-->
-            <!--android:textColor="@color/colorTitle"-->
-            <!--android:textSize="16sp"-->
-            <!--android:visibility="gone"/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/updateInvitationCode"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_marginTop="5dp"-->
+    <!--android:text="@string/inviteUpdateCode"-->
+    <!--android:textColor="@color/colorTitle"-->
+    <!--android:textSize="16sp"-->
+    <!--android:visibility="gone"/>-->
     <!--</RelativeLayout>-->
 
     <RelativeLayout

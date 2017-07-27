@@ -48,6 +48,7 @@ import okhttp3.Call;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+@SuppressWarnings("ALL")
 @RuntimePermissions
 public class PersonInfoActivity extends BaseActivity {
 

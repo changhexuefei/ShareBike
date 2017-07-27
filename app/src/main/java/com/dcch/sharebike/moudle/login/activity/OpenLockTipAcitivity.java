@@ -9,6 +9,7 @@ import com.dcch.sharebike.utils.ClickUtils;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+@SuppressWarnings("ALL")
 public class OpenLockTipAcitivity extends BaseActivity {
 
     @BindView(R.id.open_lock_close)

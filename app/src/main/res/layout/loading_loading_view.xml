@@ -16,5 +16,5 @@
 		android:layout_height="wrap_content"
 		android:layout_below="@+id/pb_loading"
 		android:layout_centerHorizontal="true"
-		android:text="正在加载..."/>
+		android:text="@string/loading"/>
 </RelativeLayout>

@@ -16,6 +16,7 @@
         android:layout_below="@+id/toolbar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
+        android:contentDescription="@string/desc"
         android:scaleType="fitXY"
         android:src="@mipmap/refund_success_img"/>
 

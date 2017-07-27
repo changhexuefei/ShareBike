@@ -184,20 +184,6 @@ public class UnableUnlockFragment extends Fragment {
                 });
     }
 
-//
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (resultCode == -1 && requestCode == 0) {
-//            Bundle bundle = data.getExtras();
-//            if (bundle != null) {
-//                result = bundle.getString("result");
-//                result = result.substring(result.length() - 9, result.length());
-//                bikeCode.setText(result);
-//                changeStatus();
-//
-//            }
-//        }
-//    }
 
     private void changeStatus() {
         tips.setVisibility(View.VISIBLE);

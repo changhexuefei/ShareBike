@@ -17,12 +17,13 @@ import com.dcch.sharebike.utils.SPUtils;
 
 import butterknife.BindView;
 
+@SuppressWarnings("ALL")
 public class PersonalCenterActivity extends BaseActivity {
 
     @BindView(R.id.showFragment)
     FrameLayout showFragment;
-    LoginFragment lf;
-    UnLoginFragment uf;
+    private LoginFragment lf;
+    private UnLoginFragment uf;
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.toolbar)
@@ -120,9 +121,5 @@ public class PersonalCenterActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        if (pca != null) {
-//            pca = null;
-//        }
-//        App.getRefWatcher().watch(this);
     }
 }

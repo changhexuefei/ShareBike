@@ -42,9 +42,8 @@ public class AES {
             if (keyfactory == null)  
                 createSecretKeyFactory();  
             SecretKey sk = keyfactory.generateSecret(myKeyspec);  
-            byte[] skAsByteArray = sk.getEncoded();  
-            SecretKeySpec skforAES = new SecretKeySpec(skAsByteArray, "AES");  
-            return skforAES;  
+            byte[] skAsByteArray = sk.getEncoded();
+            return new SecretKeySpec(skAsByteArray, "AES");
         } catch (InvalidKeySpecException ikse) {  
             System.out.println("invalid key spec for PBEWITHSHAANDTWOFISH-CBC");  
         }  
@@ -53,22 +52,19 @@ public class AES {
   
     public static String encrypt(byte[] plaintext, String password) {  
         SecretKeySpec skforAES = aesKeyConvert(password);  
-        byte[] ciphertext = encrypt(CIPHERMODEPADDING, skforAES, ivSpec, plaintext);  
-        String base64_ciphertext = Base64Encoder.encode(ciphertext);  
-        return base64_ciphertext;  
+        byte[] ciphertext = encrypt(CIPHERMODEPADDING, skforAES, ivSpec, plaintext);
+        return Base64Encoder.encode(ciphertext);
     }  
   
     public static String decrypt(String ciphertext_base64, String password) {  
         byte[] s = Base64Decoder.decodeToBytes(ciphertext_base64);  
-        SecretKeySpec skforAES = aesKeyConvert(password);  
-        String decrypted = new String(decrypt(CIPHERMODEPADDING, skforAES, ivSpec, s));  
-        return decrypted;  
+        SecretKeySpec skforAES = aesKeyConvert(password);
+        return new String(decrypt(CIPHERMODEPADDING, skforAES, ivSpec, s));
     }  
   
     public static String decrypt(byte[] data, String password) {  
-        SecretKeySpec skforAES = aesKeyConvert(password);  
-        String decrypted = new String(decrypt(CIPHERMODEPADDING, skforAES, ivSpec, data));  
-        return decrypted;  
+        SecretKeySpec skforAES = aesKeyConvert(password);
+        return new String(decrypt(CIPHERMODEPADDING, skforAES, ivSpec, data));
     }  
   
     public static byte[] encrypt(String cmp, SecretKey sk, IvParameterSpec IV, byte[] msg) {  

@@ -40,10 +40,10 @@
             android:hint="@string/set_address"
             android:imeOptions="actionSearch"
             android:inputType="text"
-            android:singleLine="true"
             android:textColor="@color/white"
             android:textColorHint="@color/text_hint_color"
-            android:textCursorDrawable="@null"/>
+            android:textCursorDrawable="@null"
+            android:maxLines="1"/>
 
         <ImageButton
             android:id="@+id/set_deleteWord"
@@ -51,6 +51,7 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/set_search"
             android:background="@color/black"
+            android:contentDescription="@string/desc"
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
             android:src="@mipmap/delete"/>

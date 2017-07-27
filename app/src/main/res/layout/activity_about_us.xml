@@ -36,7 +36,7 @@
         android:layout_below="@+id/app_name"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
-        android:text="v1.0.0"
+        android:text="@string/v1_0_0"
         android:textColor="@color/black"/>
 
     <LinearLayout

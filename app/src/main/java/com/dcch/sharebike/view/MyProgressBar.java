@@ -630,8 +630,7 @@ public class MyProgressBar extends View {
             va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    int value = (Integer) animation.getAnimatedValue();
-                    rotateY = value;
+                    rotateY = (int) (Integer) animation.getAnimatedValue();
                     invalidate();
                 }
             });
@@ -683,8 +682,7 @@ public class MyProgressBar extends View {
             va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    int value = (Integer) animation.getAnimatedValue();
-                    radiu = value;
+                    radiu = (int) (Integer) animation.getAnimatedValue();
                     center_scaleX = (1 - animation.getAnimatedFraction());
                     center_scaleY = (1 - animation.getAnimatedFraction());
                     invalidate();
@@ -820,8 +818,7 @@ public class MyProgressBar extends View {
         va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                int value = (Integer) animation.getAnimatedValue();
-                rotateX = value;
+                rotateX = (int) (Integer) animation.getAnimatedValue();
                 invalidate();
             }
         });
@@ -844,8 +841,7 @@ public class MyProgressBar extends View {
         va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                int value = (Integer) animation.getAnimatedValue();
-                radiu = value;
+                radiu = (int) (Integer) animation.getAnimatedValue();
                 center_scaleX = animation.getAnimatedFraction();
                 center_scaleY = animation.getAnimatedFraction();
 

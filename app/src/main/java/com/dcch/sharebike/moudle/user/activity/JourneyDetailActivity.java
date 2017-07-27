@@ -19,7 +19,6 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.SearchResult;
-import com.baidu.mapapi.search.route.BikingRouteLine;
 import com.baidu.mapapi.search.route.BikingRoutePlanOption;
 import com.baidu.mapapi.search.route.BikingRouteResult;
 import com.baidu.mapapi.search.route.DrivingRouteResult;
@@ -36,6 +35,7 @@ import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.home.bean.RoutePoint;
+import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.overlayutil.BikingRouteOverlay;
 import com.dcch.sharebike.overlayutil.OverlayManager;
 import com.dcch.sharebike.utils.ClickUtils;
@@ -73,11 +73,12 @@ import cn.sharesdk.wechat.moments.WechatMoments;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 
+@SuppressWarnings("ALL")
 public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePlanResultListener {
 
     @BindView(R.id.journey_mapView)
     MapView mJourneyMapView;
-    public ArrayList<RoutePoint> routePoints;
+    private ArrayList<RoutePoint> routePoints;
     //    @BindView(R.id.title)
 //    TextView mTitle;
 //    @BindView(R.id.toolbar)
@@ -101,9 +102,10 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
     private BaiduMap mRouteBaiduMap;
     private BitmapDescriptor startBmp, endBmp;
     private List<LatLng> mPoints;
-    PlanNode startNodeStr, endNodeStr;
-    OverlayManager routeOverlay = null;//该类提供一个能够显示和管理多个Overlay的基类
-    RoutePlanSearch mRPSearch = null;    // 搜索模块，也可去掉地图模块独立使用
+    private PlanNode startNodeStr;
+    private PlanNode endNodeStr;
+    private OverlayManager routeOverlay = null;//该类提供一个能够显示和管理多个Overlay的基类
+    private RoutePlanSearch mRPSearch = null;    // 搜索模块，也可去掉地图模块独立使用
     private List<BottomSheetBean> shareBtn;
     private double i;
     private double mTripDist;
@@ -259,7 +261,6 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
         }
         if (bikingRouteResult.error == SearchResult.ERRORNO.NO_ERROR) {
             if (bikingRouteResult.getRouteLines().size() > 0) {
-                BikingRouteLine bikingRouteLine = bikingRouteResult.getRouteLines().get(0);
                 BikingRouteOverlay overlay = new BikingRouteOverlay(mRouteBaiduMap);
                 routeOverlay = overlay;
                 if (!overlay.equals("")) {
@@ -437,7 +438,7 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
         // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
         oks.setTitle(getString(R.string.publicity));
         // titleUrl是标题的网络链接，仅在Linked-in,QQ和QQ空间使用
-        oks.setTitleUrl("http://a.app.qq.com/o/simple.jsp?pkgname=com.dcch.sharebike");
+        oks.setTitleUrl(MyContent.APPURL);
         // text是分享文本，所有平台都需要这个字段
         oks.setText("我用麒麟单车骑行" + mTripTime + "分钟,消耗" + mCalorie + "千卡");
         //分享网络图片，新浪微博分享网络图片需要通过审核后申请高级写入接口，否则请注释掉测试新浪微博
@@ -445,13 +446,13 @@ public class JourneyDetailActivity extends BaseActivity implements OnGetRoutePla
         // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
 //        oks.setImagePath();//确保SDcard下面存在此张图片
         // url仅在微信（包括好友和朋友圈）中使用
-        oks.setUrl("http://a.app.qq.com/o/simple.jsp?pkgname=com.dcch.sharebike");
+        oks.setUrl(MyContent.APPURL);
         // comment是我对这条分享的评论，仅在人人网和QQ空间使用
         oks.setComment(getString(R.string.propagation_language_other));
         // site是分享此内容的网站名称，仅在QQ空间使用
         oks.setSite("70bikes");
         // siteUrl是分享此内容的网站地址，仅在QQ空间使用
-        oks.setSiteUrl("http://a.app.qq.com/o/simple.jsp?pkgname=com.dcch.sharebike");
+        oks.setSiteUrl(MyContent.APPURL);
         //启动分享
         oks.show(this);
     }

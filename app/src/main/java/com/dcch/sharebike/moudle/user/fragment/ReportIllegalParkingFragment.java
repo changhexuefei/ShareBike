@@ -20,6 +20,7 @@ import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.CodeEvent;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.libzxing.zxing.activity.CaptureActivity;
+import com.dcch.sharebike.moudle.home.content.MyContent;
 import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
@@ -76,7 +77,6 @@ public class ReportIllegalParkingFragment extends Fragment {
     private String uID;
     private String bikeNo;
     private String contentText;
-    public static final String BOUNDARY = "ZnGpDtePMx0KrHh_G0X99Yef9r8JZsRJSXC";
     private String result;
     private String mImageResult = "";
     private String mToken;
@@ -182,7 +182,7 @@ public class ReportIllegalParkingFragment extends Fragment {
         map.put("token", token);
         OkHttpUtils.post()
                 .url(Api.BASE_URL + Api.ADDTROUBLEORDER)
-                .addHeader("Content-Type", "multipart/form-data;boundary=" + BOUNDARY)
+                .addHeader("Content-Type", "multipart/form-data;boundary=" + MyContent.BOUNDARY)
                 .params(map)
                 .build()
                 .execute(new StringCallback() {

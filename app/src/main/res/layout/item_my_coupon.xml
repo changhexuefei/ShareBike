@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/coupon_name"
             android:layout_toRightOf="@+id/coupon_name"
-            android:text="0000000000"
+            android:text="@string/_0000000000"
             android:textSize="12sp"/>
 
 

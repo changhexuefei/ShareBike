@@ -75,7 +75,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private String seCode;
     private String phone;
     private String verificationCode;
-    private Handler handler = new Handler() {
+    private final Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case CODE_ING://已发送,倒计时
@@ -302,7 +302,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         });
     }
 
-    public void getSecurityCode(String phone) {
+    private void getSecurityCode(String phone) {
         phone = AES.encrypt(phone.getBytes(), MyContent.key);
 //        byte[] encrypt = AESUtil.encrypt(phone, MyContent.key);
 //        phone = AESUtil.parseByte2HexStr(encrypt);

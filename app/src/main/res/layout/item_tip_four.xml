@@ -26,6 +26,7 @@
                 android:layout_below="@+id/tips_click_camera"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
+                android:contentDescription="@string/desc"
                 android:scaleType="fitXY"
                 android:src="@drawable/close_lock"/>
 

@@ -43,8 +43,8 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:paddingTop="5dp"
-                    android:text="登录/注册"
-                    android:textColor="#ffffff"/>
+                    android:text="@string/login_register"
+                    android:textColor="@color/white"/>
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="80dp"
@@ -58,6 +58,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:contentDescription="@string/desc"
                     android:scaleType="fitXY"
                     android:src="@drawable/user_profile_grass"/>
             </FrameLayout>
@@ -112,6 +113,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_margin="10dp"
+                android:contentDescription="@string/desc"
                 android:scaleType="fitXY"
                 android:src="@drawable/parking_images"/>
 
@@ -155,6 +157,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_margin="10dp"
+                android:contentDescription="@string/desc"
                 android:scaleType="fitXY"
                 android:src="@drawable/bookingbillingpictures"/>
 
@@ -198,6 +201,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_margin="10dp"
+                android:contentDescription="@string/desc"
                 android:scaleType="fitXY"
                 android:src="@drawable/help_unlock"/>
 
@@ -241,6 +245,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_margin="10dp"
+                android:contentDescription="@string/desc"
                 android:scaleType="fitXY"
                 android:src="@drawable/close_lock"/>
 
@@ -283,6 +288,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_margin="10dp"
+                android:contentDescription="@string/desc"
                 android:scaleType="fitXY"
                 android:src="@drawable/other"/>
 
