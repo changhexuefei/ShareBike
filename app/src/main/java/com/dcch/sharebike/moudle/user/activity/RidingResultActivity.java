@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dcch.sharebike.MainActivity;
@@ -15,7 +16,6 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.home.bean.RideResultInfo;
 import com.dcch.sharebike.utils.ClickUtils;
-import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.MapUtil;
 import com.dcch.sharebike.utils.NetUtils;
@@ -25,6 +25,9 @@ import com.hss01248.dialog.StyledDialog;
 import com.hss01248.dialog.interfaces.MyDialogListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,6 +59,8 @@ public class RidingResultActivity extends BaseActivity {
     TextView mCalorimeter;
     @BindView(R.id.callCenter)
     TextView mCallCenter;
+    @BindView(R.id.red_packet)
+    ImageView mRedPacket;
 
     private String mImei;
     private String mUserId;
@@ -92,26 +97,43 @@ public class RidingResultActivity extends BaseActivity {
             @Override
             public void onResponse(String response, int id) {
                 LogUtils.d("骑行结果", response);
-                if (JsonUtils.isSuccess(response)) {
-                    Gson gson = new Gson();
-                    RideResultInfo rideResultInfo = gson.fromJson(response, RideResultInfo.class);
-                    LogUtils.d("骑行结果", rideResultInfo.getCarRentalInfo().getFinalCast() + "\n" + rideResultInfo.getCarRentalInfo().getOrderCast() + "\n" + rideResultInfo.getCarRentalInfo().getTripTime() + "\n" + rideResultInfo.getCarRentalInfo().getTripDist());
-                    mMoneyResultShow.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getFinalCast()));
-                    mRideCost.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getRideCost()) + "元");
-                    mRideTime.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getTripTime()) + "分钟");
-                    mBalance.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getFinalCast()) + "元");
-                    if (rideResultInfo.getCarRentalInfo().getCouponno().equals("nocoupon")) {
-                        mCouponCost.setText("无优惠券抵扣");
-                    } else {
-                        mCouponCost.setText("优惠券抵扣1张");
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String resultStatus = object.optString("resultStatus");
+                    switch (resultStatus) {
+                        case "0":
+                            ToastUtils.showShort(RidingResultActivity.this, getString(R.string.server_tip));
+                            break;
+                        case "1":
+                            showResult(response);
+                            mRedPacket.setVisibility(View.VISIBLE);
+                            break;
+                        case "3":
+                            showResult(response);
+                            mRedPacket.setVisibility(View.GONE);
+                            break;
                     }
-                    mCalorimeter.setText(String.valueOf(MapUtil.changeDouble(rideResultInfo.getCarRentalInfo().getCalorie())) + "大卡");
-                    mRideDis.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getTripDist()) + "千米");
-                } else {
-                    ToastUtils.showShort(RidingResultActivity.this, getString(R.string.server_tip));
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         });
+    }
+
+    private void showResult(String response) {
+        Gson gson = new Gson();
+        RideResultInfo rideResultInfo = gson.fromJson(response, RideResultInfo.class);
+        mMoneyResultShow.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getFinalCast()));
+        mRideCost.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getRideCost()) + "元");
+        mRideTime.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getTripTime()) + "分钟");
+        mBalance.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getFinalCast()) + "元");
+        if (rideResultInfo.getCarRentalInfo().getCouponno().equals("nocoupon")) {
+            mCouponCost.setText("无优惠券抵扣");
+        } else {
+            mCouponCost.setText("优惠券抵扣1张");
+        }
+        mCalorimeter.setText(String.valueOf(MapUtil.changeDouble(rideResultInfo.getCarRentalInfo().getCalorie())) + "大卡");
+        mRideDis.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getTripDist()) + "千米");
     }
 
     @Override
@@ -158,28 +180,33 @@ public class RidingResultActivity extends BaseActivity {
         RidingResultActivity.this.finish();
     }
 
-    @OnClick(R.id.callCenter)
-    public void onViewClicked() {
-        if (ClickUtils.isFastClick()) {
-            return;
-        }
-        StyledDialog.buildIosAlert(RidingResultActivity.this, "提示", "拨打麒麟单车客服电话 400-660-6215", new MyDialogListener() {
-            @Override
-            public void onFirst() {
-//                Intent intent = new Intent();
-//                intent.setAction(Intent.ACTION_CALL);//指定意图动作
-//                intent.setData(Uri.parse("tel:400-660-6215"));//指定电话号码
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(intent);
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "400-660-6215"));
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
+    @OnClick({R.id.callCenter, R.id.red_packet})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.callCenter:
+                if (ClickUtils.isFastClick()) {
+                    return;
+                }
+                StyledDialog.buildIosAlert(RidingResultActivity.this, "提示", "拨打麒麟单车客服电话 400-660-6215", new MyDialogListener() {
+                    @Override
+                    public void onFirst() {
+                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "400-660-6215"));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
 
-            @Override
-            public void onSecond() {
-                return;
-            }
-        }).setMsgColor(R.color.colorHeading).setMsgSize(16).show();
+                    @Override
+                    public void onSecond() {
+                    }
+                }).setMsgColor(R.color.colorHeading).setMsgSize(16).show();
+                break;
+            case R.id.red_packet:
+                if (ClickUtils.isFastClick()) {
+                    return;
+                }
+                ToastUtils.showShort(this, "抢红包");
+                break;
+        }
     }
+
 }

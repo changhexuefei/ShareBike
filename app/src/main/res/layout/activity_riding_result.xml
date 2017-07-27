@@ -208,14 +208,14 @@
             android:layout_alignParentRight="true"
             android:layout_gravity="center_vertical|end"/>
 
-
     </RelativeLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/red_packet"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/myKcal"/>
-
+        android:layout_below="@+id/myKcal"
+        android:background="@drawable/red_packet"/>
 
     <Button
         android:id="@+id/callCenter"
