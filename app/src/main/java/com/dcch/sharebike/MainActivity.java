@@ -208,7 +208,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private boolean isShowMenu = false;
     private boolean isShowRideOrder = false;
     private boolean isShowBookOrder = false;
-    private boolean isClick = true;
     private String bicycleNo;
     private MyCountDownTimer timer;
     private String count;
@@ -232,24 +231,15 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private String mReverseGeoCodeResultAddress;
     private double mChangeLongitude;
     private double mChangeLatitude;
-    private LatLng mLlr;
-    private LatLng mLl;
-    //手指按下的点为(x1, y1)手指离开屏幕的点为(x2, y2)
-    private float x1 = 0;
-    private float x2 = 0;
-    private float y1 = 0;
-    private float y2 = 0;
     private String mAbsolutePath;
     private String mHeadactivityUrl;
     private String mTitle;
-    private float zoom;
     private LatLng startLng;
     private LatLng finishLng;
     private double moveDist = 50.0;
 
     public MainActivity() {
     }
-
 
     @Override
     protected int getLayoutId() {
@@ -258,7 +248,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     @Override
     protected void initData() {
-//        classify.check(R.id.allBike);
         ButterKnife.bind(this);
         MainActivityPermissionsDispatcher.initPermissionWithCheck(this);
         showCamera();
@@ -427,7 +416,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                                          locationLatitude = bookingBikeInfo.getLatitude();
                                          isShowBookOrder = true;
                                          isChecked = true;
-                                         isClick = false;
                                          if (locationLongitude != null && locationLatitude != null) {
                                              forLocationAddMark(locationLatitude, locationLongitude);
                                              reverseGeoCoder(transform(locationLatitude, locationLongitude));
@@ -442,10 +430,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                                                  bookBikePopupWindow.mHoldTime.setText(toClock(millisUntilFinished));
                                              }
 
-                                             @Override
-                                             public String toClock(long millis) {
-                                                 return super.toClock(millis);
-                                             }
+//                                             @Override
+//                                             public String toClock(long millis) {
+//                                                 return super.toClock(millis);
+//                                             }
 
                                              @Override
                                              public void onFinish() {
@@ -640,7 +628,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
                     @Override
                     public void onSecond() {
-                        return;
                     }
                 }).setMsgColor(R.color.colorHeading).setMsgSize(14).show();
                 break;
@@ -1023,7 +1010,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     if (JsonUtils.isSuccess(response)) {
 //                        isBook = false;
                         isChecked = true;
-                        isClick = true;
                         isShowMenu = false;
                         if (bookBikePopupWindow != null && !bookBikePopupWindow.equals("")) {
                             bookBikePopupWindow.dismiss();
@@ -1089,7 +1075,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                                 final String bicycleNo = bookingBikeInfo.getBicycleNo();
                                 isShowMenu = false;
                                 isChecked = false;
-                                isClick = false;
                                 isShowBookOrder = true;
                                 bookBikePopupWindow = new BookBikePopupWindow(MainActivity.this, bookingBikeInfo, bookBikeItemsOnClick);
                                 //指定父视图，显示在父控件的某个位置（Gravity.TOP,Gravity.RIGHT等）
@@ -1103,10 +1088,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                                         bookBikePopupWindow.mHoldTime.setText(toClock(millisUntilFinished));
                                     }
 
-                                    @Override
-                                    public String toClock(long millis) {
-                                        return super.toClock(millis);
-                                    }
+//                                    @Override
+//                                    public String toClock(long millis) {
+//                                        return super.toClock(millis);
+//                                    }
 
                                     @Override
                                     public void onFinish() {
@@ -1352,7 +1337,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 overlay.addToMap();
                 overlay.zoomToSpan();
             }
-            return;
         }
     }
 
@@ -1457,7 +1441,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 LogUtils.d("你好", response);
                 if (JsonUtils.isSuccess(response)) {
                     isChecked = false;
-                    isClick = false;
                     isShowRideOrder = true;
                     mMap.clear();
                     Gson gson = new Gson();

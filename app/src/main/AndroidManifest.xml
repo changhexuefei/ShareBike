@@ -70,11 +70,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!-- 讯飞 -->
-        <meta-data
-            android:name="IFLYTEK_APPKEY"
-            android:value="&apos;591ec095&apos;"/>
-
         <activity
             android:name="com.qihoo.appstore.common.updatesdk.lib.UpdateTipDialogActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -96,7 +91,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/update_apk_path"/>
         </provider>
-
 
         <activity
             android:name=".libzxing.zxing.activity.CaptureActivity"
@@ -133,6 +127,7 @@
             <intent-filter>
                 <data android:scheme="tencent1106173064"/>
                 <action android:name="android.intent.action.VIEW"/>
+
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
@@ -440,7 +435,6 @@
             </intent-filter>
         </activity>
 
-        <!-- <service android:name=".service.DownService"/> -->
         <service android:name=".service.NettyService"/>
 
         <receiver
@@ -515,18 +509,10 @@
             android:screenOrientation="portrait">
         </activity>
 
-        <!--<provider-->
-        <!--android:name="android.support.v4.content.FileProvider"-->
-        <!--android:authorities="com.dcch.sharebike.fileProvider"-->
-        <!--android:exported="false"-->
-        <!--android:grantUriPermissions="true">-->
-        <!--<meta-data-->
-        <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
-        <!--android:resource="@xml/file_paths"/>-->
-        <!--</provider>-->
-
-        <activity android:name=".moudle.login.activity.AdvertisementActivity">
-        </activity>
+        <activity
+            android:name=".moudle.login.activity.AdvertisementActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

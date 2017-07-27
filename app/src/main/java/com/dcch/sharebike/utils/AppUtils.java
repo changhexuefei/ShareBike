@@ -41,6 +41,25 @@ public class AppUtils
 	}
 
 	/**
+	 * 获取应用程序名称
+	 */
+	public static String getPackageName(Context context)
+	{
+		try
+		{
+			PackageManager packageManager = context.getPackageManager();
+			PackageInfo packageInfo = packageManager.getPackageInfo(
+					context.getPackageName(), 0);
+			String packageName = packageInfo.applicationInfo.packageName;
+			return packageName;
+		} catch (NameNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
 	 * [获取应用程序版本名称信息]
 	 * 
 	 * @param context
