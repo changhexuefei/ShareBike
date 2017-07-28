@@ -12,7 +12,7 @@
     <RelativeLayout
         android:id="@+id/card_show"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:layout_below="@+id/toolbar"
         android:background="@color/colorTitle"
         android:gravity="center_horizontal">
@@ -213,11 +213,12 @@
     <ImageView
         android:id="@+id/red_packet"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="90dp"
         android:layout_below="@+id/myKcal"
-        android:background="@drawable/red_packet"/>
+        android:background="@drawable/image_bg_bmp"/>
 
     <Button
+        android:layout_marginBottom="-15dp"
         android:id="@+id/callCenter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -235,7 +236,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:text="@string/working_time"/>
 
 </RelativeLayout>
