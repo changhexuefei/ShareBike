@@ -658,7 +658,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     return;
                 }
                 if (SPUtils.isLogin()) {
-                    LogUtils.d("余额情况", "123456789" + cashStatus + "\n" + status + "\n" + mToken);
                     if (mToken != null) {
                         if (cashStatus == 1 && status == 1) {
                             if (NetUtils.isConnected(App.getContext())) {
@@ -928,6 +927,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                             billPage.putExtra("carRentalOrderId", mCarRentalOrderId);
                             billPage.putExtra("userId", uID);
                             startActivity(billPage);
+                            isShowRideOrder = false;
                         }
                     }
                     break;
