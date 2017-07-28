@@ -18,14 +18,12 @@
         android:protectionLevel="signature"/>
     <!-- Required -->
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"/>
-
     <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE"/>
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"/>
     <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <!--<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/> &lt;!&ndash; 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 &ndash;&gt;-->
+    <!-- <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/> &lt;!&ndash; 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 &ndash;&gt; -->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
     <!-- SD卡权限 -->
@@ -45,10 +43,8 @@
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.GET_TASKS"/>
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <!-- 蓝牙分享所需的权限 -->
@@ -69,7 +65,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name="com.qihoo.appstore.common.updatesdk.lib.UpdateTipDialogActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -106,7 +101,6 @@
             android:launchMode="standard"
             android:screenOrientation="portrait"
             android:theme="@style/Splash_Theme">
-
         </activity>
         <activity
             android:name=".activity.GuideActivity"
@@ -122,6 +116,7 @@
             <!-- QQ和QQ空间分享 QQ登录的回调必须要配置的 -->
             <intent-filter>
                 <data android:scheme="tencent1106173064"/>
+
                 <action android:name="android.intent.action.VIEW"/>
 
                 <category android:name="android.intent.category.BROWSABLE"/>
@@ -131,6 +126,7 @@
             <!-- 新浪微博客户端分享回调必须配置 -->
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
@@ -417,7 +413,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-
         </activity>
         <activity
             android:name=".moudle.user.activity.UnlockProgressActivity"
@@ -510,11 +505,16 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
         </activity>
-
         <activity
             android:name=".moudle.login.activity.AdvertisementActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".moudle.user.activity.OpenRedEnvelopeActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent">
+        </activity>
     </application>
 
 </manifest>

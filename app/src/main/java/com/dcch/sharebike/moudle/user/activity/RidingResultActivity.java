@@ -204,7 +204,11 @@ public class RidingResultActivity extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                ToastUtils.showShort(this, "抢红包");
+                if (mUserId != null && !mUserId.equals("")) {
+                    Intent redPacket = new Intent(this, OpenRedEnvelopeActivity.class);
+                    redPacket.putExtra("userId", mUserId);
+                    startActivity(redPacket);
+                }
                 break;
         }
     }
