@@ -22,8 +22,8 @@ android {
         applicationId "com.dcch.sharebike"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 13
-        versionName "1.0.5"
+        versionCode 14
+        versionName "1.0.6"
         multiDexEnabled true
         ndk {
             //选择要添加的对应cpu类型的.so库。
@@ -103,7 +103,6 @@ dependencies {
     //stepsview
     compile files('libs/zxing.jar')
     compile files('libs/tbs_sdk_thirdapp_v3.1.0.1034_43100_sharewithdownload_obfs_20170301_182143.jar')
-    //    compile 'com.github.moduth:blockcanary-android:1.2.1'
     compile files('libs/AutoUpdate_SDK.jar')
     compile files('libs/netty-all-4.1.6.Final.jar')
     compile files('libs/baidumapapi_base_v4_1_1.jar')
