@@ -10,7 +10,6 @@
             android:valueTo="2"
             android:valueType="floatType"/>
         <objectAnimator
-
             android:duration="2000"
             android:propertyName="scaleY"
             android:valueFrom="1"
@@ -24,9 +23,6 @@
                 android:valueFrom="0.5"
                 android:valueTo="1"
                 android:valueType="floatType"/>
-
         </set>
     </set>
-
-
 </set>

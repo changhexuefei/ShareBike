@@ -1267,7 +1267,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             if (x > moveDist || y > moveDist) {
                 //在这处理滑动
                 LogUtils.d("移动", isShowMenu + "\n" + isShowBookOrder + "\n" + isShowRideOrder);
-                if (!isShowMenu && !isShowBookOrder && !isShowRideOrder && !isFristLocation) {
+                if (!isShowBookOrder && !isShowRideOrder && !isFristLocation) {
                     LogUtils.d("移动", "进来了");
                     updateMapStatus(mapStatus);
                 }

@@ -64,6 +64,7 @@ public class RidingResultActivity extends BaseActivity {
 
     private String mImei;
     private String mUserId;
+    private boolean isFirst = true;
 
     @Override
     protected int getLayoutId() {
@@ -204,11 +205,20 @@ public class RidingResultActivity extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                if (mUserId != null && !mUserId.equals("")) {
-                    Intent redPacket = new Intent(this, OpenRedEnvelopeActivity.class);
-                    redPacket.putExtra("userId", mUserId);
-                    startActivity(redPacket);
+//                if (mUserId != null && !mUserId.equals("")) {
+                if (NetUtils.isConnected(App.getContext())) {
+                    if (isFirst) {
+                        isFirst = false;
+                        Intent redPacket = new Intent(this, OpenRedEnvelopeActivity.class);
+//                    redPacket.putExtra("userId", mUserId);
+                        startActivity(redPacket);
+                    } else {
+                        ToastUtils.showShort(RidingResultActivity.this, "下次骑行再来领红包吧！");
+                    }
+                } else {
+                    ToastUtils.showShort(RidingResultActivity.this, getResources().getString(R.string.no_network_tip));
                 }
+//                }
                 break;
         }
     }
