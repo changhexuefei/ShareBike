@@ -10,6 +10,7 @@
             android:valueTo="2"
             android:valueType="floatType"/>
         <objectAnimator
+
             android:duration="2000"
             android:propertyName="scaleY"
             android:valueFrom="1"
