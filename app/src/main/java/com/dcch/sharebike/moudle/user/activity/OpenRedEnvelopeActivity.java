@@ -78,7 +78,6 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
         initAnimator();
         setAnimatorListener();
         setCameraDistance();
-
     }
 
     //R.id.imageView,
@@ -193,7 +192,8 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
 
     private void getRedPacket(String userId) {
         Map<String, String> map = new HashMap<>();
-        map.put("userId", "214");
+        map.put("userId", userId);
+        LogUtils.d("用户", userId);
         OkHttpUtils.post().url(Api.BASE_URL + Api.MERCHANTGIFT).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {

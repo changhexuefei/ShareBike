@@ -3,9 +3,9 @@ package com.dcch.sharebike.http;
 
 public class Api {
     //public static final String BASE_URL = "http://192.168.1.159:8080/MavenSSM/mobile/";
-    public static final String BASE_URL = "http://192.168.1.138:8080/MavenSSM/mobile/";
+//    public static final String BASE_URL = "http://192.168.1.138:8080/MavenSSM/mobile/";
     //public static final String BASE_URL = "http://192.168.1.131:8080/MavenSSM/mobile/";
-//    public static final String BASE_URL = "http://114.112.86.38/MavenSSM/mobile/";
+    public static final String BASE_URL = "http://114.112.86.38/MavenSSM/mobile/";
 //    public static final String BASE_URL = "http://101.251.245.158/MavenSSM/mobile/";
 //    public static final String BASE_URL = "http://101.251.246.10/MavenSSM/mobile/";
 //    public static final String BASE_URL = "http://www.70bikes.cn/MavenSSM/mobile/";
@@ -17,7 +17,7 @@ public class Api {
     public static final String UPDATEUSERCASHSTATUS = "updateUserCashStatus.do?";
     //认证身份
     public static final String UPDATEUSERSTATUS = "updateUserAppStatus.do?";
-    //    public static final String UPDATEUSERSTATUS = "updateUserStatus.do?";
+    // public static final String UPDATEUSERSTATUS = "updateUserStatus.do?";
     //注册成功生成优惠券
     public static final String ADDCOUPON = "addCoupon.do?";
     //请求车辆信息

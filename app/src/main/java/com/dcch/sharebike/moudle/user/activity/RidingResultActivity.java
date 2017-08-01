@@ -158,7 +158,7 @@ public class RidingResultActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         LogUtils.d("周期", "onCreate");
-        StyledDialog.buildLoading(RidingResultActivity.this,"结算中.....",true,false).show();
+        StyledDialog.buildLoading(RidingResultActivity.this, "结算中.....", true, false).show();
         Intent intent = getIntent();
         mImei = intent.getStringExtra("IMEI");
         mUserId = intent.getStringExtra("userId");
@@ -219,7 +219,7 @@ public class RidingResultActivity extends BaseActivity {
                 if (NetUtils.isConnected(App.getContext())) {
                     if (isFirst == true) {
                         Intent redPacket = new Intent(this, OpenRedEnvelopeActivity.class);
-//                    redPacket.putExtra("userId", mUserId);
+//                            redPacket.putExtra("userId", mUserId);
                         startActivity(redPacket);
                     } else {
                         ToastUtils.showShort(RidingResultActivity.this, "下次骑行再来领红包吧！");
