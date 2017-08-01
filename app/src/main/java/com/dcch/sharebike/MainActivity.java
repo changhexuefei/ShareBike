@@ -1262,7 +1262,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             Point finishPoint = ject.toScreenLocation(finishLng);
             double x = Math.abs(finishPoint.x - startPoint.x);
             double y = Math.abs(finishPoint.y - startPoint.y);
-            LogUtils.d("移动", x + "\n" + y);
             double moveDist = 50.0;
             if (x > moveDist || y > moveDist) {
                 //在这处理滑动

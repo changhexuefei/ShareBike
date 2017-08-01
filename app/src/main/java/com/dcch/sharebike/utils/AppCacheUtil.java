@@ -27,7 +27,7 @@ public class AppCacheUtil {
     }
 
     private static File getCacheRootFile() {
-        File cacheRootDir = null;
+        File cacheRootDir;
 
         // 判断sd卡是否存在
         boolean sdCardExist = Environment.getExternalStorageState().equals(

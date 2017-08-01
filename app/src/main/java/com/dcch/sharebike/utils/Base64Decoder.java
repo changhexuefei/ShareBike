@@ -1,6 +1,8 @@
 package com.dcch.sharebike.utils;
 
-import java.io.ByteArrayInputStream;  
+import android.support.annotation.NonNull;
+
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;  
 import java.io.FilterInputStream;  
 import java.io.IOException;  
@@ -104,7 +106,7 @@ public class Base64Decoder extends FilterInputStream {
      * @exception IOException  
      *                if an I/O error occurs  
      */  
-    public int read(byte[] buf, int off, int len) throws IOException {  
+    public int read(@NonNull byte[] buf, int off, int len) throws IOException {
         if (buf.length < (len + off - 1)) {  
             throw new IOException("The input buffer is too small: " + len + " bytes requested starting at offset " + off + " while the buffer " + " is only " + buf.length + " bytes long.");  
         }  

@@ -13,6 +13,7 @@ import com.dcch.sharebike.MainActivity;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.home.bean.RideResultInfo;
 import com.dcch.sharebike.utils.ClickUtils;
@@ -28,6 +29,9 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.simple.eventbus.EventBus;
+import org.simple.eventbus.Subscriber;
+import org.simple.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -93,11 +97,13 @@ public class RidingResultActivity extends BaseActivity {
             @Override
             public void onError(Call call, Exception e, int id) {
                 ToastUtils.showShort(RidingResultActivity.this, getString(R.string.server_tip));
+                StyledDialog.dismissLoading();
             }
 
             @Override
             public void onResponse(String response, int id) {
                 LogUtils.d("骑行结果", response);
+                StyledDialog.dismissLoading();
                 try {
                     JSONObject object = new JSONObject(response);
                     String resultStatus = object.optString("resultStatus");
@@ -150,7 +156,9 @@ public class RidingResultActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         LogUtils.d("周期", "onCreate");
+        StyledDialog.buildLoading(RidingResultActivity.this,"结算中.....",true,false).show();
         Intent intent = getIntent();
         mImei = intent.getStringExtra("IMEI");
         mUserId = intent.getStringExtra("userId");
@@ -170,6 +178,8 @@ public class RidingResultActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        StyledDialog.dismiss();
         super.onDestroy();
         LogUtils.d("周期", "onDestroy");
     }
@@ -207,8 +217,7 @@ public class RidingResultActivity extends BaseActivity {
                 }
 //                if (mUserId != null && !mUserId.equals("")) {
                 if (NetUtils.isConnected(App.getContext())) {
-                    if (isFirst) {
-                        isFirst = false;
+                    if (isFirst == true) {
                         Intent redPacket = new Intent(this, OpenRedEnvelopeActivity.class);
 //                    redPacket.putExtra("userId", mUserId);
                         startActivity(redPacket);
@@ -222,5 +231,14 @@ public class RidingResultActivity extends BaseActivity {
                 break;
         }
     }
+
+    //抢红包页面带来的消息,表示用户已经拆了红包的，提醒用户下次骑行再来
+    @Subscriber(tag = "unable_click", mode = ThreadMode.MAIN)
+    private void receiveFromOpenRedEnvelope(MessageEvent info) {
+        if (info != null) {
+            isFirst = false;
+        }
+    }
+
 
 }

@@ -1,6 +1,8 @@
 package com.dcch.sharebike.utils;
 
-import java.io.BufferedInputStream;  
+import android.support.annotation.NonNull;
+
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;  
 import java.io.FileInputStream;  
 import java.io.FilterOutputStream;  
@@ -88,7 +90,7 @@ public class Base64Encoder extends FilterOutputStream {
      * @exception IOException  
      *                if an I/O error occurs  
      */  
-    public void write(byte[] buf, int off, int len) throws IOException {  
+    public void write(@NonNull byte[] buf, int off, int len) throws IOException {
         // This could of course be optimized  
         for (int i = 0; i < len; i++) {  
             write(buf[off + i]);  
