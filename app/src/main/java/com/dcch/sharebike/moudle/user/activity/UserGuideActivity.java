@@ -1,6 +1,7 @@
 package com.dcch.sharebike.moudle.user.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.utils.ClickUtils;
+import com.hss01248.dialog.StyledDialog;
+import com.hss01248.dialog.interfaces.MyDialogListener;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -52,8 +55,8 @@ public class UserGuideActivity extends BaseActivity {
 
     }
 
-    //, R.id.allQuestion, R.id.unFindBike, R.id.report
-    @OnClick({R.id.lock, R.id.breakdown, R.id.depositInstructions, R.id.topUpInstructions})
+    //, R.id.allQuestion, R.id.unFindBike
+    @OnClick({R.id.lock, R.id.breakdown, R.id.depositInstructions, R.id.topUpInstructions, R.id.report})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.lock:
@@ -84,14 +87,23 @@ public class UserGuideActivity extends BaseActivity {
                 }
                 startActivity(new Intent(this, RechargeAgreementActivity.class));
                 break;
-//            case R.id.report:
-//                if (ClickUtils.isFastClick()) {
-//                    return;
-//                }
-//                Intent reportIllegalParking = new Intent(this, CustomerServiceActivity.class);
-//                reportIllegalParking.putExtra("name", "2");
-//                startActivity(reportIllegalParking);
-//                break;
+            case R.id.report:
+                if (ClickUtils.isFastClick()) {
+                    return;
+                }
+                StyledDialog.buildIosAlert(UserGuideActivity.this, "提示", getResources().getString(R.string.customserver_tip), new MyDialogListener() {
+                    @Override
+                    public void onFirst() {
+                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "400-660-6215"));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onSecond() {
+                    }
+                }).setMsgColor(R.color.colorHeading).setMsgSize(14).show();
+                break;
 //            case R.id.unFindBike:
 //                break;
 //            case R.id.allQuestion:

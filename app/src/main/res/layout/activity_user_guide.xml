@@ -77,7 +77,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/report"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -88,7 +87,7 @@
             style="@style/user_guide_info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/reporting_illegal_parking"/>
+            android:text="联系人工客服"/>
 
     </LinearLayout>
 

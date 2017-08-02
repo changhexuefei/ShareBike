@@ -291,7 +291,7 @@
     <string name="balance_outstanding">您的账户余额不足，请先充值后再进行退款操作！</string>
     <string name="logged_in_other_devices">您的账号已经在其他设备登录，您已经被迫下线</string>
     <string name="warning_12">麒麟单车 谢绝12岁以下未成年人注册及骑行</string>
-    <string name="customserver_tip">拨打麒麟单车客服电话 400–660–6215(工作时间：09:00–17:00)</string>
+    <string name="customserver_tip">麒麟单车客服电话 400–660–6215(工作时间：09:00–17:00)</string>
     <string name="desc">YOUR_DESCRIPTION_HERE</string>
     <string name="refund_tip">您当前有未结束的骑行订单，无法退还押金</string>
     <string name="unLock_timeout">开锁超时，请找其他麒麟单车使用！</string>
@@ -318,4 +318,6 @@
     <string name="no_data">暂无数据！</string>
     <string name="network_error">网络错误！</string>
     <string name="service_tel">拨打麒麟单车客服电话 400-660-6215</string>
+    <string name="no_coupons">无优惠券抵扣</string>
+    <string name="coupons">优惠券抵扣1张</string>
 </resources>

@@ -4,12 +4,14 @@ import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
+import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
@@ -62,6 +64,8 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
     private AnimatorSet mFrontAnimator;
     private AnimatorSet mBackAnimator;
     private boolean isShowFront = true;
+    private String mMMerchaninfo;
+    private String mMMerchantimageurl;
 
     @Override
     protected int getLayoutId() {
@@ -70,10 +74,13 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-//        Intent intent = getIntent();
-//        if (intent != null && !intent.equals("")) {
-//            mUserId = intent.getStringExtra("userId");
-//        }
+        Intent intent = getIntent();
+        if (intent != null) {
+            mMMerchaninfo = intent.getStringExtra("mMerchaninfo");
+            mMMerchantimageurl = intent.getStringExtra("mMerchantimageurl");
+            mMerchantInfo.setText(mMMerchaninfo + "给您发来一份惊喜红包！");
+            Glide.with(App.getContext()).load(mMMerchantimageurl).into(mMerchantIcon);
+        }
         mUserId = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
         initAnimator();
         setAnimatorListener();
@@ -84,23 +91,6 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
     @OnClick({R.id.close_redPacket, R.id.lly_front})
     public void onClick(View view) {
         switch (view.getId()) {
-//            case R.id.imageView:
-//                if (ClickUtils.isFastClick()) {
-//                    return;
-//                }
-//
-//                LogUtils.d("用户", "点击了我");
-//                if (mUserId != null && !mUserId.equals("")) {
-//                    if (NetUtils.isConnected(App.getContext())) {
-//                        if (isClick) {
-//                            isClick = false;
-//                            getRedPacket(mUserId);
-//                        }
-//                    } else {
-//                        ToastUtils.showShort(OpenRedEnvelopeActivity.this, getResources().getString(R.string.no_network_tip));
-//                    }
-//                }
-//                break;
             case R.id.close_redPacket:
                 if (ClickUtils.isFastClick()) {
                     return;
@@ -114,11 +104,10 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
                 }
                 EventBus.getDefault().post(new MessageEvent(), "unable_click");
                 if (isClick) {
-                    isClick = false;
                     StyledDialog.buildLoading(OpenRedEnvelopeActivity.this, "", true, false).show();
                     getRedPacket(mUserId);
                 } else {
-                    ToastUtils.showShort(OpenRedEnvelopeActivity.this, "点我了");
+                    ToastUtils.showShort(OpenRedEnvelopeActivity.this, "您已经领过红包了，下次骑行再来吧");
                 }
                 break;
         }
@@ -158,12 +147,30 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
             }
         });
 
-        mBackAnimator.addListener(new AnimatorListenerAdapter() {
+        mBackAnimator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
                 mFlContainer.setClickable(true);
             }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (mTitle != null && !mTitle.equals("") && !mContent.equals("") && mContent != null) {
+                    getRedPacketResult(mTitle, mContent);
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
         });
+
     }
 
     /**
@@ -203,6 +210,7 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
 
             @Override
             public void onResponse(String response, int id) {
+                isClick = false;
                 LogUtils.d("用户", response);
                 StyledDialog.dismissLoading();
                 startAnimation(mFlContainer);
@@ -213,19 +221,16 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
                     try {
                         JSONObject object = new JSONObject(response);
                         mAmount = object.optString("amount");
-                        String merchantinfo = object.optString("merchantinfo");
-                        mTitle = "恭喜您";
-                        mContent = "获得爱尚KTV发放的" + mAmount + "元红包";
+                        mTitle = "恭喜您！";
+                        mContent = "获得由" + mMMerchaninfo + "发放的" + mAmount + "元红包";
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
                 } else {
                     mTitle = "很遗憾！";
-                    mContent = "没有红包，下次骑行再来试试手气吧！";
+                    mContent = "下次骑行再来试试手气吧！";
                 }
-                getRedPacketResult(mTitle, mContent);
-
             }
         });
     }

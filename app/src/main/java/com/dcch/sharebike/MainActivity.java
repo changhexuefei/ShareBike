@@ -9,7 +9,6 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.AnimationDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -94,6 +93,7 @@ import com.dcch.sharebike.moudle.user.activity.RidingResultActivity;
 import com.dcch.sharebike.moudle.user.activity.UnlockBillPageActivity;
 import com.dcch.sharebike.moudle.user.activity.UnlockProgressActivity;
 import com.dcch.sharebike.moudle.user.activity.UserAgreementActivity;
+import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
 import com.dcch.sharebike.moudle.user.bean.ImageInfo;
 import com.dcch.sharebike.netty.NettyClient;
 import com.dcch.sharebike.overlayutil.OverlayManager;
@@ -282,6 +282,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         OkHttpUtils.post().url(Api.BASE_URL + Api.ADVERTISEMENT).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                ToastUtils.showShort(MainActivity.this,getResources().getString(R.string.server_tip));
             }
 
             @Override
@@ -616,18 +617,11 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                StyledDialog.buildIosAlert(MainActivity.this, "提示", getResources().getString(R.string.customserver_tip), new MyDialogListener() {
-                    @Override
-                    public void onFirst() {
-                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "400-660-6215"));
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onSecond() {
-                    }
-                }).setMsgColor(R.color.colorHeading).setMsgSize(14).show();
+                if (SPUtils.isLogin()) {
+                    goToUserGuide();
+                } else {
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                }
                 break;
 
             case R.id.btn_my_location:
@@ -703,6 +697,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 }
                 break;
         }
+    }
+
+    private void goToUserGuide() {
+        startActivity(new Intent(MainActivity.this, UserGuideActivity.class));
     }
 
     //去消息列表的方法

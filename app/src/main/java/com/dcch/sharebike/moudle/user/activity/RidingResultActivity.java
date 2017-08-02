@@ -69,6 +69,8 @@ public class RidingResultActivity extends BaseActivity {
     private String mImei;
     private String mUserId;
     private boolean isFirst = true;
+    private String mMerchaninfo;
+    private String mMerchantimageurl;
 
     @Override
     protected int getLayoutId() {
@@ -107,12 +109,15 @@ public class RidingResultActivity extends BaseActivity {
                 try {
                     JSONObject object = new JSONObject(response);
                     String resultStatus = object.optString("resultStatus");
+
                     switch (resultStatus) {
                         case "0":
                             ToastUtils.showShort(RidingResultActivity.this, getString(R.string.server_tip));
                             break;
                         case "1":
                             showResult(response);
+                            mMerchaninfo = object.optString("merchaninfo");
+                            mMerchantimageurl = object.optString("merchantimageurl");
                             mRedPacket.setVisibility(View.VISIBLE);
                             break;
                         case "3":
@@ -135,9 +140,9 @@ public class RidingResultActivity extends BaseActivity {
         mRideTime.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getTripTime()) + "分钟");
         mBalance.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getFinalCast()) + "元");
         if (rideResultInfo.getCarRentalInfo().getCouponno().equals("nocoupon")) {
-            mCouponCost.setText("无优惠券抵扣");
+            mCouponCost.setText(R.string.no_coupons);
         } else {
-            mCouponCost.setText("优惠券抵扣1张");
+            mCouponCost.setText(R.string.coupons);
         }
         mCalorimeter.setText(String.valueOf(MapUtil.changeDouble(rideResultInfo.getCarRentalInfo().getCalorie())) + "大卡");
         mRideDis.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getTripDist()) + "千米");
@@ -160,8 +165,10 @@ public class RidingResultActivity extends BaseActivity {
         LogUtils.d("周期", "onCreate");
         StyledDialog.buildLoading(RidingResultActivity.this, "结算中.....", true, false).show();
         Intent intent = getIntent();
-        mImei = intent.getStringExtra("IMEI");
-        mUserId = intent.getStringExtra("userId");
+//        mImei = intent.getStringExtra("IMEI");
+//        mUserId = intent.getStringExtra("userId");
+        mImei = "091609999";
+        mUserId = "214";
         if (NetUtils.isConnected(App.getContext())) {
             if (mImei != null && mUserId != null) {
                 LogUtils.d("骑行结果", mImei + "\n" + mUserId);
@@ -217,10 +224,15 @@ public class RidingResultActivity extends BaseActivity {
                 }
 //                if (mUserId != null && !mUserId.equals("")) {
                 if (NetUtils.isConnected(App.getContext())) {
-                    if (isFirst == true) {
-                        Intent redPacket = new Intent(this, OpenRedEnvelopeActivity.class);
-//                            redPacket.putExtra("userId", mUserId);
-                        startActivity(redPacket);
+                    if (isFirst) {
+                        if (mMerchaninfo != null && !mMerchaninfo.equals("")
+                                && !mMerchantimageurl.equals("") && mMerchantimageurl != null) {
+                            Intent redPacket = new Intent(this, OpenRedEnvelopeActivity.class);
+                            redPacket.putExtra("mMerchaninfo", mMerchaninfo);
+                            redPacket.putExtra("mMerchantimageurl", mMerchantimageurl);
+                            startActivity(redPacket);
+                        }
+
                     } else {
                         ToastUtils.showShort(RidingResultActivity.this, "下次骑行再来领红包吧！");
                     }
