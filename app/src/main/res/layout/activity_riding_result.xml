@@ -215,16 +215,17 @@
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:layout_below="@+id/myKcal"
-        android:background="@drawable/image_bg_bmp"/>
+        android:background="@drawable/image_bg_bmp"
+        android:visibility="gone"/>
 
     <Button
-        android:layout_marginBottom="-15dp"
         android:id="@+id/callCenter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/work_time"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
+        android:layout_marginBottom="-15dp"
         android:background="@null"
         android:text="@string/callphone"
         android:textColor="@color/colorHeading"

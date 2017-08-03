@@ -252,5 +252,4 @@ public class RidingResultActivity extends BaseActivity {
         }
     }
 
-
 }
