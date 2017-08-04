@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.StringSignature;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.utils.LogUtils;
@@ -34,7 +35,11 @@ public class PropagandaPosterActivity extends BaseActivity {
             String imageUrl = intent.getStringExtra("imageUrl");
             mTitle = intent.getStringExtra("title");
             LogUtils.d("弹出层", imageUrl);
-            Glide.with(this).load(imageUrl).into(mImg);
+            Glide.with(this)
+                    .load(imageUrl)
+                    .signature(new StringSignature("01"))//增加签名
+                    .error(R.drawable.default_image)
+                    .into(mImg);
         }
     }
 
