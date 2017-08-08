@@ -18,7 +18,6 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.MessageEvent;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.utils.ClickUtils;
-import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
@@ -66,6 +65,8 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
     private boolean isShowFront = true;
     private String mMMerchaninfo;
     private String mMMerchantimageurl;
+    private String mImei;
+
 
     @Override
     protected int getLayoutId() {
@@ -78,8 +79,13 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
         if (intent != null) {
             mMMerchaninfo = intent.getStringExtra("mMerchaninfo");
             mMMerchantimageurl = intent.getStringExtra("mMerchantimageurl");
-            mMerchantInfo.setText(mMMerchaninfo + "给您发来一份惊喜红包！");
-            Glide.with(App.getContext()).load(mMMerchantimageurl).into(mMerchantIcon);
+            mImei = intent.getStringExtra("IMEI");
+            if (mMMerchaninfo != null && !mMMerchaninfo.equals("")) {
+                mMerchantInfo.setText(mMMerchaninfo + "给您发来一份惊喜红包！");
+            }
+            if (!mMMerchantimageurl.equals("") && mMMerchantimageurl != null) {
+                Glide.with(App.getContext()).load(mMMerchantimageurl).into(mMerchantIcon);
+            }
         }
         mUserId = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
         initAnimator();
@@ -105,7 +111,9 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
                 EventBus.getDefault().post(new MessageEvent(), "unable_click");
                 if (isClick) {
                     StyledDialog.buildLoading(OpenRedEnvelopeActivity.this, "", true, false).show();
-                    getRedPacket(mUserId);
+                    if (mUserId != null && !mUserId.equals("") && mImei != null && !mImei.equals("")) {
+                        getRedPacket(mUserId, mImei);
+                    }
                 } else {
                     ToastUtils.showShort(OpenRedEnvelopeActivity.this, "您已经领过红包了，下次骑行再来吧");
                 }
@@ -197,11 +205,13 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
     }
 
 
-    private void getRedPacket(String userId) {
+    private void getRedPacket(String userId, String imei) {
         Map<String, String> map = new HashMap<>();
         map.put("userId", userId);
-        LogUtils.d("用户", userId);
+        map.put("IMEI", imei);
+        LogUtils.d("用户", userId + "\n" + imei);
         OkHttpUtils.post().url(Api.BASE_URL + Api.MERCHANTGIFT).params(map).build().execute(new StringCallback() {
+
             @Override
             public void onError(Call call, Exception e, int id) {
                 StyledDialog.dismissLoading();
@@ -217,19 +227,29 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
                 EventBus.getDefault().post(new MessageEvent(), "unable_click");
                 mMerchantIcon.setVisibility(View.GONE);
                 mMerchantInfo.setVisibility(View.GONE);
-                if (JsonUtils.isSuccess(response)) {
-                    try {
-                        JSONObject object = new JSONObject(response);
-                        mAmount = object.optString("amount");
-                        mTitle = "恭喜您！";
-                        mContent = "获得由" + mMMerchaninfo + "发放的" + mAmount + "元红包";
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String resultStatus = object.optString("resultStatus");
+                    switch (resultStatus) {
+                        case "0":
+                            mTitle = "很遗憾！";
+                            mContent = "下次骑行再来试试手气吧！";
+                            break;
+                        case "1":
+                            mAmount = object.optString("amount");
+                            String telephone = object.optString("telephone");
+                            String address = object.optString("address");
+                            String merchatphone = object.optString("merchatphone");
+                            mTitle = "恭喜您！";
+                            mContent = "获得由" + mMMerchaninfo + "发放的" + mAmount + "元红包";
+                            break;
+                        case "2":
+                            mTitle = "很遗憾！";
+                            mContent = "您已经领过红包了";
+                            break;
                     }
-
-                } else {
-                    mTitle = "很遗憾！";
-                    mContent = "下次骑行再来试试手气吧！";
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -241,7 +261,7 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
         mCongratulations.setTextSize(20);
         mRedSum.setText(content);
         mRedSum.setTextColor(getResources().getColor(R.color.white));
-        mRedSum.setTextSize(12);
+        mRedSum.setTextSize(14);
         mCongratulations.setVisibility(View.VISIBLE);
         mRedSum.setVisibility(View.VISIBLE);
     }

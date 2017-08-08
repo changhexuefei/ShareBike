@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dcch.sharebike.MainActivity;
@@ -56,6 +57,12 @@ public class WalletInfoActivity extends BaseActivity {
     TextView chargeDeposit;
     @BindView(R.id.showArea)
     TextView showArea;
+    @BindView(R.id.my_red_packet_sum)
+    TextView mMyRedPacketSum;
+    @BindView(R.id.red_packet_page)
+    RelativeLayout mRedPacketPage;
+    @BindView(R.id.card_voucher_page)
+    RelativeLayout mCardVoucherPage;
     private RefundPopuwindow refundPopuwindow;
     private String uID;
     private UserInfo mInfo;
@@ -70,7 +77,7 @@ public class WalletInfoActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_wallet_info;
+        return R.layout.spare_layout;
     }
 
     @Override
@@ -82,7 +89,7 @@ public class WalletInfoActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.back, R.id.transactionDetail, R.id.recharge, R.id.chargeDeposit})
+    @OnClick({R.id.back, R.id.transactionDetail, R.id.recharge, R.id.chargeDeposit, R.id.red_packet_page, R.id.card_voucher_page})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -118,6 +125,21 @@ public class WalletInfoActivity extends BaseActivity {
                 } else if (chargeDeposit.getText().equals(getString(R.string.tipThere))) {
                     showRefundPopuwindow();
                 }
+                break;
+            case R.id.red_packet_page:
+                if (ClickUtils.isFastClick()) {
+                    return;
+                }
+                if (uID != null && !uID.equals("") && !mToken.equals("") && mToken != null) {
+                    Intent intent = new Intent(this, RedPacketListActivity.class);
+                    intent.putExtra("userId", uID);
+                    intent.putExtra("token", mToken);
+                    startActivity(intent);
+                }
+
+                break;
+            case R.id.card_voucher_page:
+
                 break;
         }
     }
@@ -317,13 +339,19 @@ public class WalletInfoActivity extends BaseActivity {
                         mTotal_fee = String.valueOf(mInfo.getPledgeCash());
                         mRefund_fee = mTotal_fee;
                         mCashStatus = mInfo.getCashStatus();
+                        double merchanBillAmount = mInfo.getMerchanBillAmount();
+                        double aggregateAmount = mInfo.getAggregateAmount();
+                        if (String.valueOf(merchanBillAmount) != null && !String.valueOf(merchanBillAmount).equals("")) {
+                            mMyRedPacketSum.setText(String.valueOf(merchanBillAmount));
+                        }
+                        if (!String.valueOf(aggregateAmount).equals("") && String.valueOf(aggregateAmount) != null) {
+                            remainingSum.setText(String.valueOf(aggregateAmount));
+                        }
                         if (mCashStatus == 0) {
-                            remainingSum.setText(String.valueOf(mInfo.getAggregateAmount()));
                             showArea.setText("押金" + String.valueOf(mInfo.getPledgeCash()) + "元");
                             chargeDeposit.setText(R.string.tipFour);
 
                         } else if (mCashStatus == 1) {
-                            remainingSum.setText(String.valueOf(mInfo.getAggregateAmount()));
                             showArea.setText("押金" + String.valueOf(mInfo.getPledgeCash()) + "元");
                             chargeDeposit.setText(R.string.tipThere);
                         }
@@ -344,4 +372,5 @@ public class WalletInfoActivity extends BaseActivity {
         super.onDestroy();
         StyledDialog.dismiss();
     }
+
 }

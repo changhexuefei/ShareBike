@@ -285,7 +285,6 @@ public class LoginFragment extends Fragment {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                LogUtils.d("点击", "消息");
                 if (uID != null && mToken != null) {
                     goMyMessage(uID, mToken);
                 }

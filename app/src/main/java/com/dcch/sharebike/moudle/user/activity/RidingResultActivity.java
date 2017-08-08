@@ -229,6 +229,7 @@ public class RidingResultActivity extends BaseActivity {
                                 && !mMerchantimageurl.equals("") && mMerchantimageurl != null) {
                             Intent redPacket = new Intent(this, OpenRedEnvelopeActivity.class);
                             redPacket.putExtra("mMerchaninfo", mMerchaninfo);
+                            redPacket.putExtra("IMEI", mImei);
                             redPacket.putExtra("mMerchantimageurl", mMerchantimageurl);
                             startActivity(redPacket);
                         }

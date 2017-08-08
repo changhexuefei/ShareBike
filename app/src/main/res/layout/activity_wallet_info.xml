@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/activity_wallet_info"
+
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:context="com.dcch.sharebike.moudle.user.activity.WalletInfoActivity">
@@ -35,7 +35,7 @@
             android:gravity="center"
             android:text="@string/trade_detail"
             android:textColor="@color/white"
-            android:textSize="13sp"/>
+            android:textSize="14sp"/>
 
     </FrameLayout>
 
@@ -72,9 +72,9 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/balance"
             android:textColor="@color/white"/>
-
+        <!--android:id="@+id/recharge"-->
         <Button
-            android:id="@+id/recharge"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -102,9 +102,9 @@
             android:layout_height="wrap_content"
             android:text="@string/_0"
             android:textColor="@color/white"/>
-
+        <!--android:id="@+id/chargeDeposit"-->
         <TextView
-            android:id="@+id/chargeDeposit"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"

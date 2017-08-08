@@ -71,7 +71,6 @@ public class MyMessageActivity extends BaseActivity {
             mUserId = intent.getStringExtra("userId");
             mToken = intent.getStringExtra("token");
         }
-
     }
 
     @Override
@@ -102,7 +101,7 @@ public class MyMessageActivity extends BaseActivity {
             @Override
             public void onResponse(String response, int id) {
                 if (JsonUtils.isSuccess(response)) {
-                    LogUtils.d("反应",response);
+                    LogUtils.d("反应", response);
                     Gson gson = new Gson();
                     mMessageInfo = gson.fromJson(response, MessageInfo.class);
                     if (mMessageInfo.getActivitys().size() > 0) {
