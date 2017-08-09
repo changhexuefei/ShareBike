@@ -107,9 +107,6 @@ public class LoginFragment extends Fragment {
         uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
         mToken = (String) SPUtils.get(App.getContext(), "token", "");
         mPhone = AES.decrypt((String) SPUtils.get(App.getContext(), "phone", ""), MyContent.key);
-//        byte[] decryptFrom = AESUtil.parseHexStr2Byte((String) SPUtils.get(App.getContext(), "phone", ""));
-//        byte[] decryptResult = AESUtil.decrypt(decryptFrom, MyContent.key);
-//        mPhone = new String(decryptResult);
     }
 
     @Override
@@ -123,11 +120,10 @@ public class LoginFragment extends Fragment {
         mURL = (String) SPUtils.get(App.getContext(), "imageURL", "");
         if (!mURL.equals("")) {
             LogUtils.d("状态", mURL);
-
             Glide.with(App.getContext())
                     .load(Uri.fromFile(new File(mURL)))
                     .error(R.mipmap.avatar_default_login)
-                    .thumbnail(0.1f)// 加载缩略图
+//                    .thumbnail(0.1f)// 加载缩略图
                     .into(userIcon);
 
         }

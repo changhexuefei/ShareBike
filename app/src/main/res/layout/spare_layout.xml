@@ -137,41 +137,6 @@
 
     <RelativeLayout
         android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:background="@color/colorTitle"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
-
-        <TextView
-            android:id="@+id/showArea"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/chargeDeposit"
-            android:layout_alignBottom="@+id/chargeDeposit"
-            android:text="@string/_0"
-            android:textColor="@color/white"
-            android:textSize="14sp"/>
-
-
-        <TextView
-            android:id="@+id/chargeDeposit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@+id/showArea"
-            android:text="@string/recharge_deposit"
-            android:textColor="@color/white"
-            android:textSize="14sp"/>
-
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center_vertical"
         app:layout_constraintBottom_toTopOf="@+id/guide_line_one"
@@ -214,6 +179,44 @@
             android:text="@string/trade"
             android:textColor="@color/white"
             app:layout_constraintRight_toRightOf="parent"/>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="0dp"
+        android:background="@color/colorTitle"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <TextView
+            android:id="@+id/showArea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/chargeDeposit"
+            android:layout_alignBottom="@+id/chargeDeposit"
+            android:text="@string/_0"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
+
+
+        <TextView
+            android:id="@+id/chargeDeposit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/showArea"
+            android:background="@drawable/shape_text_border"
+            android:padding="5dp"
+            android:text="@string/recharge_deposit"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
 
 
     </RelativeLayout>

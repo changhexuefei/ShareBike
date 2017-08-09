@@ -101,11 +101,7 @@
             android:launchMode="standard"
             android:screenOrientation="portrait"
             android:theme="@style/Splash_Theme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity
             android:name=".activity.GuideActivity"
@@ -413,6 +409,12 @@
             android:name=".moudle.user.activity.RidingResultActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+
         </activity>
         <activity
             android:name=".moudle.user.activity.UnlockProgressActivity"
@@ -515,10 +517,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/translucent">
         </activity>
-        <activity android:name=".moudle.user.activity.CardVoucherListActivity">
-        </activity>
-        <activity android:name=".moudle.user.activity.RedPacketListActivity">
-        </activity>
+        <activity
+            android:name=".moudle.user.activity.CardVoucherListActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+    
+        <activity
+            android:name=".moudle.user.activity.RedPacketListActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

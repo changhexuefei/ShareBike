@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
@@ -34,6 +35,7 @@ import java.util.Map;
 import butterknife.BindView;
 import okhttp3.Call;
 
+
 public class RedPacketListActivity extends BaseActivity {
 
     @BindView(R.id.title)
@@ -42,6 +44,10 @@ public class RedPacketListActivity extends BaseActivity {
     Toolbar mToolbar;
     @BindView(R.id.red_packet_list)
     LRecyclerView mRedPacketList;
+    @BindView(R.id.no_red_info)
+    RelativeLayout mDefaultShow;
+    @BindView(R.id.without_network)
+    RelativeLayout mWithoutNetwork;
     private String mUserId;
     private String mToken;
     private RedPacketInfoAdapter mPacketInfoAdapter;
@@ -55,7 +61,7 @@ public class RedPacketListActivity extends BaseActivity {
                 StyledDialog.buildLoading(RedPacketListActivity.this, "正在加载..", true, false).setMsgColor(R.color.color_ff).show();
             }
         } else {
-//            mNoMessage.setVisibility(View.VISIBLE);
+            mWithoutNetwork.setVisibility(View.VISIBLE);
             ToastUtils.showShort(this, getString(R.string.no_network_tip));
         }
     }
@@ -79,13 +85,11 @@ public class RedPacketListActivity extends BaseActivity {
                     RedPacketInfo redPacketInfo = gson.fromJson(response, RedPacketInfo.class);
                     if (redPacketInfo.getMerchanBill().size() > 0) {
                         StyledDialog.dismissLoading();
-//                        mNoMessage.setVisibility(View.GONE);
+                        mDefaultShow.setVisibility(View.GONE);
                         mRedPacketList.setVisibility(View.VISIBLE);
-                        mPacketInfoAdapter = new RedPacketInfoAdapter(RedPacketListActivity.this, R.layout.item_my_message, redPacketInfo.getMerchanBill());
+                        mPacketInfoAdapter = new RedPacketInfoAdapter(RedPacketListActivity.this, R.layout.item_red_packet, redPacketInfo.getMerchanBill());
                         mRedPacketList.setLayoutManager(new LinearLayoutManager(RedPacketListActivity.this, OrientationHelper.VERTICAL, false));
                         LRecyclerViewAdapter adapter = new LRecyclerViewAdapter(mPacketInfoAdapter);
-                        //添加分割线
-//                        mMyMessageList.addItemDecoration(new DividerItemDecoration(MyMessageActivity.this, DividerItemDecoration.VERTICAL));
                         mRedPacketList.addItemDecoration(new MyDividerItemDecoration(RedPacketListActivity.this, DividerItemDecoration.VERTICAL));
                         mRedPacketList.setAdapter(adapter);
                         CommonFooter footerView = new CommonFooter(RedPacketListActivity.this, R.layout.footer);
@@ -94,17 +98,14 @@ public class RedPacketListActivity extends BaseActivity {
                         mRedPacketList.setPullRefreshEnabled(false);
                         //禁用自动加载更多功能
                         mRedPacketList.setLoadMoreEnabled(false);
-//
                     }
                 } else {
                     StyledDialog.dismissLoading();
-//                    mNoMessage.setVisibility(View.VISIBLE);
-//                    mMyMessageList.setVisibility(View.GONE);
+                    mDefaultShow.setVisibility(View.VISIBLE);
+                    mRedPacketList.setVisibility(View.GONE);
                 }
             }
         });
-
-
     }
 
     @Override

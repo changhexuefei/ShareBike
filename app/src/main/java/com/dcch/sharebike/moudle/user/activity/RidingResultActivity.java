@@ -71,6 +71,7 @@ public class RidingResultActivity extends BaseActivity {
     private boolean isFirst = true;
     private String mMerchaninfo;
     private String mMerchantimageurl;
+    private String mMerchant;
 
     @Override
     protected int getLayoutId() {
@@ -118,6 +119,7 @@ public class RidingResultActivity extends BaseActivity {
                             showResult(response);
                             mMerchaninfo = object.optString("merchaninfo");
                             mMerchantimageurl = object.optString("merchantimageurl");
+                            mMerchant = object.optString("merchanid");
                             mRedPacket.setVisibility(View.VISIBLE);
                             break;
                         case "3":
@@ -222,12 +224,17 @@ public class RidingResultActivity extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
+                LogUtils.d("骑行结果", "点击我了！");
 //                if (mUserId != null && !mUserId.equals("")) {
                 if (NetUtils.isConnected(App.getContext())) {
                     if (isFirst) {
                         if (mMerchaninfo != null && !mMerchaninfo.equals("")
-                                && !mMerchantimageurl.equals("") && mMerchantimageurl != null) {
+                                && !mMerchantimageurl.equals("") && mMerchantimageurl != null
+                                && !mImei.equals("") && mImei != null && !mMerchant.equals("")
+                                && mMerchant != null
+                                ) {
                             Intent redPacket = new Intent(this, OpenRedEnvelopeActivity.class);
+                            redPacket.putExtra("merchanid", mMerchant);
                             redPacket.putExtra("mMerchaninfo", mMerchaninfo);
                             redPacket.putExtra("IMEI", mImei);
                             redPacket.putExtra("mMerchantimageurl", mMerchantimageurl);

@@ -8,7 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
@@ -45,18 +45,14 @@ public class MyJourneyActivity extends BaseActivity {
 
     @BindView(R.id.journey_list)
     LRecyclerView journeyList;
-    @BindView(R.id.no_journey)
-    TextView noJourney;
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.iv_no_journey)
-    ImageView mIvNoJourney;
-    @BindView(R.id.iv_no_network_linking)
-    ImageView mIvNoNetworkLinking;
-    @BindView(R.id.no_network_linking_tip)
-    TextView mNoNetworkLinkingTip;
+    @BindView(R.id.journey_default_show)
+    RelativeLayout mJourneyDefaultShow;
+    @BindView(R.id.without_network)
+    RelativeLayout mWithoutNetwork;
     private String mPhone;
     private JourneyInfoAdapter mAdapter;
     private String userDetail;
@@ -90,7 +86,6 @@ public class MyJourneyActivity extends BaseActivity {
             mPhone = intent.getStringExtra("phone");
             mToken = intent.getStringExtra("token");
         }
-
     }
 
     @Override
@@ -100,10 +95,7 @@ public class MyJourneyActivity extends BaseActivity {
             getJourneyInfo(mPhone, mToken);
             StyledDialog.buildLoading(MyJourneyActivity.this, "正在加载..", true, false).setMsgColor(R.color.color_ff).show();
         } else {
-            mIvNoJourney.setVisibility(View.GONE);
-            noJourney.setVisibility(View.GONE);
-            mIvNoNetworkLinking.setVisibility(View.VISIBLE);
-            mNoNetworkLinkingTip.setVisibility(View.VISIBLE);
+            mWithoutNetwork.setVisibility(View.VISIBLE);
         }
     }
 
@@ -134,7 +126,6 @@ public class MyJourneyActivity extends BaseActivity {
                         LRecyclerViewAdapter adapter = new LRecyclerViewAdapter(mAdapter);
 //                        //添加分割线
                         journeyList.addItemDecoration(new MyDividerItemDecoration(MyJourneyActivity.this, DividerItemDecoration.VERTICAL));
-//                        journeyList.addItemDecoration(new DividerItemDecoration(MyJourneyActivity.this, DividerItemDecoration.VERTICAL));
                         journeyList.setAdapter(adapter);
                         CommonFooter footerView = new CommonFooter(MyJourneyActivity.this, R.layout.footer);
                         adapter.addFooterView(footerView);
@@ -171,8 +162,7 @@ public class MyJourneyActivity extends BaseActivity {
                     }
                 } else {
                     StyledDialog.dismissLoading();
-                    mIvNoJourney.setVisibility(View.VISIBLE);
-                    noJourney.setVisibility(View.VISIBLE);
+                    mJourneyDefaultShow.setVisibility(View.VISIBLE);
                 }
             }
         });

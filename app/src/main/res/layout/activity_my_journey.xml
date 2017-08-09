@@ -19,11 +19,12 @@
 
 
     <RelativeLayout
-        android:id="@+id/default_show"
+        android:id="@+id/journey_default_show"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/iv_no_journey"
@@ -32,8 +33,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:contentDescription="@string/desc"
-            android:src="@drawable/empty_view_img"
-            android:visibility="gone"/>
+            android:src="@drawable/empty_view_img"/>
 
         <TextView
             android:id="@+id/no_journey"
@@ -43,29 +43,14 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
             android:text="@string/my_journey_tips"
-            android:textSize="16sp"
-            android:visibility="gone"/>
-
-        <ImageView
-            android:id="@+id/iv_no_network_linking"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="90dp"
-            android:contentDescription="@string/desc"
-            android:src="@mipmap/network_unavailable_img"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/no_network_linking_tip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_no_network_linking"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="10dp"
-            android:text="@string/coupon_tip_two"
-            android:textSize="16sp"
-            android:visibility="gone"/>
+            android:textSize="16sp"/>
 
     </RelativeLayout>
+
+    <include
+        layout="@layout/share_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:visibility="gone"/>
 </RelativeLayout>

@@ -8,7 +8,6 @@ import android.support.v7.widget.OrientationHelper;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
@@ -37,26 +36,16 @@ import okhttp3.Call;
 
 public class CouponListActivity extends BaseActivity {
 
-    //    @BindView(R.id.title)
-//    TextView mTitle;
-//    @BindView(R.id.toolbar)
-//    Toolbar mToolbar;
     @BindView(R.id.coupon_list)
     LRecyclerView mCouponList;
-    @BindView(R.id.iv_no_coupon)
-    ImageView mIvNoJourney;
     @BindView(R.id.default_show)
     RelativeLayout mDefaultShow;
     @BindView(R.id.back)
     ImageView mBack;
     @BindView(R.id.coupon_rule)
     ImageView mCouponRule;
-    @BindView(R.id.iv_no_network_linking)
-    ImageView mIvNoNetworkLinking;
-    @BindView(R.id.no_network_linking_tip)
-    TextView mNoNetworkLinkingTip;
-    @BindView(R.id.no_coupon)
-    TextView mNoJourney;
+    @BindView(R.id.without_network)
+    RelativeLayout mWithoutNetwork;
     private String mToken;
     private String mUserId;
     private CouponInfoAdapter mCouponInfoAdapter;
@@ -69,15 +58,6 @@ public class CouponListActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-//        mToolbar.setTitle("");
-//        mTitle.setText(getResources().getString(R.string.my_coupon));
-//        setSupportActionBar(mToolbar);
-//        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                finish();
-//            }
-//        });
         Intent intent = getIntent();
         if (intent != null) {
             mUserId = intent.getStringExtra("userId");
@@ -87,16 +67,12 @@ public class CouponListActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        LogUtils.d("why", "为什么onCreate");
         super.onCreate(savedInstanceState);
         if (NetUtils.isConnected(App.getContext())) {
             getCouponListInfo(mUserId, mToken);
             StyledDialog.buildLoading(CouponListActivity.this, "正在加载..", true, false).setMsgColor(R.color.color_ff).show();
         } else {
-            mIvNoJourney.setVisibility(View.GONE);
-            mNoJourney.setVisibility(View.GONE);
-            mIvNoNetworkLinking.setVisibility(View.VISIBLE);
-            mNoNetworkLinkingTip.setVisibility(View.VISIBLE);
+            mWithoutNetwork.setVisibility(View.VISIBLE);
         }
     }
 
@@ -108,7 +84,7 @@ public class CouponListActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.GETCOUPON).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-
+                StyledDialog.dismissLoading();
                 ToastUtils.showShort(CouponListActivity.this, getString(R.string.server_tip));
             }
 
@@ -125,8 +101,6 @@ public class CouponListActivity extends BaseActivity {
                         mCouponInfoAdapter = new CouponInfoAdapter(CouponListActivity.this, R.layout.item_my_coupon, mCouponInfo.getCoupons());
                         mCouponList.setLayoutManager(new LinearLayoutManager(CouponListActivity.this, OrientationHelper.VERTICAL, false));
                         LRecyclerViewAdapter adapter = new LRecyclerViewAdapter(mCouponInfoAdapter);
-                        //添加分割线
-//                        mCouponList.addItemDecoration(new DividerItemDecoration(CouponListActivity.this, DividerItemDecoration.VERTICAL));
                         mCouponList.setAdapter(adapter);
                         CommonFooter footerView = new CommonFooter(CouponListActivity.this, R.layout.footer);
                         adapter.addFooterView(footerView);
@@ -134,7 +108,6 @@ public class CouponListActivity extends BaseActivity {
                         mCouponList.setPullRefreshEnabled(false);
                         //禁用自动加载更多功能
                         mCouponList.setLoadMoreEnabled(false);
-
                     }
                 } else {
                     StyledDialog.dismissLoading();
@@ -142,8 +115,6 @@ public class CouponListActivity extends BaseActivity {
                 }
             }
         });
-
-
     }
 
 

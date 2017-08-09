@@ -230,7 +230,7 @@
     <string name="usinghelp">使用帮助</string>
     <string name="input_tips">若因输错自行车编号造成自行车丢失，您将承担相应的赔偿责任</string>
     <string name="qilin_coupon">麒麟单车骑行券</string>
-    <string name="couponNo">骑行券编号：</string>
+    <string name="couponNo">编号：</string>
     <string name="_091700001">091700001</string>
     <string name="time_100">100</string>
     <string name="_10">10</string>
@@ -324,4 +324,10 @@
     <string name="no_coupons">无优惠券抵扣</string>
     <string name="coupons">优惠券抵扣1张</string>
     <string name="cash_packet">现金红包</string>
+    <string name="telephone">电话:</string>
+    <string name="address">地址:</string>
+    <string name="red_packet_tips">（红包已存入到您的余额中）</string>
+    <string name="red_packet_tip_one">元红包</string>
+    <string name="red_packet_tip_two">获得</string>
+    <string name="congratulations">恭喜您</string>
 </resources>

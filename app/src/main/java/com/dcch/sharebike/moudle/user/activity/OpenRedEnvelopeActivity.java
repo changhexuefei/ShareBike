@@ -9,6 +9,7 @@ import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -55,6 +56,16 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
     ImageView mMerchantIcon;
     @BindView(R.id.merchant_info)
     TextView mMerchantInfo;
+    @BindView(R.id.merchant_name)
+    TextView mMerchantName;
+    @BindView(R.id.telephoneNumber)
+    TextView mTelephoneNumber;
+    @BindView(R.id.telephoneNumberTwo)
+    TextView mTelephoneNumberTwo;
+    @BindView(R.id.addressInfo)
+    TextView mAddressInfo;
+    @BindView(R.id.red_sum_area)
+    RelativeLayout mRedSumArea;
     private String mUserId;
     private String mAmount;
     private String mTitle;
@@ -66,6 +77,10 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
     private String mMMerchaninfo;
     private String mMMerchantimageurl;
     private String mImei;
+    private String mTelephone;
+    private String mAddress;
+    private String mMerchatphone;
+    private String merchanid;
 
 
     @Override
@@ -80,6 +95,7 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
             mMMerchaninfo = intent.getStringExtra("mMerchaninfo");
             mMMerchantimageurl = intent.getStringExtra("mMerchantimageurl");
             mImei = intent.getStringExtra("IMEI");
+            merchanid = intent.getStringExtra("merchanid");
             if (mMMerchaninfo != null && !mMMerchaninfo.equals("")) {
                 mMerchantInfo.setText(mMMerchaninfo + "给您发来一份惊喜红包！");
             }
@@ -111,8 +127,9 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
                 EventBus.getDefault().post(new MessageEvent(), "unable_click");
                 if (isClick) {
                     StyledDialog.buildLoading(OpenRedEnvelopeActivity.this, "", true, false).show();
-                    if (mUserId != null && !mUserId.equals("") && mImei != null && !mImei.equals("")) {
-                        getRedPacket(mUserId, mImei);
+                    if (mUserId != null && !mUserId.equals("") && mImei != null && !mImei.equals("")
+                            && !merchanid.equals("") && merchanid != null) {
+                        getRedPacket(mUserId, mImei, merchanid);
                     }
                 } else {
                     ToastUtils.showShort(OpenRedEnvelopeActivity.this, "您已经领过红包了，下次骑行再来吧");
@@ -163,9 +180,10 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                if (mTitle != null && !mTitle.equals("") && !mContent.equals("") && mContent != null) {
-                    getRedPacketResult(mTitle, mContent);
-                }
+                mRedSumArea.setVisibility(View.VISIBLE);
+
+                getRedPacketResult(mAddress, mAmount, mMMerchaninfo, mMerchatphone, mTelephone);
+
             }
 
             @Override
@@ -205,13 +223,13 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
     }
 
 
-    private void getRedPacket(String userId, String imei) {
+    private void getRedPacket(String userId, String imei, String merchanid) {
         Map<String, String> map = new HashMap<>();
         map.put("userId", userId);
         map.put("IMEI", imei);
-        LogUtils.d("用户", userId + "\n" + imei);
+        map.put("merchanid", merchanid);
+        LogUtils.d("用户", userId + "\n" + imei + "\n" + merchanid);
         OkHttpUtils.post().url(Api.BASE_URL + Api.MERCHANTGIFT).params(map).build().execute(new StringCallback() {
-
             @Override
             public void onError(Call call, Exception e, int id) {
                 StyledDialog.dismissLoading();
@@ -232,20 +250,16 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
                     String resultStatus = object.optString("resultStatus");
                     switch (resultStatus) {
                         case "0":
-                            mTitle = "很遗憾！";
-                            mContent = "下次骑行再来试试手气吧！";
+                            ToastUtils.showShort(OpenRedEnvelopeActivity.this, "服务器正忙，请稍后再试！");
                             break;
                         case "1":
                             mAmount = object.optString("amount");
-                            String telephone = object.optString("telephone");
-                            String address = object.optString("address");
-                            String merchatphone = object.optString("merchatphone");
-                            mTitle = "恭喜您！";
-                            mContent = "获得由" + mMMerchaninfo + "发放的" + mAmount + "元红包";
+                            mTelephone = object.optString("telephone");
+                            mAddress = object.optString("address");
+                            mMerchatphone = object.optString("merchatphone");
                             break;
                         case "2":
-                            mTitle = "很遗憾！";
-                            mContent = "您已经领过红包了";
+
                             break;
                     }
                 } catch (JSONException e) {
@@ -255,13 +269,22 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
         });
     }
 
-    private void getRedPacketResult(String title, String content) {
-        mCongratulations.setText(title);
-        mCongratulations.setTextColor(getResources().getColor(R.color.white));
-        mCongratulations.setTextSize(20);
-        mRedSum.setText(content);
-        mRedSum.setTextColor(getResources().getColor(R.color.white));
-        mRedSum.setTextSize(14);
+    private void getRedPacketResult(String address, String amount, String mMMerchaninfo, String mMerchatphone, String mTelephone) {
+        if (address != null && !address.equals("")) {
+            mAddressInfo.setText(address);
+        }
+        if (mTelephone != null && !mTelephone.equals("")) {
+            mTelephoneNumber.setText(mTelephone);
+        }
+        if (mMerchatphone != null && !mMerchatphone.equals("")) {
+            mTelephoneNumberTwo.setText(mMerchatphone);
+        } else {
+            mTelephoneNumberTwo.setVisibility(View.GONE);
+        }
+        if (!mMMerchaninfo.equals("") && mMMerchaninfo != null) {
+            mMerchantName.setText(mMMerchaninfo);
+        }
+        mRedSum.setText(amount);
         mCongratulations.setVisibility(View.VISIBLE);
         mRedSum.setVisibility(View.VISIBLE);
     }
@@ -271,4 +294,5 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
         super.onDestroy();
         StyledDialog.dismiss();
     }
+
 }

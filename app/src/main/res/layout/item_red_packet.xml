@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:paddingBottom="10dp">
 
     <TextView
@@ -11,8 +12,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
         android:text="@string/cash_packet"
-        android:textSize="14sp"/>
+        android:textSize="16sp"/>
 
     <TextView
         android:id="@+id/receiveTime"
@@ -35,6 +37,6 @@
         android:layout_marginRight="20dp"
         android:text="@string/trade_1"
         android:textColor="@color/colorTitle"
-        android:textSize="16sp"/>
+        android:textSize="20sp"/>
 
 </RelativeLayout>

@@ -121,19 +121,6 @@ public class MyMessageActivity extends BaseActivity {
                         mMyMessageList.setPullRefreshEnabled(false);
                         //禁用自动加载更多功能
                         mMyMessageList.setLoadMoreEnabled(false);
-//                        adapter.setOnItemClickListener(new OnItemClickListener() {
-//                            @Override
-//                            public void onItemClick(View view, int position) {
-//                                String activityurl = mMessageInfo.getActivitys().get(position).getActivityurl();
-//                                String activityname = mMessageInfo.getActivitys().get(position).getActivityname();
-//                                if (activityurl != null && activityname != null) {
-//                                    Intent messageDetail = new Intent(MyMessageActivity.this, MessageDetailActivity.class);
-//                                    messageDetail.putExtra("activityUrl", activityurl);
-//                                    messageDetail.putExtra("theme", activityname);
-//                                    startActivity(messageDetail);
-//                                }
-//                            }
-//                        });
                     }
                 } else {
                     StyledDialog.dismissLoading();
