@@ -217,7 +217,7 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
 
     private void getRedPacket(String userId, String imei, final String merchantid) {
         Map<String, String> map = new HashMap<>();
-        map.put("userId", "214");
+        map.put("userId", userId);
         map.put("IMEI", imei);
         map.put("merchantid", merchantid);
         LogUtils.d("用户", userId + "\n" + imei + "\n" + merchantid);
@@ -240,7 +240,6 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
                     String resultStatus = object.optString("resultStatus");
                     switch (resultStatus) {
                         case "0":
-
                             mCongratulations.setText("很遗憾，红包抢完了");
                             break;
                         case "1":

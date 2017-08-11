@@ -172,10 +172,10 @@ public class RidingResultActivity extends BaseActivity {
         LogUtils.d("周期", "onCreate");
         StyledDialog.buildLoading(RidingResultActivity.this, "结算中.....", true, false).show();
         Intent intent = getIntent();
-//        mImei = intent.getStringExtra("IMEI");
-//        mUserId = intent.getStringExtra("userId");
-        mImei = "091609998";
-        mUserId = "214";
+        mImei = intent.getStringExtra("IMEI");
+        mUserId = intent.getStringExtra("userId");
+//        mImei = "091609998";
+//        mUserId = "214";
         if (NetUtils.isConnected(App.getContext())) {
             if (mImei != null && mUserId != null) {
                 LogUtils.d("骑行结果", mImei + "\n" + mUserId);
