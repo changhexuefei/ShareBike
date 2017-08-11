@@ -69,7 +69,7 @@ public class RidingResultActivity extends BaseActivity {
     private String mImei;
     private String mUserId;
     private boolean isFirst = true;
-    private String mMerchaninfo;
+    private String mMerchantinfo;
     private String mMerchantimageurl;
     private String mMerchant;
 
@@ -110,21 +110,26 @@ public class RidingResultActivity extends BaseActivity {
                 try {
                     JSONObject object = new JSONObject(response);
                     String resultStatus = object.optString("resultStatus");
+                    String resultGift = object.optString("resultGift");
 
                     switch (resultStatus) {
                         case "0":
                             ToastUtils.showShort(RidingResultActivity.this, getString(R.string.server_tip));
                             break;
                         case "1":
-                            showResult(response);
-                            mMerchaninfo = object.optString("merchaninfo");
-                            mMerchantimageurl = object.optString("merchantimageurl");
-                            mMerchant = object.optString("merchanid");
-                            mRedPacket.setVisibility(View.VISIBLE);
-                            break;
-                        case "3":
-                            showResult(response);
-                            mRedPacket.setVisibility(View.GONE);
+                            switch (resultGift) {
+                                case "1":
+                                    showResult(response);
+                                    mMerchantinfo = object.optString("merchantinfo");
+                                    mMerchantimageurl = object.optString("merchantimageurl");
+                                    mMerchant = object.optString("merchantid");
+                                    mRedPacket.setVisibility(View.VISIBLE);
+                                    break;
+                                case "0":
+                                    showResult(response);
+                                    mRedPacket.setVisibility(View.GONE);
+                                    break;
+                            }
                             break;
                     }
                 } catch (JSONException e) {
@@ -169,7 +174,7 @@ public class RidingResultActivity extends BaseActivity {
         Intent intent = getIntent();
 //        mImei = intent.getStringExtra("IMEI");
 //        mUserId = intent.getStringExtra("userId");
-        mImei = "091609999";
+        mImei = "091609998";
         mUserId = "214";
         if (NetUtils.isConnected(App.getContext())) {
             if (mImei != null && mUserId != null) {
@@ -228,14 +233,14 @@ public class RidingResultActivity extends BaseActivity {
 //                if (mUserId != null && !mUserId.equals("")) {
                 if (NetUtils.isConnected(App.getContext())) {
                     if (isFirst) {
-                        if (mMerchaninfo != null && !mMerchaninfo.equals("")
+                        if (mMerchantinfo != null && !mMerchantinfo.equals("")
                                 && !mMerchantimageurl.equals("") && mMerchantimageurl != null
                                 && !mImei.equals("") && mImei != null && !mMerchant.equals("")
                                 && mMerchant != null
                                 ) {
                             Intent redPacket = new Intent(this, OpenRedEnvelopeActivity.class);
-                            redPacket.putExtra("merchanid", mMerchant);
-                            redPacket.putExtra("mMerchaninfo", mMerchaninfo);
+                            redPacket.putExtra("merchantid", mMerchant);
+                            redPacket.putExtra("mMerchantinfo", mMerchantinfo);
                             redPacket.putExtra("IMEI", mImei);
                             redPacket.putExtra("mMerchantimageurl", mMerchantimageurl);
                             startActivity(redPacket);

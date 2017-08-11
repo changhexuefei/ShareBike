@@ -29,164 +29,37 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"/>
-    <!--android:visibility="invisible"-->
 
 
-    <RelativeLayout
-        android:id="@+id/red_sum_area"
+    <ImageView
+        android:id="@+id/merchant_info_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="100dp"
-        android:gravity="center_horizontal"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/test"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/Congratulations"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="@string/congratulations"
-            android:textColor="@color/yellow"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
-
-
-        <RelativeLayout
-            android:id="@+id/showInfoArea"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/Congratulations"
-            android:layout_centerHorizontal="true">
-
-            <TextView
-                android:id="@+id/advertise_one"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/red_sum"
-                android:text="@string/red_packet_tip_two"
-                android:textColor="@color/white"/>
-
-            <TextView
-                android:id="@+id/red_sum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_toRightOf="@+id/advertise_one"
-                android:text="0.3"
-                android:textColor="@color/yellow"
-                android:textSize="24sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/advertise_two"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/red_sum"
-                android:layout_toRightOf="@+id/red_sum"
-                android:text="@string/red_packet_tip_one"
-                android:textColor="@color/white"/>
-        </RelativeLayout>
-
-
-        <TextView
-            android:id="@+id/tip_show"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/showInfoArea"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
-            android:text="@string/red_packet_tips"
-            android:textColor="@color/white"
-            android:textSize="12sp"/>
-
-        <TextView
-            android:id="@+id/merchant_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tip_show"
-            android:layout_marginTop="10dp"
-            android:text="xxxxx"
-            android:textColor="@color/white"
-            android:textSize="14sp"/>
-
-
-        <TextView
-            android:id="@+id/telephone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tip_show"
-            android:layout_below="@+id/merchant_name"
-            android:layout_marginTop="5dp"
-            android:text="@string/telephone"
-            android:textColor="@color/white"
-            android:textSize="12sp"/>
-
-        <TextView
-            android:id="@+id/telephoneNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/telephone"
-            android:layout_toRightOf="@id/telephone"
-            android:text="17701273631"
-            android:textColor="@color/white"
-            android:textSize="12sp"/>
-
-        <TextView
-
-            android:id="@+id/telephoneNumberTwo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/telephoneNumber"
-            android:layout_below="@+id/telephoneNumber"
-            android:text="17701273631"
-            android:textColor="@color/white"
-            android:textSize="12sp"/>
-
-
-        <TextView
-            android:id="@+id/addressName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/telephone"
-            android:layout_below="@+id/telephoneNumberTwo"
-            android:layout_marginTop="5dp"
-            android:text="@string/address"
-            android:textColor="@color/white"
-            android:textSize="12sp"/>
-
-        <TextView
-            android:id="@+id/addressInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/addressName"
-            android:layout_toRightOf="@id/addressName"
-            android:maxLines="2"
-            android:text="北京市海淀区上地六街7号"
-            android:textColor="@color/white"
-            android:textSize="12sp"/>
-
-    </RelativeLayout>
+        app:layout_constraintTop_toBottomOf="@+id/red_sum_area"
+        app:layout_constraintVertical_bias="0.048"/>
 
 
     <ImageView
         android:id="@+id/close_redPacket"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:srcCompat="@mipmap/hintcard_close"/>
@@ -199,7 +72,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="138dp"
+        android:layout_marginTop="147dp"
         android:scaleType="fitXY"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -223,6 +96,87 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/merchant_icon"/>
+
+    <RelativeLayout
+        android:id="@+id/red_sum_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="245dp"
+        android:gravity="center_horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/Congratulations"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/yellow"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <RelativeLayout
+            android:id="@+id/showInfoArea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/Congratulations"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:id="@+id/showMoney"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:id="@+id/advertise_one"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/red_packet_tip_two"
+                    android:textColor="@color/white"/>
+
+                <TextView
+                    android:id="@+id/red_sum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_toRightOf="@+id/advertise_one"
+                    android:text="0.0"
+                    android:textColor="@color/yellow"
+                    android:textSize="24sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/advertise_two"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/red_sum"
+                    android:text="@string/red_packet_tip_one"
+                    android:textColor="@color/white"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tip_show"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/showMoney"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="2dp"
+                android:text="@string/red_packet_tips"
+                android:textColor="@color/white"
+                android:textSize="12sp"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
 
 
 </android.support.constraint.ConstraintLayout>
