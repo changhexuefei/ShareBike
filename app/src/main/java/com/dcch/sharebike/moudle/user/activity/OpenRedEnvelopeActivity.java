@@ -238,9 +238,15 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
                 try {
                     JSONObject object = new JSONObject(response);
                     String resultStatus = object.optString("resultStatus");
+                    LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT
+                    );
+
                     switch (resultStatus) {
                         case "0":
+
                             mCongratulations.setText("很遗憾，红包抢完了");
+                            mCongratulations.setLayoutParams(params);
                             break;
                         case "1":
                             mAmount = object.optString("amount");
@@ -251,6 +257,8 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
                             }
                             break;
                         case "2":
+                        
+                            mCongratulations.setLayoutParams(params);
                             mCongratulations.setText("领过红包，下次再来");
                             break;
                     }
