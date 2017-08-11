@@ -64,8 +64,6 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
     RelativeLayout mShowInfoArea;
     private String mUserId;
     private String mAmount;
-    private String mTitle;
-    private String mContent;
     private boolean isClick = true;
     private AnimatorSet mFrontAnimator;
     private AnimatorSet mBackAnimator;
@@ -75,7 +73,6 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
     private String mImei;
     private String merchantid;
     private String mMerchantInfoImageURl;
-    private String mTipInfo;
 
 
     @Override
