@@ -5,7 +5,6 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.content.Intent;
-import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -51,7 +50,7 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
     @BindView(R.id.lly_front)
     LinearLayout mLlyFront;
     @BindView(R.id.fl_container)
-    ConstraintLayout mFlContainer;
+    RelativeLayout mFlContainer;
     @BindView(R.id.merchant_icon)
     ImageView mMerchantIcon;
     @BindView(R.id.merchant_info)

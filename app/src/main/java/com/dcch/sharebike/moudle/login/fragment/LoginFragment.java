@@ -254,9 +254,7 @@ public class LoginFragment extends Fragment {
                 }
                 LogUtils.d("点击", "钱包");
                 if (NetUtils.isConnected(App.getContext())) {
-//                    if (mInfo != null) {mInfo
                     goWalletInfo();
-//                    }
                 } else {
                     ToastUtils.showShort(getActivity(), getString(R.string.no_network_tip));
                 }
