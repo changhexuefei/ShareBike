@@ -330,4 +330,6 @@
     <string name="red_packet_tip_one">元红包</string>
     <string name="red_packet_tip_two">获得</string>
     <string name="congratulations">恭喜您</string>
+    <string name="come_again">您已领过红包，下次再来</string>
+    <string name="red_envelope">很遗憾，红包抢完了</string>
 </resources>

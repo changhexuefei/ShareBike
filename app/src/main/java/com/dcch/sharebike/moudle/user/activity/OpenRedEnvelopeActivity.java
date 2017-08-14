@@ -241,20 +241,20 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
                     params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
                     switch (resultStatus) {
                         case "0":
-                            mCongratulations.setText("很遗憾，红包抢完了");
+                            mCongratulations.setText(R.string.red_envelope);
                             mCongratulations.setLayoutParams(params);
                             break;
                         case "1":
                             mAmount = object.optString("amount");
                             mMerchantInfoImageURl = object.optString("merchantinfoimageurl");
-                            mCongratulations.setText("恭喜您");
+                            mCongratulations.setText(R.string.congratulations);
                             if (mAmount != null && mMerchantInfoImageURl != null) {
                                 getRedPacketResult(mAmount, mMerchantInfoImageURl);
                             }
                             break;
                         case "2":
                             mCongratulations.setLayoutParams(params);
-                            mCongratulations.setText("您已领过红包，下次再来");
+                            mCongratulations.setText(R.string.come_again);
                             break;
                     }
                 } catch (JSONException e) {
