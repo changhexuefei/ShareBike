@@ -313,7 +313,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         OkHttpUtils.post().url(Api.BASE_URL + Api.HEADADVERTISEMENT).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(MainActivity.this,R.string.server_tip);
+                ToastUtils.showShort(MainActivity.this, R.string.server_tip);
             }
 
             @Override
@@ -338,7 +338,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         OkHttpUtils.get().url(Api.BASE_URL + Api.CHANGEBICYCLEIMAGE).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(MainActivity.this,R.string.server_tip);
+                ToastUtils.showShort(MainActivity.this, R.string.server_tip);
             }
 
             @Override
@@ -383,6 +383,29 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     //自动更新的方法
     private void updataApp() {
+//        //初始化自动更新对象
+//        final IFlytekUpdate updManager = IFlytekUpdate.getInstance(App.getContext());
+//        //开启调试模式，默认不开启
+//        updManager.setDebugMode(false);
+//        //开启wifi环境下检测更新，仅对自动更新有效，强制更新则生效
+//        updManager.setParameter(UpdateConstants.EXTRA_WIFIONLY, "true");
+//        //设置通知栏使用应用icon，详情请见示例
+//        updManager.setParameter(UpdateConstants.EXTRA_NOTI_ICON, "true");
+//        //设置更新提示类型，默认为通知栏提示
+//        updManager.setParameter(UpdateConstants.EXTRA_STYLE, UpdateConstants.UPDATE_UI_DIALOG);
+//        //自动更新回调方法，详情参考demo
+//        IFlytekUpdateListener updateListener = new IFlytekUpdateListener() {
+//            @Override
+//            public void onResult(int errorcode, UpdateInfo result) {
+//                if (errorcode == UpdateErrorCode.OK && result != null) {
+//                    updManager.showUpdateInfo(MainActivity.this, result);
+//                }
+//            }
+//        };
+//        // 启动自动更新
+////        updManager.autoUpdate(this, updateListener);
+//        updManager.forceUpdate(this, updateListener);
+
         UpdateHelper.getInstance().init(getApplicationContext(), Color.parseColor("#0A93DB"));
         UpdateHelper.getInstance().setDebugMode(false);
         long intervalMillis = 10 * 1000L;           //第一次调用startUpdateSilent出现弹窗后，如果10秒内进行第二次调用不会查询更新
@@ -1539,6 +1562,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                             break;
                         case "2":
                             goToLogin();
+                            break;
+                        case "3":
+                            ToastUtils.showShort(MainActivity.this, getString(R.string.scan_tip));
                             break;
                     }
                 } catch (JSONException e) {

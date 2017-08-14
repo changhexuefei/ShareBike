@@ -43,6 +43,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 
+import static com.dcch.sharebike.http.Api.CHECKAGGREGATE;
+
 public class WalletInfoActivity extends BaseActivity {
 
     @BindView(R.id.back)
@@ -215,7 +217,7 @@ public class WalletInfoActivity extends BaseActivity {
         mMap.clear();
         mMap.put("userId", uID);
         mMap.put("token", token);
-        OkHttpUtils.post().url(Api.BASE_URL + Api.SEARCHAMOUNT).params(mMap).build().execute(new StringCallback() {
+        OkHttpUtils.post().url(Api.BASE_URL + CHECKAGGREGATE).params(mMap).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
                 ToastUtils.showShort(App.getContext(), getString(R.string.server_tip));
@@ -247,6 +249,11 @@ public class WalletInfoActivity extends BaseActivity {
                             StyledDialog.dismissLoading();
                             goToLogin();
                             break;
+
+                        case "3":
+                            ToastUtils.showShort(WalletInfoActivity.this, getString(R.string.refund_tip));
+                            break;
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -299,9 +306,7 @@ public class WalletInfoActivity extends BaseActivity {
                         case "2":
 
                             break;
-                        case "3":
-                            ToastUtils.showShort(WalletInfoActivity.this, getString(R.string.refund_tip));
-                            break;
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

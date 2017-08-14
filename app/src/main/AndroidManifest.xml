@@ -76,6 +76,25 @@
         <service
             android:name="com.qihoo.appstore.updatelib.CheckUpdateService"
             android:exported="false"/>
+
+        <meta-data android:name="IFLYTEK_CHANNEL" android:value="" >
+        </meta-data>
+        <meta-data  android:name="IFLYTEK_APPKEY"  android:value="'591ec095'" >
+        </meta-data>
+
+        <!--<activity-->
+            <!--android:name="com.iflytek.autoupdate.IFlytekUpdateDialog"-->
+            <!--android:configChanges="keyboard|keyboardHidden|orientation"-->
+            <!--android:exported="true"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@android:style/Theme.Translucent.NoTitleBar"-->
+            <!--android:windowSoftInputMode="stateAlwaysHidden"/>-->
+
+        <!--&lt;!&ndash; 下载基础服务 &ndash;&gt;-->
+        <!--<service-->
+            <!--android:name="com.iflytek.autoupdate.IFlytekDownloadService"-->
+            <!--android:enabled="true"-->
+            <!--android:process=":IFlytekDownloadService"/>-->
         <!-- android:authorities="包名.fileprovider"将“包名”替换为实际包名 -->
         <provider
             android:name="com.qihoo.appstore.updatelib.UpdateProvider"

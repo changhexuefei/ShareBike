@@ -297,6 +297,7 @@
     <string name="customserver_tip">麒麟单车客服电话 400–660–6215(工作时间：09:00–17:00)</string>
     <string name="desc">YOUR_DESCRIPTION_HERE</string>
     <string name="refund_tip">您当前有未结束的骑行订单，无法退还押金</string>
+    <string name="scan_tip">您当前有未结束的骑行订单，无法扫码用车</string>
     <string name="unLock_timeout">开锁超时，请找其他麒麟单车使用！</string>
     <string name="unLock_fail">开锁失败，请找其他麒麟单车使用！</string>
     <string name="v1_0_0">v1.0.0</string>
