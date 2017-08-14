@@ -82,7 +82,6 @@ public class SettingActivity extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                ToastUtils.showShort(this, getString(R.string.checkVersion));
                 if (NetUtils.isConnected(this)) {
                     checkUpDate();
 //                    UpdateManager updateManager = new UpdateManager(this);
