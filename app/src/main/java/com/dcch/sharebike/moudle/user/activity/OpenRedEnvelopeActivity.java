@@ -244,7 +244,6 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
 
                     switch (resultStatus) {
                         case "0":
-
                             mCongratulations.setText("很遗憾，红包抢完了");
                             mCongratulations.setLayoutParams(params);
                             break;
@@ -257,7 +256,6 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
                             }
                             break;
                         case "2":
-                        
                             mCongratulations.setLayoutParams(params);
                             mCongratulations.setText("领过红包，下次再来");
                             break;
