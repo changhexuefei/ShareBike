@@ -214,6 +214,7 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
     private void getRedPacket(String userId, String imei, final String merchantid) {
         Map<String, String> map = new HashMap<>();
         map.put("userId", userId);
+//        map.put("userId", "214");
         map.put("IMEI", imei);
         map.put("merchantid", merchantid);
         LogUtils.d("用户", userId + "\n" + imei + "\n" + merchantid);
@@ -230,14 +231,14 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
                 LogUtils.d("用户", response);
                 StyledDialog.dismissLoading();
                 EventBus.getDefault().post(new MessageEvent(), "unable_click");
-
                 try {
                     JSONObject object = new JSONObject(response);
                     String resultStatus = object.optString("resultStatus");
-                    LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT
                     );
-
+                    //添加布局规则，居中于父类
+                    params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
                     switch (resultStatus) {
                         case "0":
                             mCongratulations.setText("很遗憾，红包抢完了");
@@ -253,7 +254,7 @@ public class OpenRedEnvelopeActivity extends BaseActivity {
                             break;
                         case "2":
                             mCongratulations.setLayoutParams(params);
-                            mCongratulations.setText("领过红包，下次再来");
+                            mCongratulations.setText("您已领过红包，下次再来");
                             break;
                     }
                 } catch (JSONException e) {

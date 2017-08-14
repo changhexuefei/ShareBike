@@ -56,14 +56,11 @@ public class AdvertisementActivity extends BaseActivity {
                 finish();
             }
         });
-
         mAdvertisementWebview.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 return true;
             }
         });
-
-
     }
 }

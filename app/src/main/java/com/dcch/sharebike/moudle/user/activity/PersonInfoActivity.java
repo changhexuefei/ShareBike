@@ -109,9 +109,6 @@ public class PersonInfoActivity extends BaseActivity {
         }
 
         Intent intent = getIntent();
-//        if (intent != null) {
-//            mImageURL = intent.getStringExtra("imageURL");
-//        }
         Bundle user = intent.getExtras();
         if (user != null) {
             mUserBundle = (UserInfo) user.getSerializable("userBundle");
@@ -268,7 +265,6 @@ public class PersonInfoActivity extends BaseActivity {
                         }
                     }
                 });
-
     }
 
     @Override
@@ -290,7 +286,6 @@ public class PersonInfoActivity extends BaseActivity {
                                 }
                             } else {
                                 ToastUtils.showShort(PersonInfoActivity.this, getString(R.string.no_network_tip));
-
                             }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
@@ -305,21 +300,9 @@ public class PersonInfoActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (SPUtils.isLogin()) {
-
-//                if (mImageURL != null && !mImageURL.equals("")) {
-//                    Glide.with(PersonInfoActivity.this)
-//                            .load(Uri.fromFile(new File(mImageURL)))
-//                            .error(R.mipmap.avatar_default_login)
-//                            .thumbnail(0.1f)// 加载缩略图
-//                            .into(userInfoIcon);
-//                } else {
-//                    userInfoIcon.setImageResource(R.mipmap.avatar_default_login);
-//                }
             uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
             mToken = (String) SPUtils.get(App.getContext(), "token", "");
         }
-
-
     }
 
     private void updateUserNickName(String token, String encode, String uID) {

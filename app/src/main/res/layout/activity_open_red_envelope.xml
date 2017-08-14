@@ -25,13 +25,16 @@
         android:id="@+id/merchant_info_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/lly_back"
+        android:layout_alignLeft="@+id/lly_back"
+        android:layout_alignRight="@+id/lly_back"
         android:layout_below="@+id/red_sum_area"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
-        android:scaleType="fitXY"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:src="@drawable/testone"
-        android:visibility="gone"
-        />
+        android:visibility="invisible"/>
 
 
     <ImageView
@@ -50,8 +53,7 @@
         android:layout_alignTop="@+id/lly_front"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
-        android:scaleType="fitXY"
-        />
+        android:scaleType="fitXY"/>
 
     <TextView
         android:id="@+id/merchant_info"
@@ -95,7 +97,7 @@
             android:layout_below="@+id/Congratulations"
             android:layout_centerHorizontal="true"
             android:gravity="center_horizontal"
-            android:visibility="gone">
+            android:visibility="invisible">
 
             <RelativeLayout
                 android:id="@+id/showMoney"

@@ -313,12 +313,13 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         OkHttpUtils.post().url(Api.BASE_URL + Api.HEADADVERTISEMENT).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                ToastUtils.showShort(MainActivity.this,R.string.server_tip);
             }
 
             @Override
             public void onResponse(String response, int id) {
                 if (JsonUtils.isSuccess(response)) {
-                    LogUtils.d("顶部广告", response);
+                    LogUtils.d("99999999", response);
                     mHeadAdvertisement.setVisibility(View.VISIBLE);
                     Gson gson = new Gson();
                     HeadInfo headInfo = gson.fromJson(response, HeadInfo.class);
@@ -337,6 +338,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         OkHttpUtils.get().url(Api.BASE_URL + Api.CHANGEBICYCLEIMAGE).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                ToastUtils.showShort(MainActivity.this,R.string.server_tip);
             }
 
             @Override

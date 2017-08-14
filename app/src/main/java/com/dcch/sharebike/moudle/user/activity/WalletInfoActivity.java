@@ -202,6 +202,8 @@ public class WalletInfoActivity extends BaseActivity {
                     if (NetUtils.isConnected(App.getContext())) {
                         checkAccountBalances(uID, mToken);
                         StyledDialog.buildLoading(WalletInfoActivity.this, "提现中", true, false).show();
+                    } else {
+                        ToastUtils.showShort(WalletInfoActivity.this, R.string.no_network_tip);
                     }
                     break;
             }
@@ -229,7 +231,11 @@ public class WalletInfoActivity extends BaseActivity {
                         case "1":
                             WeixinPay weixinPay = new WeixinPay(WalletInfoActivity.this);
                             mOutRefundNo = weixinPay.getOutRefundNo();
-                            refundPledgeCash(uID, mOutRefundNo, mToken, mTotal_fee, mRefund_fee);
+                            if (NetUtils.isConnected(App.getContext())) {
+                                refundPledgeCash(uID, mOutRefundNo, mToken, mTotal_fee, mRefund_fee);
+                            } else {
+                                ToastUtils.showShort(WalletInfoActivity.this, R.string.no_network_tip);
+                            }
                             break;
                         case "0":
                             StyledDialog.dismissLoading();
@@ -371,7 +377,7 @@ public class WalletInfoActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(refundPopuwindow!=null){
+        if (refundPopuwindow != null) {
             refundPopuwindow.dismiss();
         }
         StyledDialog.dismiss();

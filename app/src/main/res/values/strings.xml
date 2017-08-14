@@ -152,7 +152,7 @@
     <string name="riding_order_tip_two">关锁未结费？</string>
     <string name="no_network_tip">网络无法访问，请检查网络连接</string>
     <string name="input_tip">请输入车辆编号！</string>
-    <string name="server_tip">网络正忙，请稍后再试！</string>
+    <string name="server_tip">服务正忙，请稍后再试！</string>
     <string name="no_has_bikeNo">该车辆编号不存在，请重新输入！</string>
     <string name="forced_to_logoff">您的账号在其他设备上登录，您被迫下线！</string>
     <string name="trouble">我是故障车！</string>

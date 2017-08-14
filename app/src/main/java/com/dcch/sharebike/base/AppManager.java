@@ -81,6 +81,4 @@ public class AppManager {
             e.printStackTrace();
         }
     }
-
-
 }

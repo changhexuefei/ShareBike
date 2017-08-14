@@ -101,11 +101,7 @@
             android:launchMode="standard"
             android:screenOrientation="portrait"
             android:theme="@style/Splash_Theme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
 
         </activity>
         <activity
@@ -374,6 +370,7 @@
         <activity
             android:name="cn.finalteam.rxgalleryfinal.ui.activity.MediaActivity"
             android:exported="true"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
@@ -414,8 +411,11 @@
             android:name=".moudle.user.activity.RidingResultActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
-
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity
             android:name=".moudle.user.activity.UnlockProgressActivity"
@@ -522,7 +522,7 @@
             android:name=".moudle.user.activity.CardVoucherListActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
-    
+
         <activity
             android:name=".moudle.user.activity.RedPacketListActivity"
             android:launchMode="singleTask"

@@ -78,7 +78,7 @@ public class Api {
     public static final String SEARCHPAYLIST = "searchPayList.do?";
     //变更用户手机号
     public static final String EDITUSERPHONE = "editUserPhone.do?";
-    //微信退款
+    //退款
     public static final String REFUNDWXPAY = "refundWXPay.do?";
     //关锁未结费
     public static final String FORCECLOSELOCK = "forceCloseLock.do?";
@@ -108,6 +108,5 @@ public class Api {
     //
     public static final String VERSION = "http://www.70bikes.com/version/version.xml ";
 //    public static final String VERSION = "http://114.112.86.38/MavenSSM/version/version.xml";
-
 
 }
