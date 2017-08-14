@@ -46,7 +46,6 @@
             android:layout_marginRight="16dp"
             android:drawablePadding="10dp"
             android:drawableRight="@mipmap/forward"
-            android:text="0.00"
             android:textSize="16sp"/>
 
     </RelativeLayout>
@@ -102,6 +101,7 @@
     </FrameLayout>
 
     <RelativeLayout
+        android:visibility="gone"
         android:id="@+id/card_voucher_page"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

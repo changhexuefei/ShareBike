@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,106 +10,74 @@
 
     <include
         layout="@layout/layout_back"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
 
     <include
         layout="@layout/layout_front"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
 
 
     <ImageView
         android:id="@+id/merchant_info_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_below="@+id/red_sum_area"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
         android:scaleType="fitXY"
-        android:src="@drawable/test"
+        android:src="@drawable/testone"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/red_sum_area"
-        app:layout_constraintVertical_bias="0.048"/>
+        />
 
 
     <ImageView
         android:id="@+id/close_redPacket"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
         app:srcCompat="@mipmap/hintcard_close"/>
-
+    <!--android:src="@mipmap/ktv_logo"-->
     <ImageView
         android:id="@+id/merchant_icon"
         android:layout_width="84dp"
-        android:layout_height="83dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="147dp"
+        android:layout_height="84dp"
+        android:layout_alignTop="@+id/lly_front"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
         android:scaleType="fitXY"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ktv_logo"/>
+        />
 
     <TextView
         android:id="@+id/merchant_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="80dp"
-        android:layout_marginLeft="80dp"
-        android:layout_marginRight="80dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="23dp"
+        android:layout_alignLeft="@+id/lly_back"
+        android:layout_alignRight="@+id/lly_back"
+        android:layout_below="@+id/merchant_icon"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
-        android:maxLines="5"
+        android:maxLines="2"
         android:textColor="@color/white"
         android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/merchant_icon"/>
+        android:textStyle="bold"/>
 
     <RelativeLayout
         android:id="@+id/red_sum_area"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="245dp"
-        android:gravity="center_horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_alignLeft="@+id/lly_front"
+        android:layout_alignRight="@+id/lly_front"
+        android:layout_centerInParent="true"
+        android:layout_margin="10dp"
+        android:gravity="center_horizontal">
 
         <TextView
             android:id="@+id/Congratulations"
@@ -125,6 +93,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/Congratulations"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
             android:visibility="gone">
 
             <RelativeLayout
@@ -179,4 +149,4 @@
     </RelativeLayout>
 
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

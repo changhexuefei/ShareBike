@@ -114,12 +114,13 @@ public class PersonalCenterActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        LogUtils.d("状态", SPUtils.isLogin() + "2");
+        LogUtils.d("状态", "onResume");
 
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        LogUtils.d("状态", "onDestroy");
     }
 }

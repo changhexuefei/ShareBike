@@ -139,7 +139,7 @@ public class WalletInfoActivity extends BaseActivity {
 
                 break;
             case R.id.card_voucher_page:
-                ToastUtils.showShort(this, "您点我了");
+//                ToastUtils.showShort(this, "您点我了");
 
                 break;
         }
