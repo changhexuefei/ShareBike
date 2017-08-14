@@ -371,6 +371,9 @@ public class WalletInfoActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(refundPopuwindow!=null){
+            refundPopuwindow.dismiss();
+        }
         StyledDialog.dismiss();
     }
 

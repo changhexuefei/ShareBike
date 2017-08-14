@@ -168,13 +168,14 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     RelativeLayout top;
     @BindView(R.id.specialOffer)
     ImageView mSpecialOffer;
-    private BaiduMap mMap;
-    private MyLocationListener mMyLocationListener;//定位的监听器
-    private boolean useDefaultIcon = false;
     @BindView(R.id.centerIcon)
     ImageView mCenterIcon;
     @BindView(R.id.headAdvertisement)
     ImageView mHeadAdvertisement;
+    private BaiduMap mMap;
+    private MyLocationListener mMyLocationListener;//定位的监听器
+    private boolean useDefaultIcon = false;
+
     private long mExitTime; //退出时间
     private OverlayManager routeOverlay = null;//该类提供一个能够显示和管理多个Overlay的基类
     private LocationClient mLocationClient;//定位的客户端
@@ -282,7 +283,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         OkHttpUtils.post().url(Api.BASE_URL + Api.ADVERTISEMENT).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(MainActivity.this,getResources().getString(R.string.server_tip));
+                ToastUtils.showShort(MainActivity.this, getResources().getString(R.string.server_tip));
             }
 
             @Override
@@ -1630,6 +1631,15 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         }
         if (timer != null) {
             timer = null;
+        }
+        if (menuWindow != null) {
+            menuWindow.dismiss();
+        }
+        if (orderPopupWindow != null) {
+            orderPopupWindow.dismiss();
+        }
+        if (bookBikePopupWindow != null) {
+            bookBikePopupWindow.dismiss();
         }
         super.onDestroy();
     }
