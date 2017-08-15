@@ -30,6 +30,7 @@ android {
             abiFilters 'armeabi', 'armeabi-v8a', 'armeabi-v7a'
             // 还可以添加    'mips', 'mips64',, 'x86_64', 'x86'
         }
+
     }
 
     signingConfigs {
@@ -87,8 +88,6 @@ dependencies {
     // 仅在debug包启用BlockCanary进行卡顿监控和提示的话，可以这么用
     compile files('libs/locSDK_6.13.jar')
     compile files('libs/gson-2.2.1.jar')
-    compile files('libs/jcore-android_v1.1.0.jar')
-    compile files('libs/jpush-android_v3.0.1.jar')
     //rxgalleryfinal依赖appcompat-v7和recyclerview-v7扩展卡库
     compile files('libs/alipaySdk-20161222.jar')
     compile files('libs/MobCommons-2017.0216.1054.jar')
@@ -149,6 +148,8 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
     releaseCompile 'com.github.moduth:blockcanary-no-op:1.2.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    compile files('libs/jcore-android-1.1.6.jar')
+    compile files('libs/jpush-android-3.0.8.jar')
 }
 
 
