@@ -17,13 +17,38 @@
         android:name="${applicationId}.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature"/>
     <!-- Required -->
+    <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE"/>
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+
+    <!-- Optional. Required for location feature -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+
+
+    <!-- Required -->
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"/>
     <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE"/>
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"/>
     <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <!-- <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/> &lt;!&ndash; 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 &ndash;&gt; -->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
     <!-- SD卡权限 -->
@@ -77,25 +102,15 @@
             android:name="com.qihoo.appstore.updatelib.CheckUpdateService"
             android:exported="false"/>
 
-        <meta-data android:name="IFLYTEK_CHANNEL" android:value="" >
+        <meta-data
+            android:name="IFLYTEK_CHANNEL"
+            android:value="">
         </meta-data>
-        <meta-data  android:name="IFLYTEK_APPKEY"  android:value="'591ec095'" >
+        <meta-data
+            android:name="IFLYTEK_APPKEY"
+            android:value="'591ec095'">
         </meta-data>
 
-        <!--<activity-->
-            <!--android:name="com.iflytek.autoupdate.IFlytekUpdateDialog"-->
-            <!--android:configChanges="keyboard|keyboardHidden|orientation"-->
-            <!--android:exported="true"-->
-            <!--android:screenOrientation="portrait"-->
-            <!--android:theme="@android:style/Theme.Translucent.NoTitleBar"-->
-            <!--android:windowSoftInputMode="stateAlwaysHidden"/>-->
-
-        <!--&lt;!&ndash; 下载基础服务 &ndash;&gt;-->
-        <!--<service-->
-            <!--android:name="com.iflytek.autoupdate.IFlytekDownloadService"-->
-            <!--android:enabled="true"-->
-            <!--android:process=":IFlytekDownloadService"/>-->
-        <!-- android:authorities="包名.fileprovider"将“包名”替换为实际包名 -->
         <provider
             android:name="com.qihoo.appstore.updatelib.UpdateProvider"
             android:authorities="com.dcch.sharebike"
@@ -324,6 +339,18 @@
 
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="${applicationId}"/>
+            </intent-filter>
+        </activity>
+
+        <!-- SDK核心功能-->
+        <activity
+            android:name="cn.jpush.android.ui.PopWinActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:exported="false"
+            android:theme="@style/MyDialogStyle">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="${applicationId}" />
             </intent-filter>
         </activity>
 
