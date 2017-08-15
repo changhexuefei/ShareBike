@@ -6,7 +6,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.text.style.BackgroundColorSpan;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -94,9 +95,13 @@ public class WalletInfoActivity extends BaseActivity {
             uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
             mToken = (String) SPUtils.get(App.getContext(), "token", "");
             LogUtils.d("用户的信息", uID + "\n" + mToken);
-            SpannableStringBuilder stringBuilder = new SpannableStringBuilder("我的红包(已自动存入余额)");
-            BackgroundColorSpan backgroundColorSpan = new BackgroundColorSpan(Color.RED);
-            stringBuilder.setSpan(backgroundColorSpan, 0, 3, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+            SpannableStringBuilder stringBuilder = new SpannableStringBuilder(getString(R.string.red_packet));
+            AbsoluteSizeSpan absoluteSizeSpan = new AbsoluteSizeSpan(30);
+            ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(Color.RED);
+            stringBuilder.setSpan(absoluteSizeSpan, stringBuilder.length()-9,
+                    stringBuilder.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+            stringBuilder.setSpan(foregroundColorSpan, stringBuilder.length()-9,
+                    stringBuilder.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
             mMyRedPacket.setText(stringBuilder);
         }
     }

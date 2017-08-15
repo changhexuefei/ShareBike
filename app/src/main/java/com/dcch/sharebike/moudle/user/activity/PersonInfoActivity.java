@@ -43,6 +43,7 @@ import cn.finalteam.rxgalleryfinal.RxGalleryFinal;
 import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
 import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultSubscriber;
 import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
+import cn.finalteam.rxgalleryfinal.ui.RxGalleryListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import permissions.dispatcher.NeedsPermission;
@@ -104,7 +105,7 @@ public class PersonInfoActivity extends BaseActivity {
             Glide.with(PersonInfoActivity.this)
                     .load(Uri.fromFile(new File(mURL)))
                     .error(R.mipmap.avatar_default_login)
-                    .thumbnail(0.1f)// 加载缩略图
+//                    .thumbnail(0.1f)// 加载缩略图
                     .into(userInfoIcon);
         }
 
@@ -168,13 +169,9 @@ public class PersonInfoActivity extends BaseActivity {
                 PersonInfoActivityPermissionsDispatcher.showCameraWithCheck(PersonInfoActivity.this);
                 showCamera();
                 RxGalleryFinal.with(App.getContext())
-                        .cropHideBottomControls(true)
-                        .cropOvalDimmedLayer(false)
-                        .cropAllowedGestures(-1, -1, -1)
                         .image()
                         .radio()
                         .crop()
-                        .cropFreeStyleCropEnabled(false)
                         .imageLoader(ImageLoaderType.GLIDE)
                         .subscribe(new RxBusResultSubscriber<ImageRadioResultEvent>() {
                             @Override
@@ -189,7 +186,7 @@ public class PersonInfoActivity extends BaseActivity {
                                     Glide.with(PersonInfoActivity.this)
                                             .load(Uri.fromFile(new File(result)))
                                             .error(R.mipmap.avatar_default_login)
-                                            .thumbnail(0.1f)// 加载缩略图
+//                                            .thumbnail(0.1f)// 加载缩略图
                                             .into(userInfoIcon);
 
                                     if (NetUtils.isConnected(App.getContext())) {
@@ -335,6 +332,7 @@ public class PersonInfoActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        RxGalleryListener.getInstance().setRadioImageCheckedListener(null);
     }
 
 }

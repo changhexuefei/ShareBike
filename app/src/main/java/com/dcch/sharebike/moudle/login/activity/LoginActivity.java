@@ -254,8 +254,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void registerAndLogin(String phone) {
         phone = AES.encrypt(phone.getBytes(), MyContent.key);
-//        byte[] encrypt = AESUtil.encrypt(phone, MyContent.key);
-//        phone = AESUtil.parseByte2HexStr(encrypt);
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone);
         final String finalPhone = phone;
@@ -304,14 +302,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void getSecurityCode(String phone) {
         phone = AES.encrypt(phone.getBytes(), MyContent.key);
-//        byte[] encrypt = AESUtil.encrypt(phone, MyContent.key);
-//        phone = AESUtil.parseByte2HexStr(encrypt);
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone);
-//        byte[] decryptFrom = AESUtil.parseHexStr2Byte(phone);
-//        byte[] decryptResult = AESUtil.decrypt(decryptFrom, MyContent.key);
-
-//        LogUtils.d("测试", phone+"\n"+decryptFrom+"\n"+encrypt+"\n"+decryptResult);
         OkHttpUtils.post().url(Api.BASE_URL + Api.REGISTER).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -325,10 +317,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 try {
                     JSONObject object = new JSONObject(response);
                     verificationCode = object.optString("code");
-//                    if (verificationCode != null && !verificationCode.equals("")) {
-//                        Log.d("测试", verificationCode);
-//                        securityCode.setText(verificationCode);
-//                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -354,7 +342,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     protected void onStop() {
         super.onStop();
         LogUtils.d("实验", "Login+onStop");
-
     }
 
     @Override
