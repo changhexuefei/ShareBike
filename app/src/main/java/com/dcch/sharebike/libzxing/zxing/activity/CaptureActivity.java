@@ -261,8 +261,13 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        holder.removeCallback(this);
         isHasSurface = false;
         cameraManager.stopPreview();
+//        camera.stopPreview();
+//        camera.lock();
+//        camera.release();
+//        camera = null;
     }
 
     @Override
