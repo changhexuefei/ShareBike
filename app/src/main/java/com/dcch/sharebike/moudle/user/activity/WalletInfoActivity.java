@@ -3,6 +3,10 @@ package com.dcch.sharebike.moudle.user.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -65,6 +69,8 @@ public class WalletInfoActivity extends BaseActivity {
     RelativeLayout mRedPacketPage;
     @BindView(R.id.card_voucher_page)
     RelativeLayout mCardVoucherPage;
+    @BindView(R.id.my_red_packet)
+    TextView mMyRedPacket;
     private RefundPopuwindow refundPopuwindow;
     private String uID;
     private UserInfo mInfo;
@@ -88,6 +94,10 @@ public class WalletInfoActivity extends BaseActivity {
             uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
             mToken = (String) SPUtils.get(App.getContext(), "token", "");
             LogUtils.d("用户的信息", uID + "\n" + mToken);
+            SpannableStringBuilder stringBuilder = new SpannableStringBuilder("我的红包(已自动存入余额)");
+            BackgroundColorSpan backgroundColorSpan = new BackgroundColorSpan(Color.RED);
+            stringBuilder.setSpan(backgroundColorSpan, 0, 3, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+            mMyRedPacket.setText(stringBuilder);
         }
     }
 
