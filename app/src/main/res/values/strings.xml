@@ -255,9 +255,9 @@
     <string name="input_name_uuid_fail">对不起，实名验证失败，请输入正确的姓名和身份证号！</string>
     <string name="route_planning">路线规划中..</string>
     <string name="bike_no_exist">该车辆编号不存在！</string>
-    <string name="using">我正在被使用，请找其他麒麟单车使用！</string>
-    <string name="breakdown">我是故障车，请找其他麒麟单车使用！</string>
-    <string name="biking">我已经被预约，请找其他麒麟单车使用！</string>
+    <string name="using">我正在被使用，请找其他麒麟单车骑行！</string>
+    <string name="breakdown">我是故障车，请找其他麒麟单车骑行！</string>
+    <string name="biking">我已经被预约，请找其他麒麟单车骑行！</string>
     <string name="address_info">地址信息</string>
     <string name="bikeNo">自行车编号：</string>
     <string name="ring">寻车铃</string>
