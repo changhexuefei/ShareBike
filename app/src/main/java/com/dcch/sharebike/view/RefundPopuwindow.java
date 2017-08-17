@@ -35,13 +35,9 @@ public class RefundPopuwindow extends PopupWindow {
         tv_tips = (TextView) refundView.findViewById(R.id.tv_tip);
         btn_cancle = (Button) refundView.findViewById(R.id.btn_cancel);
         btn_confirm = (Button) refundView.findViewById(R.id.btn_confirm);
-
-
         // 设置按钮监听
         btn_confirm.setOnClickListener(refundViewOnClick);
         btn_cancle.setOnClickListener(refundViewOnClick);
-
-
         // 设置SelectPicPopupWindow的View
         this.setContentView(refundView);
         // 设置SelectPicPopupWindow的View
@@ -55,7 +51,7 @@ public class RefundPopuwindow extends PopupWindow {
 //             设置SelectPicPopupWindow弹出窗体动画效果
         this.setAnimationStyle(R.style.PopupAnimation);
         // 实例化一个ColorDrawable颜色为半透明
-        ColorDrawable dw = new ColorDrawable(0x00000000);
+        ColorDrawable dw = new ColorDrawable(0x000000);
         // 设置SelectPicPopupWindow弹出窗体的背景
         this.setBackgroundDrawable(dw);
         // mMenuView添加OnTouchListener监听判断获取触屏位置如果在选择框外面则销毁弹出框

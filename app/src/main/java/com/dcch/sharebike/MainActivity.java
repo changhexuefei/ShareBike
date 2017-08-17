@@ -1,6 +1,7 @@
 package com.dcch.sharebike;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,6 +17,8 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -62,6 +65,7 @@ import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.baidu.mapapi.utils.CoordinateConverter;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.StringSignature;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.AppManager;
 import com.dcch.sharebike.base.BaseActivity;
@@ -83,7 +87,6 @@ import com.dcch.sharebike.moudle.login.activity.ClickMyHelpActivity;
 import com.dcch.sharebike.moudle.login.activity.IdentityAuthenticationActivity;
 import com.dcch.sharebike.moudle.login.activity.LoginActivity;
 import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
-import com.dcch.sharebike.moudle.login.activity.PropagandaPosterActivity;
 import com.dcch.sharebike.moudle.login.activity.RechargeActivity;
 import com.dcch.sharebike.moudle.user.activity.CustomerServiceActivity;
 import com.dcch.sharebike.moudle.user.activity.MyMessageActivity;
@@ -235,6 +238,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private String mHeadactivityUrl;
     private String mTitle;
     private LatLng startLng, finishLng;
+    private Dialog mDialog;
 
     public MainActivity() {
     }
@@ -292,15 +296,49 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     LogUtils.d("弹出层", response);
                     Gson gson = new Gson();
                     PopupInfo popupInfo = gson.fromJson(response, PopupInfo.class);
-                    String activityUrl = popupInfo.getAdvertisement().getActivityUrl();
+                    final String activityUrl = popupInfo.getAdvertisement().getActivityUrl();
                     String imageUrl = popupInfo.getAdvertisement().getImageUrl();
-                    String title = popupInfo.getAdvertisement().getTitle();
+                    final String title = popupInfo.getAdvertisement().getTitle();
                     if (imageUrl != null && !imageUrl.equals("")) {
-                        Intent popIntent = new Intent(MainActivity.this, PropagandaPosterActivity.class);
-                        popIntent.putExtra("activityUrl", activityUrl);
-                        popIntent.putExtra("imageUrl", imageUrl);
-                        popIntent.putExtra("title", title);
-                        startActivity(popIntent);
+                        mDialog = new Dialog(MainActivity.this, R.style.edit_AlertDialog_style);
+                        mDialog.setContentView(R.layout.start_dialog);
+                        ImageView imageView = (ImageView) mDialog.findViewById(R.id.adversimg);
+                        ImageView close = (ImageView) mDialog.findViewById(R.id.close);
+                        Glide.with(MainActivity.this)
+                                .load(imageUrl)
+                                .signature(new StringSignature("01"))//增加签名
+                                .error(R.drawable.default_image)
+                                .into(imageView);
+                        mDialog.show();
+                        mDialog.setCanceledOnTouchOutside(false); // Sets whether this dialog is
+                        Window w = mDialog.getWindow();
+                        WindowManager.LayoutParams lp = w.getAttributes();
+                        lp.x = 0;
+                        lp.y = 40;
+                        mDialog.onWindowAttributesChanged(lp);
+                        close.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mDialog.dismiss();
+                            }
+                        });
+                        imageView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (activityUrl != null && !activityUrl.equals("") && title != null && !title.equals("")) {
+                                    Intent webActivity = new Intent(MainActivity.this, AdvertisementActivity.class);
+                                    webActivity.putExtra("activityWebView", activityUrl);
+                                    webActivity.putExtra("title", title);
+                                    startActivity(webActivity);
+                                    mDialog.dismiss();
+                                }
+                            }
+                        });
+//                        Intent popIntent = new Intent(MainActivity.this, PropagandaPosterActivity.class);
+//                        popIntent.putExtra("activityUrl", activityUrl);
+//                        popIntent.putExtra("imageUrl", imageUrl);
+//                        popIntent.putExtra("title", title);
+//                        startActivity(popIntent);
                     }
                 } else {
 
@@ -1645,6 +1683,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         }
         if (bookBikePopupWindow != null) {
             bookBikePopupWindow.dismiss();
+        }
+        if(mDialog!=null){
+            mDialog.dismiss();
         }
         super.onDestroy();
     }

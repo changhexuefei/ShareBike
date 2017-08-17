@@ -7,6 +7,7 @@ import android.support.multidex.MultiDexApplication;
 import com.baidu.mapapi.SDKInitializer;
 import com.dcch.sharebike.service.InitializeService;
 import com.dcch.sharebike.utils.NetUtils;
+import com.squareup.leakcanary.LeakCanary;
 
 import timber.log.BuildConfig;
 import timber.log.Timber;
@@ -35,6 +36,7 @@ public class App extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
+        LeakCanary.install(this);
         InitializeService.start(this);
         SDKInitializer.initialize(getApplicationContext());
         if (BuildConfig.DEBUG) {

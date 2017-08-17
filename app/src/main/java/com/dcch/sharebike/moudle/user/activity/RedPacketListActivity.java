@@ -62,7 +62,6 @@ public class RedPacketListActivity extends BaseActivity {
             }
         } else {
             mWithoutNetwork.setVisibility(View.VISIBLE);
-            ToastUtils.showShort(this, getString(R.string.no_network_tip));
         }
     }
 

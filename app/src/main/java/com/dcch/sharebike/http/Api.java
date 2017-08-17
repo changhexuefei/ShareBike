@@ -3,7 +3,7 @@ package com.dcch.sharebike.http;
 
 public class Api {
     //public static final String BASE_URL = "http://192.168.1.159:8080/MavenSSM/mobile/";
-//    public static final String BASE_URL = "http://192.168.1.139:8080/MavenSSM/mobile/";
+//    public static final String BASE_URL = "http://192.168.1.141:8080/MavenSSM/mobile/";
     //public static final String BASE_URL = "http://192.168.1.131:8080/MavenSSM/mobile/";
 //    public static final String BASE_URL = "http://114.112.86.38/MavenSSM/mobile/";
 //    public static final String BASE_URL = "http://101.251.245.158/MavenSSM/mobile/";

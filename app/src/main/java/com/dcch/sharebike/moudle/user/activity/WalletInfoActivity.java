@@ -11,8 +11,10 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -180,6 +182,18 @@ public class WalletInfoActivity extends BaseActivity {
         }
         refundPopuwindow = new RefundPopuwindow(WalletInfoActivity.this, refundViewOnClick);
         refundPopuwindow.showAtLocation(findViewById(R.id.activity_wallet_info), Gravity.CENTER, 0, 0);
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = 0.4f;
+        getWindow().setAttributes(lp);
+        //设置popupWindow消失时的监听
+        refundPopuwindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            //在dismiss中恢复透明度
+            public void onDismiss() {
+                WindowManager.LayoutParams lp = getWindow().getAttributes();
+                lp.alpha = 1f;
+                getWindow().setAttributes(lp);
+            }
+        });
     }
 
     private void popupDialog() {
@@ -220,6 +234,7 @@ public class WalletInfoActivity extends BaseActivity {
                         checkAccountBalances(uID, mToken);
                         StyledDialog.buildLoading(WalletInfoActivity.this, "提现中", true, false).show();
                     } else {
+                        refundPopuwindow.dismiss();
                         ToastUtils.showShort(WalletInfoActivity.this, R.string.no_network_tip);
                     }
                     break;
@@ -340,6 +355,9 @@ public class WalletInfoActivity extends BaseActivity {
             if (NetUtils.isConnected(App.getContext())) {
                 getUserInfo(uID, mToken);
             } else {
+                //如果没有网络连接，用SP中存储的数据，以给用户更好的体验
+                showArea.setText("您已交押金");
+                chargeDeposit.setText(R.string.tipThere);
                 ToastUtils.showShort(WalletInfoActivity.this, getResources().getString(R.string.no_network_tip));
             }
         }
