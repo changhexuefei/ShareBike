@@ -4,15 +4,14 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                tools:context="com.dcch.sharebike.moudle.login.activity.OpenLockTipAcitivity">
+                android:orientation="vertical">
 
     <ImageView
         android:id="@+id/open_lock_close"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="10dp"
         android:contentDescription="@string/desc"
         android:src="@mipmap/hintcard_close"/>
 
@@ -23,9 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/open_lock_close"
         android:layout_gravity="bottom|center"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
         app:cardCornerRadius="2dp"
         app:contentPadding="10dp">
 

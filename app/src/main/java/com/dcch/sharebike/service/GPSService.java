@@ -395,7 +395,7 @@ public class GPSService extends Service {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.d("给后台", response);
+                        Log.d("骑行结果", response);
                         if (JsonUtils.isSuccess(response)) {
                             Gson gson = new Gson();
                             RidingInfo ridingInfo = gson.fromJson(response, RidingInfo.class);

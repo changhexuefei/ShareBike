@@ -387,7 +387,7 @@ public class WalletInfoActivity extends BaseActivity {
                         double merchanBillAmount = mInfo.getMerchanBillAmount();
                         double aggregateAmount = mInfo.getAggregateAmount();
                         if (String.valueOf(merchanBillAmount) != null && !String.valueOf(merchanBillAmount).equals("")) {
-                            mMyRedPacketSum.setText(String.valueOf(merchanBillAmount));
+                            mMyRedPacketSum.setText(String.valueOf(merchanBillAmount+"元"));
                         }
                         if (!String.valueOf(aggregateAmount).equals("") && String.valueOf(aggregateAmount) != null) {
                             remainingSum.setText(String.valueOf(aggregateAmount));

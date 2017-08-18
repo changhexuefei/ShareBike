@@ -1,12 +1,17 @@
 package com.dcch.sharebike.moudle.user.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -20,7 +25,6 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.base.CodeEvent;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.login.activity.LoginActivity;
-import com.dcch.sharebike.moudle.login.activity.OpenLockTipAcitivity;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.DensityUtils;
 import com.dcch.sharebike.utils.LogUtils;
@@ -166,7 +170,26 @@ public class ManualInputActivity extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                startActivity(new Intent(this, OpenLockTipAcitivity.class));
+                final Dialog mDialog = new Dialog(ManualInputActivity.this,R.style.edit_AlertDialog_style);
+
+                mDialog.setContentView(R.layout.activity_open_lock_tip_acitivity);
+                CardView imageView = (CardView) mDialog.findViewById(R.id.tipsArea);
+                ImageView close = (ImageView) mDialog.findViewById(R.id.open_lock_close);
+                mDialog.setCanceledOnTouchOutside(false); // Sets whether this dialog is
+                Window w = mDialog.getWindow();
+                WindowManager.LayoutParams lp = w.getAttributes();
+                lp.gravity = Gravity.CENTER;
+//                lp.x = 0;
+//                lp.y = 40;
+                mDialog.onWindowAttributesChanged(lp);
+                mDialog.show();
+                close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mDialog.dismiss();
+                    }
+                });
+//                startActivity(new Intent(this, OpenLockTipAcitivity.class));
                 break;
         }
     }

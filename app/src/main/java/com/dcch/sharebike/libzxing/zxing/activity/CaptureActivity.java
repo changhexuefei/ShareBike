@@ -16,6 +16,7 @@
 package com.dcch.sharebike.libzxing.zxing.activity;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -23,7 +24,9 @@ import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.CardView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -46,7 +49,6 @@ import com.dcch.sharebike.libzxing.zxing.decode.DecodeThread;
 import com.dcch.sharebike.libzxing.zxing.utils.BeepManager;
 import com.dcch.sharebike.libzxing.zxing.utils.CaptureActivityHandler;
 import com.dcch.sharebike.libzxing.zxing.utils.InactivityTimer;
-import com.dcch.sharebike.moudle.login.activity.OpenLockTipAcitivity;
 import com.dcch.sharebike.moudle.user.activity.CustomerServiceActivity;
 import com.dcch.sharebike.moudle.user.activity.ManualInputActivity;
 import com.dcch.sharebike.utils.ClickUtils;
@@ -190,8 +192,30 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                Intent openLock = new Intent(CaptureActivity.this, OpenLockTipAcitivity.class);
-                startActivity(openLock);
+                final Dialog mDialog = new Dialog(CaptureActivity.this,R.style.edit_AlertDialog_style);
+
+                mDialog.setContentView(R.layout.activity_open_lock_tip_acitivity);
+                CardView imageView = (CardView) mDialog.findViewById(R.id.tipsArea);
+                ImageView close = (ImageView) mDialog.findViewById(R.id.open_lock_close);
+                mDialog.setCanceledOnTouchOutside(false); // Sets whether this dialog is
+                Window w = mDialog.getWindow();
+                WindowManager.LayoutParams lp = w.getAttributes();
+                //设置位置
+                lp.gravity = Gravity.CENTER;
+//                lp.x = 0;
+//                lp.y = 0;
+                mDialog.onWindowAttributesChanged(lp);
+                mDialog.show();
+                close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mDialog.dismiss();
+                    }
+                });
+//
+//
+//                Intent openLock = new Intent(CaptureActivity.this, OpenLockTipAcitivity.class);
+//                startActivity(openLock);
             }
         });
     }

@@ -92,8 +92,6 @@ public class UnlockProgressActivity extends BaseActivity {
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                mTimer.cancel();
-//                finish();
                 ToastUtils.showShort(UnlockProgressActivity.this, "正在开锁中，请稍后.....");
             }
         });

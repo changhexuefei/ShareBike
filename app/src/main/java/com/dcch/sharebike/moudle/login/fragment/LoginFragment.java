@@ -171,7 +171,7 @@ public class LoginFragment extends Fragment {
                             if (mInfo.getIntegral() != 0) {
                                 creditScore.setText("信用积分 " + String.valueOf(mInfo.getIntegral()));
                             }
-                            remainSum.setText(String.valueOf(mInfo.getAggregateAmount()));
+                            remainSum.setText(String.valueOf(mInfo.getAggregateAmount()+"元"));
                             //骑行距离
                             person_distance.setText(String.valueOf(mInfo.getMileage()));
                             //运动成就
@@ -184,7 +184,7 @@ public class LoginFragment extends Fragment {
                                     LogUtils.d("状态", mUserimage);
                                     Glide.with(App.getContext()).load(mUserimage)
                                             .error(R.mipmap.avatar_default_login)
-                                            .thumbnail(0.1f)// 加载缩略图
+//                                            .thumbnail(0.1f)// 加载缩略图
                                             .into(userIcon);
 
                                 } else {

@@ -93,6 +93,7 @@ public class NettyService extends Service implements NettyListener {
         LogUtils.d("实验", "onStartCommand");
         LogUtils.d("netty", "服务开启");
         connect();
+        LogUtils.d("骑行结果", "服务开启");
         return START_NOT_STICKY;
     }
 
@@ -150,13 +151,14 @@ public class NettyService extends Service implements NettyListener {
         //根据不同的返回值，来执行相应的操作
         if  (s.trim() != null && !s.trim().equals("")) {
             if (s.trim().equals("OpenSuccess")) {
-
                 EventBus.getDefault().post(new MessageEvent(), "on");
-                LogUtils.d("NettyService", "成功" + EventBus.getDefault());
+                LogUtils.d("NettyService", "on");
             } else if (s.trim().equals("OpenFailure")) {
                 EventBus.getDefault().post(new MessageEvent(), "off");
+                LogUtils.d("骑行结果", "off");
             } else if (s.trim().equals("CloseSuccess")) {
                 EventBus.getDefault().post(new MessageEvent(), "close");
+                LogUtils.d("骑行结果", "close");
             }
         }
 

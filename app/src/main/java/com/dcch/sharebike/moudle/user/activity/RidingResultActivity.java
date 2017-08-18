@@ -177,7 +177,7 @@ public class RidingResultActivity extends BaseActivity {
 //        mImei = "091609998";
 //        mUserId = "214";
         if (NetUtils.isConnected(App.getContext())) {
-            if (mImei != null && mUserId != null) {
+            if (mImei != null && !mImei.equals("") && mUserId != null && !mUserId.equals("")) {
                 LogUtils.d("骑行结果", mImei + "\n" + mUserId);
                 getResult(mImei, mUserId);
             }
