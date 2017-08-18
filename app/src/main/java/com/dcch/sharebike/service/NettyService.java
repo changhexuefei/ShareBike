@@ -93,7 +93,7 @@ public class NettyService extends Service implements NettyListener {
         LogUtils.d("实验", "onStartCommand");
         LogUtils.d("netty", "服务开启");
         connect();
-        LogUtils.d("骑行结果", "服务开启");
+//        LogUtils.d("骑行结果", "服务开启");
         return START_NOT_STICKY;
     }
 
@@ -102,7 +102,7 @@ public class NettyService extends Service implements NettyListener {
         Timber.tag("gogogo");
         Timber.d("connect status:%d", statusCode);
         if (statusCode == NettyListener.STATUS_CONNECT_SUCCESS) {
-            LogUtils.d("netty", "测试链接" + "\n" + statusCode);
+            LogUtils.d("netty", "骑行结果" + "\n" + statusCode);
             authenticData();
         } else {
             LogUtils.d("netty", "测试失败" + "\n" + statusCode);
@@ -132,6 +132,7 @@ public class NettyService extends Service implements NettyListener {
                 if (future.isSuccess()) {                //4
                     Timber.d("Write auth successful");
                     LogUtils.d("netty", "Write auth successful");
+                    LogUtils.d("netty", "骑行结果" + "\n" + "Write auth successful");
                 } else {
                     Timber.d("Write auth error");
                     LogUtils.d("netty", "Write auth error");
