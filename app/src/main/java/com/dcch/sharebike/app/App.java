@@ -23,7 +23,7 @@ public class App extends MultiDexApplication {
     }
 
     //单例模式中获取唯一的Application实例
-    public static App getInstance() {
+    public static synchronized App getInstance() {
         // 提供一个全局的静态方法
         if (instance == null) {
             instance = new App();
