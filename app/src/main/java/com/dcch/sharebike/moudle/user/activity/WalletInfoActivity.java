@@ -1,6 +1,7 @@
 package com.dcch.sharebike.moudle.user.activity;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -84,6 +85,7 @@ public class WalletInfoActivity extends BaseActivity {
     private String mToken;
     private Map<String, String> mMap;
     private int mStatus;
+    private Dialog mDialog;
 
 
     @Override
@@ -232,7 +234,7 @@ public class WalletInfoActivity extends BaseActivity {
                     //先进行检查余额操作
                     if (NetUtils.isConnected(App.getContext())) {
                         checkAccountBalances(uID, mToken);
-                        StyledDialog.buildLoading(WalletInfoActivity.this, "提现中", true, false).show();
+                        mDialog = StyledDialog.buildLoading(WalletInfoActivity.this, "提现中", true, false).show();
                     } else {
                         refundPopuwindow.dismiss();
                         ToastUtils.showShort(WalletInfoActivity.this, R.string.no_network_tip);
@@ -266,21 +268,27 @@ public class WalletInfoActivity extends BaseActivity {
                             if (NetUtils.isConnected(App.getContext())) {
                                 refundPledgeCash(uID, mOutRefundNo, mToken, mTotal_fee, mRefund_fee);
                             } else {
+                                StyledDialog.dismiss(mDialog);
+                                refundPopuwindow.dismiss();
                                 ToastUtils.showShort(WalletInfoActivity.this, R.string.no_network_tip);
                             }
                             break;
                         case "0":
-                            StyledDialog.dismissLoading();
+                            StyledDialog.dismiss(mDialog);
+                            refundPopuwindow.dismiss();
                             ToastUtils.showShort(WalletInfoActivity.this, getString(R.string.balance_outstanding));
                             startActivity(new Intent(WalletInfoActivity.this, RechargeBikeFareActivity.class));
                             break;
 
                         case "2":
-                            StyledDialog.dismissLoading();
+                            StyledDialog.dismiss(mDialog);
+                            refundPopuwindow.dismiss();
                             goToLogin();
                             break;
 
                         case "3":
+                            StyledDialog.dismiss(mDialog);
+                            refundPopuwindow.dismiss();
                             ToastUtils.showShort(WalletInfoActivity.this, getString(R.string.refund_tip));
                             break;
 
@@ -313,7 +321,7 @@ public class WalletInfoActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.REFUNDWXPAY).params(mMap).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                StyledDialog.dismissLoading();
+                StyledDialog.dismiss(mDialog);
                 ToastUtils.showShort(App.getContext(), getString(R.string.server_tip));
             }
 
@@ -321,7 +329,7 @@ public class WalletInfoActivity extends BaseActivity {
             public void onResponse(String response, int id) {
                 LogUtils.d("退款", response);
                 //{"resultStatus":"0"}
-                StyledDialog.dismissLoading();
+                StyledDialog.dismiss(mDialog);
                 try {
                     JSONObject object = new JSONObject(response);
                     String resultStatus = object.optString("resultStatus");
@@ -332,9 +340,6 @@ public class WalletInfoActivity extends BaseActivity {
                         case "1":
                             SPUtils.put(App.getContext(), "cashStatus", 0);
                             startActivity(new Intent(WalletInfoActivity.this, ShowRefundResultsActivity.class));
-                            break;
-                        case "2":
-
                             break;
 
                     }
@@ -418,7 +423,7 @@ public class WalletInfoActivity extends BaseActivity {
         if (refundPopuwindow != null) {
             refundPopuwindow.dismiss();
         }
-        StyledDialog.dismiss();
+        StyledDialog.dismiss(mDialog);
     }
 
 }

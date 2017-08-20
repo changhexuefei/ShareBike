@@ -239,6 +239,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private String mTitle;
     private LatLng startLng, finishLng;
     private Dialog mDialog;
+    private Dialog mReminderDialog;
+    private Dialog mMFailedDialog;
 
     public MainActivity() {
     }
@@ -307,12 +309,12 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     final String title = popupInfo.getAdvertisement().getTitle();
                     if (imageUrl != null && !imageUrl.equals("")) {
                         LogUtils.d("骑行结果", isShowBookOrder + "\n" + isShowRideOrder);
-                        if (isShowBookOrder && isShowRideOrder) {
+                        if (!isShowBookOrder || !isShowRideOrder) {
                             mDialog = new Dialog(MainActivity.this, R.style.edit_AlertDialog_style);
                             mDialog.setContentView(R.layout.start_dialog);
                             ImageView imageView = (ImageView) mDialog.findViewById(R.id.adversimg);
                             ImageView close = (ImageView) mDialog.findViewById(R.id.close);
-                            Glide.with(MainActivity.this)
+                            Glide.with(App.getContext())
                                     .load(imageUrl)
                                     .signature(new StringSignature("01"))//增加签名
                                     .error(R.drawable.default_image)
@@ -368,7 +370,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     String headimageUrl = headInfo.getHeadAdvertisement().getHeadimageUrl();
                     mTitle = headInfo.getHeadAdvertisement().getTitle();
                     mHeadactivityUrl = headInfo.getHeadAdvertisement().getHeadactivityUrl();
-                    Glide.with(MainActivity.this)
+                    Glide.with(App.getContext())
                             .load(headimageUrl)
                             .signature(new StringSignature("01"))//增加签名
                             .into(mHeadAdvertisement);
@@ -1461,7 +1463,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
             @Override
             public void onResponse(String response, int id) {
-                LogUtils.d("骑行结果", response+"\n"+"骑行订单");
+                LogUtils.d("骑行结果", response + "\n" + "骑行订单");
                 if (JsonUtils.isSuccess(response)) {
                     isChecked = false;
                     isShowRideOrder = true;
@@ -1693,6 +1695,12 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         if (mDialog != null) {
             mDialog.dismiss();
         }
+        if (mReminderDialog != null) {
+            mReminderDialog.dismiss();
+        }
+        if (mMFailedDialog != null) {
+            mMFailedDialog.dismiss();
+        }
         super.onDestroy();
     }
 
@@ -1821,29 +1829,29 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     }
 
     private void openLockFail() {
-        StyledDialog.buildIosAlert(MainActivity.this, "提示", getString(R.string.unLock_fail), new MyDialogListener() {
+        mMFailedDialog = StyledDialog.buildIosAlert(MainActivity.this, "提示", getString(R.string.unLock_fail), new MyDialogListener() {
             @Override
             public void onFirst() {
-                StyledDialog.dismiss();
+                StyledDialog.dismiss(mMFailedDialog);
             }
 
             @Override
             public void onSecond() {
-                StyledDialog.dismiss();
+                StyledDialog.dismiss(mMFailedDialog);
             }
         }).show();
     }
 
     private void timeOut() {
-        StyledDialog.buildIosAlert(MainActivity.this, "提示", getString(R.string.unLock_timeout), new MyDialogListener() {
+        mReminderDialog = StyledDialog.buildIosAlert(MainActivity.this, "提示", getString(R.string.unLock_timeout), new MyDialogListener() {
             @Override
             public void onFirst() {
-                StyledDialog.dismiss();
+                StyledDialog.dismiss(mReminderDialog);
             }
 
             @Override
             public void onSecond() {
-                StyledDialog.dismiss();
+                StyledDialog.dismiss(mReminderDialog);
             }
         }).show();
 
