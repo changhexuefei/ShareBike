@@ -155,7 +155,7 @@ public class UnlockProgressActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         LogUtils.d("实验", "我已经创建好了");
         EventBus.getDefault().register(this);
-        mAnimation = AnimationUtils.loadAnimation(this, R.anim.unlock_lock_anim);
+        mAnimation = AnimationUtils.loadAnimation(UnlockProgressActivity.this, R.anim.unlock_lock_anim);
         mUnlockIcon.startAnimation(mAnimation);
         mMenuDesc.setTextColor(getResources().getColor(R.color.white));
         mMenuDesc.setSpeed(5);

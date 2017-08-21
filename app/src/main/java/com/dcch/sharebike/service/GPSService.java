@@ -23,7 +23,7 @@ import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
-import com.dcch.sharebike.base.MessageEvent;
+import com.dcch.sharebike.base.CodeEvent;
 import com.dcch.sharebike.db.DatabaseHelper;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.listener.MyOrientationListener;
@@ -113,6 +113,7 @@ public class GPSService extends Service {
         totalPrice = 0;
         routPointList.clear();
         Log.i("BDGpsService", "********BDGpsService onCreate*******");
+        Log.d("实验", "GPSservice开始了");
         lco = new LocationClientOption();
         lco.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
         lco.setScanSpan(minTime);
@@ -151,7 +152,7 @@ public class GPSService extends Service {
             mBicycleNo = intent.getStringExtra("bicycleNo");
             mCarRentalOrderDate = intent.getStringExtra("carRentalOrderDate");
             mCarRentalOrderId = intent.getStringExtra("carRentalOrderId");
-            Log.d("大神", mUserId + "\n" + mBicycleNo + "\n" + mCarRentalOrderDate + "\n" + mCarRentalOrderId);
+            Log.d("骑行结果", mUserId + "\n" + mBicycleNo + "\n" + mCarRentalOrderDate + "\n" + mCarRentalOrderId);
             // 开启轨迹记录线程
 //            new Thread(new RouteRecordThread()).start();
         }
@@ -160,6 +161,8 @@ public class GPSService extends Service {
             locationClient.start();
         }
         return START_REDELIVER_INTENT;
+//        return START_NOT_STICKY;
+
     }
 
 //    public class RouteRecordThread implements Runnable {
@@ -285,7 +288,7 @@ public class GPSService extends Service {
         super.onDestroy();
         String filePath = getFilePath();
         Log.d("BDGpsService", "********BDGpsService onDestroy*******");
-        Log.d("BDGpsService", "filePath");
+        Log.d("实验", "GPSservice停止了");
         if (locationClient != null && locationClient.isStarted()) {
             locationClient.unRegisterLocationListener(locationListener);
             locationClient.stop();
@@ -328,6 +331,7 @@ public class GPSService extends Service {
         public void onReceiveLocation(BDLocation location) {
             mHelper = new DatabaseHelper(App.getContext());
             Log.i("Listener", "********BDGpsServiceListener onReceiveLocation*******");
+            Log.d("骑行结果", "百度地图刷新的监听");
             if (location == null) {
                 return;
             }
@@ -374,7 +378,9 @@ public class GPSService extends Service {
                 map.put("lng", mRouteLng + "");
                 map.put("lat", mRouteLat + "");
                 map.put("mile", totalDistance / 1000 + "");
-                LogUtils.d("看看数据", mToken + "\n" + mCarRentalOrderDate + "\n" + mRouteLat + "\n" + mCarRentalOrderId + "\n" + mRouteLng+"\n"+ totalDistance / 1000 );
+                LogUtils.d("骑行结果", mToken + "\n" + mCarRentalOrderDate +
+                        "\n" + mRouteLat + "\n" + mCarRentalOrderId + "\n" + mRouteLng+"\n"+ totalDistance / 1000+"\n"+mBicycleNo
+                );
 //                byte[] encryptBytes = MapUtil.transMapToString(map).getBytes();
 //                NettyClient.getInstance().sendMsgToServer(encryptBytes, new ChannelFutureListener() {
 //                    @Override
@@ -406,7 +412,8 @@ public class GPSService extends Service {
                                     sendToActivity(bundle);
                                 }
                             } else if (ridingInfo.getStatus() == 1) {
-                                EventBus.getDefault().post(new MessageEvent(),"disappear");
+//                                EventBus.getDefault().post(new MessageEvent(),"disappear");
+                                EventBus.getDefault().post(new CodeEvent(mBicycleNo),"disappear");
                                 stopSelf();
                             }
                         }

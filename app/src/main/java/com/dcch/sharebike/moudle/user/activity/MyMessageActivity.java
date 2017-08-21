@@ -1,5 +1,6 @@
 package com.dcch.sharebike.moudle.user.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -49,6 +50,7 @@ public class MyMessageActivity extends BaseActivity {
     private String mToken;
     private MessageInfo mMessageInfo;
     private MessageInfoAdapter mMessageInfoAdapter;
+    private Dialog mUpLoadDialog;
 
     @Override
     protected int getLayoutId() {
@@ -79,7 +81,7 @@ public class MyMessageActivity extends BaseActivity {
         if (NetUtils.isConnected(App.getContext())) {
             if (mUserId != null && mToken != null) {
                 getMessageInfo(mUserId, mToken);
-                StyledDialog.buildLoading(MyMessageActivity.this, "正在加载..", true, false).setMsgColor(R.color.color_ff).show();
+                mUpLoadDialog = StyledDialog.buildLoading(MyMessageActivity.this, "正在加载..", true, false).setMsgColor(R.color.color_ff).show();
             }
         } else {
             mNoMessage.setVisibility(View.VISIBLE);
@@ -94,7 +96,7 @@ public class MyMessageActivity extends BaseActivity {
         OkHttpUtils.post().url(Api.BASE_URL + Api.GETACTIVITYS).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                StyledDialog.dismissLoading();
+                StyledDialog.dismiss(mUpLoadDialog);
                 ToastUtils.showShort(MyMessageActivity.this, getString(R.string.server_tip));
             }
 
@@ -105,7 +107,7 @@ public class MyMessageActivity extends BaseActivity {
                     Gson gson = new Gson();
                     mMessageInfo = gson.fromJson(response, MessageInfo.class);
                     if (mMessageInfo.getActivitys().size() > 0) {
-                        StyledDialog.dismissLoading();
+                        StyledDialog.dismiss(mUpLoadDialog);
                         mNoMessage.setVisibility(View.GONE);
                         mMyMessageList.setVisibility(View.VISIBLE);
                         mMessageInfoAdapter = new MessageInfoAdapter(MyMessageActivity.this, R.layout.item_my_message, mMessageInfo.getActivitys());
@@ -123,7 +125,7 @@ public class MyMessageActivity extends BaseActivity {
                         mMyMessageList.setLoadMoreEnabled(false);
                     }
                 } else {
-                    StyledDialog.dismissLoading();
+                    StyledDialog.dismiss(mUpLoadDialog);
                     mNoMessage.setVisibility(View.VISIBLE);
                     mMyMessageList.setVisibility(View.GONE);
                 }
@@ -139,6 +141,8 @@ public class MyMessageActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        StyledDialog.dismiss();
+        if (mUpLoadDialog != null) {
+            StyledDialog.dismiss(mUpLoadDialog);
+        }
     }
 }

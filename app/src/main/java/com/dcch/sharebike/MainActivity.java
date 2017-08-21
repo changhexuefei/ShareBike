@@ -346,8 +346,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                             });
                         }
                     }
-                } else {
-
                 }
             }
         });
@@ -1304,20 +1302,22 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     @Override
     public void onMapStatusChangeFinish(MapStatus mapStatus) {
         finishLng = mapStatus.target;
-        if (startLng.latitude != finishLng.latitude
-                || startLng.longitude != finishLng.longitude) {
-            Projection ject = mMap.getProjection();
-            Point startPoint = ject.toScreenLocation(startLng);
-            Point finishPoint = ject.toScreenLocation(finishLng);
-            double x = Math.abs(finishPoint.x - startPoint.x);
-            double y = Math.abs(finishPoint.y - startPoint.y);
-            double moveDist = 50.0;
-            if (x > moveDist || y > moveDist) {
-                //在这处理滑动
-                LogUtils.d("移动", isShowMenu + "\n" + isShowBookOrder + "\n" + isShowRideOrder);
-                if (!isShowBookOrder && !isShowRideOrder) {
-                    LogUtils.d("移动", "进来了");
-                    updateMapStatus(mapStatus);
+        if (startLng != null && finishLng != null) {
+            if (startLng.latitude != finishLng.latitude
+                    || startLng.longitude != finishLng.longitude) {
+                Projection ject = mMap.getProjection();
+                Point startPoint = ject.toScreenLocation(startLng);
+                Point finishPoint = ject.toScreenLocation(finishLng);
+                double x = Math.abs(finishPoint.x - startPoint.x);
+                double y = Math.abs(finishPoint.y - startPoint.y);
+                double moveDist = 50.0;
+                if (x > moveDist || y > moveDist) {
+                    //在这处理滑动
+                    LogUtils.d("移动", isShowMenu + "\n" + isShowBookOrder + "\n" + isShowRideOrder);
+                    if (!isShowBookOrder && !isShowRideOrder) {
+                        LogUtils.d("移动", "进来了");
+                        updateMapStatus(mapStatus);
+                    }
                 }
             }
         }
@@ -1486,7 +1486,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     mMapView.setClickable(false);
                 } else {
                     LogUtils.d("所有的数据", "4");
-                    LogUtils.d("所有的数据", mCurrentLantitude + "\n" + mCurrentLongitude);
+                    LogUtils.d("骑行结果", mCurrentLantitude + "\n" + mCurrentLongitude);
 //                    getBikeInfo(mCurrentLantitude, mCurrentLongitude);
                 }
             }
@@ -1701,6 +1701,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         if (mMFailedDialog != null) {
             mMFailedDialog.dismiss();
         }
+        Log.d("实验", "onDestroy+主页");
         super.onDestroy();
     }
 
@@ -1932,8 +1933,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     //GPS服务页面带来的消息
     @Subscriber(tag = "disappear", mode = ThreadMode.MAIN)
-    private void receiveFromGpsService(MessageEvent info) {
+    private void receiveFromGpsService(CodeEvent info) {
         if (info != null) {
+            result = info.getBikeNo();
             LogUtils.d("骑行结果", result + "\n" + uID);
             if (result != null && !result.equals("") && !uID.equals("") && uID != null) {
                 Intent ridingResult = new Intent(MainActivity.this, RidingResultActivity.class);
