@@ -470,7 +470,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                                              drawPlanRoute(endNodeStr);
                                          }
                                          bookBikePopupWindow = new BookBikePopupWindow(MainActivity.this, bookingBikeInfo, bookBikeItemsOnClick);
-                                         bookBikePopupWindow.showAsDropDown(findViewById(R.id.top));
+                                         if (!MainActivity.this.isFinishing()) {
+                                             bookBikePopupWindow.showAsDropDown(findViewById(R.id.top));
+                                         }
                                          timer = (MyCountDownTimer) new MyCountDownTimer(countTime, 1000) {
                                              @Override
                                              public void onTick(long millisUntilFinished) {
@@ -1119,7 +1121,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                                 isChecked = false;
                                 isShowBookOrder = true;
                                 bookBikePopupWindow = new BookBikePopupWindow(MainActivity.this, bookingBikeInfo, bookBikeItemsOnClick);
-                                bookBikePopupWindow.showAsDropDown(findViewById(R.id.top));
+                                if (!MainActivity.this.isFinishing()) {
+                                    bookBikePopupWindow.showAsDropDown(findViewById(R.id.top));
+                                }
                                 timer = (MyCountDownTimer) new MyCountDownTimer(600000, 1000) {
                                     @Override
                                     public void onTick(long millisUntilFinished) {
@@ -1273,7 +1277,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         }
         menuWindow.setFocusable(false);
         menuWindow.setOutsideTouchable(false);
-        menuWindow.showAsDropDown(findViewById(R.id.top));
+        if (!MainActivity.this.isFinishing()) {
+            menuWindow.showAsDropDown(findViewById(R.id.top));
+        }
         if (SPUtils.isLogin()) {
             if (cashStatus == 1 && status == 1) {
                 menuWindow.mOrder.setText(R.string.book_bike);
@@ -1480,7 +1486,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     mScan.setVisibility(View.INVISIBLE);
                     mCenterIcon.setVisibility(View.INVISIBLE);
                     orderPopupWindow = new BikeRentalOrderPopupWindow(MainActivity.this, bikeRentalOrderInfo, userRidingBikeItemsOnClick);
-                    orderPopupWindow.showAsDropDown(findViewById(R.id.top));
+                    if (!MainActivity.this.isFinishing()) {
+                        orderPopupWindow.showAsDropDown(findViewById(R.id.top));
+                    }
                     orderPopupWindow.setOutsideTouchable(false);
                     mMapView.setEnabled(false);
                     mMapView.setClickable(false);
