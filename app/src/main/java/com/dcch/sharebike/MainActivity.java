@@ -149,6 +149,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 import static com.dcch.sharebike.utils.MapUtil.stringToInt;
+import static com.hss01248.dialog.StyledDialog.buildMdLoading;
 
 
 @RuntimePermissions
@@ -239,8 +240,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private String mTitle;
     private LatLng startLng, finishLng;
     private Dialog mDialog;
-    private Dialog mReminderDialog;
-    private Dialog mMFailedDialog;
+    private Dialog mChangingDialog;
+
 
     public MainActivity() {
     }
@@ -531,7 +532,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 .animateType(MarkerOptions.MarkerAnimateType.grow);//设置增长动画
         //添加marker
         mMarker = (Marker) mMap.addOverlay(options);
-        StyledDialog.dismissLoading();
+        StyledDialog.dismiss(mChangingDialog);
         Bundle bundle = new Bundle();
         bundle.putSerializable("bikeInfo", bikeInfo);
         mMarker.setExtraInfo(bundle);
@@ -814,7 +815,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                         bicycleNo = bikeInfo.getBicycleNo();
                         if (NetUtils.isConnected(App.getContext())) {
                             updateBikeInfo(bikeInfo);
-                            StyledDialog.buildMdLoading(MainActivity.this, getString(R.string.route_planning), true, false).show();
+                            mChangingDialog = StyledDialog.buildMdLoading(MainActivity.this, getString(R.string.route_planning), true, false).show();
                         } else {
                             ToastUtils.showShort(MainActivity.this, getString(R.string.no_network_tip));
                         }
@@ -1007,7 +1008,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                             if (menuWindow != null && menuWindow.isShowing()) {
                                 menuWindow.dismiss();
                             }
-                            StyledDialog.buildMdLoading(MainActivity.this, getString(R.string.booking), true, false).setMsgColor(R.color.color_ff).show();
+                            mChangingDialog = buildMdLoading(MainActivity.this, getString(R.string.booking), true, false).setMsgColor(R.color.color_ff).show();
                             bookingBike(uID, bicycleNo, mToken);
 
                         } else {
@@ -1169,7 +1170,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         strings.add(new BottomSheetBean(R.mipmap.agreement, getString(R.string.user_agreement)));
         strings.add(new BottomSheetBean(R.mipmap.other, getString(R.string.other_question)));
 
-        StyledDialog.buildBottomSheetGv(this, "客户服务", strings, "", 2, new MyItemDialogListener() {
+        mChangingDialog = StyledDialog.buildBottomSheetGv(this, "客户服务", strings, "", 2, new MyItemDialogListener() {
             @Override
             public void onItemClick(CharSequence text, int position) {
                 if (position == 0) {
@@ -1703,12 +1704,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         if (mDialog != null) {
             mDialog.dismiss();
         }
-        if (mReminderDialog != null) {
-            mReminderDialog.dismiss();
+        if (mChangingDialog != null) {
+            StyledDialog.dismiss(mChangingDialog);
         }
-        if (mMFailedDialog != null) {
-            mMFailedDialog.dismiss();
-        }
+
         Log.d("实验", "onDestroy+主页");
         super.onDestroy();
     }
@@ -1761,6 +1760,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private void receiveFromSetting(MessageEvent info) {
         LogUtils.e(info.toString());
         mInstructions.setVisibility(View.VISIBLE);
+        mHeadAdvertisement.setVisibility(View.GONE);
+
         if (IsConnect = mNettyService != null) {
             IsConnect = false;
             stopService(mNettyService);
@@ -1838,29 +1839,29 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     }
 
     private void openLockFail() {
-        mMFailedDialog = StyledDialog.buildIosAlert(MainActivity.this, "提示", getString(R.string.unLock_fail), new MyDialogListener() {
+        mChangingDialog = StyledDialog.buildIosAlert(MainActivity.this, "提示", getString(R.string.unLock_fail), new MyDialogListener() {
             @Override
             public void onFirst() {
-                StyledDialog.dismiss(mMFailedDialog);
+                StyledDialog.dismiss(mChangingDialog);
             }
 
             @Override
             public void onSecond() {
-                StyledDialog.dismiss(mMFailedDialog);
+                StyledDialog.dismiss(mChangingDialog);
             }
         }).show();
     }
 
     private void timeOut() {
-        mReminderDialog = StyledDialog.buildIosAlert(MainActivity.this, "提示", getString(R.string.unLock_timeout), new MyDialogListener() {
+        mChangingDialog = StyledDialog.buildIosAlert(MainActivity.this, "提示", getString(R.string.unLock_timeout), new MyDialogListener() {
             @Override
             public void onFirst() {
-                StyledDialog.dismiss(mReminderDialog);
+                StyledDialog.dismiss(mChangingDialog);
             }
 
             @Override
             public void onSecond() {
-                StyledDialog.dismiss(mReminderDialog);
+                StyledDialog.dismiss(mChangingDialog);
             }
         }).show();
 

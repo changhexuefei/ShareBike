@@ -68,17 +68,17 @@ public class MyMessageActivity extends BaseActivity {
                 finish();
             }
         });
-        Intent intent = getIntent();
-        if (intent != null) {
-            mUserId = intent.getStringExtra("userId");
-            mToken = intent.getStringExtra("token");
-        }
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (NetUtils.isConnected(App.getContext())) {
+            Intent intent = getIntent();
+            if (intent != null) {
+                mUserId = intent.getStringExtra("userId");
+                mToken = intent.getStringExtra("token");
+            }
             if (mUserId != null && mToken != null) {
                 getMessageInfo(mUserId, mToken);
                 mUpLoadDialog = StyledDialog.buildLoading(MyMessageActivity.this, "正在加载..", true, false).setMsgColor(R.color.color_ff).show();

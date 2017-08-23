@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,26 +7,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/month_card_image"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/myWallet"
+        android:visibility="gone"/>
+
     <TextView
         android:id="@+id/guide_line_one"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="100dp"
-        android:background="@color/lineColor"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myWallet"/>
+        android:layout_below="@+id/card_voucher_page"
+        android:background="@color/lineColor"/>
 
 
     <RelativeLayout
         android:id="@+id/red_packet_page"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="center_vertical"
-        app:layout_constraintBottom_toTopOf="@+id/guide_line_two"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guide_line_one">
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/guide_line_two"
+        android:gravity="center_vertical">
         <!--android:text="我的红包(已存入余额)"-->
         <TextView
             android:id="@+id/my_red_packet"
@@ -34,7 +35,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-
             android:textSize="16sp"/>
 
         <TextView
@@ -42,7 +42,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:drawablePadding="10dp"
             android:drawableRight="@mipmap/forward"
@@ -53,25 +52,17 @@
 
     <TextView
         android:id="@+id/guide_line_two"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="100dp"
-        android:background="@color/lineColor"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guide_line_one"/>
+        android:layout_below="@+id/Riding_balance_area"
+        android:background="@color/lineColor"/>
 
 
     <FrameLayout
         android:id="@+id/myWallet"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/colorHeading"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_editor_absoluteY="0dp">
+        android:background="@color/colorHeading">
 
         <ImageView
             android:id="@+id/back"
@@ -101,105 +92,74 @@
     </FrameLayout>
 
     <RelativeLayout
-        android:visibility="gone"
         android:id="@+id/card_voucher_page"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guide_line_two">
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/month_card_image"
+        android:gravity="center_vertical">
+
+        <RelativeLayout
+            android:id="@+id/month_card_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/usable_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:text="月卡剩余时间(天)"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/remained_days"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/usable_time"
+                android:layout_below="@+id/usable_time"
+                android:text="31"
+                android:textColor="@color/black"
+                android:textSize="20sp"/>
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/my_card_voucher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="40dp"
-            android:text="@string/my_card_voucher"
-            android:textSize="16sp"/>
-
-        <TextView
-            android:id="@+id/my_card_voucher_sum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/my_card_voucher"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:drawableRight="@mipmap/forward"
-            android:textSize="16sp"
-            app:layout_constraintTop_toTopOf="@+id/my_card_voucher"/>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="center_vertical"
-        app:layout_constraintBottom_toTopOf="@+id/guide_line_one"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myWallet"
-        app:layout_constraintVertical_bias="1.0">
-
-        <TextView
-            android:id="@+id/riding_balance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:text="@string/balance"
-            android:textSize="16sp"
-            app:layout_constraintLeft_toLeftOf="parent"/>
-
-        <TextView
-            android:id="@+id/remainingSum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/riding_balance"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:text="0.00"
-            android:textColor="@color/black"
-            android:textSize="20sp"/>
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:text="购买月卡"/>
 
         <Button
-            android:id="@+id/recharge"
+            android:id="@+id/card_voucher_recharge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="15dp"
+            android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
             android:background="@color/colorTitle"
-            android:text="@string/trade"
-            android:textColor="@color/white"
-            app:layout_constraintRight_toRightOf="parent"/>
-
+            android:text="购买"
+            android:textColor="@color/white"/>
 
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginBottom="0dp"
+        android:layout_alignParentBottom="true"
         android:background="@color/colorTitle"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        android:gravity="center">
 
         <TextView
             android:id="@+id/showArea"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/chargeDeposit"
-            android:layout_alignBottom="@+id/chargeDeposit"
+            android:layout_centerVertical="true"
             android:text="@string/_0"
             android:textColor="@color/white"
             android:textSize="14sp"/>
@@ -221,5 +181,44 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/Riding_balance_area"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@id/guide_line_one"
+        android:gravity="center_vertical">
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/riding_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/balance"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/remainingSum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/riding_balance"
+            android:layout_below="@+id/riding_balance"
+            android:text="0.00"
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
+
+        <Button
+            android:id="@+id/recharge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:background="@color/colorTitle"
+            android:text="@string/trade"
+            android:textColor="@color/white"/>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

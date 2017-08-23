@@ -39,7 +39,6 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.GET_TASKS"/>
 
-
     <!-- Required -->
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"/>
     <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE"/>
@@ -108,7 +107,7 @@
         </meta-data>
         <meta-data
             android:name="IFLYTEK_APPKEY"
-            android:value="'591ec095'">
+            android:value="&apos;591ec095&apos;">
         </meta-data>
 
         <provider
@@ -140,7 +139,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-
         </activity>
         <activity
             android:name=".activity.GuideActivity"
@@ -342,15 +340,15 @@
             </intent-filter>
         </activity>
 
-        <!-- SDK核心功能-->
+        <!-- SDK核心功能 -->
         <activity
             android:name="cn.jpush.android.ui.PopWinActivity"
             android:configChanges="orientation|keyboardHidden"
             android:exported="false"
             android:theme="@style/MyDialogStyle">
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="${applicationId}" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="${applicationId}"/>
             </intent-filter>
         </activity>
 
@@ -461,7 +459,6 @@
             android:name=".moudle.user.activity.RidingResultActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
-
         </activity>
         <activity
             android:name=".moudle.user.activity.UnlockProgressActivity"
@@ -516,21 +513,21 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
         </activity>
-        <activity
-            android:name=".moudle.login.activity.OpenLockTipAcitivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/translucent">
-        </activity>
+        <!--<activity-->
+            <!--android:name=".moudle.login.activity.OpenLockTipAcitivity"-->
+            <!--android:launchMode="singleTask"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@style/translucent">-->
+        <!--</activity>-->
         <activity
             android:name=".moudle.user.activity.CouponListActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
         </activity>
-        <activity
-            android:name=".moudle.login.activity.PropagandaPosterActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/translucent"/>
+        <!--<activity-->
+            <!--android:name=".moudle.login.activity.PropagandaPosterActivity"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@style/translucent"/>-->
         <activity
             android:name=".moudle.user.activity.MessageDetailActivity"
             android:launchMode="singleTask"
@@ -568,11 +565,12 @@
             android:name=".moudle.user.activity.CardVoucherListActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".moudle.user.activity.RedPacketListActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
+        <activity android:name=".moudle.user.activity.BuyMonthlyActivity">
+        </activity>
     </application>
 
 </manifest>

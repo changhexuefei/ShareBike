@@ -111,6 +111,8 @@ dependencies {
     compile files('libs/baidumapapi_search_v4_1_1.jar')
     compile files('libs/baidumapapi_util_v4_1_1.jar')
     compile files('libs/360update-7.0.3.jar')
+    compile files('libs/jcore-android-1.1.6.jar')
+    compile files('libs/jpush-android-3.0.8.jar')
     compile 'com.jakewharton:butterknife:8.4.0'
     compile 'com.belerweb:pinyin4j:2.5.1'
     compile 'de.hdodenhof:circleimageview:2.1.0'
@@ -148,9 +150,8 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
     releaseCompile 'com.github.moduth:blockcanary-no-op:1.2.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
-    compile files('libs/jcore-android-1.1.6.jar')
-    compile files('libs/jpush-android-3.0.8.jar')
 }
+
 
 
 
