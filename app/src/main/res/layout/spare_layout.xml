@@ -128,12 +128,13 @@
         </RelativeLayout>
 
         <TextView
+            android:textSize="16sp"
             android:id="@+id/my_card_voucher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
-            android:text="购买月卡"/>
+            android:text="@string/month_card"/>
 
         <Button
             android:id="@+id/card_voucher_recharge"
@@ -143,7 +144,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
             android:background="@color/colorTitle"
-            android:text="购买"
+            android:text="@string/buy_month_card"
             android:textColor="@color/white"/>
 
     </RelativeLayout>

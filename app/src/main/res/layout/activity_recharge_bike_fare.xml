@@ -40,10 +40,10 @@
 
     <LinearLayout
         android:id="@+id/money_area"
-        android:orientation="vertical"
-        android:layout_below="@+id/tv20"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv20"
+        android:orientation="vertical">
 
         <RadioGroup
             android:id="@+id/rg_rec_rg"
@@ -107,20 +107,21 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/pay"
+        android:id="@+id/rbf_pay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/money_area"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
         android:background="@color/white"
         android:orientation="vertical">
 
         <RelativeLayout
+            android:clickable="true"
             android:id="@+id/rbf_weixinArea"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/weixin"
@@ -141,11 +142,10 @@
             android:background="@color/lineColor"/>
 
         <RelativeLayout
+            android:clickable="true"
             android:id="@+id/rbf_aliArea"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
+            android:layout_height="wrap_content">
 
             <TextView
                 style="@style/rb_pay_type"

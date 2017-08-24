@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/shape_layout_border_normal"
+          android:state_enabled="true"
+          android:state_focused="false"
+          android:state_selected="false"/>
+
+    <item android:drawable="@drawable/shape_layout_border_press"
+          android:state_enabled="true"
+          android:state_selected="true"/>
+
+    <item android:drawable="@drawable/shape_layout_border_press"
+          android:state_focused="true"
+          android:state_selected="true"/>
+
+    <item android:drawable="@drawable/shape_layout_border_press"/>
+
+</selector>
+    <!--<item android:drawable="@drawable/shape_layout_border_press" android:state_pressed="true"/>-->

@@ -75,6 +75,18 @@ public class WalletInfoActivity extends BaseActivity {
     RelativeLayout mCardVoucherPage;
     @BindView(R.id.my_red_packet)
     TextView mMyRedPacket;
+    @BindView(R.id.month_card_image)
+    ImageView mMonthCardImage;
+    @BindView(R.id.usable_time)
+    TextView mUsableTime;
+    @BindView(R.id.remained_days)
+    TextView mRemainedDays;
+    @BindView(R.id.month_card_show)
+    RelativeLayout mMonthCardShow;
+    @BindView(R.id.my_card_voucher)
+    TextView mMyCardVoucher;
+    @BindView(R.id.card_voucher_recharge)
+    Button mCardVoucherRecharge;
     private RefundPopuwindow refundPopuwindow;
     private String uID;
     private UserInfo mInfo;
@@ -102,15 +114,16 @@ public class WalletInfoActivity extends BaseActivity {
             SpannableStringBuilder stringBuilder = new SpannableStringBuilder(getString(R.string.red_packet));
             AbsoluteSizeSpan absoluteSizeSpan = new AbsoluteSizeSpan(30);
             ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(Color.RED);
-            stringBuilder.setSpan(absoluteSizeSpan, stringBuilder.length()-9,
+            stringBuilder.setSpan(absoluteSizeSpan, stringBuilder.length() - 9,
                     stringBuilder.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-            stringBuilder.setSpan(foregroundColorSpan, stringBuilder.length()-9,
+            stringBuilder.setSpan(foregroundColorSpan, stringBuilder.length() - 9,
                     stringBuilder.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
             mMyRedPacket.setText(stringBuilder);
         }
     }
 
-    @OnClick({R.id.back, R.id.transactionDetail, R.id.recharge, R.id.chargeDeposit, R.id.red_packet_page, R.id.card_voucher_page})
+    @OnClick({R.id.back, R.id.transactionDetail, R.id.recharge, R.id.chargeDeposit,
+            R.id.red_packet_page, R.id.card_voucher_page, R.id.card_voucher_recharge})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -159,8 +172,11 @@ public class WalletInfoActivity extends BaseActivity {
                 }
 
                 break;
-            case R.id.card_voucher_page:
-//                ToastUtils.showShort(this, "您点我了");
+            case R.id.card_voucher_recharge:
+                if (ClickUtils.isFastClick()) {
+                    return;
+                }
+                startActivity(new Intent(WalletInfoActivity.this,BuyMonthlyActivity.class));
 
                 break;
         }
@@ -392,7 +408,7 @@ public class WalletInfoActivity extends BaseActivity {
                         double merchanBillAmount = mInfo.getMerchanBillAmount();
                         double aggregateAmount = mInfo.getAggregateAmount();
                         if (String.valueOf(merchanBillAmount) != null && !String.valueOf(merchanBillAmount).equals("")) {
-                            mMyRedPacketSum.setText(String.valueOf(merchanBillAmount+"元"));
+                            mMyRedPacketSum.setText(String.valueOf(merchanBillAmount + "元"));
                         }
                         if (!String.valueOf(aggregateAmount).equals("") && String.valueOf(aggregateAmount) != null) {
                             remainingSum.setText(String.valueOf(aggregateAmount));

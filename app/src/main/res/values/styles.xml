@@ -45,12 +45,12 @@
         <item name="android:windowBackground">@drawable/timg</item>
     </style>
 
-
+    <!--<item name="android:background">@color/white</item>-->
     <style name="rb_pay_type">
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/white</item>
+
         <item name="android:button">@null</item>
         <item name="android:drawablePadding">8dp</item>
         <item name="android:drawableRight">@drawable/checked_type_selector</item>

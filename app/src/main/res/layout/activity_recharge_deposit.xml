@@ -46,7 +46,7 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/pay"
+        android:id="@+id/rd_pay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ra1"

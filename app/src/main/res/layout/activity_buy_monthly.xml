@@ -7,35 +7,264 @@
     android:layout_height="match_parent"
     tools:context="com.dcch.sharebike.moudle.user.activity.BuyMonthlyActivity">
 
-    <include layout="@layout/toolbar"/>
+    <include
+        layout="@layout/toolbar"/>
 
     <ScrollView
+        android:id="@+id/month_scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar">
+        android:layout_above="@+id/buy_month_card"
+        android:layout_below="@+id/toolbar"
+        android:fillViewport="true"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:scrollbars="none">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingBottom="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/select_month_card"
+                android:textSize="14sp"/>
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:padding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:scaleType="fitXY"
                 android:src="@drawable/red_packet"
-                android:visibility="invisible"/>
-            <RelativeLayout
+                android:visibility="gone"/>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+                <!--android:focusableInTouchMode="true"-->
+
+                <RelativeLayout
+                    android:id="@+id/oneMonth"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_relativelaout"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        android:id="@+id/select_one"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:duplicateParentState="true"
+                        android:text="2元"
+                        android:textColor="@color/selector_text_color"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/useful_life_one"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/select_one"
+                        android:layout_marginTop="8dp"
+                        android:duplicateParentState="true"
+                        android:text="1个月"
+                        android:textColor="@color/selector_text_color"/>
+
+                    <TextView
+                        android:id="@+id/original_price_one"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/select_one"
+                        android:layout_marginLeft="8dp"
+                        android:layout_toRightOf="@+id/select_one"
+                        android:text="20元"
+                        android:textSize="12sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@+id/select_one"
+                        android:background="@color/colorTitle"
+                        android:paddingBottom="4dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingTop="4dp"
+                        android:text="1折"
+                        android:textColor="@color/white"
+                        android:textSize="8sp"/>
+
+                </RelativeLayout>
+
+                <android.support.v4.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.05"/>
+
+                <RelativeLayout
+                    android:id="@+id/thereMonth"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_relativelaout"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        android:id="@+id/select_two"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:duplicateParentState="true"
+                        android:text="5元"
+                        android:textColor="@color/selector_text_color"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/useful_life_two"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/select_two"
+                        android:layout_marginTop="8dp"
+                        android:duplicateParentState="true"
+                        android:text="3个月"
+                        android:textColor="@color/selector_text_color"/>
+
+                    <TextView
+                        android:id="@+id/original_price_two"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/select_two"
+                        android:layout_marginLeft="8dp"
+                        android:layout_toRightOf="@+id/select_two"
+                        android:text="60元"
+                        android:textSize="12sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@+id/select_two"
+                        android:background="@color/colorTitle"
+                        android:paddingBottom="4dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingTop="4dp"
+                        android:text="0.8折"
+                        android:textColor="@color/white"
+                        android:textSize="8sp"/>
+
+
+                </RelativeLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/pay_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/money_area"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
                 <TextView
-                    android:layout_alignParentLeft="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text="@string/payStyle"
+                    android:textSize="14sp"/>
+
+                <RelativeLayout
+                    android:id="@+id/month_weixinArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:id="@+id/month_weixin"
+                        style="@style/rb_pay_type"
+                        android:drawableLeft="@drawable/weixin_ic"
+                        android:text="@string/weixin"/>
+
+                    <CheckBox
+                        android:id="@+id/month_weixin_checkbox"
+                        style="@style/checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/lineColor"/>
+
+                <RelativeLayout
+                    android:id="@+id/month_aliArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/rb_pay_type"
+                        android:drawableLeft="@drawable/alipay_ic"
+                        android:text="@string/zhifubao"/>
+
+                    <CheckBox
+                        android:id="@+id/month_ali_checkbox"
+                        style="@style/checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+
+            </LinearLayout>
 
 
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@mipmap/dot"
+                android:drawablePadding="4dp"
+                android:text="@string/month_card_rules_one"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:drawableLeft="@mipmap/dot"
+                android:drawablePadding="4dp"
+                android:text="@string/month_card_rules_two"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:drawableLeft="@mipmap/dot"
+                android:drawablePadding="4dp"
+                android:text="@string/month_card_rules_there"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:drawableLeft="@mipmap/dot"
+                android:drawablePadding="4dp"
+                android:text="@string/month_card_rules_four"/>
 
         </LinearLayout>
 
@@ -50,7 +279,8 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="15dp"
         android:background="@color/colorTitle"
-        android:text="购买"/>
+        android:text="@string/buy_month_card"
+        android:textColor="@color/white"/>
 
 
 </RelativeLayout>

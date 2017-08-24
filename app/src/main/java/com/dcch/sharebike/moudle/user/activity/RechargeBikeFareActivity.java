@@ -77,7 +77,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
     CheckBox rbfWeixinCheckbox;
     @BindView(R.id.rbf_weixinArea)
     RelativeLayout rbfWeixinArea;
-    @BindView(R.id.pay)
+    @BindView(R.id.rbf_pay)
     LinearLayout pay;
     @BindView(R.id.btn_rbf_recharge)
     Button btnRbfRecharge;
@@ -131,6 +131,8 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         rgRecRg1.setOnCheckedChangeListener(this);
         rgRecRg2.setOnCheckedChangeListener(this);
         mRgRecRg.setOnCheckedChangeListener(this);
+        rbfAliArea.setOnClickListener(this);
+        rbfWeixinArea.setOnClickListener(this);
     }
 
     @OnClick({R.id.recharge_agreement, R.id.rbf_aliArea, R.id.rbf_weixinArea, R.id.btn_rbf_recharge})
@@ -153,8 +155,8 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                rbfAliCheckbox.setChecked(false);
                 rbfWeixinCheckbox.setChecked(true);
+                rbfAliCheckbox.setChecked(false);
                 break;
             case R.id.btn_rbf_recharge:
                 if (ClickUtils.isFastClick()) {

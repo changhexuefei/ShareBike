@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/input_btn_color"
+          android:state_enabled="true"
+          android:state_focused="false"
+          android:state_selected="false"/>
+
+    <item android:color="@color/colorTitle"
+          android:state_enabled="true"
+          android:state_selected="true"/>
+
+    <item android:color="@color/colorTitle"
+          android:state_focused="true"
+          android:state_selected="true"/>
+
+    <item android:color="@color/colorTitle"/>
+
+</selector>
+
