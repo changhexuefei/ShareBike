@@ -176,8 +176,10 @@ public class WalletInfoActivity extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                startActivity(new Intent(WalletInfoActivity.this,BuyMonthlyActivity.class));
-
+                Intent monthCardIntent = new Intent(WalletInfoActivity.this, BuyMonthlyActivity.class);
+                monthCardIntent.putExtra("userId", uID);
+                monthCardIntent.putExtra("token", mToken);
+                startActivity(monthCardIntent);
                 break;
         }
     }
@@ -250,7 +252,7 @@ public class WalletInfoActivity extends BaseActivity {
                     //先进行检查余额操作
                     if (NetUtils.isConnected(App.getContext())) {
                         checkAccountBalances(uID, mToken);
-                        mDialog = StyledDialog.buildLoading(WalletInfoActivity.this, "提现中", true, false).show();
+                        mDialog = StyledDialog.buildLoading(WalletInfoActivity.this, "退款中...", true, false).show();
                     } else {
                         refundPopuwindow.dismiss();
                         ToastUtils.showShort(WalletInfoActivity.this, R.string.no_network_tip);
@@ -439,7 +441,9 @@ public class WalletInfoActivity extends BaseActivity {
         if (refundPopuwindow != null) {
             refundPopuwindow.dismiss();
         }
-        StyledDialog.dismiss(mDialog);
+        if (mDialog != null) {
+            StyledDialog.dismiss(mDialog);
+        }
     }
 
 }

@@ -731,6 +731,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
+                LogUtils.d("为什么",uID+"\n"+mToken);
                 if (SPUtils.isLogin()) {
                     goToMessageList(uID, mToken);
                 } else {
@@ -1615,8 +1616,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         if (SPUtils.isLogin()) {
             mHeadAdvertisement.setVisibility(View.VISIBLE);
             mInstructions.setVisibility(View.GONE);
-//            mToken = (String) SPUtils.get(App.getContext(), "token", "");
-//            uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
+            mToken = (String) SPUtils.get(App.getContext(), "token", "");
+            uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
             if (uID != null && mToken != null) {
                 phone = AES.decrypt((String) SPUtils.get(App.getContext(), "phone", ""), MyContent.key);
                 cashStatus = (Integer) SPUtils.get(App.getContext(), "cashStatus", 0);

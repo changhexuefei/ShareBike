@@ -1,23 +1,61 @@
 package com.dcch.sharebike.moudle.user.activity;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.alipay.sdk.app.PayTask;
 import com.dcch.sharebike.R;
+import com.dcch.sharebike.alipay.AliPay;
+import com.dcch.sharebike.alipay.PayResult;
+import com.dcch.sharebike.alipay.WeixinPay;
+import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.BaseActivity;
+import com.dcch.sharebike.base.MessageEvent;
+import com.dcch.sharebike.http.Api;
+import com.dcch.sharebike.moudle.home.content.MyContent;
+import com.dcch.sharebike.moudle.login.activity.IdentityAuthenticationActivity;
+import com.dcch.sharebike.moudle.login.activity.RechargeActivity;
+import com.dcch.sharebike.moudle.user.bean.MonthCardInfo;
+import com.dcch.sharebike.moudle.user.bean.WeixinReturnInfo;
 import com.dcch.sharebike.utils.ClickUtils;
+import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
+import com.dcch.sharebike.utils.NetUtils;
+import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
+import com.google.gson.Gson;
+import com.hss01248.dialog.StyledDialog;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.simple.eventbus.EventBus;
+import org.simple.eventbus.Subscriber;
+import org.simple.eventbus.ThreadMode;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 public class BuyMonthlyActivity extends BaseActivity implements View.OnClickListener {
 
@@ -56,7 +94,40 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
     RelativeLayout mMonthAliArea;
     @BindView(R.id.month_scrollView)
     ScrollView mMonthScrollView;
+    @BindView(R.id.discount_one)
+    TextView mDiscountOne;
+    @BindView(R.id.discount_two)
+    TextView mDiscountTwo;
+    @BindView(R.id.select_there)
+    TextView mSelectThere;
+    @BindView(R.id.useful_life_there)
+    TextView mUsefulLifeThere;
+    @BindView(R.id.original_price_there)
+    TextView mOriginalPriceThere;
+    @BindView(R.id.discount_there)
+    TextView mDiscountThere;
+    @BindView(R.id.sixMonth)
+    RelativeLayout mSixMonth;
+    @BindView(R.id.select_four)
+    TextView mSelectFour;
+    @BindView(R.id.useful_life_four)
+    TextView mUsefulLifeFour;
+    @BindView(R.id.original_price_four)
+    TextView mOriginalPriceFour;
+    @BindView(R.id.discount_four)
+    TextView mDiscountFour;
+    @BindView(R.id.twelveMonth)
+    RelativeLayout mTwelveMonth;
     private String payNumber;
+    private String orderbody = "购买月卡";
+    private String subject = "月卡费用";
+    private String mUserId;
+    private String mToken;
+    private static final int SDK_PAY_FLAG = 1;
+    private Dialog mTradeDialog;
+    private String payMode;
+    private int mCashStatus;
+    private int mStatus;
 
     @Override
     protected int getLayoutId() {
@@ -74,6 +145,10 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                 finish();
             }
         });
+        mOriginalPriceOne.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); //中划线
+        mOriginalPriceTwo.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); //中划线
+        mOriginalPriceThere.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); //中划线
+        mOriginalPriceFour.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); //中划线
     }
 
     @Override
@@ -81,16 +156,60 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
         super.initListener();
         mOneMonth.setOnClickListener(this);
         mThereMonth.setOnClickListener(this);
+        mSixMonth.setOnClickListener(this);
+        mTwelveMonth.setOnClickListener(this);
     }
 
-    @OnClick({R.id.buy_month_card, R.id.oneMonth, R.id.thereMonth, R.id.month_weixinArea, R.id.month_aliArea})
+    @OnClick({R.id.buy_month_card, R.id.oneMonth, R.id.thereMonth,
+            R.id.month_weixinArea, R.id.month_aliArea, R.id.sixMonth, R.id.twelveMonth})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.buy_month_card:
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                ToastUtils.showShort(BuyMonthlyActivity.this, "你点了购买");
+                if (NetUtils.isConnected(App.getContext())) {
+                    if (SPUtils.isLogin()) {
+                        if (mCashStatus == 0 && mStatus == 0) {
+                            startActivity(new Intent(BuyMonthlyActivity.this, RechargeActivity.class));
+                        } else if (mCashStatus == 1 && mStatus == 0) {
+                            startActivity(new Intent(BuyMonthlyActivity.this, IdentityAuthenticationActivity.class));
+                        } else if (mCashStatus == 0 && mStatus == 1) {
+                            startActivity(new Intent(BuyMonthlyActivity.this, RechargeDepositActivity.class));
+                        } else {
+                            mTradeDialog = StyledDialog.buildLoading(BuyMonthlyActivity.this, "交易中...", true, false).show();
+                            //这里要分两种情况，调取微信和支付宝的支付方式
+                            if (mMonthAliCheckbox.isChecked()) {
+                                //选择支付宝，调取支付宝的支付方法
+                                AliPay aliPay = new AliPay(this);
+                                String outTradeNo = aliPay.getOutTradeNo();
+                                if (mUserId != null && payNumber != null && outTradeNo != null) {
+                                    aliCardPayWay(mUserId, outTradeNo, payNumber, orderbody, subject, payMode);
+
+                                } else {
+                                    ToastUtils.showShort(BuyMonthlyActivity.this, getString(R.string.server_tip));
+                                }
+                            } else if (mMonthWeixinCheckbox.isChecked()) {
+                                //调取微信的支付方式
+                                WeixinPay weixinPay = new WeixinPay(this);
+                                String ipAddress;
+                                if (NetUtils.isWifi(App.getContext())) {
+                                    ipAddress = weixinPay.getLocalIpAddress();
+                                } else {
+                                    ipAddress = weixinPay.getIpAddress();
+                                }
+                                String mOutTradeNo = weixinPay.getOutTradeNo();
+                                if (mUserId != null && mOutTradeNo != null && ipAddress != null && payNumber != null) {
+                                    weiXinCardPayWay(mOutTradeNo, subject, mUserId, ipAddress, payNumber, payMode);
+                                } else {
+                                    ToastUtils.showShort(BuyMonthlyActivity.this, getString(R.string.server_tip));
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    ToastUtils.showShort(BuyMonthlyActivity.this, getString(R.string.no_network_tip));
+                }
 
                 break;
             case R.id.oneMonth:
@@ -99,7 +218,9 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                 }
                 mOneMonth.setSelected(true);
                 mThereMonth.setSelected(false);
-                ToastUtils.showShort(BuyMonthlyActivity.this, "你点我了");
+                mSixMonth.setSelected(false);
+                mTwelveMonth.setSelected(false);
+                payMode = "月卡";
                 String oneNumber = mSelectOne.getText().toString().trim();
                 payNumber = oneNumber.substring(0, oneNumber.length() - 1);
                 LogUtils.d("看看", payNumber + "123");
@@ -110,7 +231,9 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                 }
                 mThereMonth.setSelected(true);
                 mOneMonth.setSelected(false);
-                ToastUtils.showShort(BuyMonthlyActivity.this, "你点我了");
+                mSixMonth.setSelected(false);
+                mTwelveMonth.setSelected(false);
+                payMode = "季卡";
                 String twoNumber = mSelectTwo.getText().toString().trim();
                 payNumber = twoNumber.substring(0, twoNumber.length() - 1);
                 LogUtils.d("看看", payNumber + "456");
@@ -125,19 +248,222 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                 mMonthAliCheckbox.setChecked(true);
                 mMonthWeixinCheckbox.setChecked(false);
                 break;
+
+            case R.id.sixMonth:
+                mThereMonth.setSelected(false);
+                mOneMonth.setSelected(false);
+                mSixMonth.setSelected(true);
+                mTwelveMonth.setSelected(false);
+                String thereNumber = mSelectThere.getText().toString().trim();
+                payNumber = thereNumber.substring(0, thereNumber.length() - 1);
+                LogUtils.d("看看", payNumber + "456");
+                break;
+            case R.id.twelveMonth:
+                mThereMonth.setSelected(false);
+                mOneMonth.setSelected(false);
+                mSixMonth.setSelected(false);
+                mTwelveMonth.setSelected(true);
+                String fourNumber = mSelectFour.getText().toString().trim();
+                payNumber = fourNumber.substring(0, fourNumber.length() - 1);
+                LogUtils.d("看看", payNumber + "456");
+                break;
+
         }
+    }
+
+    private void weiXinCardPayWay(String mOutTradeNo, String subject, String userId, String ipAddress, String payNumber, String payMode) {
+        final IWXAPI mMsgApi = WXAPIFactory.createWXAPI(this, MyContent.APP_ID);
+        Map<String, String> map = new HashMap<>();
+        map.put("out_trade_no", mOutTradeNo);
+        map.put("attach", userId);
+        map.put("body", subject);
+        map.put("total_price", payNumber);
+        map.put("spbill_create_ip", ipAddress);
+        map.put("paymode", payMode);
+        LogUtils.d("微信支付", ipAddress + "\n" + userId + "\n" + mOutTradeNo);
+        OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINPAY).params(map).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                StyledDialog.dismiss(mTradeDialog);
+                ToastUtils.showShort(BuyMonthlyActivity.this, getString(R.string.server_tip));
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                LogUtils.d("微信支付", response);
+                StyledDialog.dismiss(mTradeDialog);
+                if (JsonUtils.isSuccess(response)) {
+                    PayReq req = new PayReq();
+                    Gson gson = new Gson();
+                    WeixinReturnInfo weixinReturnInfo = gson.fromJson(response, WeixinReturnInfo.class);
+                    req.appId = weixinReturnInfo.getAppid();
+                    req.partnerId = weixinReturnInfo.getMch_id();
+                    req.prepayId = weixinReturnInfo.getPrepay_id();
+                    req.packageValue = weixinReturnInfo.getPackageid();
+                    req.nonceStr = weixinReturnInfo.getNonce_str();
+                    req.timeStamp = weixinReturnInfo.getTimestamp();
+                    req.sign = weixinReturnInfo.getSign();
+                    req.extData = "app data"; // optional
+                    LogUtils.d("微信支付", req.appId + "\n" + req.partnerId + "\n" + req.prepayId + "\n" + req.nonceStr + "\n" + req.timeStamp + "\n" + req.packageValue + "\n" + req.sign + "\n" + req.extData);
+                    mMsgApi.sendReq(req);
+                } else {
+                    ToastUtils.showShort(BuyMonthlyActivity.this, getString(R.string.server_tip));
+                }
+            }
+        });
+    }
+
+    private void aliCardPayWay(String userId, String outTradeNo, String payNumber, String orderbody, String subject, String payMode) {
+        Map<String, String> map = new HashMap<>();
+        map.put("passback_params", userId);
+        map.put("outtradeno", outTradeNo);
+        map.put("orderbody", orderbody);
+        map.put("subject", subject);
+        map.put("money", payNumber);
+        map.put("paymode", payMode);
+        OkHttpUtils.post().url(Api.BASE_URL + Api.ALICARDPAY).params(map).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                StyledDialog.dismiss(mTradeDialog);
+                ToastUtils.showShort(BuyMonthlyActivity.this, getString(R.string.server_tip));
+            }
+
+            @Override
+            public void onResponse(final String response, int id) {
+                StyledDialog.dismiss(mTradeDialog);
+                LogUtils.d("支付", response);
+                Runnable payRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+//                        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);沙箱测试
+                        PayTask task = new PayTask(BuyMonthlyActivity.this);
+                        Map<String, String> stringStringMap = task.payV2(response, true);
+                        Message msg = new Message();
+                        msg.what = SDK_PAY_FLAG;
+                        msg.obj = stringStringMap;
+                        handler.sendMessage(msg);
+                    }
+                };
+                // 必须异步调用
+                Thread payThread = new Thread(payRunnable);
+                payThread.start();
+            }
+        });
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mMonthWeixinCheckbox.setChecked(true);
-        mOneMonth.setSelected(true);
-        payNumber = mSelectOne.getText().toString().trim().substring(0, mSelectOne.getText().toString().trim().length() - 1);
-        LogUtils.d("看看", payNumber);
-        mOriginalPriceOne.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); //中划线
-        mOriginalPriceTwo.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); //中划线
-        mMonthScrollView.smoothScrollTo(0, 0);
+        EventBus.getDefault().register(this);
+        queryMonthCardType();
+        mCashStatus = (Integer) SPUtils.get(App.getContext(), "cashStatus", 0);
+        mStatus = (Integer) SPUtils.get(App.getContext(), "status", 0);
+        if (SPUtils.isLogin()) {
+            if (mCashStatus == 0) {
+                mBuyMonthCard.setText("交押金后，方可购买月卡");
+            } else if (mCashStatus == 1 && mStatus == 0) {
+                mBuyMonthCard.setText("实名验证后，方可购买月卡");
+            } else {
+                mBuyMonthCard.setText("购买");
+            }
+
+            Intent intent = getIntent();
+            if (intent != null) {
+                mUserId = intent.getStringExtra("userId");
+                mToken = intent.getStringExtra("token");
+            }
+            mMonthWeixinCheckbox.setChecked(true);
+            mOneMonth.setSelected(true);
+            payMode = "月卡";
+            payNumber = mSelectOne.getText().toString().trim().substring(0, mSelectOne.getText().toString().trim().length() - 1);
+            LogUtils.d("看看", payNumber);
+
+//        mMonthScrollView.smoothScrollTo(0, 0);
+        }
+    }
+
+    private void queryMonthCardType() {
+        OkHttpUtils.post().url(Api.BASE_URL + Api.CHECKCARD).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                ToastUtils.showShort(BuyMonthlyActivity.this, getResources().getString(R.string.server_tip));
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                if (JsonUtils.isSuccess(response)) {
+                    Gson gson = new Gson();
+                    MonthCardInfo monthCardInfo = gson.fromJson(response, MonthCardInfo.class);
+                    List<MonthCardInfo.CardHolderBean> cardHolder = monthCardInfo.getCardHolder();
+                    for (int i = 0; i < cardHolder.size(); i++) {
+                        MonthCardInfo.CardHolderBean cardHolderBean = cardHolder.get(i);
+                    }
+
+                } else {
+                    ToastUtils.showShort(BuyMonthlyActivity.this, getResources().getString(R.string.server_tip));
+                }
+            }
+        });
+
+
+    }
+
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case SDK_PAY_FLAG: {
+                    PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+                    Log.d("问题原因", payResult.toString());
+                    // 支付宝返回此次支付结果及加签，建议对支付宝签名信息拿签约时支付宝提供的公钥做验签
+                    // String resultInfo = payResult.getResult();
+                    String resultStatus = payResult.getResultStatus();
+                    if (TextUtils.equals(resultStatus, "9000")) {
+//                        updateRechargeInfo(uID, rechargeNumber);
+                        Toast.makeText(BuyMonthlyActivity.this, "支付成功",
+                                Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(BuyMonthlyActivity.this, WalletInfoActivity.class));
+                        finish();
+//                        returnData(rechargeNumber);
+                    } else {
+                        // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
+                        if (TextUtils.equals(resultStatus, "8000")) {
+                            Toast.makeText(BuyMonthlyActivity.this, "支付结果确认中",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(BuyMonthlyActivity.this, "支付失败",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+        if (mTradeDialog != null) {
+            StyledDialog.dismiss(mTradeDialog);
+        }
+        handler.removeCallbacksAndMessages(null);
+    }
+
+    //微信支付传过来的消息
+    @Subscriber(tag = "page_disappear", mode = ThreadMode.MAIN)
+    private void receiveFromWXPayEntry(MessageEvent info) {
+        if (info != null) {
+            this.finish();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
     }
 }

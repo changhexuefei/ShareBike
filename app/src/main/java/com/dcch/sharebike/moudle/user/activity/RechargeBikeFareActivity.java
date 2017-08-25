@@ -1,5 +1,6 @@
 package com.dcch.sharebike.moudle.user.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -103,6 +104,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
     RadioGroup mRgRecRg;
     private String orderbody = "交车费";
     private String subject = "车费";
+    private Dialog mRechangeDialog;
 
     @Override
     protected int getLayoutId() {
@@ -163,7 +165,7 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                     return;
                 }
                 if (NetUtils.isConnected(App.getContext())) {
-                    StyledDialog.buildLoading(RechargeBikeFareActivity.this, "充值中", true, false).show();
+                    mRechangeDialog = StyledDialog.buildLoading(RechargeBikeFareActivity.this, "充值中", true, false).show();
                     //这里要分两种情况，调取微信和支付宝的支付方式
                     if (rbfAliCheckbox.isChecked()) {
                         //选择支付宝，调取支付宝的支付方法
@@ -178,7 +180,6 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
                         }
                     } else if (rbfWeixinCheckbox.isChecked()) {
                         //调取微信的支付方式
-
                         WeixinPay weixinPay = new WeixinPay(this);
                         if (NetUtils.isWifi(App.getContext())) {
                             ipAddress = weixinPay.getLocalIpAddress();
@@ -211,14 +212,14 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINPAY).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                StyledDialog.dismissLoading();
+                StyledDialog.dismiss(mRechangeDialog);
                 ToastUtils.showShort(RechargeBikeFareActivity.this, getString(R.string.server_tip));
             }
 
             @Override
             public void onResponse(String response, int id) {
                 LogUtils.d("微信支付", response);
-                StyledDialog.dismissLoading();
+                StyledDialog.dismiss(mRechangeDialog);
                 if (JsonUtils.isSuccess(response)) {
                     PayReq req = new PayReq();
                     Gson gson = new Gson();
@@ -251,13 +252,13 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
         OkHttpUtils.post().url(Api.BASE_URL + Api.ALIPAY).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                StyledDialog.dismissLoading();
+                StyledDialog.dismiss(mRechangeDialog);
                 ToastUtils.showShort(RechargeBikeFareActivity.this, getString(R.string.server_tip));
             }
 
             @Override
             public void onResponse(final String response, int id) {
-                StyledDialog.dismissLoading();
+                StyledDialog.dismiss(mRechangeDialog);
                 LogUtils.d("支付", response);
                 Runnable payRunnable = new Runnable() {
                     @Override
@@ -374,14 +375,15 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
     @Override
     protected void onResume() {
         super.onResume();
-        if (SPUtils.isLogin()) {
-            uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
-        }
+
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (SPUtils.isLogin()) {
+            uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
+        }
         EventBus.getDefault().register(this);
     }
 
@@ -389,7 +391,9 @@ public class RechargeBikeFareActivity extends BaseActivity implements View.OnCli
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        StyledDialog.dismiss();
+        if (mRechangeDialog != null) {
+            StyledDialog.dismiss(mRechangeDialog);
+        }
         handler.removeCallbacksAndMessages(null);
     }
 

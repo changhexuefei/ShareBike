@@ -336,7 +336,7 @@
     <string name="red_packet">我的红包(已自动存入余额)</string>
     <string name="select_month_card">选择月卡</string>
     <string name="payStyle">支付方式</string>
-    <string name="month_card_rules_one">月卡生效期间，每次行程前2个小时免费（2小时后正常计费）</string>
+    <string name="month_card_rules_one">月卡生效期间，每天免费骑行10次(以30分钟/次为标准),</string>
     <string name="month_card_rules_two">当前若无月卡，购买月卡立即生效；当前若已有月卡，续费后有效期顺延（1个月按照30天计算）</string>
     <string name="month_card_rules_there">购卡/续费成功后，相应费用不予退还</string>
     <string name="month_card_rules_four">退押金后无法继续骑车，已购买的月卡有效期不变；重新交押金后，相应月卡权益立即恢复</string>
