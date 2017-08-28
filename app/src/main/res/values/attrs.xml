@@ -55,6 +55,14 @@
         <attr name="canReBackable" format="boolean|reference"/><!-- 是否成功后返回-->
         <attr name="canDragable" format="boolean|reference"/><!-- 是否可以拖拽-->
     </declare-styleable>
+    
+    <declare-styleable name="MonthCardView">
+        <attr name="left_text" format="string"/>
+        <attr name="blew_text" format="string"/>
+        <attr name="middle_text" format="string"/>
+        <attr name="right_text" format="string"/>
+
+    </declare-styleable>
 
 
 </resources>

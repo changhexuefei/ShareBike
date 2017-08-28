@@ -25,8 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:paddingBottom="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -48,262 +48,218 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-                <!--android:focusableInTouchMode="true"-->
+                android:orientation="vertical">
 
-                <RelativeLayout
-                    android:id="@+id/oneMonth"
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector_relativelaout"
-                    android:clickable="true"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="15dp">
-
-                    <TextView
-                        android:id="@+id/select_one"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:duplicateParentState="true"
-                        android:text="2元"
-                        android:textColor="@color/selector_text_color"
-                        android:textSize="16sp"/>
-
-                    <TextView
-                        android:id="@+id/useful_life_one"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_below="@+id/select_one"
-                        android:layout_marginTop="8dp"
-                        android:duplicateParentState="true"
-                        android:text="1个月"
-                        android:textColor="@color/selector_text_color"/>
-
-                    <TextView
-                        android:id="@+id/original_price_one"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/select_one"
-                        android:layout_marginLeft="8dp"
-                        android:layout_toRightOf="@+id/select_one"
-                        android:text="20元"
-                        android:textSize="12sp"/>
-
-                    <TextView
-                        android:id="@+id/discount_one"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignTop="@+id/select_one"
-                        android:background="@color/colorTitle"
-                        android:paddingBottom="4dp"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
-                        android:paddingTop="4dp"
-                        android:text="1折"
-                        android:textColor="@color/white"
-                        android:textSize="8sp"/>
-
-                </RelativeLayout>
-
-                <android.support.v4.widget.Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.05"/>
-
-                <RelativeLayout
-                    android:id="@+id/thereMonth"
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector_relativelaout"
-                    android:clickable="true"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="15dp">
-
-                    <TextView
-                        android:id="@+id/select_two"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:duplicateParentState="true"
-                        android:text="5元"
-                        android:textColor="@color/selector_text_color"
-                        android:textSize="16sp"/>
-
-                    <TextView
-                        android:id="@+id/useful_life_two"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_below="@+id/select_two"
-                        android:layout_marginTop="8dp"
-                        android:duplicateParentState="true"
-                        android:text="3个月"
-                        android:textColor="@color/selector_text_color"/>
-
-                    <TextView
-                        android:id="@+id/original_price_two"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/select_two"
-                        android:layout_marginLeft="8dp"
-                        android:layout_toRightOf="@+id/select_two"
-                        android:text="60元"
-                        android:textSize="12sp"/>
-
-                    <TextView
-                        android:id="@+id/discount_two"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignTop="@+id/select_two"
-                        android:background="@color/colorTitle"
-                        android:paddingBottom="4dp"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
-                        android:paddingTop="4dp"
-                        android:text="0.8折"
-                        android:textColor="@color/white"
-                        android:textSize="8sp"/>
+                <!--<View-->
+                <!--android:id="@+id/strut"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:layout_centerHorizontal="true"/>-->
 
 
-                </RelativeLayout>
-            </LinearLayout>
+                <!--<com.dcch.sharebike.view.MonthCardView-->
+                    <!--android:id="@+id/oneMonth"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="80dp">-->
 
-            <LinearLayout
-                android:id="@+id/two_area"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-                <!--android:focusableInTouchMode="true"-->
 
-                <RelativeLayout
-                    android:id="@+id/sixMonth"
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector_relativelaout"
-                    android:clickable="true"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="15dp">
+                <!--</com.dcch.sharebike.view.MonthCardView>-->
 
-                    <TextView
-                        android:id="@+id/select_there"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:duplicateParentState="true"
-                        android:text="10元"
-                        android:textColor="@color/selector_text_color"
-                        android:textSize="16sp"/>
+                <!--<RelativeLayout-->
+                <!--android:id="@+id/thereMonth"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="80dp"-->
+                <!--android:layout_alignLeft="@id/strut"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_weight="1"-->
+                <!--android:background="@drawable/selector_relativelaout"-->
+                <!--android:clickable="true"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:paddingLeft="15dp">-->
 
-                    <TextView
-                        android:id="@+id/useful_life_there"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_below="@+id/select_there"
-                        android:layout_marginTop="8dp"
-                        android:duplicateParentState="true"
-                        android:text="6个月"
-                        android:textColor="@color/selector_text_color"/>
+                <!--<TextView-->
+                <!--android:id="@+id/select_two"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:duplicateParentState="true"-->
+                <!--android:text="5元"-->
+                <!--android:textColor="@color/selector_text_color"-->
+                <!--android:textSize="16sp"/>-->
 
-                    <TextView
-                        android:id="@+id/original_price_there"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/select_there"
-                        android:layout_marginLeft="8dp"
-                        android:layout_toRightOf="@+id/select_there"
-                        android:text="120元"
-                        android:textSize="12sp"/>
+                <!--<TextView-->
+                <!--android:id="@+id/useful_life_two"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_below="@+id/select_two"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:duplicateParentState="true"-->
+                <!--android:text="3个月"-->
+                <!--android:textColor="@color/selector_text_color"/>-->
 
-                    <TextView
-                        android:id="@+id/discount_there"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignTop="@+id/select_there"
-                        android:background="@color/colorTitle"
-                        android:paddingBottom="4dp"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
-                        android:paddingTop="4dp"
-                        android:text="1折"
-                        android:textColor="@color/white"
-                        android:textSize="8sp"/>
+                <!--<TextView-->
+                <!--android:id="@+id/original_price_two"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignBottom="@+id/select_two"-->
+                <!--android:layout_marginLeft="8dp"-->
+                <!--android:layout_toRightOf="@+id/select_two"-->
+                <!--android:text="60元"-->
+                <!--android:textSize="12sp"/>-->
 
-                </RelativeLayout>
+                <!--<TextView-->
+                <!--android:id="@+id/discount_two"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_alignTop="@+id/select_two"-->
+                <!--android:background="@color/colorTitle"-->
+                <!--android:paddingBottom="4dp"-->
+                <!--android:paddingLeft="8dp"-->
+                <!--android:paddingRight="8dp"-->
+                <!--android:paddingTop="4dp"-->
+                <!--android:text="0.8折"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:textSize="8sp"/>-->
+                <!--</RelativeLayout>-->
 
-                <android.support.v4.widget.Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.05"/>
+                <!--<Space-->
+                <!--android:id="@+id/interval"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="8dp"-->
+                <!--android:layout_below="@+id/oneMonth"/>-->
 
-                <RelativeLayout
-                    android:id="@+id/twelveMonth"
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector_relativelaout"
-                    android:clickable="true"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="15dp">
+                <!--<View-->
+                <!--android:id="@+id/strut2"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:layout_below="@+id/interval"-->
+                <!--android:layout_centerHorizontal="true"/>-->
 
-                    <TextView
-                        android:id="@+id/select_four"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:duplicateParentState="true"
-                        android:text="20元"
-                        android:textColor="@color/selector_text_color"
-                        android:textSize="16sp"/>
+                <!--<RelativeLayout-->
+                <!--android:id="@+id/sixMonth"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="80dp"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_alignRight="@id/strut2"-->
+                <!--android:layout_below="@+id/interval"-->
+                <!--android:background="@drawable/selector_relativelaout"-->
+                <!--android:clickable="true"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:paddingLeft="15dp">-->
 
-                    <TextView
-                        android:id="@+id/useful_life_four"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_below="@+id/select_four"
-                        android:layout_marginTop="8dp"
-                        android:duplicateParentState="true"
-                        android:text="12个月"
-                        android:textColor="@color/selector_text_color"/>
+                <!--<TextView-->
+                <!--android:id="@+id/select_there"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:duplicateParentState="true"-->
+                <!--android:text="10元"-->
+                <!--android:textColor="@color/selector_text_color"-->
+                <!--android:textSize="16sp"/>-->
 
-                    <TextView
-                        android:id="@+id/original_price_four"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/select_four"
-                        android:layout_marginLeft="8dp"
-                        android:layout_toRightOf="@+id/select_four"
-                        android:text="240元"
-                        android:textSize="12sp"/>
+                <!--<TextView-->
+                <!--android:id="@+id/useful_life_there"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_below="@+id/select_there"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:duplicateParentState="true"-->
+                <!--android:text="6个月"-->
+                <!--android:textColor="@color/selector_text_color"/>-->
 
-                    <TextView
-                        android:id="@+id/discount_four"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignTop="@+id/select_four"
-                        android:background="@color/colorTitle"
-                        android:paddingBottom="4dp"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
-                        android:paddingTop="4dp"
-                        android:text="0.8折"
-                        android:textColor="@color/white"
-                        android:textSize="8sp"/>
+                <!--<TextView-->
+                <!--android:id="@+id/original_price_there"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignBottom="@+id/select_there"-->
+                <!--android:layout_marginLeft="8dp"-->
+                <!--android:layout_toRightOf="@+id/select_there"-->
+                <!--android:text="120元"-->
+                <!--android:textSize="12sp"/>-->
 
-                </RelativeLayout>
+                <!--<TextView-->
+                <!--android:id="@+id/discount_there"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_alignTop="@+id/select_there"-->
+                <!--android:background="@color/colorTitle"-->
+                <!--android:paddingBottom="4dp"-->
+                <!--android:paddingLeft="8dp"-->
+                <!--android:paddingRight="8dp"-->
+                <!--android:paddingTop="4dp"-->
+                <!--android:text="1折"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:textSize="8sp"/>-->
+
+                <!--</RelativeLayout>-->
+
+
+                <!--<RelativeLayout-->
+                <!--android:id="@+id/twelveMonth"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="80dp"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_alignTop="@id/sixMonth"-->
+                <!--android:layout_toRightOf="@+id/sixMonth"-->
+                <!--android:layout_alignLeft="@id/strut2"-->
+                <!--android:background="@drawable/selector_relativelaout"-->
+                <!--android:clickable="true"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:paddingLeft="15dp">-->
+
+                <!--<TextView-->
+                <!--android:id="@+id/select_four"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:duplicateParentState="true"-->
+                <!--android:text="20元"-->
+                <!--android:textColor="@color/selector_text_color"-->
+                <!--android:textSize="16sp"/>-->
+
+                <!--<TextView-->
+                <!--android:id="@+id/useful_life_four"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_below="@+id/select_four"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:duplicateParentState="true"-->
+                <!--android:text="12个月"-->
+                <!--android:textColor="@color/selector_text_color"/>-->
+
+                <!--<TextView-->
+                <!--android:id="@+id/original_price_four"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignBottom="@+id/select_four"-->
+                <!--android:layout_marginLeft="8dp"-->
+                <!--android:layout_toRightOf="@+id/select_four"-->
+                <!--android:text="240元"-->
+                <!--android:textSize="12sp"/>-->
+
+                <!--<TextView-->
+                <!--android:id="@+id/discount_four"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_alignTop="@+id/select_four"-->
+                <!--android:background="@color/colorTitle"-->
+                <!--android:paddingBottom="4dp"-->
+                <!--android:paddingLeft="8dp"-->
+                <!--android:paddingRight="8dp"-->
+                <!--android:paddingTop="4dp"-->
+                <!--android:text="0.8折"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:textSize="8sp"/>-->
+
+                <!--</RelativeLayout>-->
+                <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
+
             </LinearLayout>
 
 
@@ -394,10 +350,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
                 android:layout_marginTop="4dp"
                 android:drawableLeft="@mipmap/dot"
                 android:drawablePadding="4dp"
+                android:paddingBottom="4dp"
                 android:text="@string/month_card_rules_four"/>
 
         </LinearLayout>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:background="@drawable/selector_relativelaout"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp">
+
+    <TextView
+        android:id="@+id/select_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:duplicateParentState="true"
+        android:textColor="@color/selector_text_color"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/useful_life_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/select_one"
+        android:layout_marginTop="8dp"
+        android:duplicateParentState="true"
+        android:textColor="@color/selector_text_color"/>
+
+    <TextView
+        android:id="@+id/original_price_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/select_one"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@+id/select_one"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/discount_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/select_one"
+        android:background="@color/colorTitle"
+        android:paddingBottom="4dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="4dp"
+        android:textColor="@color/white"
+        android:textSize="8sp"/>
+
+</RelativeLayout>
