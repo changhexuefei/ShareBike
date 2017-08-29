@@ -69,7 +69,7 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
     Toolbar mToolbar;
     @BindView(R.id.buy_month_card)
     Button mBuyMonthCard;
-//    @BindView(R.id.select_one)
+    //    @BindView(R.id.select_one)
 //    TextView mSelectOne;
 //    @BindView(R.id.useful_life_one)
 //    TextView mUsefulLifeOne;
@@ -97,7 +97,7 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
     RelativeLayout mMonthAliArea;
     @BindView(R.id.month_scrollView)
     ScrollView mMonthScrollView;
-//    @BindView(R.id.discount_one)
+    //    @BindView(R.id.discount_one)
 //    TextView mDiscountOne;
     //    @BindView(R.id.discount_two)
 //    TextView mDiscountTwo;
@@ -151,19 +151,11 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                 finish();
             }
         });
-//        mOriginalPriceOne.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); //中划线
-//        mOriginalPriceTwo.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); //中划线
-//        mOriginalPriceThere.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); //中划线
-//        mOriginalPriceFour.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); //中划线
     }
 
     @Override
     protected void initListener() {
         super.initListener();
-//        mOneMonth.setOnClickListener(this);
-//        mThereMonth.setOnClickListener(this);
-//        mSixMonth.setOnClickListener(this);, R.id.sixMonth, R.id.twelveMonth
-//        mTwelveMonth.setOnClickListener(this); R.id.thereMonth,R.id.oneMonth,
     }
 
     @OnClick({R.id.buy_month_card,
@@ -218,32 +210,7 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                 }
 
                 break;
-//            case R.id.oneMonth:
-//                if (ClickUtils.isFastClick()) {
-//                    return;
-//                }
-//                mOneMonth.setSelected(true);
-//                mThereMonth.setSelected(false);
-//                mSixMonth.setSelected(false);
-//                mTwelveMonth.setSelected(false);
-//                payMode = "月卡";
-//                String oneNumber = mSelectOne.getText().toString().trim();
-//                payNumber = oneNumber.substring(0, oneNumber.length() - 1);
-//                LogUtils.d("看看", payNumber + "123");
-//                break;
-//            case R.id.thereMonth:
-//                if (ClickUtils.isFastClick()) {
-//                    return;
-//                }
-//                mThereMonth.setSelected(true);
-//                mOneMonth.setSelected(false);
-//                mSixMonth.setSelected(false);
-//                mTwelveMonth.setSelected(false);
-//                payMode = "季卡";
-//                String twoNumber = mSelectTwo.getText().toString().trim();
-//                payNumber = twoNumber.substring(0, twoNumber.length() - 1);
-//                LogUtils.d("看看", payNumber + "456");
-//                break;
+
 
             case R.id.month_weixinArea:
                 mMonthWeixinCheckbox.setChecked(true);
@@ -255,24 +222,6 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                 mMonthWeixinCheckbox.setChecked(false);
                 break;
 
-//            case R.id.sixMonth:
-//                mThereMonth.setSelected(false);
-//                mOneMonth.setSelected(false);
-//                mSixMonth.setSelected(true);
-//                mTwelveMonth.setSelected(false);
-//                String thereNumber = mSelectThere.getText().toString().trim();
-//                payNumber = thereNumber.substring(0, thereNumber.length() - 1);
-//                LogUtils.d("看看", payNumber + "456");
-//                break;
-//            case R.id.twelveMonth:
-//                mThereMonth.setSelected(false);
-//                mOneMonth.setSelected(false);
-//                mSixMonth.setSelected(false);
-//                mTwelveMonth.setSelected(true);
-//                String fourNumber = mSelectFour.getText().toString().trim();
-//                payNumber = fourNumber.substring(0, fourNumber.length() - 1);
-//                LogUtils.d("看看", payNumber + "456");
-//                break;
 
         }
     }
@@ -380,11 +329,7 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                 mToken = intent.getStringExtra("token");
             }
             mMonthWeixinCheckbox.setChecked(true);
-//            mOneMonth.setSelected(true);
             payMode = "月卡";
-//            payNumber = mSelectOne.getText().toString().trim().substring(0, mSelectOne.getText().toString().trim().length() - 1);
-//            LogUtils.d("看看", payNumber);
-//        mMonthScrollView.smoothScrollTo(0, 0);
         }
     }
 
@@ -399,17 +344,13 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
 
             @Override
             public void onResponse(String response, int id) {
+                LogUtils.d("结果", response);
                 if (JsonUtils.isSuccess(response)) {
                     StyledDialog.dismiss(mTradeDialog);
                     Gson gson = new Gson();
                     MonthCardInfo monthCardInfo = gson.fromJson(response, MonthCardInfo.class);
                     mCardHolder = monthCardInfo.getCardHolder();
-                    for (int i = 0; i < mCardHolder.size(); i++) {
-                        MonthCardInfo.CardHolderBean cardHolderBean = mCardHolder.get(i);
-                        for (int j = 0; j < mCardHolder.size(); j++) {
-                            View childAt = mOneArea.getChildAt(j);
-                        }
-                    }
+                    initAutoLL(mCardHolder);
 
                 } else {
                     ToastUtils.showShort(BuyMonthlyActivity.this, getResources().getString(R.string.server_tip));
@@ -477,7 +418,7 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
     }
 
     //    绘制自动换行的线性布局
-    private void initAutoLL() {
+    private void initAutoLL(List<MonthCardInfo.CardHolderBean> cardHolder) {
 //        每一行的布局，初始化第一行布局
         LinearLayout rowLL = new LinearLayout(this);
         LinearLayout.LayoutParams rowLP =
@@ -494,7 +435,7 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT);
         textViewLP.setMargins((int) dipToPx(8), 0, 0, 0);
-        for (int i = 0; i < mCardHolder.size(); i++) {
+        for (int i = 0; i < cardHolder.size(); i++) {
 //            若当前为新起的一行，先添加旧的那行
 //            然后重新创建布局对象，设置参数，将isNewLayout判断重置为false
             if (isNewLayout) {
@@ -504,32 +445,32 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                 isNewLayout = false;
             }
 //            计算是否需要换行
-            MonthCardView relativeLayout = (MonthCardView) getLayoutInflater().inflate(R.layout.month_card, null);
-            TextView currentPrice = (TextView) relativeLayout.findViewById(R.id.select_one);
-            currentPrice.setText(mCardHolder.get(i).getCardprice());
-            TextView usefulLift = (TextView) relativeLayout.findViewById(R.id.useful_life_one);
-            usefulLift.setText(mCardHolder.get(i).getCardType());
-            TextView originalPrice = (TextView) relativeLayout.findViewById(R.id.original_price_one);
-            TextView discount = (TextView) relativeLayout.findViewById(R.id.discount_one);
-            relativeLayout.setOnClickListener(new View.OnClickListener() {
+            final MonthCardView monthCardView = new MonthCardView(this);
+            LogUtils.d("结果", monthCardView + "\n");
+            monthCardView.setLeftText(String.valueOf(cardHolder.get(i).getCardprice()) + "元");
+            monthCardView.setBlewText(cardHolder.get(i).getCardType());
+            monthCardView.setMiddleText(String.valueOf(cardHolder.get(i).getCardprice()) + "元");
+            monthCardView.setRightText(String.valueOf(cardHolder.get(i).getCardprice()) + "折");
+            monthCardView.setOnSelectedListener(new MonthCardView.ISelectedListener() {
                 @Override
-                public void onClick(View v) {
-                    ToastUtils.showShort(BuyMonthlyActivity.this,"点击");
+                public void onSelectedListener() {
+                    monthCardView.setSelected(true);
+                    ToastUtils.showShort(BuyMonthlyActivity.this, "选中了\n" + monthCardView.getLeftText());
                 }
             });
-            relativeLayout.measure(0, 0);
+            monthCardView.measure(0, 0);
 //            若是一整行都放不下这个文本框，添加旧的那行，新起一行添加这个文本框
-            if (maxWidth < relativeLayout.getMeasuredWidth()) {
+            if (maxWidth < monthCardView.getMeasuredWidth()) {
                 mOneArea.addView(rowLL);
                 rowLL = new LinearLayout(this);
                 rowLL.setLayoutParams(rowLP);
-                rowLL.addView(relativeLayout);
+                rowLL.addView(monthCardView);
                 isNewLayout = true;
                 continue;
             }
 //            若是剩下的宽度小于文本框的宽度（放不下了）
 //            添加旧的那行，新起一行，但是i要-1，因为当前的文本框还未添加
-            if (elseWidth < relativeLayout.getMeasuredWidth()) {
+            if (elseWidth < monthCardView.getMeasuredWidth()) {
                 isNewLayout = true;
                 i--;
 //                重置剩余宽度
@@ -537,12 +478,12 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                 continue;
             } else {
 //                剩余宽度减去文本框的宽度+间隔=新的剩余宽度
-                elseWidth -= relativeLayout.getMeasuredWidth() + dipToPx(8);
+                elseWidth -= monthCardView.getMeasuredWidth() + dipToPx(8);
                 if (rowLL.getChildCount() == 0) {
-                    rowLL.addView(relativeLayout);
+                    rowLL.addView(monthCardView);
                 } else {
-                    relativeLayout.setLayoutParams(textViewLP);
-                    rowLL.addView(relativeLayout);
+                    monthCardView.setLayoutParams(textViewLP);
+                    rowLL.addView(monthCardView);
                 }
             }
         }

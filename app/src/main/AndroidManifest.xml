@@ -134,11 +134,7 @@
             android:launchMode="standard"
             android:screenOrientation="portrait"
             android:theme="@style/Splash_Theme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity
             android:name=".activity.GuideActivity"
@@ -514,10 +510,10 @@
             android:screenOrientation="portrait">
         </activity>
         <!--<activity-->
-            <!--android:name=".moudle.login.activity.OpenLockTipAcitivity"-->
-            <!--android:launchMode="singleTask"-->
-            <!--android:screenOrientation="portrait"-->
-            <!--android:theme="@style/translucent">-->
+        <!--android:name=".moudle.login.activity.OpenLockTipAcitivity"-->
+        <!--android:launchMode="singleTask"-->
+        <!--android:screenOrientation="portrait"-->
+        <!--android:theme="@style/translucent">-->
         <!--</activity>-->
         <activity
             android:name=".moudle.user.activity.CouponListActivity"
@@ -525,9 +521,9 @@
             android:screenOrientation="portrait">
         </activity>
         <!--<activity-->
-            <!--android:name=".moudle.login.activity.PropagandaPosterActivity"-->
-            <!--android:screenOrientation="portrait"-->
-            <!--android:theme="@style/translucent"/>-->
+        <!--android:name=".moudle.login.activity.PropagandaPosterActivity"-->
+        <!--android:screenOrientation="portrait"-->
+        <!--android:theme="@style/translucent"/>-->
         <activity
             android:name=".moudle.user.activity.MessageDetailActivity"
             android:launchMode="singleTask"
@@ -569,7 +565,15 @@
             android:name=".moudle.user.activity.RedPacketListActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
-        <activity android:name=".moudle.user.activity.BuyMonthlyActivity">
+        <activity
+            android:name=".moudle.user.activity.BuyMonthlyActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
     </application>
 

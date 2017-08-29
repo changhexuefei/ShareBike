@@ -43,12 +43,14 @@
                 android:src="@drawable/red_packet"
                 android:visibility="gone"/>
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/one_area"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
+
 
                 <!--<View-->
                 <!--android:id="@+id/strut"-->
@@ -58,9 +60,13 @@
 
 
                 <!--<com.dcch.sharebike.view.MonthCardView-->
-                    <!--android:id="@+id/oneMonth"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="80dp">-->
+                <!--app:left_text="111"-->
+                <!--app:blew_text="111"-->
+                <!--app:middle_text="111"-->
+                <!--app:right_text="1"-->
+                <!--android:id="@+id/oneMonth"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="80dp">-->
 
 
                 <!--</com.dcch.sharebike.view.MonthCardView>-->
@@ -260,7 +266,7 @@
                 <!--</RelativeLayout>-->
                 <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
 
-            </LinearLayout>
+            </RelativeLayout>
 
 
             <LinearLayout

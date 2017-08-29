@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
+                android:layout_width="130dp"
                 android:layout_height="80dp"
                 android:background="@drawable/selector_relativelaout"
                 android:gravity="center_vertical"
@@ -11,7 +11,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:duplicateParentState="true"
         android:textColor="@color/selector_text_color"
         android:textSize="16sp"/>
 
@@ -35,6 +34,7 @@
         android:textSize="12sp"/>
 
     <TextView
+
         android:id="@+id/discount_one"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
