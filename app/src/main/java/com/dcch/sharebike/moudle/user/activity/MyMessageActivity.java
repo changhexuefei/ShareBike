@@ -97,6 +97,8 @@ public class MyMessageActivity extends BaseActivity {
             @Override
             public void onError(Call call, Exception e, int id) {
                 StyledDialog.dismiss(mUpLoadDialog);
+                mNoMessage.setVisibility(View.VISIBLE);
+                mMyMessageList.setVisibility(View.GONE);
                 ToastUtils.showShort(MyMessageActivity.this, getString(R.string.server_tip));
             }
 

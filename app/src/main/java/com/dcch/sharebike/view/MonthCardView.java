@@ -22,27 +22,46 @@ public class MonthCardView extends LinearLayout {
     private TextView mDiscount;
     private View mView;
 
+    private String mLeftText;
+    private String mBlewText;
+    private String mMiddleText;
+    private String mRightText;
+
     public String getLeftText() {
         return mLeftText;
+    }
+
+    public void setLeftText(String leftText) {
+        mLeftText = leftText;
+        mCurrentPrice.setText(leftText);
     }
 
     public String getBlewText() {
         return mBlewText;
     }
 
+    public void setBlewText(String blewText) {
+        mBlewText = blewText;
+        mUsefulLife.setText(blewText);
+    }
+
     public String getMiddleText() {
         return mMiddleText;
+    }
+
+    public void setMiddleText(String middleText) {
+        mMiddleText = middleText;
+        mOriginalPrice.setText(middleText);
     }
 
     public String getRightText() {
         return mRightText;
     }
 
-    private String mLeftText;
-    private String mBlewText;
-    private String mMiddleText;
-    private String mRightText;
-
+    public void setRightText(String rightText) {
+        mRightText = rightText;
+        mDiscount.setText(rightText);
+    }
 
     public interface ISelectedListener {
         void onSelectedListener();
@@ -56,46 +75,33 @@ public class MonthCardView extends LinearLayout {
         iListener = iSelectedListener;
     }
 
-
-    public void setLeftText(String leftText) {
-        mLeftText = leftText;
-        mCurrentPrice.setText(leftText);
-    }
-
-
-    public void setBlewText(String blewText) {
-        mBlewText = blewText;
-        mUsefulLife.setText(blewText);
-    }
-
-
-    public void setMiddleText(String middleText) {
-        mMiddleText = middleText;
-        mOriginalPrice.setText(middleText);
-    }
-
-
-    public void setRightText(String rightText) {
-        mRightText = rightText;
-        mDiscount.setText(rightText);
-    }
-
     public MonthCardView(Context context) {
         super(context);
-        initView(context);
+        if (!isInEditMode()) {
+            initView(context);
+        }
     }
 
     public MonthCardView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        if (!isInEditMode()) {//解决可视化编辑器无法自动识别控件的问题
+            initView(context);
+        }
+        //获取属性值
         TypedArray mTypedArray = context.obtainStyledAttributes(attrs, R.styleable.MonthCardView);
         mLeftText = mTypedArray.getString(R.styleable.MonthCardView_left_text);
         mBlewText = mTypedArray.getString(R.styleable.MonthCardView_blew_text);
         mMiddleText = mTypedArray.getString(R.styleable.MonthCardView_middle_text);
         mRightText = mTypedArray.getString(R.styleable.MonthCardView_right_text);
-
+        //将获取的的值设置到相应的位置上
+        if (!isInEditMode()) {
+            mCurrentPrice.setText(mLeftText);
+            mUsefulLife.setText(mBlewText);
+            mOriginalPrice.setText(mMiddleText);
+            mDiscount.setText(mRightText);
+        }
         //获取资源后要及时回收
         mTypedArray.recycle();
-        initView(context);
     }
 
 
@@ -114,6 +120,5 @@ public class MonthCardView extends LinearLayout {
             }
         });
     }
-
 
 }

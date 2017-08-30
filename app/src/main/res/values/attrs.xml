@@ -61,7 +61,6 @@
         <attr name="blew_text" format="string"/>
         <attr name="middle_text" format="string"/>
         <attr name="right_text" format="string"/>
-        <attr name="selected" format="boolean"/>
 
     </declare-styleable>
 

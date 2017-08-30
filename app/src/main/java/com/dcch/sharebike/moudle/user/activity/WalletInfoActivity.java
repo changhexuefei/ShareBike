@@ -309,7 +309,6 @@ public class WalletInfoActivity extends BaseActivity {
                             refundPopuwindow.dismiss();
                             ToastUtils.showShort(WalletInfoActivity.this, getString(R.string.refund_tip));
                             break;
-
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -409,6 +408,16 @@ public class WalletInfoActivity extends BaseActivity {
                         mCashStatus = mInfo.getCashStatus();
                         double merchanBillAmount = mInfo.getMerchanBillAmount();
                         double aggregateAmount = mInfo.getAggregateAmount();
+                        int rideDay = mInfo.getRideDay();
+                        if (rideDay == 0) {
+                            mMyCardVoucher.setText("购买月卡");
+                            mCardVoucherRecharge.setText("购买");
+                        } else if (rideDay > 0) {
+                            mMonthCardShow.setVisibility(View.VISIBLE);
+                            mMyCardVoucher.setVisibility(View.GONE);
+                            mRemainedDays.setText(String.valueOf(rideDay));
+                            mCardVoucherRecharge.setText("续费");
+                        }
                         if (String.valueOf(merchanBillAmount) != null && !String.valueOf(merchanBillAmount).equals("")) {
                             mMyRedPacketSum.setText(String.valueOf(merchanBillAmount + "元"));
                         }

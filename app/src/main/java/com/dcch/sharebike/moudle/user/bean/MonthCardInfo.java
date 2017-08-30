@@ -43,7 +43,7 @@ public class MonthCardInfo {
          */
 
         private String cardType;
-        private int cardprice;
+        private double cardprice;
         private String createTime;
         private int delflag;
         private int id;
@@ -56,11 +56,11 @@ public class MonthCardInfo {
             this.cardType = cardType;
         }
 
-        public int getCardprice() {
+        public double getCardprice() {
             return cardprice;
         }
 
-        public void setCardprice(int cardprice) {
+        public void setCardprice(double cardprice) {
             this.cardprice = cardprice;
         }
 

@@ -73,6 +73,8 @@ public class RedPacketListActivity extends BaseActivity {
             @Override
             public void onError(Call call, Exception e, int id) {
                 StyledDialog.dismissLoading();
+                mDefaultShow.setVisibility(View.VISIBLE);
+                mRedPacketList.setVisibility(View.GONE);
                 ToastUtils.showShort(RedPacketListActivity.this, getString(R.string.server_tip));
             }
 
@@ -128,5 +130,11 @@ public class RedPacketListActivity extends BaseActivity {
             mUserId = intent.getStringExtra("userId");
             mToken = intent.getStringExtra("token");
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        StyledDialog.dismiss();
     }
 }

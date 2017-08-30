@@ -295,7 +295,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         OkHttpUtils.post().url(Api.BASE_URL + Api.ADVERTISEMENT).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(MainActivity.this, getResources().getString(R.string.server_tip));
+//                ToastUtils.showShort(MainActivity.this, getResources().getString(R.string.server_tip));
             }
 
             @Override
@@ -356,7 +356,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         OkHttpUtils.post().url(Api.BASE_URL + Api.HEADADVERTISEMENT).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(MainActivity.this, R.string.server_tip);
+//                ToastUtils.showShort(MainActivity.this, R.string.server_tip);
             }
 
             @Override
@@ -443,7 +443,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 .execute(new StringCallback() {
                              @Override
                              public void onError(Call call, Exception e, int id) {
-                                 ToastUtils.showShort(MainActivity.this, getString(R.string.server_tip));
+//                                 ToastUtils.showShort(MainActivity.this, getString(R.string.server_tip));
                              }
 
                              @Override
@@ -1466,7 +1466,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         OkHttpUtils.post().url(Api.BASE_URL + Api.SEARCHORDERING).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(MainActivity.this, getString(R.string.server_tip));
+//                ToastUtils.showShort(MainActivity.this, getString(R.string.server_tip));
             }
 
             @Override
