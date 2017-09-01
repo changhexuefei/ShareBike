@@ -192,7 +192,7 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                final Dialog mDialog = new Dialog(CaptureActivity.this,R.style.edit_AlertDialog_style);
+                final Dialog mDialog = new Dialog(CaptureActivity.this, R.style.edit_AlertDialog_style);
 
                 mDialog.setContentView(R.layout.activity_open_lock_tip_acitivity);
                 CardView imageView = (CardView) mDialog.findViewById(R.id.tipsArea);
@@ -212,8 +212,6 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
                         mDialog.dismiss();
                     }
                 });
-//
-//
 //                Intent openLock = new Intent(CaptureActivity.this, OpenLockTipAcitivity.class);
 //                startActivity(openLock);
             }
