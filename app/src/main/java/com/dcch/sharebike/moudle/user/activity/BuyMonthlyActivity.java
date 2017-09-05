@@ -189,13 +189,20 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
 
 
             case R.id.month_weixinArea:
-                mMonthWeixinArea.setChecked(true);
-                mMonthAliArea.setChecked(false);
+                if (mMonthWeixinArea.isChecked()) {
+                    mMonthWeixinArea.setChecked(true);
+                    mMonthAliArea.setChecked(false);
+                    mMonthBalanceArea.setChecked(false);
+                }
+
                 break;
 
             case R.id.month_aliArea:
-                mMonthAliArea.setChecked(true);
-                mMonthWeixinArea.setChecked(false);
+                if (mMonthAliArea.isChecked()) {
+                    mMonthAliArea.setChecked(true);
+                    mMonthWeixinArea.setChecked(false);
+                    mMonthBalanceArea.setChecked(false);
+                }
                 break;
             case R.id.oneMonth:
                 mOneMonth.setSelected(true);
