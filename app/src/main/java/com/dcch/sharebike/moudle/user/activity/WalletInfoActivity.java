@@ -27,7 +27,6 @@ import com.dcch.sharebike.base.BaseActivity;
 import com.dcch.sharebike.http.Api;
 import com.dcch.sharebike.moudle.login.activity.IdentityAuthenticationActivity;
 import com.dcch.sharebike.moudle.login.activity.LoginActivity;
-import com.dcch.sharebike.moudle.login.activity.PersonalCenterActivity;
 import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.utils.ClickUtils;
 import com.dcch.sharebike.utils.JsonUtils;
@@ -130,7 +129,7 @@ public class WalletInfoActivity extends BaseActivity {
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                startActivity(new Intent(WalletInfoActivity.this, PersonalCenterActivity.class));
+//                startActivity(new Intent(WalletInfoActivity.this, PersonalCenterActivity.class));
                 finish();
                 break;
             case R.id.transactionDetail:

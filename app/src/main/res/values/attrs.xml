@@ -64,5 +64,10 @@
 
     </declare-styleable>
 
+    <declare-styleable name="PaymentView">
+        <attr name="text" format="string"/>
+        <attr name="src" format="reference"/>
+
+    </declare-styleable>
 
 </resources>

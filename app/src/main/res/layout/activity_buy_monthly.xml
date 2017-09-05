@@ -104,47 +104,92 @@
                     android:layout_height="wrap_content"
                     android:text="@string/payStyle"
                     android:textSize="14sp"/>
-
-                <RelativeLayout
+                <com.dcch.sharebike.view.PaymentView
                     android:id="@+id/month_weixinArea"
-                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
+                    app:text="@string/weixin"
+                    app:src="@drawable/weixin_ic"/>
 
-                    <TextView
-                        android:id="@+id/month_weixin"
-                        style="@style/rb_pay_type"
-                        android:drawableLeft="@drawable/weixin_ic"
-                        android:text="@string/weixin"/>
+                <!--<RelativeLayout-->
+                    <!--android:id="@+id/month_weixinArea"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="10dp">-->
 
-                    <CheckBox
-                        android:id="@+id/month_weixin_checkbox"
-                        style="@style/checkbox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                </RelativeLayout>
+                    <!--<TextView-->
+                        <!--android:id="@+id/month_weixin"-->
+                        <!--style="@style/rb_pay_type"-->
+                        <!--android:drawableLeft="@drawable/weixin_ic"-->
+                        <!--android:text="@string/weixin"/>-->
+
+                    <!--<CheckBox-->
+                        <!--android:id="@+id/month_weixin_checkbox"-->
+                        <!--style="@style/checkbox"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"/>-->
+                <!--</RelativeLayout>-->
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:background="@color/lineColor"/>
 
-                <RelativeLayout
+                <com.dcch.sharebike.view.PaymentView
                     android:id="@+id/month_aliArea"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:src="@drawable/alipay_ic"
+                    app:text="@string/zhifubao"/>
+
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="0.5dp"
+                    android:background="@color/lineColor"/>
 
-                    <TextView
-                        style="@style/rb_pay_type"
-                        android:drawableLeft="@drawable/alipay_ic"
-                        android:text="@string/zhifubao"/>
 
-                    <CheckBox
-                        android:id="@+id/month_ali_checkbox"
-                        style="@style/checkbox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                </RelativeLayout>
+                <!--<RelativeLayout-->
+                <!--android:id="@+id/month_aliArea"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+
+                <!--<TextView-->
+                <!--style="@style/rb_pay_type"-->
+                <!--android:drawableLeft="@drawable/alipay_ic"-->
+                <!--android:text="@string/zhifubao"/>-->
+
+                <!--<CheckBox-->
+                <!--android:id="@+id/month_ali_checkbox"-->
+                <!--style="@style/checkbox"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"/>-->
+                <!--</RelativeLayout>-->
+
+                <com.dcch.sharebike.view.PaymentView
+                    android:id="@+id/month_balance_Area"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:src="@drawable/balance"
+                    app:text="余额支付">
+
+                </com.dcch.sharebike.view.PaymentView>
+                <!--<RelativeLayout-->
+                <!--android:id="@+id/month_balanceArea"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+
+                <!--<TextView-->
+                <!--style="@style/rb_pay_type"-->
+                <!--android:drawableLeft="@drawable/balance"-->
+                <!--android:text="@string/balance_paid"/>-->
+
+                <!--<CheckBox-->
+                <!--android:id="@+id/month_balance_checkbox"-->
+                <!--style="@style/checkbox"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"/>-->
+                <!--</RelativeLayout>-->
 
             </LinearLayout>
 

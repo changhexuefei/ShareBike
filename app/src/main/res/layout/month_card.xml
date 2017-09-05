@@ -23,7 +23,7 @@
         android:layout_marginTop="8dp"
         android:duplicateParentState="true"
         android:textColor="@color/selector_text_color"/>
-
+    <!--android:visibility="gone"-->
     <TextView
         android:id="@+id/original_price_one"
         android:layout_width="wrap_content"
@@ -32,16 +32,13 @@
         android:layout_marginLeft="8dp"
         android:layout_toRightOf="@+id/select_one"
         android:textSize="12sp"/>
-
+    <!--android:visibility="gone"-->
     <TextView
-
         android:id="@+id/discount_one"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/select_one"
-
         android:layout_alignParentRight="true"
-
         android:background="@color/colorTitle"
         android:paddingBottom="4dp"
         android:paddingLeft="8dp"

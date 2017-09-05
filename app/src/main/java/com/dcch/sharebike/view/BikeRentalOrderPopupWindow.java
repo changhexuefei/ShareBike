@@ -24,6 +24,7 @@ public class BikeRentalOrderPopupWindow extends PopupWindow {
     public TextView costCycling;
     private View mBikeRentalOrderView;
     private TextView closeLock;
+    public TextView mCardMonthShow;
 
     public BikeRentalOrderPopupWindow(Context context, BikeRentalOrderInfo bikeRentalOrderInfo, View.OnClickListener itemOnClick) {
         super(context);
@@ -42,6 +43,7 @@ public class BikeRentalOrderPopupWindow extends PopupWindow {
         bikeNo = (TextView) mBikeRentalOrderView.findViewById(R.id.bike_number);
         costCycling = (TextView) mBikeRentalOrderView.findViewById(R.id.cost_cycling);
         closeLock = (TextView) mBikeRentalOrderView.findViewById(R.id.close_lock);
+        mCardMonthShow = (TextView) mBikeRentalOrderView.findViewById(R.id.cardMonthShow);
 //        // 设置按钮监听
         closeLock.setOnClickListener(itemOnClick);
 //          为控件赋值

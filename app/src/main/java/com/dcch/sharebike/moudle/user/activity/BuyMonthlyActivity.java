@@ -10,8 +10,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +35,7 @@ import com.dcch.sharebike.utils.NetUtils;
 import com.dcch.sharebike.utils.SPUtils;
 import com.dcch.sharebike.utils.ToastUtils;
 import com.dcch.sharebike.view.MonthCardView;
+import com.dcch.sharebike.view.PaymentView;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.gson.Gson;
 import com.hss01248.dialog.StyledDialog;
@@ -67,16 +66,16 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
     Toolbar mToolbar;
     @BindView(R.id.buy_month_card)
     Button mBuyMonthCard;
-    @BindView(R.id.month_weixin)
-    TextView mMonthWeixin;
-    @BindView(R.id.month_weixin_checkbox)
-    CheckBox mMonthWeixinCheckbox;
-    @BindView(R.id.month_weixinArea)
-    RelativeLayout mMonthWeixinArea;
-    @BindView(R.id.month_ali_checkbox)
-    CheckBox mMonthAliCheckbox;
-    @BindView(R.id.month_aliArea)
-    RelativeLayout mMonthAliArea;
+    //    @BindView(R.id.month_weixin)
+//    TextView mMonthWeixin;
+//    @BindView(R.id.month_weixin_checkbox)
+//    CheckBox mMonthWeixinCheckbox;
+//    @BindView(R.id.month_weixinArea)
+//    RelativeLayout mMonthWeixinArea;
+//    @BindView(R.id.month_ali_checkbox)
+//    CheckBox mMonthAliCheckbox;
+//    @BindView(R.id.month_aliArea)
+//    RelativeLayout mMonthAliArea;
     @BindView(R.id.month_scrollView)
     ScrollView mMonthScrollView;
 
@@ -90,6 +89,12 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
     MonthCardView mSixMonth;
     @BindView(R.id.twelveMonth)
     MonthCardView mTwelveMonth;
+    @BindView(R.id.month_weixinArea)
+    PaymentView mMonthWeixinArea;
+    @BindView(R.id.month_aliArea)
+    PaymentView mMonthAliArea;
+    @BindView(R.id.month_balance_Area)
+    PaymentView mMonthBalanceArea;
     private String payNumber;
     private String orderbody = "购买月卡";
     private String subject = "月卡费用";
@@ -123,6 +128,9 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void initListener() {
         super.initListener();
+        mMonthWeixinArea.setOnClickListener(this);
+        mMonthAliArea.setOnClickListener(this);
+        mMonthBalanceArea.setOnClickListener(this);
     }
 
     @OnClick({R.id.buy_month_card, R.id.month_weixinArea, R.id.month_aliArea,
@@ -143,9 +151,9 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                         } else if (mCashStatus == 0 && mStatus == 1) {
                             startActivity(new Intent(BuyMonthlyActivity.this, RechargeDepositActivity.class));
                         } else {
-                            mTradeDialog = StyledDialog.buildLoading(BuyMonthlyActivity.this, "交易中...", true, false).show();
+                            mTradeDialog = StyledDialog.buildLoading(BuyMonthlyActivity.this, "加载中...", true, false).show();
                             //这里要分两种情况，调取微信和支付宝的支付方式
-                            if (mMonthAliCheckbox.isChecked()) {
+                            if (mMonthAliArea.isChecked()) {
                                 //选择支付宝，调取支付宝的支付方法
                                 AliPay aliPay = new AliPay(this);
                                 String outTradeNo = aliPay.getOutTradeNo();
@@ -156,7 +164,7 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                                     StyledDialog.dismissLoading();
                                     ToastUtils.showShort(BuyMonthlyActivity.this, getString(R.string.server_tip));
                                 }
-                            } else if (mMonthWeixinCheckbox.isChecked()) {
+                            } else if (mMonthWeixinArea.isChecked()) {
                                 //调取微信的支付方式
                                 WeixinPay weixinPay = new WeixinPay(this);
                                 String ipAddress;
@@ -181,13 +189,13 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
 
 
             case R.id.month_weixinArea:
-                mMonthWeixinCheckbox.setChecked(true);
-                mMonthAliCheckbox.setChecked(false);
+                mMonthWeixinArea.setChecked(true);
+                mMonthAliArea.setChecked(false);
                 break;
 
             case R.id.month_aliArea:
-                mMonthAliCheckbox.setChecked(true);
-                mMonthWeixinCheckbox.setChecked(false);
+                mMonthAliArea.setChecked(true);
+                mMonthWeixinArea.setChecked(false);
                 break;
             case R.id.oneMonth:
                 mOneMonth.setSelected(true);
@@ -334,7 +342,7 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                 mUserId = intent.getStringExtra("userId");
                 mToken = intent.getStringExtra("token");
             }
-            mMonthWeixinCheckbox.setChecked(true);
+            mMonthWeixinArea.setChecked(true);
         }
     }
 
@@ -374,8 +382,8 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                 mOneMonth.setSelected(true);
                 mOneMonth.setLeftText(String.valueOf(cardHolder.get(0).getCardprice()) + "元");
                 mOneMonth.setBlewText(String.valueOf(cardHolder.get(0).getCardType()));
-                mOneMonth.setMiddleText(String.valueOf(cardHolder.get(0).getCardprice()) + "元");
-                mOneMonth.setRightText(String.valueOf(cardHolder.get(0).getCardprice()) + "折");
+                mOneMonth.setMiddleText(String.valueOf(cardHolder.get(0).getDiscountbefore()) + "元");
+                mOneMonth.setRightText(String.valueOf(cardHolder.get(0).getDiscount()) + "折");
                 payNumber = mOneMonth.getLeftText().trim().substring(0,
                         mOneMonth.getLeftText().trim().length() - 1);
                 payMode = mOneMonth.getBlewText().trim();
@@ -386,12 +394,12 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                 mOneMonth.setSelected(true);
                 mOneMonth.setLeftText(String.valueOf(cardHolder.get(0).getCardprice()) + "元");
                 mOneMonth.setBlewText(String.valueOf(cardHolder.get(0).getCardType()));
-                mOneMonth.setMiddleText(String.valueOf(cardHolder.get(0).getCardprice()) + "元");
-                mOneMonth.setRightText(String.valueOf(cardHolder.get(0).getCardprice()) + "折");
+                mOneMonth.setMiddleText(String.valueOf(cardHolder.get(0).getDiscountbefore()) + "元");
+                mOneMonth.setRightText(String.valueOf(cardHolder.get(0).getDiscount()) + "折");
                 mThereMonth.setLeftText(String.valueOf(cardHolder.get(1).getCardprice()) + "元");
                 mThereMonth.setBlewText(String.valueOf(cardHolder.get(1).getCardType()));
-                mThereMonth.setMiddleText(String.valueOf(cardHolder.get(1).getCardprice()) + "元");
-                mThereMonth.setRightText(String.valueOf(cardHolder.get(1).getCardprice()) + "折");
+                mThereMonth.setMiddleText(String.valueOf(cardHolder.get(1).getDiscountbefore()) + "元");
+                mThereMonth.setRightText(String.valueOf(cardHolder.get(1).getDiscount()) + "折");
                 payNumber = mOneMonth.getLeftText().trim().substring(0,
                         mOneMonth.getLeftText().trim().length() - 1);
                 payMode = mOneMonth.getBlewText().trim();
@@ -403,16 +411,16 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                 mOneMonth.setSelected(true);
                 mOneMonth.setLeftText(String.valueOf(cardHolder.get(0).getCardprice()) + "元");
                 mOneMonth.setBlewText(String.valueOf(cardHolder.get(0).getCardType()));
-                mOneMonth.setMiddleText(String.valueOf(cardHolder.get(0).getCardprice()) + "元");
-                mOneMonth.setRightText(String.valueOf(cardHolder.get(0).getCardprice()) + "折");
+                mOneMonth.setMiddleText(String.valueOf(cardHolder.get(0).getDiscountbefore()) + "元");
+                mOneMonth.setRightText(String.valueOf(cardHolder.get(0).getDiscount()) + "折");
                 mThereMonth.setLeftText(String.valueOf(cardHolder.get(1).getCardprice()) + "元");
                 mThereMonth.setBlewText(String.valueOf(cardHolder.get(1).getCardType()));
-                mThereMonth.setMiddleText(String.valueOf(cardHolder.get(1).getCardprice()) + "元");
-                mThereMonth.setRightText(String.valueOf(cardHolder.get(1).getCardprice()) + "折");
+                mThereMonth.setMiddleText(String.valueOf(cardHolder.get(1).getDiscountbefore()) + "元");
+                mThereMonth.setRightText(String.valueOf(cardHolder.get(1).getDiscount()) + "折");
                 mSixMonth.setLeftText(String.valueOf(cardHolder.get(2).getCardprice()) + "元");
                 mSixMonth.setBlewText(String.valueOf(cardHolder.get(2).getCardType()));
-                mSixMonth.setMiddleText(String.valueOf(cardHolder.get(2).getCardprice()) + "元");
-                mSixMonth.setRightText(String.valueOf(cardHolder.get(2).getCardprice()) + "折");
+                mSixMonth.setMiddleText(String.valueOf(cardHolder.get(2).getDiscountbefore()) + "元");
+                mSixMonth.setRightText(String.valueOf(cardHolder.get(2).getDiscount()) + "折");
                 String leftText = mOneMonth.getLeftText();
                 payNumber = mOneMonth.getLeftText().trim().substring(0,
                         mOneMonth.getLeftText().trim().length() - 1);
@@ -426,20 +434,20 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                 mOneMonth.setSelected(true);
                 mOneMonth.setLeftText(String.valueOf(cardHolder.get(0).getCardprice()) + "元");
                 mOneMonth.setBlewText(String.valueOf(cardHolder.get(0).getCardType()));
-                mOneMonth.setMiddleText(String.valueOf(cardHolder.get(0).getCardprice()) + "元");
-                mOneMonth.setRightText(String.valueOf(cardHolder.get(0).getCardprice()) + "折");
+                mOneMonth.setMiddleText(String.valueOf(cardHolder.get(0).getDiscountbefore()) + "元");
+                mOneMonth.setRightText(String.valueOf(cardHolder.get(0).getDiscount()) + "折");
                 mThereMonth.setLeftText(String.valueOf(cardHolder.get(1).getCardprice()) + "元");
                 mThereMonth.setBlewText(String.valueOf(cardHolder.get(1).getCardType()));
-                mThereMonth.setMiddleText(String.valueOf(cardHolder.get(1).getCardprice()) + "元");
-                mThereMonth.setRightText(String.valueOf(cardHolder.get(1).getCardprice()) + "折");
+                mThereMonth.setMiddleText(String.valueOf(cardHolder.get(1).getDiscountbefore()) + "元");
+                mThereMonth.setRightText(String.valueOf(cardHolder.get(1).getDiscount()) + "折");
                 mSixMonth.setLeftText(String.valueOf(cardHolder.get(2).getCardprice()) + "元");
                 mSixMonth.setBlewText(String.valueOf(cardHolder.get(2).getCardType()));
-                mSixMonth.setMiddleText(String.valueOf(cardHolder.get(2).getCardprice()) + "元");
-                mSixMonth.setRightText(String.valueOf(cardHolder.get(2).getCardprice()) + "折");
+                mSixMonth.setMiddleText(String.valueOf(cardHolder.get(2).getDiscountbefore()) + "元");
+                mSixMonth.setRightText(String.valueOf(cardHolder.get(2).getDiscount()) + "折");
                 mTwelveMonth.setLeftText(String.valueOf(cardHolder.get(3).getCardprice()) + "元");
                 mTwelveMonth.setBlewText(String.valueOf(cardHolder.get(3).getCardType()));
-                mTwelveMonth.setMiddleText(String.valueOf(cardHolder.get(3).getCardprice()) + "元");
-                mTwelveMonth.setRightText(String.valueOf(cardHolder.get(3).getCardprice()) + "折");
+                mTwelveMonth.setMiddleText(String.valueOf(cardHolder.get(3).getDiscountbefore()) + "元");
+                mTwelveMonth.setRightText(String.valueOf(cardHolder.get(3).getDiscount()) + "折");
                 payNumber = mOneMonth.getLeftText().trim().substring(0,
                         mOneMonth.getLeftText().trim().length() - 1);
                 payMode = mOneMonth.getBlewText().trim();

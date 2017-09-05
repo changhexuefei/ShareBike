@@ -118,10 +118,10 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:clickable="true"
             android:id="@+id/rbf_weixinArea"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:clickable="true">
 
             <TextView
                 android:id="@+id/weixin"
@@ -133,7 +133,9 @@
                 android:id="@+id/rbf_weixin_checkbox"
                 style="@style/checkbox"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:focusable="false"/>
         </RelativeLayout>
 
         <View
@@ -142,10 +144,10 @@
             android:background="@color/lineColor"/>
 
         <RelativeLayout
-            android:clickable="true"
             android:id="@+id/rbf_aliArea"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:clickable="true">
 
             <TextView
                 style="@style/rb_pay_type"
@@ -156,7 +158,9 @@
                 android:id="@+id/rbf_ali_checkbox"
                 style="@style/checkbox"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:focusable="false"/>
         </RelativeLayout>
 
     </LinearLayout>

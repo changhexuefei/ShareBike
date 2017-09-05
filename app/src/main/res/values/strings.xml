@@ -5,6 +5,7 @@
     <string name="tip1">押金可原路返回</string>
     <string name="weixin">微信</string>
     <string name="zhifubao">支付宝</string>
+    <string name="balance_paid">余额支付</string>
     <string name="tip">押金（98元）</string>
     <string name="toCharge">充押金</string>
     <string name="goToDeposit">去充值</string>
@@ -342,4 +343,5 @@
     <string name="month_card_rules_four">退押金后无法继续骑车，已购买的月卡有效期不变；重新交押金后，相应月卡权益立即恢复</string>
     <string name="buy_month_card">购买</string>
     <string name="month_card">购买月卡</string>
+    <string name="identify">月卡</string>
 </resources>

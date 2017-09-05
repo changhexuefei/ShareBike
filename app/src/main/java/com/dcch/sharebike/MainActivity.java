@@ -97,6 +97,7 @@ import com.dcch.sharebike.moudle.user.activity.UnlockBillPageActivity;
 import com.dcch.sharebike.moudle.user.activity.UnlockProgressActivity;
 import com.dcch.sharebike.moudle.user.activity.UserAgreementActivity;
 import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
+import com.dcch.sharebike.moudle.user.activity.WalletInfoActivity;
 import com.dcch.sharebike.moudle.user.bean.ImageInfo;
 import com.dcch.sharebike.netty.NettyClient;
 import com.dcch.sharebike.overlayutil.OverlayManager;
@@ -384,7 +385,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         OkHttpUtils.get().url(Api.BASE_URL + Api.CHANGEBICYCLEIMAGE).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(MainActivity.this,"1");
+                ToastUtils.showShort(MainActivity.this, "1");
                 ToastUtils.showShort(MainActivity.this, R.string.server_tip);
             }
 
@@ -621,7 +622,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         option.setOpenGps(true);// 打开gps
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);// 设置定位模式
         option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(60000);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
+        option.setScanSpan(6000);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
         option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
         option.setIsNeedLocationDescribe(true);//可选，设置是否需要地址描述
         option.setNeedDeviceDirect(false);//可选，设置是否需要设备方向结果
@@ -732,7 +733,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                LogUtils.d("为什么",uID+"\n"+mToken);
+                LogUtils.d("为什么", uID + "\n" + mToken);
                 if (SPUtils.isLogin()) {
                     goToMessageList(uID, mToken);
                 } else {
@@ -742,6 +743,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             case R.id.headAdvertisement:
                 if (ClickUtils.isFastClick()) {
                     return;
+                }
+                if(SPUtils.isLogin()){
+                    startActivity(new Intent(MainActivity.this, WalletInfoActivity.class));
                 }
                 if (mHeadactivityUrl != null && !mHeadactivityUrl.equals("") && mTitle != null && !mTitle.equals("")) {
                     Intent webActivity = new Intent(MainActivity.this, AdvertisementActivity.class);
@@ -1974,11 +1978,18 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             if (ridingInfo != null) {
                 double tripDist = MapUtil.changeDouble(ridingInfo.getTripDist());
                 double calorie = MapUtil.changeDouble(ridingInfo.getCalorie());
+                int cardFlag = ridingInfo.getCardFlag();
+                LogUtils.d("月卡", cardFlag + "");
                 String dist = String.valueOf(tripDist * 1000);
                 int i = stringToInt(dist);
                 String s = MapUtil.distanceFormatter(i);
                 if (orderPopupWindow != null) {
                     mMap.clear();
+                    if (cardFlag == 1) {
+                        orderPopupWindow.mCardMonthShow.setVisibility(View.VISIBLE);
+                    } else {
+                        orderPopupWindow.mCardMonthShow.setVisibility(View.GONE);
+                    }
                     orderPopupWindow.rideDistance.setText(s);
                     orderPopupWindow.rideTime.setText(String.valueOf(ridingInfo.getTripTime()) + "分钟");
                     orderPopupWindow.consumeEnergy.setText(MapUtil.changeOneDouble(calorie) + "大卡");

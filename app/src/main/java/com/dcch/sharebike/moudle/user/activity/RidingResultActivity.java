@@ -27,8 +27,6 @@ import com.hss01248.dialog.interfaces.MyDialogListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 import org.simple.eventbus.ThreadMode;
@@ -65,6 +63,8 @@ public class RidingResultActivity extends BaseActivity {
     TextView mCallCenter;
     @BindView(R.id.red_packet)
     ImageView mRedPacket;
+    @BindView(R.id.cyclingTimes)
+    TextView mCyclingTimes;
 
     private String mImei;
     private String mUserId;
@@ -107,52 +107,60 @@ public class RidingResultActivity extends BaseActivity {
             public void onResponse(String response, int id) {
                 LogUtils.d("骑行结果", response);
                 StyledDialog.dismissLoading();
-                try {
-                    JSONObject object = new JSONObject(response);
-                    String resultStatus = object.optString("resultStatus");
-                    String resultGift = object.optString("resultGift");
+                Gson gson = new Gson();
+                RideResultInfo rideResultInfo = gson.fromJson(response, RideResultInfo.class);
+                String resultStatus = rideResultInfo.getResultStatus();
+                String resultGift = rideResultInfo.getResultGift();
+                RideResultInfo.CarRentalInfoBean carRentalInfo = rideResultInfo.getCarRentalInfo();
 
-                    switch (resultStatus) {
-                        case "0":
-                            ToastUtils.showShort(RidingResultActivity.this, getString(R.string.server_tip));
-                            break;
-                        case "1":
-                            switch (resultGift) {
-                                case "1":
-                                    showResult(response);
-                                    mMerchantinfo = object.optString("merchantinfo");
-                                    mMerchantimageurl = object.optString("merchantimageurl");
-                                    mMerchant = object.optString("merchantid");
-                                    mRedPacket.setVisibility(View.VISIBLE);
-                                    break;
-                                case "0":
-                                    showResult(response);
-                                    mRedPacket.setVisibility(View.GONE);
-                                    break;
-                            }
-                            break;
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                switch (resultStatus) {
+                    case "0":
+                        ToastUtils.showShort(RidingResultActivity.this, getString(R.string.server_tip));
+                        RidingResultActivity.this.finish();
+                        break;
+                    case "1":
+                        switch (resultGift) {
+                            case "1":
+                                showResult(carRentalInfo);
+                                mMerchantinfo = rideResultInfo.getMerchantinfo();
+                                mMerchantimageurl = rideResultInfo.getMerchantimageurl();
+                                mMerchant = rideResultInfo.getMerchantid();
+                                mRedPacket.setVisibility(View.VISIBLE);
+                                break;
+                            case "0":
+                                showResult(carRentalInfo);
+                                mRedPacket.setVisibility(View.GONE);
+                                break;
+                        }
+                        break;
                 }
             }
         });
     }
 
-    private void showResult(String response) {
-        Gson gson = new Gson();
-        RideResultInfo rideResultInfo = gson.fromJson(response, RideResultInfo.class);
-        mMoneyResultShow.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getFinalCast()));
-        mRideCost.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getRideCost()) + "元");
-        mRideTime.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getTripTime()) + "分钟");
-        mBalance.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getFinalCast()) + "元");
-        if (rideResultInfo.getCarRentalInfo().getCouponno().equals("nocoupon")) {
+    private void showResult(RideResultInfo.CarRentalInfoBean carRentalInfo) {
+        mMoneyResultShow.setText(String.valueOf(carRentalInfo.getFinalCast()));
+        mRideCost.setText(String.valueOf(carRentalInfo.getRideCost()) + "元");
+        mRideTime.setText(String.valueOf(carRentalInfo.getTripTime()) + "分钟");
+        mBalance.setText(String.valueOf(carRentalInfo.getFinalCast()) + "元");
+        if (carRentalInfo.getCouponno().equals("nocoupon")) {
             mCouponCost.setText(R.string.no_coupons);
         } else {
             mCouponCost.setText(R.string.coupons);
         }
-        mCalorimeter.setText(String.valueOf(MapUtil.changeDouble(rideResultInfo.getCarRentalInfo().getCalorie())) + "大卡");
-        mRideDis.setText(String.valueOf(rideResultInfo.getCarRentalInfo().getTripDist()) + "千米");
+        if (carRentalInfo.getCardFlag() == 1) {
+            mCyclingTimes.setVisibility(View.VISIBLE);
+            if (carRentalInfo.getRidetimes() > 0) {
+                mCyclingTimes.setText("今天您的免费骑行次数还剩"+carRentalInfo.getRidetimes()+"次");
+            } else if (carRentalInfo.getRidetimes() == 0) {
+                mCyclingTimes.setText("今天您的免费骑行次数已用完！");
+            }
+
+        } else {
+            mCyclingTimes.setVisibility(View.GONE);
+        }
+        mCalorimeter.setText(String.valueOf(MapUtil.changeDouble(carRentalInfo.getCalorie())) + "大卡");
+        mRideDis.setText(String.valueOf(carRentalInfo.getTripDist()) + "千米");
     }
 
     @Override
@@ -174,7 +182,7 @@ public class RidingResultActivity extends BaseActivity {
         Intent intent = getIntent();
         mImei = intent.getStringExtra("IMEI");
         mUserId = intent.getStringExtra("userId");
-//        mImei = "091609998";
+//        mImei = "091609999";
 //        mUserId = "214";
         if (NetUtils.isConnected(App.getContext())) {
             if (mImei != null && !mImei.equals("") && mUserId != null && !mUserId.equals("")) {

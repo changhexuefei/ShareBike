@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:gravity="center_vertical">
+    <!--android:src="@drawable/balance"-->
+    <ImageView
+        android:id="@+id/pay_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"/>
+    <!--android:text="@string/balance_paid"-->
+
+    <TextView
+        android:id="@+id/pay_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/pay_image"
+        android:paddingLeft="10dp"
+
+        android:textColor="#333333"
+        android:textSize="16sp"/>
+
+    <CheckBox
+        android:id="@+id/select_checkbox"
+        style="@style/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"/>
+
+
+</RelativeLayout>
