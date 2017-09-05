@@ -61,13 +61,7 @@ public class PaymentView extends LinearLayout {
         mPayInfo = (TextView) view.findViewById(R.id.pay_info);
         mPaySelect = (CheckBox) view.findViewById(R.id.select_checkbox);
         mPayImage = (ImageView) view.findViewById(R.id.pay_image);
-        view.setFocusable(false);
-        view.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPaySelect.setChecked(true);
-            }
-        });
+
     }
 
     public boolean isChecked() {
