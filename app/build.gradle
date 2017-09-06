@@ -104,12 +104,6 @@ dependencies {
     compile files('libs/tbs_sdk_thirdapp_v3.1.0.1034_43100_sharewithdownload_obfs_20170301_182143.jar')
     compile files('libs/AutoUpdate_SDK.jar')
     compile files('libs/netty-all-4.1.6.Final.jar')
-    compile files('libs/baidumapapi_base_v4_1_1.jar')
-    compile files('libs/baidumapapi_cloud_v4_1_1.jar')
-    compile files('libs/baidumapapi_map_v4_1_1.jar')
-    compile files('libs/baidumapapi_radar_v4_1_1.jar')
-    compile files('libs/baidumapapi_search_v4_1_1.jar')
-    compile files('libs/baidumapapi_util_v4_1_1.jar')
     compile files('libs/360update-7.0.3.jar')
     compile files('libs/jcore-android-1.1.6.jar')
     compile files('libs/jpush-android-3.0.8.jar')
@@ -151,6 +145,13 @@ dependencies {
     releaseCompile 'com.github.moduth:blockcanary-no-op:1.2.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     compile 'com.google.android:flexbox:0.3.0'
+    compile files('libs/baidumapapi_base_v4_1_1.jar')
+    compile files('libs/baidumapapi_cloud_v4_1_1.jar')
+    compile files('libs/baidumapapi_map_v4_1_1.jar')
+    compile files('libs/baidumapapi_radar_v4_1_1.jar')
+    compile files('libs/baidumapapi_search_v4_1_1.jar')
+    compile files('libs/baidumapapi_util_v4_1_1.jar')
+
 }
 
 
