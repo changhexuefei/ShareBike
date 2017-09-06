@@ -97,6 +97,7 @@ public class WalletInfoActivity extends BaseActivity {
     private Map<String, String> mMap;
     private int mStatus;
     private Dialog mDialog;
+    private double mAggregateAmount;
 
 
     @Override
@@ -178,6 +179,7 @@ public class WalletInfoActivity extends BaseActivity {
                 Intent monthCardIntent = new Intent(WalletInfoActivity.this, BuyMonthlyActivity.class);
                 monthCardIntent.putExtra("userId", uID);
                 monthCardIntent.putExtra("token", mToken);
+                monthCardIntent.putExtra("mAggregateAmount",mAggregateAmount);
                 startActivity(monthCardIntent);
                 break;
         }
@@ -406,7 +408,7 @@ public class WalletInfoActivity extends BaseActivity {
                         mRefund_fee = mTotal_fee;
                         mCashStatus = mInfo.getCashStatus();
                         double merchanBillAmount = mInfo.getMerchanBillAmount();
-                        double aggregateAmount = mInfo.getAggregateAmount();
+                        mAggregateAmount = mInfo.getAggregateAmount();
                         int rideDay = mInfo.getRideDay();
                         if (rideDay == 0) {
                             mMyCardVoucher.setText("购买月卡");
@@ -420,8 +422,8 @@ public class WalletInfoActivity extends BaseActivity {
                         if (String.valueOf(merchanBillAmount) != null && !String.valueOf(merchanBillAmount).equals("")) {
                             mMyRedPacketSum.setText(String.valueOf(merchanBillAmount + "元"));
                         }
-                        if (!String.valueOf(aggregateAmount).equals("") && String.valueOf(aggregateAmount) != null) {
-                            remainingSum.setText(String.valueOf(aggregateAmount));
+                        if (!String.valueOf(mAggregateAmount).equals("") && String.valueOf(mAggregateAmount) != null) {
+                            remainingSum.setText(String.valueOf(mAggregateAmount));
                         }
                         if (mCashStatus == 0) {
                             showArea.setText("押金" + String.valueOf(mInfo.getPledgeCash()) + "元");

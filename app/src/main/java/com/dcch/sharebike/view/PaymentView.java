@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -21,6 +22,7 @@ public class PaymentView extends LinearLayout {
     private TextView mPayInfo;
     private CheckBox mPaySelect;
     private ImageView mPayImage;
+    private View mView;
 
     public PaymentView(Context context) {
         super(context);
@@ -57,10 +59,11 @@ public class PaymentView extends LinearLayout {
 
 
     private void init(Context context) {
-        View view = inflate(context, R.layout.payment_mode, this);
-        mPayInfo = (TextView) view.findViewById(R.id.pay_info);
-        mPaySelect = (CheckBox) view.findViewById(R.id.select_checkbox);
-        mPayImage = (ImageView) view.findViewById(R.id.pay_image);
+        mView = inflate(context, R.layout.payment_mode, this);
+        mPayInfo = (TextView) mView.findViewById(R.id.pay_info);
+        mPaySelect = (CheckBox) mView.findViewById(R.id.select_checkbox);
+        mPayImage = (ImageView) mView.findViewById(R.id.pay_image);
+        mView.setFocusable(false);
 
     }
 
@@ -80,5 +83,29 @@ public class PaymentView extends LinearLayout {
 
     public void setPayImage(int id) {
         mPayImage.setImageResource(id);
+    }
+
+    public void setClickListener(OnClickListener clickListener){
+        mView.setOnClickListener(clickListener);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                return true;
+            case MotionEvent.ACTION_MOVE:   //表示父类需要
+                return false;
+            case MotionEvent.ACTION_UP:
+                return true;
+            default:
+                break;
+        }
+        return true;    //如果设置拦截，除了down,其他都是父类处理
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return super.onTouchEvent(event);
     }
 }

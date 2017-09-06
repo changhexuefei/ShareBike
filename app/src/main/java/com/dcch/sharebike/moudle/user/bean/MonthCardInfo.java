@@ -43,7 +43,7 @@ public class MonthCardInfo {
          */
 
         private String cardType;
-        private int cardprice;
+        private float cardprice;
         private String createTime;
         private int delflag;
         private double discount;
@@ -58,11 +58,11 @@ public class MonthCardInfo {
             this.cardType = cardType;
         }
 
-        public int getCardprice() {
+        public float getCardprice() {
             return cardprice;
         }
 
-        public void setCardprice(int cardprice) {
+        public void setCardprice(float cardprice) {
             this.cardprice = cardprice;
         }
 
