@@ -385,7 +385,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         OkHttpUtils.get().url(Api.BASE_URL + Api.CHANGEBICYCLEIMAGE).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(MainActivity.this, "1");
                 ToastUtils.showShort(MainActivity.this, R.string.server_tip);
             }
 

@@ -97,7 +97,7 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
     @BindView(R.id.balance_sum)
     TextView mBalanceSum;
 
-    //    @BindView(R.id.month_weixinArea)
+    //@BindView(R.id.month_weixinArea)
 //    PaymentView mMonthWeixinArea;
 //    @BindView(R.id.month_aliArea)
 //    PaymentView mMonthAliArea;
@@ -115,6 +115,7 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
     private int mStatus;
     private List<MonthCardInfo.CardHolderBean> mCardHolder;
     private double mMAggregateAmount;
+    private Double mADouble;
 
     @Override
     protected int getLayoutId() {
@@ -187,9 +188,14 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                                 } else {
                                     ToastUtils.showShort(BuyMonthlyActivity.this, getString(R.string.server_tip));
                                 }
-                            } else {
+                            } else if (mMonthBalanceCheckbox.isChecked()) {
+                                if (mADouble > Double.valueOf(payNumber)) {
 
 
+                                } else {
+                                    StyledDialog.dismissLoading();
+                                    ToastUtils.showShort(BuyMonthlyActivity.this, "余额不足，请选择其他的充值方式");
+                                }
                             }
                         }
                     }
@@ -351,12 +357,13 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
         }
         mCashStatus = (Integer) SPUtils.get(App.getContext(), "cashStatus", 0);
         mStatus = (Integer) SPUtils.get(App.getContext(), "status", 0);
+        LogUtils.d("看看",mCashStatus+"\n"+mStatus+"\n"+SPUtils.isLogin());
         if (SPUtils.isLogin()) {
-            if (mCashStatus == 0) {
+            if ((mCashStatus == 0 && mStatus == 0 )|| (mCashStatus == 0 && mStatus == 1)) {
                 mBuyMonthCard.setText("交押金后，方可购买月卡");
             } else if (mCashStatus == 1 && mStatus == 0) {
                 mBuyMonthCard.setText("实名验证后，方可购买月卡");
-            } else {
+            } else if (mCashStatus == 1 && mStatus == 1) {
                 mBuyMonthCard.setText("购买");
             }
             Intent intent = getIntent();
@@ -364,8 +371,8 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                 mUserId = intent.getStringExtra("userId");
                 mToken = intent.getStringExtra("token");
                 mMAggregateAmount = intent.getDoubleExtra("mAggregateAmount", 0);
-                Double aDouble = mMAggregateAmount;
-                if (aDouble != null && !aDouble.equals("")) {
+                mADouble = mMAggregateAmount;
+                if (mADouble != null && !mADouble.equals("")) {
                     mBalanceSum.setText(String.valueOf("(" + mMAggregateAmount + ")"));
                 }
             }
@@ -413,7 +420,7 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                 mOneMonth.setRightText(String.valueOf(cardHolder.get(0).getDiscount()) + "折");
                 payNumber = mOneMonth.getLeftText().trim().substring(0,
                         mOneMonth.getLeftText().trim().length() - 1);
-                payMode = mOneMonth.getBlewText().trim().substring(0, mOneMonth.getBlewText().trim().length()- 1);
+                payMode = mOneMonth.getBlewText().trim().substring(0, mOneMonth.getBlewText().trim().length() - 1);
                 break;
             case 2:
                 mOneMonth.setVisibility(View.VISIBLE);
@@ -451,7 +458,7 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                 String leftText = mOneMonth.getLeftText();
                 payNumber = mOneMonth.getLeftText().trim().substring(0,
                         mOneMonth.getLeftText().trim().length() - 1);
-                payMode = mOneMonth.getBlewText().trim().substring(0, mOneMonth.getBlewText().trim().length()- 1);
+                payMode = mOneMonth.getBlewText().trim().substring(0, mOneMonth.getBlewText().trim().length() - 1);
                 break;
             case 4:
                 mOneMonth.setVisibility(View.VISIBLE);
@@ -477,7 +484,7 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                 mTwelveMonth.setRightText(String.valueOf(cardHolder.get(3).getDiscount()) + "折");
                 payNumber = mOneMonth.getLeftText().trim().substring(0,
                         mOneMonth.getLeftText().trim().length() - 1);
-                payMode = mOneMonth.getBlewText().trim().substring(0, mOneMonth.getBlewText().trim().length()- 1);
+                payMode = mOneMonth.getBlewText().trim().substring(0, mOneMonth.getBlewText().trim().length() - 1);
                 break;
         }
     }

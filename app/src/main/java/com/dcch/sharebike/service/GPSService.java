@@ -21,7 +21,6 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
-import com.dcch.sharebike.R;
 import com.dcch.sharebike.app.App;
 import com.dcch.sharebike.base.CodeEvent;
 import com.dcch.sharebike.db.DatabaseHelper;
@@ -32,7 +31,6 @@ import com.dcch.sharebike.moudle.home.bean.RoutePoint;
 import com.dcch.sharebike.utils.JsonUtils;
 import com.dcch.sharebike.utils.LogUtils;
 import com.dcch.sharebike.utils.MapUtil;
-import com.dcch.sharebike.utils.ToastUtils;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -396,7 +394,7 @@ public class GPSService extends Service {
                     @Override
                     public void onError(Call call, Exception e, int id) {
 //                        LogUtils.d("后台",e.getMessage());
-                        ToastUtils.showShort(App.getContext(), getString(R.string.server_tip));
+//                        ToastUtils.showShort(App.getContext(), getString(R.string.server_tip));
                     }
 
                     @Override
