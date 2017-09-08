@@ -19,6 +19,7 @@
         android:paddingRight="15dp"
         android:scrollbars="none"
         android:layout_below="@+id/toolbar"
+        android:layout_above="@+id/buy_month_card"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
