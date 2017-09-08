@@ -242,7 +242,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     private LatLng startLng, finishLng;
     private Dialog mDialog;
     private Dialog mChangingDialog;
-
+    private String mRemark;
 
     public MainActivity() {
     }
@@ -368,6 +368,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     Gson gson = new Gson();
                     HeadInfo headInfo = gson.fromJson(response, HeadInfo.class);
                     String headimageUrl = headInfo.getHeadAdvertisement().getHeadimageUrl();
+                    mRemark = headInfo.getHeadAdvertisement().getRemark();
                     mTitle = headInfo.getHeadAdvertisement().getTitle();
                     mHeadactivityUrl = headInfo.getHeadAdvertisement().getHeadactivityUrl();
                     Glide.with(App.getContext())
@@ -395,7 +396,8 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                     Gson gson = new Gson();
                     ImageInfo imageInfo = gson.fromJson(response, ImageInfo.class);
                     String imageURL = imageInfo.getBicycleImage().getImageUrl();
-                    OkHttpUtils.get().url(imageURL).build().execute(new FileCallBack(Environment.getExternalStorageDirectory().getAbsolutePath(),
+                    OkHttpUtils.get().url(imageURL).build().execute(new FileCallBack(Environment
+                            .getExternalStorageDirectory().getAbsolutePath(),
                             "image.png") {
                         @Override
                         public void onError(Call call, Exception e, int id) {
@@ -743,14 +745,21 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
-                if(SPUtils.isLogin()){
-                    startActivity(new Intent(MainActivity.this, WalletInfoActivity.class));
-                }
-                if (mHeadactivityUrl != null && !mHeadactivityUrl.equals("") && mTitle != null && !mTitle.equals("")) {
-                    Intent webActivity = new Intent(MainActivity.this, AdvertisementActivity.class);
-                    webActivity.putExtra("activityWebView", mHeadactivityUrl);
-                    webActivity.putExtra("title", mTitle);
-                    startActivity(webActivity);
+                if (SPUtils.isLogin()) {
+                    if (mRemark != null && !mRemark.equals("")) {
+                        if (mRemark.equals("0")) {
+                            if (mHeadactivityUrl != null && !mHeadactivityUrl.equals("")
+                                    && mTitle != null && !mTitle.equals("")) {
+                                Intent webActivity = new Intent(MainActivity.this, AdvertisementActivity.class);
+                                webActivity.putExtra("activityWebView", mHeadactivityUrl);
+                                webActivity.putExtra("title", mTitle);
+                                startActivity(webActivity);
+                            }
+
+                        } else if (mRemark.equals("1")) {
+                            startActivity(new Intent(MainActivity.this, WalletInfoActivity.class));
+                        }
+                    }
                 }
                 break;
         }

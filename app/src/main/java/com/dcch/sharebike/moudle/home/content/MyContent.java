@@ -11,8 +11,8 @@ public class MyContent {
     // **
     public static final String key = "DitekVIMDHxjOqus";
 //    public static final String key = "rg9028";
-//    public static final String HOST = "www.70bikes.cn";
-        public static final String HOST = "114.112.86.38";
+    public static final String HOST = "www.70bikes.cn";
+//        public static final String HOST = "114.112.86.38";
 //        public static final String HOST = "192.168.1.138";
 //    public static final String HOST = "101.251.246.10";
     public static final int TCP_PORT = 8899;

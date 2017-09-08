@@ -143,15 +143,18 @@ public class RidingResultActivity extends BaseActivity {
         mRideCost.setText(String.valueOf(carRentalInfo.getRideCost()) + "元");
         mRideTime.setText(String.valueOf(carRentalInfo.getTripTime()) + "分钟");
         mBalance.setText(String.valueOf(carRentalInfo.getFinalCast()) + "元");
-        if (carRentalInfo.getCouponno().equals("nocoupon")) {
-            mCouponCost.setText(R.string.no_coupons);
-        } else {
-            mCouponCost.setText(R.string.coupons);
+        if (!carRentalInfo.getCouponno().equals("") && carRentalInfo.getCouponno() != null) {
+            if (carRentalInfo.getCouponno().equals("nocoupon")) {
+                mCouponCost.setText(R.string.no_coupons);
+            } else {
+                mCouponCost.setText(R.string.coupons);
+            }
         }
+
         if (carRentalInfo.getCardFlag() == 1) {
             mCyclingTimes.setVisibility(View.VISIBLE);
             if (carRentalInfo.getRidetimes() > 0) {
-                mCyclingTimes.setText("今天您的免费骑行次数还剩"+carRentalInfo.getRidetimes()+"次");
+                mCyclingTimes.setText("今天您的免费骑行次数还有" + carRentalInfo.getRidetimes() + "次");
             } else if (carRentalInfo.getRidetimes() == 0) {
                 mCyclingTimes.setText("今天您的免费骑行次数已用完！");
             }

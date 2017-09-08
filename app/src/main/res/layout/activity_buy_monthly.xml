@@ -14,12 +14,13 @@
         android:id="@+id/month_scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/buy_month_card"
-        android:layout_below="@+id/toolbar"
         android:fillViewport="true"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:layout_below="@+id/toolbar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:layout_width="match_parent"

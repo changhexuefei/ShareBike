@@ -190,7 +190,12 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                                 }
                             } else if (mMonthBalanceCheckbox.isChecked()) {
                                 if (mADouble > Double.valueOf(payNumber)) {
-
+                                    String tradeType = "APP";
+                                    if (payNumber != null && !payNumber.equals("") && mUserId != null && !mUserId.equals("")
+                                            && payMode != null && !payMode.equals("")
+                                            ) {
+                                        balancePayWay(payNumber, mUserId, payMode, tradeType);
+                                    }
 
                                 } else {
                                     StyledDialog.dismissLoading();
@@ -262,6 +267,33 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                 payMode = mTwelveMonth.getBlewText().trim().substring(0, mTwelveMonth.getBlewText().trim().length() - 1);
                 break;
         }
+    }
+
+    private void balancePayWay(String payNumber, String userId, String payMode, String tradeType) {
+        Map<String, String> map = new HashMap<>();
+        map.put("total_price", payNumber);
+        map.put("userId", userId);
+        map.put("paymode", payMode);
+        map.put("trade_type", tradeType);
+        OkHttpUtils.post().url(Api.BASE_URL + Api.BALANCECARDPAY).params(map).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                LogUtils.d("余额支付", response);
+                if(response.equals("success")){
+                    StyledDialog.dismissLoading();
+                    BuyMonthlyActivity.this.finish();
+                    ToastUtils.showShort(BuyMonthlyActivity.this,"支付成功！");
+                }else{
+                    StyledDialog.dismissLoading();
+                    ToastUtils.showShort(BuyMonthlyActivity.this,"支付失败，请重试");
+                }
+            }
+        });
     }
 
     private void weiXinCardPayWay(String mOutTradeNo, String subject, String userId, String ipAddress, String payNumber, String payMode) {
@@ -357,9 +389,9 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
         }
         mCashStatus = (Integer) SPUtils.get(App.getContext(), "cashStatus", 0);
         mStatus = (Integer) SPUtils.get(App.getContext(), "status", 0);
-        LogUtils.d("看看",mCashStatus+"\n"+mStatus+"\n"+SPUtils.isLogin());
+        LogUtils.d("看看", mCashStatus + "\n" + mStatus + "\n" + SPUtils.isLogin());
         if (SPUtils.isLogin()) {
-            if ((mCashStatus == 0 && mStatus == 0 )|| (mCashStatus == 0 && mStatus == 1)) {
+            if ((mCashStatus == 0 && mStatus == 0) || (mCashStatus == 0 && mStatus == 1)) {
                 mBuyMonthCard.setText("交押金后，方可购买月卡");
             } else if (mCashStatus == 1 && mStatus == 0) {
                 mBuyMonthCard.setText("实名验证后，方可购买月卡");

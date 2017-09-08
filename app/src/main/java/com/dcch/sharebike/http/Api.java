@@ -5,10 +5,10 @@ public class Api {
     //public static final String BASE_URL = "http://192.168.1.159:8080/MavenSSM/mobile/";
 //    public static final String BASE_URL = "http://192.168.1.138:8080/MavenSSM/mobile/";
     //public static final String BASE_URL = "http://192.168.1.131:8080/MavenSSM/mobile/";
-    public static final String BASE_URL = "http://114.112.86.38/MavenSSM/mobile/";
+//    public static final String BASE_URL = "http://114.112.86.38/MavenSSM/mobile/";
 //    public static final String BASE_URL = "http://101.251.245.158/MavenSSM/mobile/";
 //    public static final String BASE_URL = "http://101.251.246.10/MavenSSM/mobile/";
-//    public static final String BASE_URL = "http://www.70bikes.cn/MavenSSM/mobile/";
+    public static final String BASE_URL = "http://www.70bikes.cn/MavenSSM/mobile/";
     //获取验证码
     public static final String REGISTER = "register.do?";
     //注册登录
@@ -42,6 +42,8 @@ public class Api {
     public static final String ALICARDPAY = "aliCardpay.do?";
     //月卡微信
     public static final String WEIXINCARDPAY = "weixinCardpay.do?";
+    //余额支付
+    public static final String BALANCECARDPAY = "balanceCardpay.do?";
     //查询月卡种类
     public static final String CHECKCARD = "checkCard.do";
     //押金
