@@ -189,7 +189,7 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
                                     ToastUtils.showShort(BuyMonthlyActivity.this, getString(R.string.server_tip));
                                 }
                             } else if (mMonthBalanceCheckbox.isChecked()) {
-                                if (mADouble > Double.valueOf(payNumber)) {
+                                if (mADouble >= Double.valueOf(payNumber)) {
                                     String tradeType = "APP";
                                     if (payNumber != null && !payNumber.equals("") && mUserId != null && !mUserId.equals("")
                                             && payMode != null && !payMode.equals("")
@@ -275,10 +275,11 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
         map.put("userId", userId);
         map.put("paymode", payMode);
         map.put("trade_type", tradeType);
+        LogUtils.d("天数",payMode);
         OkHttpUtils.post().url(Api.BASE_URL + Api.BALANCECARDPAY).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-
+                StyledDialog.dismissLoading();
             }
 
             @Override

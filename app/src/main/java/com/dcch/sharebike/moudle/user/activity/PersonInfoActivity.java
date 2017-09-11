@@ -217,8 +217,8 @@ public class PersonInfoActivity extends BaseActivity {
                     return;
                 }
                 if (mUserBundle != null) {
-                    if (mUserBundle.getCashStatus() == 1 && !mUserBundle.getPhone().equals("")
-                            && mUserBundle.getPhone() != null && !mToken.equals("") && mToken != null
+                    if (!mUserBundle.getPhone().equals("") && mUserBundle.getPhone() != null
+                            && !mToken.equals("") && mToken != null
                             && !uID.equals("") && uID != null) {
                         Intent mobileNum = new Intent(this, MobileNumActivity.class);
                         mobileNum.putExtra("cashStatus", mUserBundle.getCashStatus());

@@ -22,8 +22,8 @@ android {
         applicationId "com.dcch.sharebike"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 16
-        versionName "1.0.8"
+        versionCode 17
+        versionName "1.0.9"
         multiDexEnabled true
         ndk {
             //选择要添加的对应cpu类型的.so库。
