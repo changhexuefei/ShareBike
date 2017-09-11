@@ -82,7 +82,7 @@ public class PersonalCenterActivity extends BaseActivity {
                 ft.show(uf);
             }
         }
-        ft.commit();
+        ft.commitAllowingStateLoss();
     }
 
     /**
@@ -96,7 +96,7 @@ public class PersonalCenterActivity extends BaseActivity {
         if (uf != null) {
             transaction.hide(uf);
         }
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
     }
 
     @Override
