@@ -267,6 +267,12 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
         LogUtils.d("实验", "onDestroy+cap");
         inactivityTimer.shutdown();
         EventBus.getDefault().unregister(this);
+        //解决java.lang.RuntimeException: Camera is being used after Camera.release() was called 的增加的
+        //代码，希望有用
+        if(camera != null) {
+            camera.release();
+            camera = null;
+        }
         super.onDestroy();
     }
 
