@@ -307,7 +307,7 @@ public class BuyMonthlyActivity extends BaseActivity implements View.OnClickList
         map.put("spbill_create_ip", ipAddress);
         map.put("paymode", payMode);
         LogUtils.d("微信支付", ipAddress + "\n" + userId + "\n" + mOutTradeNo + "\n" + payMode);
-        OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINPAY).params(map).build().execute(new StringCallback() {
+        OkHttpUtils.post().url(Api.BASE_URL + Api.WEIXINCARDPAY).params(map).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
                 StyledDialog.dismiss(mTradeDialog);
