@@ -22,7 +22,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="10dp"
-            android:orientation="vertical">
+            android:divider="@drawable/divider"
+            android:orientation="vertical"
+            android:showDividers="middle">
 
             <LinearLayout
                 android:id="@+id/no_network_tip"
@@ -30,7 +32,10 @@
                 android:layout_height="50dp"
                 android:background="@color/colorTitle"
                 android:clickable="true"
+                android:divider="@drawable/divider_horizontal"
+                android:dividerPadding="10dp"
                 android:gravity="center"
+                android:showDividers="end"
                 android:visibility="gone">
 
                 <TextView
@@ -48,7 +53,9 @@
             <LinearLayout
                 android:id="@+id/achievement_show"
                 android:layout_width="match_parent"
-                android:layout_height="80dp">
+                android:layout_height="80dp"
+                android:divider="@drawable/divider_horizontal"
+                android:showDividers="middle">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -62,7 +69,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:text="0"/>
+                        android:text="@string/value_0"/>
 
                     <TextView
                         style="@style/layout_style"
@@ -92,7 +99,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:text="0"/>
+                        android:text="@string/value_0"/>
 
                     <TextView
                         style="@style/layout_style"
@@ -103,10 +110,6 @@
 
                 </LinearLayout>
 
-                <View
-                    android:layout_width="0.5dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/lineColor"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -120,7 +123,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:text="0"/>
+                        android:text="@string/value_0"/>
 
                     <TextView
                         style="@style/layout_style"
@@ -131,12 +134,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="2dp"
-                android:background="@color/lineColor"/>
-            <!--钱包-->
+
             <RelativeLayout
                 android:id="@+id/wallet"
                 android:layout_width="match_parent"
@@ -161,67 +159,18 @@
                     android:gravity="center_vertical"/>
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="2dp"
-                android:background="@color/lineColor"/>
-            <!--优惠-->
-            <RelativeLayout
+
+            <TextView
                 android:id="@+id/favorable"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:gravity="center_vertical">
+                style="@style/setting_style"
+                android:text="@string/my_favorable"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/my_favorable"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:drawablePadding="10dp"
-                    android:drawableRight="@mipmap/forward"/>
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="2dp"
-                android:background="@color/lineColor"/>
-            <!--行程-->
-            <RelativeLayout
+            <TextView
                 android:id="@+id/journey"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:gravity="center_vertical">
+                style="@style/setting_style"
+                android:text="@string/my_journey"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/my_journey"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:drawablePadding="10dp"
-                    android:drawableRight="@mipmap/forward"/>
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="6dp"
-                android:layout_marginTop="2dp"
-                android:background="@color/lineColor"/>
             <!--消息-->
             <RelativeLayout
                 android:id="@+id/message"
@@ -255,89 +204,24 @@
                     android:drawableRight="@mipmap/forward"/>
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="2dp"
-                android:background="@color/lineColor"/>
-            <!--邀请好友-->
-            <RelativeLayout
+
+            <TextView
                 android:id="@+id/friend"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:gravity="center_vertical">
+                style="@style/setting_style"
+                android:text="@string/invite_friends"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/invite_friends"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:drawablePadding="10dp"
-                    android:drawableRight="@mipmap/forward"/>
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="2dp"
-                android:background="@color/lineColor"/>
             <!--用户指南-->
-            <RelativeLayout
+            <TextView
                 android:id="@+id/guide"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:gravity="center_vertical">
+                style="@style/setting_style"
+                android:text="@string/user_guide"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/user_guide"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:drawablePadding="10dp"
-                    android:drawableRight="@mipmap/forward"/>
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="2dp"
-                android:background="@color/lineColor"/>
             <!--设置-->
-            <RelativeLayout
+            <TextView
                 android:id="@+id/setting"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/setting"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:drawablePadding="10dp"
-                    android:drawableRight="@mipmap/forward"/>
-            </RelativeLayout>
+                style="@style/setting_style"
+                android:text="@string/setting"/>
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

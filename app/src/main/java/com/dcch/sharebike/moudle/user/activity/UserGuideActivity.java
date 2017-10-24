@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
@@ -19,22 +18,21 @@ import butterknife.OnClick;
 
 public class UserGuideActivity extends BaseActivity {
 
-    @BindView(R.id.lock)
-    LinearLayout lock;
-    @BindView(R.id.breakdown)
-    LinearLayout breakdown;
-    @BindView(R.id.depositInstructions)
-    LinearLayout depositInstructions;
-    @BindView(R.id.topUpInstructions)
-    LinearLayout topUpInstructions;
-    @BindView(R.id.report)
-    LinearLayout report;
-    @BindView(R.id.allQuestion)
-    LinearLayout allQuestion;
+
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.lock)
+    TextView mLock;
+    @BindView(R.id.breakdown)
+    TextView mBreakdown;
+    @BindView(R.id.depositInstructions)
+    TextView mDepositInstructions;
+    @BindView(R.id.topUpInstructions)
+    TextView mTopUpInstructions;
+    @BindView(R.id.report)
+    TextView mReport;
 
     @Override
     protected int getLayoutId() {
@@ -114,5 +112,4 @@ public class UserGuideActivity extends BaseActivity {
 //                break;
         }
     }
-
 }

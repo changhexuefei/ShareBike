@@ -71,24 +71,28 @@ public class LoginFragment extends Fragment {
     TextView sportsAchievement;
     @BindView(R.id.wallet)
     RelativeLayout wallet;
-    @BindView(R.id.favorable)
-    RelativeLayout favorable;
-    @BindView(R.id.journey)
-    RelativeLayout journey;
+
+
     @BindView(R.id.message)
     RelativeLayout message;
-    @BindView(R.id.friend)
-    RelativeLayout friend;
-    @BindView(R.id.guide)
-    RelativeLayout guide;
-    @BindView(R.id.setting)
-    RelativeLayout setting;
+
+
     @BindView(R.id.remainSum)
     TextView remainSum;
     @BindView(R.id.achievement_show)
     LinearLayout mAchievementShow;
     @BindView(R.id.no_network_tip)
     LinearLayout mNoNetworkTip;
+    @BindView(R.id.favorable)
+    TextView mFavorable;
+    @BindView(R.id.journey)
+    TextView mJourney;
+    @BindView(R.id.friend)
+    TextView mFriend;
+    @BindView(R.id.guide)
+    TextView mGuide;
+    @BindView(R.id.setting)
+    TextView mSetting;
     private UserInfo mInfo;
     private String uID;
     private String mPhone;
@@ -171,7 +175,7 @@ public class LoginFragment extends Fragment {
                             if (mInfo.getIntegral() != 0) {
                                 creditScore.setText("信用积分 " + String.valueOf(mInfo.getIntegral()));
                             }
-                            remainSum.setText(String.valueOf(mInfo.getAggregateAmount()+"元"));
+                            remainSum.setText(String.valueOf(mInfo.getAggregateAmount() + "元"));
                             //骑行距离
                             person_distance.setText(String.valueOf(mInfo.getMileage()));
                             //运动成就

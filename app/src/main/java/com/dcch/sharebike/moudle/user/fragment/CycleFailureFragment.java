@@ -119,8 +119,6 @@ public class CycleFailureFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        CycleFailureFragmentPermissionsDispatcher.initPermissionWithCheck(this);
-        showCamera();
         EventBus.getDefault().register(this);
         if (SPUtils.isLogin()) {
             uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
@@ -169,8 +167,8 @@ public class CycleFailureFragment extends Fragment {
                     return;
                 }
                 CycleFailureFragmentPermissionsDispatcher.showCameraWithCheck(this);
-                String msg = "fail";
-                goCapture(msg, mToken);
+//                String msg = "fail";
+//                goCapture(msg, mToken);
 
                 break;
 
@@ -287,6 +285,8 @@ public class CycleFailureFragment extends Fragment {
 
     @NeedsPermission(Manifest.permission.CAMERA)
     void showCamera() {
+        String msg = "fail";
+        goCapture(msg, mToken);
     }
 
 //    @Override

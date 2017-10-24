@@ -256,7 +256,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
     protected void initData() {
         ButterKnife.bind(this);
         MainActivityPermissionsDispatcher.initPermissionWithCheck(this);
-        showCamera();
+//
         initPermission();
         bikeInfos = new ArrayList<>();
         getBicycleImage();
@@ -706,6 +706,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
+
                 if (SPUtils.isLogin()) {
                     if (mToken != null) {
                         if (cashStatus == 1 && status == 1) {
@@ -791,6 +792,14 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     @NeedsPermission(Manifest.permission.CAMERA)
     void showCamera() {
+        goToCap();
+    }
+
+    private void goToCap() {
+        Intent i4 = new Intent(MainActivity.this, CaptureActivity.class);
+        i4.putExtra("token", mToken);
+        i4.putExtra("msg", "main");
+        startActivity(i4);
     }
 
     @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE})
@@ -1294,6 +1303,9 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         menuWindow.setOutsideTouchable(false);
         if (!MainActivity.this.isFinishing()) {
             menuWindow.showAsDropDown(findViewById(R.id.top));
+        } else {
+            menuWindow = null;
+            return;
         }
         if (SPUtils.isLogin()) {
             if (cashStatus == 1 && status == 1) {
@@ -1602,10 +1614,10 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                             break;
                         case "1":
                             MainActivityPermissionsDispatcher.showCameraWithCheck(MainActivity.this);
-                            Intent i4 = new Intent(MainActivity.this, CaptureActivity.class);
-                            i4.putExtra("token", mToken);
-                            i4.putExtra("msg", "main");
-                            startActivity(i4);
+//                            Intent i4 = new Intent(MainActivity.this, CaptureActivity.class);
+//                            i4.putExtra("token", mToken);
+//                            i4.putExtra("msg", "main");
+//                            startActivity(i4);
                             break;
                         case "2":
                             goToLogin();

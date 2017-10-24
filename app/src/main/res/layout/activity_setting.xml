@@ -1,198 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context="com.dcch.sharebike.moudle.user.activity.SettingActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:divider="@drawable/divider"
+              android:orientation="vertical"
+              android:showDividers="middle"
+              tools:context="com.dcch.sharebike.moudle.user.activity.SettingActivity">
 
     <include layout="@layout/toolbar"/>
 
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/checkVersions"
+        style="@style/setting_style"
+        android:text="@string/check_update"/>
+
+    <!--消息-->
+
+    <TextView
+        android:id="@+id/aboutUs"
+        style="@style/setting_style"
+        android:text="@string/about_us"/>
+
+    <!--用户协议-->
+
+    <TextView
+        android:id="@+id/userAgreement"
+        style="@style/setting_style"
+        android:text="@string/user_agreement"/>
+
+
+    <!--用户指南-->
+
+    <TextView
+        android:id="@+id/cashPledgeExplain"
+        style="@style/setting_style"
+        android:text="@string/cashPledge_explain"/>
+
+    <!--设置-->
+    <TextView
+        android:id="@+id/rechargeAgreement"
+        style="@style/setting_style"
+        android:text="@string/recharge_agreement"/>
+
+    <Button
+        android:id="@+id/signOut"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center_vertical"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="@string/usually_address"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:drawableRight="@mipmap/forward"
-                android:padding="10dp"/>
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginTop="2dp"
-            android:background="@color/lineColor"
-            android:visibility="gone"/>
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="30dp"
+        android:background="@color/colorTitle"
+        android:text="@string/log_out"
+        android:textColor="@color/white"
+        android:textSize="16sp"/>
 
 
-        <RelativeLayout
-            android:id="@+id/checkVersions"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/check_update"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:drawablePadding="10dp"
-                android:drawableRight="@mipmap/forward"/>
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginTop="2dp"
-            android:background="@color/lineColor"/>
-        <!--消息-->
-        <RelativeLayout
-            android:id="@+id/aboutUs"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/about_us"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:drawablePadding="10dp"
-                android:drawableRight="@mipmap/forward"/>
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="6dp"
-            android:layout_marginTop="2dp"
-            android:background="@color/lineColor"/>
-
-
-        <!--用户协议-->
-        <RelativeLayout
-            android:id="@+id/userAgreement"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/user_agreement"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:drawablePadding="10dp"
-                android:drawableRight="@mipmap/forward"/>
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginTop="2dp"
-            android:background="@color/lineColor"/>
-        <!--用户指南-->
-        <RelativeLayout
-            android:id="@+id/cashPledgeExplain"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/cashPledge_explain"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:drawablePadding="10dp"
-                android:drawableRight="@mipmap/forward"/>
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginTop="2dp"
-            android:background="@color/lineColor"/>
-        <!--设置-->
-        <RelativeLayout
-            android:id="@+id/rechargeAgreement"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/recharge_agreement"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:drawablePadding="10dp"
-                android:drawableRight="@mipmap/forward"/>
-        </RelativeLayout>
-
-        <Button
-            android:id="@+id/signOut"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="30dp"
-            android:background="@color/colorTitle"
-            android:text="@string/log_out"
-            android:textColor="@color/white"
-            android:textSize="16sp"/>
-
-
-    </LinearLayout>
-
-
-</RelativeLayout>
+</LinearLayout>

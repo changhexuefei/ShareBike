@@ -4,10 +4,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dcch.sharebike.R;
@@ -25,31 +25,31 @@ import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
 import org.simple.eventbus.EventBus;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.dcch.sharebike.R.id.userAgreement;
 
 public class SettingActivity extends BaseActivity {
 
     //    @BindView(R.id.usualAddress)
 //    RelativeLayout mUsualAddress;
-    @BindView(R.id.checkVersions)
-    RelativeLayout mCheckVersions;
-    @BindView(R.id.aboutUs)
-    RelativeLayout mAboutUs;
-    @BindView(userAgreement)
-    RelativeLayout mUserAgreement;
-    @BindView(R.id.cashPledgeExplain)
-    RelativeLayout mCashPledgeExplain;
-    @BindView(R.id.rechargeAgreement)
-    RelativeLayout mRechargeAgreement;
+
     @BindView(R.id.signOut)
     Button mSignOut;
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-
+    @BindView(R.id.checkVersions)
+    TextView mCheckVersions;
+    @BindView(R.id.aboutUs)
+    TextView mAboutUs;
+    @BindView(R.id.userAgreement)
+    TextView mUserAgreement;
+    @BindView(R.id.cashPledgeExplain)
+    TextView mCashPledgeExplain;
+    @BindView(R.id.rechargeAgreement)
+    TextView mRechargeAgreement;
 
 
     @Override
@@ -71,7 +71,7 @@ public class SettingActivity extends BaseActivity {
     }
 
     //R.id.usualAddress,
-    @OnClick({R.id.checkVersions, R.id.aboutUs, userAgreement, R.id.cashPledgeExplain, R.id.rechargeAgreement, R.id.signOut})
+    @OnClick({R.id.checkVersions, R.id.aboutUs, R.id.userAgreement, R.id.cashPledgeExplain, R.id.rechargeAgreement, R.id.signOut})
     public void onClick(View view) {
         switch (view.getId()) {
 //            case R.id.usualAddress:
@@ -97,7 +97,7 @@ public class SettingActivity extends BaseActivity {
                 }
                 startActivity(new Intent(SettingActivity.this, AboutUsActivity.class));
                 break;
-            case userAgreement:
+            case R.id.userAgreement:
                 if (ClickUtils.isFastClick()) {
                     return;
                 }
@@ -161,5 +161,12 @@ public class SettingActivity extends BaseActivity {
                 ToastUtils.showLong(SettingActivity.this, str);
             }
         });
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

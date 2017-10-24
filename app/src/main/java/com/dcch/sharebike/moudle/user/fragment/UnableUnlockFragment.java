@@ -76,7 +76,7 @@ public class UnableUnlockFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        showCamera();
+//        showCamera();
         if (SPUtils.isLogin()) {
             uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
             mToken = (String) SPUtils.get(App.getContext(), "token", "");
@@ -107,10 +107,10 @@ public class UnableUnlockFragment extends Fragment {
                     return;
                 }
                 UnableUnlockFragmentPermissionsDispatcher.showCameraWithCheck(this);
-                String msg = "unable";
-                if (mToken != null) {
-                    goCapture(msg, mToken);
-                }
+//                String msg = "unable";
+//                if (mToken != null) {
+//                    goCapture(msg, mToken);
+//                }
 
                 break;
             case R.id.un_confirm:
@@ -200,6 +200,10 @@ public class UnableUnlockFragment extends Fragment {
 
     @NeedsPermission(Manifest.permission.CAMERA)
     void showCamera() {
+        String msg = "unable";
+        if (mToken != null) {
+            goCapture(msg, mToken);
+        }
     }
 
     //手工输入页面发来的消息

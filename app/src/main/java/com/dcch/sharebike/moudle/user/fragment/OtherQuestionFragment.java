@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.dcch.sharebike.R;
 import com.dcch.sharebike.moudle.user.activity.CashPledgeExplainActivity;
@@ -26,17 +26,17 @@ import butterknife.Unbinder;
 public class OtherQuestionFragment extends Fragment {
 
 
-    @BindView(R.id.foundFaulty)
-    RelativeLayout mFoundFaulty;
-    @BindView(R.id.unlock)
-    RelativeLayout mUnlock;
-    @BindView(R.id.FuserAgreement)
-    RelativeLayout mFuserAgreement;
-    @BindView(R.id.FcashPledgeExplain)
-    RelativeLayout mFcashPledgeExplain;
-    @BindView(R.id.FrechargeAgreement)
-    RelativeLayout mFrechargeAgreement;
     Unbinder unbinder;
+    @BindView(R.id.foundFaulty)
+    TextView mFoundFaulty;
+    @BindView(R.id.unlock)
+    TextView mUnlock;
+    @BindView(R.id.FuserAgreement)
+    TextView mFuserAgreement;
+    @BindView(R.id.FcashPledgeExplain)
+    TextView mFcashPledgeExplain;
+    @BindView(R.id.FrechargeAgreement)
+    TextView mFrechargeAgreement;
     private View mView;
 
     public OtherQuestionFragment() {
@@ -62,31 +62,31 @@ public class OtherQuestionFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.foundFaulty:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.customerService, new CycleFailureFragment()).commit();
                 break;
             case R.id.unlock:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.customerService, new UnableUnlockFragment()).commit();
                 break;
             case R.id.FuserAgreement:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 startActivity(new Intent(getActivity(), UserAgreementActivity.class));
                 break;
             case R.id.FcashPledgeExplain:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 startActivity(new Intent(getActivity(), CashPledgeExplainActivity.class));
                 break;
             case R.id.FrechargeAgreement:
-                if(ClickUtils.isFastClick()){
+                if (ClickUtils.isFastClick()) {
                     return;
                 }
                 startActivity(new Intent(getActivity(), RechargeAgreementActivity.class));

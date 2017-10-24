@@ -89,7 +89,6 @@ public class ReportIllegalParkingFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        showCamera();
         if (SPUtils.isLogin()) {
             mToken = (String) SPUtils.get(App.getContext(), "token", "");
             uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
@@ -113,10 +112,10 @@ public class ReportIllegalParkingFragment extends Fragment {
                     return;
                 }
                 ReportIllegalParkingFragmentPermissionsDispatcher.showCameraWithCheck(this);
-                String msg = "reports";
-                if (mToken != null) {
-                    goCapture(msg, mToken);
-                }
+//                String msg = "reports";
+//                if (mToken != null) {
+//                    goCapture(msg, mToken);
+//                }
                 break;
             case R.id.select_photo:
                 if (ClickUtils.isFastClick()) {
@@ -214,6 +213,10 @@ public class ReportIllegalParkingFragment extends Fragment {
 
     @NeedsPermission(Manifest.permission.CAMERA)
     void showCamera() {
+        String msg = "reports";
+        if (mToken != null) {
+            goCapture(msg, mToken);
+        }
     }
 
 

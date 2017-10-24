@@ -2,133 +2,42 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:divider="@drawable/divider"
               android:orientation="vertical"
+              android:showDividers="middle"
               tools:context="com.dcch.sharebike.moudle.user.fragment.OtherQuestionFragment">
 
-    <RelativeLayout
+
+    <TextView
         android:id="@+id/foundFaulty"
-        style="@style/layoutStyle"
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
+        style="@style/setting_style"
+        android:text="@string/findTrouble"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/findTrouble"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:drawablePadding="10dp"
-            android:drawableRight="@mipmap/forward"/>
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="2dp"
-        android:background="@color/lineColor"/>
-    <!--消息-->
-    <RelativeLayout
+    <!--开不了锁-->
+    <TextView
         android:id="@+id/unlock"
-        style="@style/layoutStyle"
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
+        style="@style/setting_style"
+        android:text="@string/unlock"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/unlock"/>
+    <!--用户协议-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:drawablePadding="10dp"
-            android:drawableRight="@mipmap/forward"/>
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="2dp"
-        android:background="@color/lineColor"/>
-
-    <!--邀请好友-->
-    <RelativeLayout
+    <TextView
         android:id="@+id/FuserAgreement"
-        style="@style/layoutStyle"
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
+        style="@style/setting_style"
+        android:text="@string/user_agreement"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/user_agreement"/>
+    <!--押金说明-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:drawablePadding="10dp"
-            android:drawableRight="@mipmap/forward"/>
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="2dp"
-        android:background="@color/lineColor"/>
-    <!--用户指南-->
-    <RelativeLayout
+    <TextView
         android:id="@+id/FcashPledgeExplain"
-        style="@style/layoutStyle"
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
+        style="@style/setting_style"
+        android:text="@string/cashPledge_explain"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/cashPledge_explain"/>
+    <!--充值协议-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:drawablePadding="10dp"
-            android:drawableRight="@mipmap/forward"/>
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="2dp"
-        android:background="@color/lineColor"/>
-    <!--设置-->
-    <RelativeLayout
+    <TextView
         android:id="@+id/FrechargeAgreement"
-        style="@style/layoutStyle"
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/recharge_agreement"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:drawablePadding="10dp"
-            android:drawableRight="@mipmap/forward"/>
-    </RelativeLayout>
-
+        style="@style/setting_style"
+        android:text="@string/recharge_agreement"/>
 
 </LinearLayout>

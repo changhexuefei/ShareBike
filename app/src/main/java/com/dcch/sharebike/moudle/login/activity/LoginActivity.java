@@ -199,7 +199,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
                 //将收到的验证码和手机号提交再次核对
 //                SMSSDK.submitVerificationCode("86", phone, securityCode.getText().toString());
-//                compareVerificationCode("86", phone, securityCode.getText().toString());
                 if (phone != null && verificationCode != null && verificationCode.equals(seCode)) {
                     StyledDialog.buildLoading(LoginActivity.this, "登录中", true, false).show();
                     registerAndLogin(phone);
