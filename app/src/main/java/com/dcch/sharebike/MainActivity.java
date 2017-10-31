@@ -1561,6 +1561,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
                         JSONArray jsonArray = new JSONArray(response);
                         bikeInfos.clear();
+
                         if (jsonArray.length() > 0) {
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
