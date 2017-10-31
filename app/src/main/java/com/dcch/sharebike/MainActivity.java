@@ -1558,6 +1558,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
                 public void onResponse(String response, int id) {
                     Log.d("所有的数据", response);
                     try {
+
                         JSONArray jsonArray = new JSONArray(response);
                         bikeInfos.clear();
                         if (jsonArray.length() > 0) {
