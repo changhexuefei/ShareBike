@@ -99,6 +99,7 @@ import com.dcch.sharebike.moudle.user.activity.UserAgreementActivity;
 import com.dcch.sharebike.moudle.user.activity.UserGuideActivity;
 import com.dcch.sharebike.moudle.user.activity.WalletInfoActivity;
 import com.dcch.sharebike.moudle.user.bean.ImageInfo;
+import com.dcch.sharebike.moudle.user.bean.UserInfo;
 import com.dcch.sharebike.netty.NettyClient;
 import com.dcch.sharebike.overlayutil.OverlayManager;
 import com.dcch.sharebike.overlayutil.WalkingRouteOverlay;
@@ -1645,11 +1646,13 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
             uID = String.valueOf(SPUtils.get(App.getContext(), "userId", 0));
             if (uID != null && mToken != null) {
                 phone = AES.decrypt((String) SPUtils.get(App.getContext(), "phone", ""), MyContent.key);
-                cashStatus = (Integer) SPUtils.get(App.getContext(), "cashStatus", 0);
-                status = (Integer) SPUtils.get(App.getContext(), "status", 0);
-                LogUtils.d("netty", "用户信息" + phone + cashStatus + status + SPUtils.get(App.getContext(), "phone", ""));
+                getUserInfo(uID, mToken);
+//                cashStatus = (Integer) SPUtils.get(App.getContext(), "cashStatus", 0);
+//                status = (Integer) SPUtils.get(App.getContext(), "status", 0);
+
                 LogUtils.d("netty", "我将要执行建立长连接" + !IsConnect + mNettyService);
-                if (!IsConnect && mNettyService == null) {
+                //cashStatus == 1 && status == 1 &&
+                if (cashStatus == 1 && status == 1 && !IsConnect && mNettyService == null) {
                     IsConnect = true;
                     mNettyService = new Intent(MainActivity.this, NettyService.class);
                     mNettyService.putExtra("userId", uID);
@@ -1663,6 +1666,31 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         }
     }
 
+    private void getUserInfo(String uID, String token) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", uID);
+        map.put("token", token);
+        OkHttpUtils.post().url(Api.BASE_URL + Api.INFOUSER).params(map).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                ToastUtils.showShort(App.getContext(), getString(R.string.server_tip));
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                Log.d("用户的信息", response);
+                if (JsonUtils.isSuccess(response)) {
+                    Gson gson = new Gson();
+                    UserInfo mInfo = gson.fromJson(response, UserInfo.class);
+                    if (mInfo != null && !mInfo.equals("")) {
+                        cashStatus = mInfo.getCashStatus();
+                        status = mInfo.getStatus();
+                        LogUtils.d("netty", "用户信息" + cashStatus + status + SPUtils.get(App.getContext(), "phone", ""));
+                    }
+                }
+            }
+        });
+    }
 
     @Override
     protected void onStop() {
@@ -1733,7 +1761,6 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
         if (mChangingDialog != null) {
             StyledDialog.dismiss(mChangingDialog);
         }
-
         Log.d("实验", "onDestroy+主页");
         super.onDestroy();
     }
