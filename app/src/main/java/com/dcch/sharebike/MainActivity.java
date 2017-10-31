@@ -1694,6 +1694,7 @@ public class MainActivity extends BaseActivity implements BaiduMap.OnMapStatusCh
 
     @Override
     protected void onStop() {
+
         // 关闭图层定位
         mMap.setMyLocationEnabled(false);
         mLocationClient.stop();
